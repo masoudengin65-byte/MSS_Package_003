@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Bytecode
+*.pyo
+*.pyd
+
+# Coverage
+.coverage
+htmlcov/
+
+# Local settings
+.env

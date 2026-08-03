@@ -1,0 +1,5 @@
+
+application:
+  name: MSS
+mt5:
+  auto_connect: false

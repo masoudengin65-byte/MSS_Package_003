@@ -1,0 +1,12 @@
+
+[build-system]
+requires=["setuptools>=68"]
+build-backend="setuptools.build_meta"
+
+[project]
+name="mss"
+version="0.3.0"
+dependencies=["PyYAML","MetaTrader5"]
+
+[tool.setuptools.packages.find]
+where=["src"]
