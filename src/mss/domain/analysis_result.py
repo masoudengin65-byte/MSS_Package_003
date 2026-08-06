@@ -9,6 +9,7 @@ from mss.domain.displacement import Displacement
 from mss.domain.order_block import OrderBlock
 from mss.domain.fair_value_gap import FairValueGap
 from mss.domain.trade_setup import TradeSetup
+from mss.domain.premium_discount import PremiumDiscount
 
 
 @dataclass
@@ -31,6 +32,10 @@ class AnalysisResult:
     order_block: OrderBlock = field(default_factory=OrderBlock)
 
     fair_value_gap: FairValueGap = field(default_factory=FairValueGap)
+
+    premium_discount: PremiumDiscount = field(
+        default_factory=PremiumDiscount
+    )
 
     trade_setup: TradeSetup = field(
         default_factory=TradeSetup

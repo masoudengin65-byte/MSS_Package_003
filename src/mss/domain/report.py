@@ -8,6 +8,14 @@ Compatible : v0.31
 from dataclasses import dataclass, field
 
 from mss.domain.trade_statistics import TradeStatistics
+from mss.domain.premium_discount import PremiumDiscount
+from mss.domain.kill_zone_status import KillZoneStatus
+from mss.domain.session_bias import SessionBias
+from mss.domain.news_risk_status import NewsRiskStatus
+from mss.domain.portfolio_exposure import PortfolioExposure
+from mss.domain.risk_profile import RiskProfile
+from mss.domain.optimization_result import OptimizationResult
+from mss.domain.position import Position
 
 
 @dataclass
@@ -23,6 +31,54 @@ class Report:
     executed_trades: int = 0
 
     execution_time: float = 0.0
+
+    premium_discount: PremiumDiscount = field(
+
+        default_factory=PremiumDiscount
+
+    )
+
+    kill_zone_status: KillZoneStatus = field(
+
+        default_factory=KillZoneStatus
+
+    )
+
+    session_bias: SessionBias = field(
+
+        default_factory=SessionBias
+
+    )
+
+    news_risk_status: NewsRiskStatus = field(
+
+        default_factory=NewsRiskStatus
+
+    )
+
+    portfolio_exposure: PortfolioExposure = field(
+
+        default_factory=PortfolioExposure
+
+    )
+
+    risk_profile: RiskProfile = field(
+
+        default_factory=RiskProfile
+
+    )
+
+    optimization_result: OptimizationResult = field(
+
+        default_factory=OptimizationResult
+
+    )
+
+    paper_positions: list[Position] = field(default_factory=list)
+
+    final_decision: str = "WAIT"
+
+    decision_reason: str = "NO_SETUP"
 
     #
     # Statistics

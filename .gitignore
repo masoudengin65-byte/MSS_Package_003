@@ -1,0 +1,30 @@
+# Python caches and compiled extensions
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Test, type-checker, linter, and coverage caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local virtual environments
+.venv/
+venv/
+env/
+
+# Editors
+.idea/
+.vscode/
+*.code-workspace
+
+# Temporary, log, and OS files
+*.tmp
+*.temp
+*.log
+Thumbs.db
+Desktop.ini
+.DS_Store

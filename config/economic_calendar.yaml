@@ -1,0 +1,9 @@
+events:
+  - name: US Nonfarm Payrolls
+    currency: USD
+    impact: HIGH
+    scheduled_at: "2026-08-07T16:00:00"
+  - name: US Consumer Sentiment
+    currency: USD
+    impact: MEDIUM
+    scheduled_at: "2026-08-07T18:00:00"

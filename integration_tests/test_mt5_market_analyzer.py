@@ -3,10 +3,13 @@ MSS Live Smart Money Integration Test
 Sprint 56.1
 """
 
+from dataclasses import fields
 from datetime import datetime
 
 import MetaTrader5 as mt5
 
+from mss.adapters.mt5.adapter import MT5Adapter
+from mss.adapters.mt5.history import HistoryService
 from mss.analysis.smart_money_pipeline import SmartMoneyPipeline
 
 
@@ -115,6 +118,16 @@ def print_report(result, terminal, account, candle_count):
 
     print("-" * 60)
 
+    print()
+    print("Liquidity Details")
+    print("-" * 60)
+
+    print(f"Liquidity Detected : {result.liquidity_detected}")
+    print(f"Liquidity Side     : {result.liquidity_side or '-'}")
+    print(f"Liquidity Sweep    : {getattr(result, 'liquidity_sweep', False)}")
+
+    print("-" * 60)
+
     #
     # Trade Readiness
     #
@@ -179,42 +192,54 @@ def print_report(result, terminal, account, candle_count):
     print("=" * 60)
 
 
+def print_pipeline_result(result):
+
+    print()
+    print("PIPELINE RESULT")
+    print("-" * 60)
+
+    for pipeline_field in fields(result):
+
+        print(f"{pipeline_field.name} : {getattr(result, pipeline_field.name)}")
+
+
 def main():
 
     print("=" * 60)
     print("Connecting to MT5...")
     print("=" * 60)
 
-    if not mt5.initialize():
+    adapter = MT5Adapter()
+
+    connected, message = adapter.connect()
+
+    if not connected:
 
         print("MT5 initialize failed")
-        print(mt5.last_error())
+        print(message)
         return
 
-    terminal = mt5.terminal_info()
-    account = mt5.account_info()
+    terminal = adapter.terminal()
+    account = adapter.account()
 
-    rates = mt5.copy_rates_from_pos(
+    candles = HistoryService().last(
 
         SYMBOL,
         TIMEFRAME,
-        0,
         CANDLE_COUNT,
 
     )
 
-    if rates is None:
+    if not candles:
 
         print("No market data.")
 
-        mt5.shutdown()
+        adapter.shutdown()
 
         return
 
-    candles = build_candles(rates)
-
     pipeline = SmartMoneyPipeline()
-        result = pipeline.run(
+    result = pipeline.run(
 
         symbol=SYMBOL,
 
@@ -236,7 +261,11 @@ def main():
 
     )
 
-    mt5.shutdown()
+    print_pipeline_result(result)
+
+    adapter.shutdown()
+
+    return result
 
 
 if __name__ == "__main__":

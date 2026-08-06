@@ -1,0 +1,189 @@
+{
+  "closed_trades": 169,
+  "configuration": {
+    "ambiguous_policy": "STOP_LOSS_FIRST",
+    "analysis_lookback": 500,
+    "commission_per_lot": 0.0,
+    "reward_risk_ratio": 2.0,
+    "risk_percent": 1.0,
+    "slippage_points": 1.0,
+    "spread_points": null,
+    "starting_balance": 10000.0,
+    "warmup_candles": 200
+  },
+  "context_field_count": 87,
+  "context_mutation_violations": 0,
+  "deterministic_repeated_output": true,
+  "duplicate_snapshots": 0,
+  "duplicate_trade_ids": 0,
+  "future_data_violations": 0,
+  "inconsistent_score_component_totals": 0,
+  "metrics": {
+    "Combined": {
+      "average_r": -0.045,
+      "ending_balance": 19327.75,
+      "expectancy": -3.98,
+      "maximum_drawdown": 2306.25,
+      "net_profit": -672.25,
+      "profit_factor": 0.9374,
+      "total_trades": 169,
+      "win_rate": 31.952662721893493
+    },
+    "EURUSD": {
+      "average_r": -0.2567,
+      "ending_balance": 8021.39,
+      "expectancy": -23.55,
+      "maximum_drawdown": 1978.61,
+      "net_profit": -1978.61,
+      "profit_factor": 0.6533,
+      "total_trades": 84,
+      "win_rate": 25.0
+    },
+    "XAUUSD": {
+      "average_r": 0.1643,
+      "ending_balance": 11306.36,
+      "expectancy": 15.37,
+      "maximum_drawdown": 1056.61,
+      "net_profit": 1306.36,
+      "profit_factor": 1.2594,
+      "total_trades": 85,
+      "win_rate": 38.82352941176471
+    }
+  },
+  "missing_required_values": {},
+  "not_available_by_field": {
+    "choch_strength": 170,
+    "daily_bias": 170,
+    "daily_bos": 170,
+    "daily_choch": 170,
+    "daily_confidence": 170,
+    "daily_trend": 170,
+    "equal_high": 170,
+    "equal_low": 170,
+    "fvg_direction": 170,
+    "fvg_fill_percentage": 170,
+    "fvg_quality_score": 170,
+    "fvg_width": 170,
+    "h1_bias": 170,
+    "h1_bos": 170,
+    "h1_choch": 170,
+    "h1_confidence": 170,
+    "h1_trend": 170,
+    "h4_bias": 170,
+    "h4_bos": 170,
+    "h4_choch": 170,
+    "h4_confidence": 170,
+    "h4_trend": 170,
+    "liquidity_distance": 86,
+    "minutes_since_last_news": 170,
+    "minutes_to_next_news": 170,
+    "news_allowed": 170,
+    "news_severity": 170,
+    "order_block_age": 170,
+    "order_block_mitigation_state": 170,
+    "order_block_quality_score": 170,
+    "order_block_type": 170,
+    "session_bias": 170
+  },
+  "opened_trades": 170,
+  "processed_candle_count": {
+    "EURUSD": 10000,
+    "XAUUSD": 10000
+  },
+  "real_orders_sent": false,
+  "source_candle_count": {
+    "EURUSD": 10000,
+    "XAUUSD": 10000
+  },
+  "sprint_77_baseline": {
+    "Average Holding Minutes": {
+      "Combined": 2078.12,
+      "EURUSD": 2046.35,
+      "XAUUSD": 2109.88
+    },
+    "Average R": {
+      "Combined": -0.0508,
+      "EURUSD": -0.2658,
+      "XAUUSD": 0.1643
+    },
+    "Ending Balance": {
+      "Combined": 19228.08,
+      "EURUSD": 7921.72,
+      "XAUUSD": 11306.36
+    },
+    "Expectancy": {
+      "Combined": -4.54,
+      "EURUSD": -24.45,
+      "XAUUSD": 15.37
+    },
+    "Gross Loss": {
+      "Combined": 10761.8,
+      "EURUSD": 5725.05,
+      "XAUUSD": 5036.75
+    },
+    "Gross Profit": {
+      "Combined": 9989.88,
+      "EURUSD": 3646.77,
+      "XAUUSD": 6343.11
+    },
+    "Losing Trades": {
+      "Combined": 116,
+      "EURUSD": 64,
+      "XAUUSD": 52
+    },
+    "Maximum Consecutive Losses": {
+      "Combined": 12,
+      "EURUSD": 10,
+      "XAUUSD": 8
+    },
+    "Maximum Consecutive Wins": {
+      "Combined": 5,
+      "EURUSD": 4,
+      "XAUUSD": 3
+    },
+    "Maximum Drawdown": {
+      "Combined": 2201.03,
+      "EURUSD": 2078.28,
+      "XAUUSD": 1056.61
+    },
+    "Maximum Drawdown %": {
+      "Combined": 10.3516,
+      "EURUSD": 20.7828,
+      "XAUUSD": 8.6631
+    },
+    "Net Profit": {
+      "Combined": -771.92,
+      "EURUSD": -2078.28,
+      "XAUUSD": 1306.36
+    },
+    "Profit Factor": {
+      "Combined": 0.9283,
+      "EURUSD": 0.637,
+      "XAUUSD": 1.2594
+    },
+    "Return %": {
+      "Combined": -3.8596,
+      "EURUSD": -20.7828,
+      "XAUUSD": 13.0636
+    },
+    "Total Trades": {
+      "Combined": 170,
+      "EURUSD": 85,
+      "XAUUSD": 85
+    },
+    "Win Rate %": {
+      "Combined": 31.76470588235294,
+      "EURUSD": 24.70588235294118,
+      "XAUUSD": 38.82352941176471
+    },
+    "Winning Trades": {
+      "Combined": 54,
+      "EURUSD": 21,
+      "XAUUSD": 33
+    }
+  },
+  "timestamp_order_violations": 0,
+  "trades_with_context": 170,
+  "trades_without_context": 0,
+  "unresolved_trades": 1
+}

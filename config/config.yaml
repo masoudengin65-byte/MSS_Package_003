@@ -3,3 +3,25 @@ application:
   name: MSS
 mt5:
   auto_connect: false
+  broker_time_symbol: EURUSD
+trading:
+  kill_zones:
+    LONDON_OPEN:
+      start: "07:00"
+      end: "10:00"
+    NEWYORK_OPEN:
+      start: "12:00"
+      end: "15:00"
+    NEWYORK_CLOSE:
+      start: "18:00"
+      end: "20:00"
+news_risk:
+  calendar_file: config/economic_calendar.yaml
+  impact_levels:
+    - HIGH
+    - MEDIUM
+    - LOW
+  blocked_impacts:
+    - HIGH
+  block_before_minutes: 30
+  cooldown_after_minutes: 15

@@ -7,6 +7,9 @@ from mss.analysis.liquidity_detector import LiquidityDetector
 from mss.analysis.displacement_detector import DisplacementDetector
 from mss.analysis.bos_detector import BOSDetector
 from mss.analysis.choch_detector import CHoCHDetector
+from mss.analysis.premium_discount_engine import PremiumDiscountEngine
+from mss.analysis.order_block_detector import OrderBlockDetector
+from mss.analysis.fvg_detector import FairValueGapDetector
 
 from mss.domain.market_context import MarketContext
 from mss.domain.analysis_result import AnalysisResult
@@ -31,6 +34,12 @@ class StructureEngine:
         self.bos_detector = BOSDetector()
 
         self.choch_detector = CHoCHDetector()
+
+        self.premium_discount_engine = PremiumDiscountEngine()
+
+        self.order_block_detector = OrderBlockDetector()
+
+        self.fvg_detector = FairValueGapDetector()
 
     def analyze(
 
@@ -146,10 +155,19 @@ class StructureEngine:
 
         )
 
+        # Reuse the swings already supplied to the structure analysis.
+        premium_discount = self.premium_discount_engine.calculate(
+
+            swings,
+
+            candles[-1].close,
+
+        )
+
         #
         # Result
         #
-        return AnalysisResult(
+        analysis = AnalysisResult(
 
             symbol=symbol,
 
@@ -165,4 +183,25 @@ class StructureEngine:
 
             choch=choch,
 
+            premium_discount=premium_discount,
+
         )
+
+        # Connect completed detectors without changing their detection rules.
+        analysis.order_block = self.order_block_detector.detect(
+
+            context,
+
+            analysis,
+
+        )
+
+        analysis.fair_value_gap = self.fvg_detector.detect(
+
+            context,
+
+            analysis,
+
+        )
+
+        return analysis

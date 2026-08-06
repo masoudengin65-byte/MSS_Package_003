@@ -5,9 +5,8 @@ Sprint : 54
 """
 
 from mss.analysis.real_swing_engine import RealSwingEngine
-from mss.analysis.structure_engine import StructureEngine
 from mss.analysis.setup_scoring_engine import SetupScoringEngine
-
+from mss.analysis.structure_engine import StructureEngine
 from mss.domain.pipeline_result import PipelineResult
 
 
@@ -29,11 +28,8 @@ class SmartMoneyPipeline:
     ):
 
         result = PipelineResult(
-
             symbol=symbol,
-
             timeframe=timeframe,
-
         )
 
         #
@@ -54,29 +50,19 @@ class SmartMoneyPipeline:
         # Swing Detection
         #
 
-        swings = self.swing_engine.detect(
-
-            candles
-
-        )
+        swings = self.swing_engine.detect(candles)
 
         result.swing_count = len(swings)
-
 
         #
         # Structure Analysis
         #
 
         analysis = self.structure_engine.analyze(
-
             symbol=symbol,
-
             timeframe=timeframe,
-
             candles=candles,
-
             swings=swings,
-
         )
 
         #
@@ -85,31 +71,15 @@ class SmartMoneyPipeline:
 
         if analysis.structure is not None:
 
-            result.structure_state = (
-
-                analysis.structure.state.value
-
-            )
+            result.structure_state = analysis.structure.state.value
 
         #
         # Debug Structure Levels
         #
 
-        highs = [
+        highs = [s for s in swings if getattr(s, "is_high", False)]
 
-            s for s in swings
-
-            if getattr(s, "is_high", False)
-
-        ]
-
-        lows = [
-
-            s for s in swings
-
-            if getattr(s, "is_low", False)
-
-        ]
+        lows = [s for s in swings if getattr(s, "is_low", False)]
 
         if len(highs) >= 2:
 
@@ -150,50 +120,21 @@ class SmartMoneyPipeline:
         # Calculate BOS Distance
         #
 
-        if (
+        if result.next_bos_level is not None and result.current_close is not None:
 
-            result.next_bos_level is not None
-
-            and
-
-            result.current_close is not None
-
-        ):
-
-            result.distance_to_bos = abs(
-
-                result.current_close
-
-                -
-
-                result.next_bos_level
-
-            )
+            result.distance_to_bos = abs(result.current_close - result.next_bos_level)
 
             result.distance_to_bos_pips = round(
-
                 result.distance_to_bos * 10000,
-
                 1,
-
             )
 
             result.bos_progress = max(
-
                 0.0,
-
                 min(
-
                     100.0,
-
-                    (20.0 - result.distance_to_bos_pips)
-
-                    / 20.0
-
-                    * 100.0,
-
+                    (20.0 - result.distance_to_bos_pips) / 20.0 * 100.0,
                 ),
-
             )
 
             if result.distance_to_bos_pips <= 2:
@@ -232,23 +173,11 @@ class SmartMoneyPipeline:
 
                     result.bos_status = "BROKEN"
 
-            result.bos_ready = (
-
-                result.bos_status
-
-                in
-
-                [
-
-                    "NEAR BOS",
-
-                    "BREAKING",
-
-                    "BROKEN",
-
-                ]
-
-            )
+            result.bos_ready = result.bos_status in [
+                "NEAR BOS",
+                "BREAKING",
+                "BROKEN",
+            ]
 
             #
             # Real CHOCH Detection
@@ -278,7 +207,8 @@ class SmartMoneyPipeline:
 
             result.liquidity_sweep = False
 
-            if (result.last_high is not None
+            if (
+                result.last_high is not None
                 and result.current_close > result.last_high
                 and not result.bos_detected
             ):
@@ -288,15 +218,14 @@ class SmartMoneyPipeline:
                 result.liquidity_side = "BUY"
 
             elif (
-               result.last_low is not None and 
-                result.current_close < result.last_low
-
+                result.last_low is not None
+                and result.current_close < result.last_low
                 and not result.bos_detected
             ):
                 result.liquidity_sweep = True
 
                 result.liquidity_side = "SELL"
-            
+
         else:
 
             result.bos_status = "RANGE"
@@ -311,18 +240,11 @@ class SmartMoneyPipeline:
             result.bos_detected = True
 
             if hasattr(
-
                 analysis.bos,
-
                 "direction",
-
             ):
 
-                result.bos_direction = (
-
-                    analysis.bos.direction
-
-                )
+                result.bos_direction = analysis.bos.direction
 
         #
         # CHOCH
@@ -333,142 +255,93 @@ class SmartMoneyPipeline:
             result.choch_detected = True
 
             if hasattr(
-
                 analysis.choch,
-
                 "direction",
-
             ):
 
-                result.choch_direction = (
-
-                    analysis.choch.direction
-
-                )
+                result.choch_direction = analysis.choch.direction
 
         #
         # Log
         #
 
-        result.logs.append(
+        result.logs.append(f"Swing Count : {result.swing_count}")
 
-    f"Swing Count : {result.swing_count}"
+        result.logs.append(f"Structure : {result.structure_state}")
 
-)
+        result.logs.append(f"BOS : {result.bos_detected}")
 
-        result.logs.append(
-
-    f"Structure : {result.structure_state}"
-
-)
-
-        result.logs.append(
-
-    f"BOS : {result.bos_detected}"
-
-)
-
-        result.logs.append(
-
-    f"BOS Status : {result.bos_status}"
-
-)
+        result.logs.append(f"BOS Status : {result.bos_status}")
 
         if result.distance_to_bos is None:
 
-           result.logs.append(
+            result.logs.append("BOS Distance : -")
 
-        "BOS Distance : -"
-
-    )
-
-        else:result.logs.append(
-
-        f"BOS Distance : {result.distance_to_bos_pips:.1f} pip"
-
-    )
-        result.logs.append(
-
-    f"CHOCH : {result.choch_detected}"
-
-)
+        else:
+            result.logs.append(f"BOS Distance : {result.distance_to_bos_pips:.1f} pip")
+        result.logs.append(f"CHOCH : {result.choch_detected}")
 
         if result.choch_detected:
 
-         result.logs.append(
-
-        f"CHOCH Direction : {result.choch_direction}"
-
-    )
+            result.logs.append(f"CHOCH Direction : {result.choch_direction}")
 
         #
         # Score
         #
 
         score = self.score_engine.calculate(
-
             bos=result.bos_detected,
-
             choch=result.choch_detected,
-
         )
 
         result.score = score.score
 
         result.confidence = score.confidence
 
-       #
-       # Smart Recommendation Engine
-       #
+        #
+        # Smart Recommendation Engine
+        #
 
         if result.bos_detected:
 
-         result.recommendation = "TRADE"
+            result.recommendation = "TRADE"
 
         elif result.choch_detected:
 
-         result.recommendation = "WATCH"
+            result.recommendation = "WATCH"
 
         elif getattr(result, "liquidity_sweep", False):
 
-         result.recommendation = "WATCH"
+            result.recommendation = "WATCH"
 
         elif result.bos_status == "BREAKING":
 
-         result.recommendation = "WATCH"
+            result.recommendation = "WATCH"
 
         elif result.bos_status == "NEAR BOS":
 
-         result.recommendation = "WATCH"
+            result.recommendation = "WATCH"
 
         elif result.score >= 80:
 
-         result.recommendation = "BUY"
+            result.recommendation = "BUY"
 
         elif result.score >= 45:
 
-         result.recommendation = "WATCH"
+            result.recommendation = "WATCH"
 
         else:
 
-         result.recommendation = "WAIT"
+            result.recommendation = "WAIT"
             #
             # Liquidity Sweep Log
             #
 
         if getattr(result, "liquidity_sweep", False):
 
-            result.logs.append(
+            result.logs.append("Liquidity Sweep : True")
 
-                "Liquidity Sweep : True"
-
-            )
-
-            result.logs.append(
-
-                f"Liquidity Side : {result.liquidity_side}"
-
-            )
+            result.logs.append(f"Liquidity Side : {result.liquidity_side}")
 
             if result.recommendation == "WAIT":
 
@@ -476,11 +349,7 @@ class SmartMoneyPipeline:
 
         else:
 
-            result.logs.append(
-
-                "Liquidity Sweep : False"
-
-            )
+            result.logs.append("Liquidity Sweep : False")
 
         #
         # Optional Analysis Results
@@ -489,13 +358,8 @@ class SmartMoneyPipeline:
         if hasattr(analysis, "liquidity"):
 
             result.liquidity_detected = (
-
                 analysis.liquidity.buy_side_liquidity
-
-                or
-
-                analysis.liquidity.sell_side_liquidity
-
+                or analysis.liquidity.sell_side_liquidity
             )
 
             if analysis.liquidity.buy_side_liquidity:
@@ -508,41 +372,21 @@ class SmartMoneyPipeline:
 
         if hasattr(analysis, "order_block"):
 
-            result.order_block_detected = (
-
-                analysis.order_block.valid
-
-            )
+            result.order_block_detected = analysis.order_block.valid
 
         if hasattr(analysis, "fair_value_gap"):
 
-            result.fair_value_gap_detected = (
-
-                analysis.fair_value_gap.valid
-
-            )
+            result.fair_value_gap_detected = analysis.fair_value_gap.valid
 
         #
         # Final Log
         #
 
-        result.logs.append(
+        result.logs.append(f"Score : {result.score}")
 
-            f"Score : {result.score}"
+        result.logs.append(f"Confidence : {result.confidence:.2f}")
 
-        )
-
-        result.logs.append(
-
-            f"Confidence : {result.confidence:.2f}"
-
-        )
-
-        result.logs.append(
-
-            f"Recommendation : {result.recommendation}"
-
-        )
+        result.logs.append(f"Recommendation : {result.recommendation}")
 
         #
         # Completed

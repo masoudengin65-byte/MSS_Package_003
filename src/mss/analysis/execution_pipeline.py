@@ -45,6 +45,8 @@ class ExecutionPipeline:
         account_balance,
         risk_percent,
         ticket=1,
+        news_risk_status=None,
+        portfolio_exposure=None,
     ):
 
         order = TradeOrder()
@@ -76,6 +78,10 @@ class ExecutionPipeline:
             risk_percent=risk_percent,
 
             stop_distance=stop_distance,
+
+            news_risk_status=news_risk_status,
+
+            portfolio_exposure=portfolio_exposure,
 
         )
 

@@ -5,8 +5,14 @@ build-backend="setuptools.build_meta"
 
 [project]
 name="mss"
-version="0.3.0"
-dependencies=["PyYAML","MetaTrader5"]
+version="1.0.0"
+dependencies=[
+    "PyYAML",
+    "MetaTrader5>=5.0.6090",
+    "openpyxl",
+    "matplotlib",
+    "reportlab",
+]
 
 [tool.setuptools.packages.find]
 where=["src"]

@@ -22,3 +22,11 @@ class RiskProfile:
     lot_size: float = 0.0
 
     valid: bool = False
+
+    trading_status: str = "ALLOWED"
+
+    reason: str = ""
+
+    portfolio_risk_level: str = "LOW"
+
+    portfolio_risk_score: float = 0.0
