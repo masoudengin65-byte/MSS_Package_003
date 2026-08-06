@@ -1,0 +1,4452 @@
+{
+  "component_analysis": [
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "structure",
+      "contribution_frequency": 1.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 15.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 15.0,
+        "maximum": 15.0,
+        "mean": 15.0,
+        "median": 15.0,
+        "minimum": 15.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 15.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 15.0,
+      "mean": 15.0,
+      "minimum": 15.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 15.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 15.0,
+        "maximum": 15.0,
+        "mean": 15.0,
+        "median": 15.0,
+        "minimum": 15.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 15.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "bos",
+      "contribution_frequency": 1.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 20.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 20.0,
+        "maximum": 20.0,
+        "mean": 20.0,
+        "median": 20.0,
+        "minimum": 20.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 20.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 20.0,
+      "mean": 20.0,
+      "minimum": 20.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 20.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 20.0,
+        "maximum": 20.0,
+        "mean": 20.0,
+        "median": 20.0,
+        "minimum": 20.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 20.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "choch",
+      "contribution_frequency": 0.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 0.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 0.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5096618357487923,
+      "availability_count": 169,
+      "bootstrap_ci_high": 1.9259259259259258,
+      "bootstrap_ci_low": -1.514975845410628,
+      "classification": "NOT_RELIABLE",
+      "component": "liquidity",
+      "contribution_frequency": 0.4970414201183432,
+      "effect": 0.2357487922705314,
+      "effect_direction": 1,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 0.20869565217391303,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": -8.0,
+        "maximum": 8.0,
+        "mean": 0.20869565217391303,
+        "median": 0.0,
+        "minimum": -8.0,
+        "missing_value_count": 0,
+        "standard_deviation": 5.943440512519506,
+        "third_quartile": 8.0,
+        "unique_value_count": 3
+      },
+      "mann_whitney_u": 3165.0,
+      "maximum": 8.0,
+      "mean": 0.28402366863905326,
+      "minimum": -8.0,
+      "not_available_count": 0,
+      "p_value": 0.8254807113682063,
+      "spearman_profit": 0.008370021586521349,
+      "unique_values": 3,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 0.4444444444444444,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 8.0,
+        "mean": 0.4444444444444444,
+        "median": 0.0,
+        "minimum": -8.0,
+        "missing_value_count": 0,
+        "standard_deviation": 5.015698625755191,
+        "third_quartile": 0.0,
+        "unique_value_count": 3
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5092592592592593,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.5555555555555556,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "order_block",
+      "contribution_frequency": 0.005917159763313609,
+      "effect": 0.18518518518518517,
+      "effect_direction": 1,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 0.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3162.5,
+      "maximum": 10.0,
+      "mean": 0.05917159763313609,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 0.14447566128575523,
+      "spearman_profit": 0.08539916212921798,
+      "unique_values": 2,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 0.18518518518518517,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 10.0,
+        "mean": 0.18518518518518517,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 1.3608276348795434,
+        "third_quartile": 0.0,
+        "unique_value_count": 2
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "fair_value_gap",
+      "contribution_frequency": 0.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 0.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 0.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "premium_discount",
+      "contribution_frequency": 1.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": -8.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": -8.0,
+        "maximum": -8.0,
+        "mean": -8.0,
+        "median": -8.0,
+        "minimum": -8.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": -8.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": -8.0,
+      "mean": -8.0,
+      "minimum": -8.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": -8.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": -8.0,
+        "maximum": -8.0,
+        "mean": -8.0,
+        "median": -8.0,
+        "minimum": -8.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": -8.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.45780998389694044,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.2950080515297908,
+      "bootstrap_ci_low": -0.8484702093397742,
+      "classification": "NOT_RELIABLE",
+      "component": "session",
+      "contribution_frequency": 0.9053254437869822,
+      "effect": -0.27697262479871165,
+      "effect_direction": -1,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 3.869565217391304,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 2.0,
+        "maximum": 5.0,
+        "mean": 3.869565217391304,
+        "median": 5.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 1.759793344777567,
+        "third_quartile": 5.0,
+        "unique_value_count": 3
+      },
+      "mann_whitney_u": 2843.0,
+      "maximum": 5.0,
+      "mean": 3.7810650887573964,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 0.2912370707762412,
+      "spearman_profit": 0.010717810901421971,
+      "unique_values": 3,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 3.5925925925925926,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 2.0,
+        "maximum": 5.0,
+        "mean": 3.5925925925925926,
+        "median": 5.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 1.796416963391069,
+        "third_quartile": 5.0,
+        "unique_value_count": 3
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.4677938808373591,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.46779388083735896,
+      "bootstrap_ci_low": -1.0893719806763285,
+      "classification": "NOT_RELIABLE",
+      "component": "kill_zone",
+      "contribution_frequency": 0.41420118343195267,
+      "effect": -0.3220611916264089,
+      "effect_direction": -1,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 2.1739130434782608,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 0.0,
+        "maximum": 5.0,
+        "mean": 2.1739130434782608,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 2.4894897298802525,
+        "third_quartile": 5.0,
+        "unique_value_count": 2
+      },
+      "mann_whitney_u": 2905.0,
+      "maximum": 5.0,
+      "mean": 2.0710059171597632,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 0.42934171450673275,
+      "spearman_profit": 0.015389619803211787,
+      "unique_values": 2,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 1.8518518518518519,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 5.0,
+        "mean": 1.8518518518518519,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 2.4371914504850167,
+        "third_quartile": 5.0,
+        "unique_value_count": 2
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5066022544283414,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.4183574879227052,
+      "bootstrap_ci_low": -0.4856682769726248,
+      "classification": "NOT_RELIABLE",
+      "component": "volatility",
+      "contribution_frequency": 1.0,
+      "effect": -0.04122383252818018,
+      "effect_direction": -1,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 4.078260869565217,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 3.0,
+        "maximum": 5.0,
+        "mean": 4.078260869565217,
+        "median": 5.0,
+        "minimum": 1.0,
+        "missing_value_count": 0,
+        "standard_deviation": 1.250598636211464,
+        "third_quartile": 5.0,
+        "unique_value_count": 3
+      },
+      "mann_whitney_u": 3146.0,
+      "maximum": 5.0,
+      "mean": 4.06508875739645,
+      "minimum": 1.0,
+      "not_available_count": 0,
+      "p_value": 0.8719183289641341,
+      "spearman_profit": 0.006673768579720791,
+      "unique_values": 3,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 4.037037037037037,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 3.0,
+        "maximum": 5.0,
+        "mean": 4.037037037037037,
+        "median": 5.0,
+        "minimum": 1.0,
+        "missing_value_count": 0,
+        "standard_deviation": 1.4401645996461911,
+        "third_quartile": 5.0,
+        "unique_value_count": 3
+      }
+    },
+    {
+      "adjusted_p_value": null,
+      "auc": null,
+      "availability_count": 0,
+      "bootstrap_ci_high": null,
+      "bootstrap_ci_low": null,
+      "classification": "INSUFFICIENT_DATA",
+      "component": "htf",
+      "contribution_frequency": null,
+      "effect": null,
+      "effect_direction": 0,
+      "loser_expectancy": null,
+      "loser_mean": null,
+      "loser_statistics": {
+        "count": 0,
+        "first_quartile": null,
+        "maximum": null,
+        "mean": null,
+        "median": null,
+        "minimum": null,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": null,
+        "unique_value_count": 0
+      },
+      "mann_whitney_u": null,
+      "maximum": null,
+      "mean": null,
+      "minimum": null,
+      "not_available_count": 170,
+      "p_value": null,
+      "spearman_profit": null,
+      "unique_values": 0,
+      "winner_expectancy": null,
+      "winner_mean": null,
+      "winner_statistics": {
+        "count": 0,
+        "first_quartile": null,
+        "maximum": null,
+        "mean": null,
+        "median": null,
+        "minimum": null,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": null,
+        "unique_value_count": 0
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "risk",
+      "contribution_frequency": 1.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 5.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 5.0,
+        "maximum": 5.0,
+        "mean": 5.0,
+        "median": 5.0,
+        "minimum": 5.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 5.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 5.0,
+      "mean": 5.0,
+      "minimum": 5.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 5.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 5.0,
+        "maximum": 5.0,
+        "mean": 5.0,
+        "median": 5.0,
+        "minimum": 5.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 5.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "context",
+      "contribution_frequency": 1.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 4.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 4.0,
+        "maximum": 4.0,
+        "mean": 4.0,
+        "median": 4.0,
+        "minimum": 4.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 4.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 4.0,
+      "mean": 4.0,
+      "minimum": 4.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 4.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 4.0,
+        "maximum": 4.0,
+        "mean": 4.0,
+        "median": 4.0,
+        "minimum": 4.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 4.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "portfolio",
+      "contribution_frequency": 0.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 0.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 0.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      }
+    },
+    {
+      "adjusted_p_value": 1.0,
+      "auc": 0.5,
+      "availability_count": 169,
+      "bootstrap_ci_high": 0.0,
+      "bootstrap_ci_low": 0.0,
+      "classification": "NOT_RELIABLE",
+      "component": "correlation",
+      "contribution_frequency": 0.0,
+      "effect": 0.0,
+      "effect_direction": 0,
+      "loser_expectancy": -93.42826086956522,
+      "loser_mean": 0.0,
+      "loser_statistics": {
+        "count": 115,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_u": 3105.0,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "minimum": 0.0,
+      "not_available_count": 0,
+      "p_value": 1.0,
+      "spearman_profit": null,
+      "unique_values": 1,
+      "winner_expectancy": 186.5185185185185,
+      "winner_mean": 0.0,
+      "winner_statistics": {
+        "count": 54,
+        "first_quartile": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 0.0,
+        "unique_value_count": 1
+      }
+    }
+  ],
+  "conclusions": {
+    "higher_shadow_confidence_better_outcomes": {
+      "classification": "NOT_RELIABLE",
+      "supported": false
+    },
+    "higher_shadow_score_better_expectancy": {
+      "classification": "NOT_RELIABLE",
+      "supported": false
+    },
+    "higher_shadow_score_higher_win_rate": {
+      "classification": "NOT_RELIABLE",
+      "supported": false
+    },
+    "individual_component_reliable_value": {
+      "classification": "NOT_RELIABLE",
+      "components": [],
+      "supported": false
+    },
+    "production_use_justified": {
+      "classification": "NOT_RELIABLE",
+      "reason": "Sprint 83 is diagnostic-only and no stable out-of-sample edge was validated.",
+      "supported": false
+    },
+    "shadow_score_validated_discriminative_power": {
+      "classification": "NOT_RELIABLE",
+      "supported": false
+    },
+    "stable_across_time_and_symbols": {
+      "classification": "NOT_RELIABLE",
+      "supported": false
+    }
+  },
+  "confidence_analysis": {
+    "auc": 0.49170692431561996,
+    "auc_ci_high": 0.5784688995215311,
+    "auc_ci_low": 0.40184899845916794,
+    "auc_permutation_p_value": 0.8725637181409296,
+    "descriptive_statistics": {
+      "count": 169,
+      "first_quartile": 68.71,
+      "maximum": 77.79,
+      "mean": 70.79041420118344,
+      "median": 72.23,
+      "minimum": 56.02,
+      "missing_value_count": 0,
+      "standard_deviation": 5.119921101864846,
+      "third_quartile": 74.49,
+      "unique_value_count": 27
+    },
+    "fixed_bin_monotonicity": {
+      "average_net_profit": "non-monotonic",
+      "expectancy": "non-monotonic",
+      "profit_factor": "non-monotonic",
+      "win_rate": "non-monotonic"
+    },
+    "fixed_bins": [
+      {
+        "average_net_profit": -56.94,
+        "confidence_interval_high": 0.4708881822128535,
+        "confidence_interval_low": 0.02241749145005667,
+        "direction_composition": {
+          "BUY": 8
+        },
+        "expectancy": -56.94,
+        "losses": 7,
+        "lower": 55.0,
+        "median_net_profit": -91.845,
+        "profit_factor": 0.2947515095215978,
+        "sample_status": "INSUFFICIENT",
+        "score_interval": "[55, 60)",
+        "symbol_composition": {
+          "EURUSD": 8
+        },
+        "total_net_profit": -455.52,
+        "trade_count": 8,
+        "upper": 60.0,
+        "upper_inclusive": false,
+        "win_rate": 0.125,
+        "wins": 1
+      },
+      {
+        "average_net_profit": -27.897333333333336,
+        "confidence_interval_high": 0.40928326158122164,
+        "confidence_interval_low": 0.11792388144489496,
+        "direction_composition": {
+          "BUY": 30
+        },
+        "expectancy": -27.897333333333336,
+        "losses": 23,
+        "lower": 60.0,
+        "median_net_profit": -88.655,
+        "profit_factor": 0.5952606635071089,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[60, 65)",
+        "symbol_composition": {
+          "EURUSD": 30
+        },
+        "total_net_profit": -836.9200000000001,
+        "trade_count": 30,
+        "upper": 65.0,
+        "upper_inclusive": false,
+        "win_rate": 0.23333333333333334,
+        "wins": 7
+      },
+      {
+        "average_net_profit": 14.755294117647056,
+        "confidence_interval_high": 0.6399455735700021,
+        "confidence_interval_low": 0.2161105679021481,
+        "direction_composition": {
+          "BUY": 9,
+          "SELL": 8
+        },
+        "expectancy": 14.755294117647056,
+        "losses": 10,
+        "lower": 65.0,
+        "median_net_profit": -94.2,
+        "profit_factor": 1.2445263301553877,
+        "sample_status": "INSUFFICIENT",
+        "score_interval": "[65, 70)",
+        "symbol_composition": {
+          "EURUSD": 1,
+          "XAUUSD": 16
+        },
+        "total_net_profit": 250.83999999999997,
+        "trade_count": 17,
+        "upper": 70.0,
+        "upper_inclusive": false,
+        "win_rate": 0.4117647058823529,
+        "wins": 7
+      },
+      {
+        "average_net_profit": 10.189784946236559,
+        "confidence_interval_high": 0.4669890812099031,
+        "confidence_interval_low": 0.274857021642714,
+        "direction_composition": {
+          "BUY": 28,
+          "SELL": 65
+        },
+        "expectancy": 10.189784946236559,
+        "losses": 59,
+        "lower": 70.0,
+        "median_net_profit": -85.56,
+        "profit_factor": 1.1708841471661164,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[70, 75)",
+        "symbol_composition": {
+          "EURUSD": 24,
+          "XAUUSD": 69
+        },
+        "total_net_profit": 947.65,
+        "trade_count": 93,
+        "upper": 75.0,
+        "upper_inclusive": false,
+        "win_rate": 0.3655913978494624,
+        "wins": 34
+      },
+      {
+        "average_net_profit": -27.538095238095238,
+        "confidence_interval_high": 0.4509117368295075,
+        "confidence_interval_low": 0.10628013022636468,
+        "direction_composition": {
+          "SELL": 21
+        },
+        "expectancy": -27.538095238095238,
+        "losses": 16,
+        "lower": 75.0,
+        "median_net_profit": -90.0,
+        "profit_factor": 0.6036760876120507,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[75, 80)",
+        "symbol_composition": {
+          "EURUSD": 21
+        },
+        "total_net_profit": -578.3000000000001,
+        "trade_count": 21,
+        "upper": 80.0,
+        "upper_inclusive": false,
+        "win_rate": 0.23809523809523808,
+        "wins": 5
+      }
+    ],
+    "mann_whitney_p_value": 0.8616582747176617,
+    "mann_whitney_u": 3053.5,
+    "quantile_groups": [
+      {
+        "average_net_profit": -34.01157894736842,
+        "confidence_interval_high": 0.363457794753274,
+        "confidence_interval_low": 0.11074791842995879,
+        "direction_composition": {
+          "BUY": 38
+        },
+        "expectancy": -34.01157894736842,
+        "losses": 30,
+        "lower": 56.02,
+        "median_net_profit": -89.36500000000001,
+        "profit_factor": 0.5237351217894388,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[56.02, 64.99]",
+        "symbol_composition": {
+          "EURUSD": 38
+        },
+        "total_net_profit": -1292.44,
+        "trade_count": 38,
+        "upper": 64.99,
+        "upper_inclusive": true,
+        "win_rate": 0.21052631578947367,
+        "wins": 8
+      },
+      {
+        "average_net_profit": 33.020909090909086,
+        "confidence_interval_high": 0.6478162455108585,
+        "confidence_interval_low": 0.32504042108133696,
+        "direction_composition": {
+          "BUY": 15,
+          "SELL": 18
+        },
+        "expectancy": 33.020909090909086,
+        "losses": 17,
+        "lower": 66.1,
+        "median_net_profit": -80.62,
+        "profit_factor": 1.6309654781067968,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[66.1, 70.78]",
+        "symbol_composition": {
+          "EURUSD": 1,
+          "XAUUSD": 32
+        },
+        "total_net_profit": 1089.69,
+        "trade_count": 33,
+        "upper": 70.78,
+        "upper_inclusive": true,
+        "win_rate": 0.48484848484848486,
+        "wins": 16
+      },
+      {
+        "average_net_profit": 12.856190476190475,
+        "confidence_interval_high": 0.5083363428054419,
+        "confidence_interval_low": 0.22989188315618772,
+        "direction_composition": {
+          "BUY": 15,
+          "SELL": 27
+        },
+        "expectancy": 12.856190476190475,
+        "losses": 27,
+        "lower": 71.27,
+        "median_net_profit": -85.305,
+        "profit_factor": 1.2145891703924492,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[71.27, 73.61]",
+        "symbol_composition": {
+          "EURUSD": 9,
+          "XAUUSD": 33
+        },
+        "total_net_profit": 539.96,
+        "trade_count": 42,
+        "upper": 73.61,
+        "upper_inclusive": true,
+        "win_rate": 0.35714285714285715,
+        "wins": 15
+      },
+      {
+        "average_net_profit": -2.282500000000001,
+        "confidence_interval_high": 0.5066115681914238,
+        "confidence_interval_low": 0.1793324692249496,
+        "direction_composition": {
+          "BUY": 7,
+          "SELL": 21
+        },
+        "expectancy": -2.282500000000001,
+        "losses": 19,
+        "lower": 74.06,
+        "median_net_profit": -87.37,
+        "profit_factor": 0.9644236871110319,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[74.06, 74.49]",
+        "symbol_composition": {
+          "EURUSD": 8,
+          "XAUUSD": 20
+        },
+        "total_net_profit": -63.910000000000025,
+        "trade_count": 28,
+        "upper": 74.49,
+        "upper_inclusive": true,
+        "win_rate": 0.32142857142857145,
+        "wins": 9
+      },
+      {
+        "average_net_profit": -33.769642857142856,
+        "confidence_interval_high": 0.3953858565372187,
+        "confidence_interval_low": 0.1021246033289788,
+        "direction_composition": {
+          "SELL": 28
+        },
+        "expectancy": -33.769642857142856,
+        "losses": 22,
+        "lower": 74.93,
+        "median_net_profit": -89.3,
+        "profit_factor": 0.5250544990607073,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[74.93, 77.79]",
+        "symbol_composition": {
+          "EURUSD": 28
+        },
+        "total_net_profit": -945.5500000000001,
+        "trade_count": 28,
+        "upper": 77.79,
+        "upper_inclusive": true,
+        "win_rate": 0.21428571428571427,
+        "wins": 6
+      }
+    ],
+    "quantile_monotonicity": {
+      "average_net_profit": "non-monotonic",
+      "expectancy": "non-monotonic",
+      "profit_factor": "non-monotonic",
+      "win_rate": "non-monotonic"
+    },
+    "rank_biserial": -0.01658615136876007,
+    "spearman_profit": 0.01045769937779009,
+    "spearman_profit_p_value": 0.8924927647596164
+  },
+  "configuration": {
+    "bootstrap_iterations": 2000,
+    "closed_only_for_predictive_metrics": true,
+    "minimum_group_sample": 20,
+    "mode": "DIAGNOSTIC_ONLY",
+    "permutation_iterations": 2000,
+    "seed": 830082,
+    "unresolved_preserved": true
+  },
+  "data_integrity": {
+    "chronology_preserved": true,
+    "closed_trades": 169,
+    "conflicting_records": 0,
+    "conflicts": [],
+    "duplicate_identifiers": 0,
+    "duplicate_keys": [],
+    "input_artifacts": [
+      {
+        "path": "reports\\MSS_Historical_Backtest_Context_v1.xlsx",
+        "sha256_after": "ae01eb2be56c4cc1f07ee3249a284ed39015dba422ed9e0894dffc7555892ff6",
+        "sha256_before": "ae01eb2be56c4cc1f07ee3249a284ed39015dba422ed9e0894dffc7555892ff6",
+        "unchanged": true
+      },
+      {
+        "path": "reports\\MSS_Shadow_Score_Distribution.xlsx",
+        "sha256_after": "6a0e3523ef95ed90dafa9410c87ac8623a4bf51dd3fd13f0f1fc5a0294897bf6",
+        "sha256_before": "6a0e3523ef95ed90dafa9410c87ac8623a4bf51dd3fd13f0f1fc5a0294897bf6",
+        "unchanged": true
+      }
+    ],
+    "join_key": [
+      "symbol",
+      "trade_id"
+    ],
+    "matched_trades": 170,
+    "missing_outcomes": 0,
+    "missing_scores": 0,
+    "total_historical_trades": 170,
+    "unmatched_identifiers": [],
+    "unmatched_trades": 0,
+    "unresolved_trades": 1
+  },
+  "diagnostic_models": {
+    "combined": {
+      "status": "NOT_RUN_HIGH_COLLINEARITY"
+    },
+    "confidence_only": {
+      "coefficients": {
+        "direction_SELL": {
+          "ci_high": 1.2865830630358928,
+          "ci_low": -0.4024465886741385,
+          "coefficient": 0.4420682371808772,
+          "direction": 1,
+          "standard_error": 0.43087491115051824
+        },
+        "intercept": {
+          "ci_high": -0.6390866822059112,
+          "ci_low": -2.0939678955965233,
+          "coefficient": -1.3665272889012172,
+          "direction": -1,
+          "standard_error": 0.37114316668127856
+        },
+        "shadow_confidence": {
+          "ci_high": 0.3367112193067045,
+          "ci_low": -0.567304278833862,
+          "coefficient": -0.11529652976357874,
+          "direction": -1,
+          "standard_error": 0.23061619850524656
+        },
+        "symbol_XAUUSD": {
+          "ci_high": 1.3665750095517728,
+          "ci_low": -0.006689208594633733,
+          "coefficient": 0.6799429004785695,
+          "direction": 1,
+          "standard_error": 0.35032250462918535
+        }
+      },
+      "predictors_standardized": [
+        "shadow_confidence"
+      ],
+      "status": "DIAGNOSTIC_ONLY",
+      "trade_count": 169
+    },
+    "score_only": {
+      "coefficients": {
+        "direction_SELL": {
+          "ci_high": 1.2246301551170484,
+          "ci_low": -0.34013142261830415,
+          "coefficient": 0.4422493662493721,
+          "direction": 1,
+          "standard_error": 0.3991738718712634
+        },
+        "intercept": {
+          "ci_high": -0.6825099957051823,
+          "ci_low": -1.9756283188202453,
+          "coefficient": -1.3290691572627138,
+          "direction": -1,
+          "standard_error": 0.3298771232436385
+        },
+        "shadow_score": {
+          "ci_high": 0.2711082897296017,
+          "ci_low": -0.5305299232387335,
+          "coefficient": -0.12971081675456586,
+          "direction": -1,
+          "standard_error": 0.2044995441245753
+        },
+        "symbol_XAUUSD": {
+          "ci_high": 1.2714944024560597,
+          "ci_low": -0.06423483818764664,
+          "coefficient": 0.6036297821342065,
+          "direction": 1,
+          "standard_error": 0.3407472552662516
+        }
+      },
+      "predictors_standardized": [
+        "shadow_score"
+      ],
+      "status": "DIAGNOSTIC_ONLY",
+      "trade_count": 169
+    }
+  },
+  "diagnostics": {
+    "future_data_used_for_decisions": false,
+    "historical_unchanged": true,
+    "production_strategy_changed": false,
+    "shadow_scores_unchanged": true
+  },
+  "direction_analysis": {
+    "BUY": {
+      "average_net_profit": -10.9548,
+      "confidence_interval_high": 0.3904069018806452,
+      "confidence_interval_low": 0.1910315888117894,
+      "expectancy": -10.9548,
+      "losses": 54,
+      "median_net_profit": -89.65,
+      "profit_factor": 0.8377832489945486,
+      "sample_status": "SUFFICIENT",
+      "shadow_confidence": {
+        "auc": 0.5802469135802469,
+        "direction": 1,
+        "range": [
+          56.02,
+          74.49
+        ],
+        "spearman_profit": -0.05911130072262384
+      },
+      "shadow_score": {
+        "auc": 0.576278659611993,
+        "direction": 1,
+        "range": [
+          29.0,
+          51.0
+        ],
+        "spearman_profit": -0.013532089905598512
+      },
+      "total_net_profit": -821.61,
+      "trade_count": 75,
+      "win_rate": 0.28,
+      "wins": 21
+    },
+    "SELL": {
+      "average_net_profit": 1.588936170212765,
+      "confidence_interval_high": 0.4516679144450646,
+      "confidence_interval_low": 0.26215483168433173,
+      "expectancy": 1.588936170212765,
+      "losses": 61,
+      "median_net_profit": -85.71000000000001,
+      "profit_factor": 1.0262987378859592,
+      "sample_status": "SUFFICIENT",
+      "shadow_confidence": {
+        "auc": 0.3743169398907104,
+        "direction": -1,
+        "range": [
+          67.61,
+          77.79
+        ],
+        "spearman_profit": 0.013884094240616795
+      },
+      "shadow_score": {
+        "auc": 0.3743169398907104,
+        "direction": -1,
+        "range": [
+          37.0,
+          59.0
+        ],
+        "spearman_profit": 0.013884094240616795
+      },
+      "total_net_profit": 149.3599999999999,
+      "trade_count": 94,
+      "win_rate": 0.35106382978723405,
+      "wins": 33
+    }
+  },
+  "legacy_baseline": {
+    "confidence_auc": 0.5,
+    "confidence_unique_values": 1,
+    "discrimination": "NULL_CONSTANT_BASELINE",
+    "score_auc": 0.5,
+    "score_unique_values": 1
+  },
+  "overall_metrics": {
+    "average_loser": -93.42826086956522,
+    "average_net_profit": -3.977810650887575,
+    "average_winner": 186.5185185185185,
+    "confidence_interval_high": 0.39316908396166467,
+    "confidence_interval_low": 0.2539063317620511,
+    "expectancy": -3.977810650887575,
+    "losses": 115,
+    "median_net_profit": -88.6,
+    "profit_factor": 0.9374316494869349,
+    "sample_status": "SUFFICIENT",
+    "total_net_profit": -672.2500000000001,
+    "trade_count": 169,
+    "unresolved": 1,
+    "win_rate": 0.31952662721893493,
+    "wins": 54
+  },
+  "predictor_comparison": {
+    "legacy_confidence": {
+      "auc": 0.5,
+      "auc_ci_high": 0.5,
+      "auc_ci_low": 0.5,
+      "auc_permutation_p_value": 1.0,
+      "descriptive_statistics": {
+        "count": 169,
+        "first_quartile": 22.73,
+        "maximum": 22.73,
+        "mean": 22.73,
+        "median": 22.73,
+        "minimum": 22.73,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 22.73,
+        "unique_value_count": 1
+      },
+      "fixed_bin_monotonicity": "insufficient evidence",
+      "fixed_bins": [
+        {
+          "average_net_profit": -3.977810650887575,
+          "confidence_interval_high": 0.39316908396166467,
+          "confidence_interval_low": 0.2539063317620511,
+          "direction_composition": {
+            "BUY": 75,
+            "SELL": 94
+          },
+          "expectancy": -3.977810650887575,
+          "losses": 115,
+          "lower": 20.0,
+          "median_net_profit": -88.6,
+          "profit_factor": 0.9374316494869349,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[20, 25)",
+          "symbol_composition": {
+            "EURUSD": 84,
+            "XAUUSD": 85
+          },
+          "total_net_profit": -672.2500000000001,
+          "trade_count": 169,
+          "upper": 25.0,
+          "upper_inclusive": false,
+          "win_rate": 0.31952662721893493,
+          "wins": 54
+        }
+      ],
+      "mann_whitney_p_value": 1.0,
+      "mann_whitney_u": 3105.0,
+      "quantile_groups": [
+        {
+          "average_net_profit": -3.977810650887575,
+          "confidence_interval_high": 0.39316908396166467,
+          "confidence_interval_low": 0.2539063317620511,
+          "direction_composition": {
+            "BUY": 75,
+            "SELL": 94
+          },
+          "expectancy": -3.977810650887575,
+          "losses": 115,
+          "lower": 22.73,
+          "median_net_profit": -88.6,
+          "profit_factor": 0.9374316494869349,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[22.73, 22.73]",
+          "symbol_composition": {
+            "EURUSD": 84,
+            "XAUUSD": 85
+          },
+          "total_net_profit": -672.2500000000001,
+          "trade_count": 169,
+          "upper": 22.73,
+          "upper_inclusive": true,
+          "win_rate": 0.31952662721893493,
+          "wins": 54
+        }
+      ],
+      "quantile_monotonicity": "insufficient evidence",
+      "rank_biserial": 0.0,
+      "spearman_profit": null,
+      "spearman_profit_p_value": 1.0
+    },
+    "legacy_score": {
+      "auc": 0.5,
+      "auc_ci_high": 0.5,
+      "auc_ci_low": 0.5,
+      "auc_permutation_p_value": 1.0,
+      "descriptive_statistics": {
+        "count": 169,
+        "first_quartile": 25.0,
+        "maximum": 25.0,
+        "mean": 25.0,
+        "median": 25.0,
+        "minimum": 25.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 25.0,
+        "unique_value_count": 1
+      },
+      "fixed_bin_monotonicity": "insufficient evidence",
+      "fixed_bins": [
+        {
+          "average_net_profit": -3.977810650887575,
+          "confidence_interval_high": 0.39316908396166467,
+          "confidence_interval_low": 0.2539063317620511,
+          "direction_composition": {
+            "BUY": 75,
+            "SELL": 94
+          },
+          "expectancy": -3.977810650887575,
+          "losses": 115,
+          "lower": 25.0,
+          "median_net_profit": -88.6,
+          "profit_factor": 0.9374316494869349,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[25, 30)",
+          "symbol_composition": {
+            "EURUSD": 84,
+            "XAUUSD": 85
+          },
+          "total_net_profit": -672.2500000000001,
+          "trade_count": 169,
+          "upper": 30.0,
+          "upper_inclusive": false,
+          "win_rate": 0.31952662721893493,
+          "wins": 54
+        }
+      ],
+      "mann_whitney_p_value": 1.0,
+      "mann_whitney_u": 3105.0,
+      "quantile_groups": [
+        {
+          "average_net_profit": -3.977810650887575,
+          "confidence_interval_high": 0.39316908396166467,
+          "confidence_interval_low": 0.2539063317620511,
+          "direction_composition": {
+            "BUY": 75,
+            "SELL": 94
+          },
+          "expectancy": -3.977810650887575,
+          "losses": 115,
+          "lower": 25.0,
+          "median_net_profit": -88.6,
+          "profit_factor": 0.9374316494869349,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[25, 25]",
+          "symbol_composition": {
+            "EURUSD": 84,
+            "XAUUSD": 85
+          },
+          "total_net_profit": -672.2500000000001,
+          "trade_count": 169,
+          "upper": 25.0,
+          "upper_inclusive": true,
+          "win_rate": 0.31952662721893493,
+          "wins": 54
+        }
+      ],
+      "quantile_monotonicity": "insufficient evidence",
+      "rank_biserial": 0.0,
+      "spearman_profit": null,
+      "spearman_profit_p_value": 1.0
+    },
+    "shadow_confidence": {
+      "auc": 0.49170692431561996,
+      "auc_ci_high": 0.5784688995215311,
+      "auc_ci_low": 0.40184899845916794,
+      "auc_permutation_p_value": 0.8725637181409296,
+      "descriptive_statistics": {
+        "count": 169,
+        "first_quartile": 68.71,
+        "maximum": 77.79,
+        "mean": 70.79041420118344,
+        "median": 72.23,
+        "minimum": 56.02,
+        "missing_value_count": 0,
+        "standard_deviation": 5.119921101864846,
+        "third_quartile": 74.49,
+        "unique_value_count": 27
+      },
+      "fixed_bin_monotonicity": {
+        "average_net_profit": "non-monotonic",
+        "expectancy": "non-monotonic",
+        "profit_factor": "non-monotonic",
+        "win_rate": "non-monotonic"
+      },
+      "fixed_bins": [
+        {
+          "average_net_profit": -56.94,
+          "confidence_interval_high": 0.4708881822128535,
+          "confidence_interval_low": 0.02241749145005667,
+          "direction_composition": {
+            "BUY": 8
+          },
+          "expectancy": -56.94,
+          "losses": 7,
+          "lower": 55.0,
+          "median_net_profit": -91.845,
+          "profit_factor": 0.2947515095215978,
+          "sample_status": "INSUFFICIENT",
+          "score_interval": "[55, 60)",
+          "symbol_composition": {
+            "EURUSD": 8
+          },
+          "total_net_profit": -455.52,
+          "trade_count": 8,
+          "upper": 60.0,
+          "upper_inclusive": false,
+          "win_rate": 0.125,
+          "wins": 1
+        },
+        {
+          "average_net_profit": -27.897333333333336,
+          "confidence_interval_high": 0.40928326158122164,
+          "confidence_interval_low": 0.11792388144489496,
+          "direction_composition": {
+            "BUY": 30
+          },
+          "expectancy": -27.897333333333336,
+          "losses": 23,
+          "lower": 60.0,
+          "median_net_profit": -88.655,
+          "profit_factor": 0.5952606635071089,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[60, 65)",
+          "symbol_composition": {
+            "EURUSD": 30
+          },
+          "total_net_profit": -836.9200000000001,
+          "trade_count": 30,
+          "upper": 65.0,
+          "upper_inclusive": false,
+          "win_rate": 0.23333333333333334,
+          "wins": 7
+        },
+        {
+          "average_net_profit": 14.755294117647056,
+          "confidence_interval_high": 0.6399455735700021,
+          "confidence_interval_low": 0.2161105679021481,
+          "direction_composition": {
+            "BUY": 9,
+            "SELL": 8
+          },
+          "expectancy": 14.755294117647056,
+          "losses": 10,
+          "lower": 65.0,
+          "median_net_profit": -94.2,
+          "profit_factor": 1.2445263301553877,
+          "sample_status": "INSUFFICIENT",
+          "score_interval": "[65, 70)",
+          "symbol_composition": {
+            "EURUSD": 1,
+            "XAUUSD": 16
+          },
+          "total_net_profit": 250.83999999999997,
+          "trade_count": 17,
+          "upper": 70.0,
+          "upper_inclusive": false,
+          "win_rate": 0.4117647058823529,
+          "wins": 7
+        },
+        {
+          "average_net_profit": 10.189784946236559,
+          "confidence_interval_high": 0.4669890812099031,
+          "confidence_interval_low": 0.274857021642714,
+          "direction_composition": {
+            "BUY": 28,
+            "SELL": 65
+          },
+          "expectancy": 10.189784946236559,
+          "losses": 59,
+          "lower": 70.0,
+          "median_net_profit": -85.56,
+          "profit_factor": 1.1708841471661164,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[70, 75)",
+          "symbol_composition": {
+            "EURUSD": 24,
+            "XAUUSD": 69
+          },
+          "total_net_profit": 947.65,
+          "trade_count": 93,
+          "upper": 75.0,
+          "upper_inclusive": false,
+          "win_rate": 0.3655913978494624,
+          "wins": 34
+        },
+        {
+          "average_net_profit": -27.538095238095238,
+          "confidence_interval_high": 0.4509117368295075,
+          "confidence_interval_low": 0.10628013022636468,
+          "direction_composition": {
+            "SELL": 21
+          },
+          "expectancy": -27.538095238095238,
+          "losses": 16,
+          "lower": 75.0,
+          "median_net_profit": -90.0,
+          "profit_factor": 0.6036760876120507,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[75, 80)",
+          "symbol_composition": {
+            "EURUSD": 21
+          },
+          "total_net_profit": -578.3000000000001,
+          "trade_count": 21,
+          "upper": 80.0,
+          "upper_inclusive": false,
+          "win_rate": 0.23809523809523808,
+          "wins": 5
+        }
+      ],
+      "mann_whitney_p_value": 0.8616582747176617,
+      "mann_whitney_u": 3053.5,
+      "quantile_groups": [
+        {
+          "average_net_profit": -34.01157894736842,
+          "confidence_interval_high": 0.363457794753274,
+          "confidence_interval_low": 0.11074791842995879,
+          "direction_composition": {
+            "BUY": 38
+          },
+          "expectancy": -34.01157894736842,
+          "losses": 30,
+          "lower": 56.02,
+          "median_net_profit": -89.36500000000001,
+          "profit_factor": 0.5237351217894388,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[56.02, 64.99]",
+          "symbol_composition": {
+            "EURUSD": 38
+          },
+          "total_net_profit": -1292.44,
+          "trade_count": 38,
+          "upper": 64.99,
+          "upper_inclusive": true,
+          "win_rate": 0.21052631578947367,
+          "wins": 8
+        },
+        {
+          "average_net_profit": 33.020909090909086,
+          "confidence_interval_high": 0.6478162455108585,
+          "confidence_interval_low": 0.32504042108133696,
+          "direction_composition": {
+            "BUY": 15,
+            "SELL": 18
+          },
+          "expectancy": 33.020909090909086,
+          "losses": 17,
+          "lower": 66.1,
+          "median_net_profit": -80.62,
+          "profit_factor": 1.6309654781067968,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[66.1, 70.78]",
+          "symbol_composition": {
+            "EURUSD": 1,
+            "XAUUSD": 32
+          },
+          "total_net_profit": 1089.69,
+          "trade_count": 33,
+          "upper": 70.78,
+          "upper_inclusive": true,
+          "win_rate": 0.48484848484848486,
+          "wins": 16
+        },
+        {
+          "average_net_profit": 12.856190476190475,
+          "confidence_interval_high": 0.5083363428054419,
+          "confidence_interval_low": 0.22989188315618772,
+          "direction_composition": {
+            "BUY": 15,
+            "SELL": 27
+          },
+          "expectancy": 12.856190476190475,
+          "losses": 27,
+          "lower": 71.27,
+          "median_net_profit": -85.305,
+          "profit_factor": 1.2145891703924492,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[71.27, 73.61]",
+          "symbol_composition": {
+            "EURUSD": 9,
+            "XAUUSD": 33
+          },
+          "total_net_profit": 539.96,
+          "trade_count": 42,
+          "upper": 73.61,
+          "upper_inclusive": true,
+          "win_rate": 0.35714285714285715,
+          "wins": 15
+        },
+        {
+          "average_net_profit": -2.282500000000001,
+          "confidence_interval_high": 0.5066115681914238,
+          "confidence_interval_low": 0.1793324692249496,
+          "direction_composition": {
+            "BUY": 7,
+            "SELL": 21
+          },
+          "expectancy": -2.282500000000001,
+          "losses": 19,
+          "lower": 74.06,
+          "median_net_profit": -87.37,
+          "profit_factor": 0.9644236871110319,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[74.06, 74.49]",
+          "symbol_composition": {
+            "EURUSD": 8,
+            "XAUUSD": 20
+          },
+          "total_net_profit": -63.910000000000025,
+          "trade_count": 28,
+          "upper": 74.49,
+          "upper_inclusive": true,
+          "win_rate": 0.32142857142857145,
+          "wins": 9
+        },
+        {
+          "average_net_profit": -33.769642857142856,
+          "confidence_interval_high": 0.3953858565372187,
+          "confidence_interval_low": 0.1021246033289788,
+          "direction_composition": {
+            "SELL": 28
+          },
+          "expectancy": -33.769642857142856,
+          "losses": 22,
+          "lower": 74.93,
+          "median_net_profit": -89.3,
+          "profit_factor": 0.5250544990607073,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[74.93, 77.79]",
+          "symbol_composition": {
+            "EURUSD": 28
+          },
+          "total_net_profit": -945.5500000000001,
+          "trade_count": 28,
+          "upper": 77.79,
+          "upper_inclusive": true,
+          "win_rate": 0.21428571428571427,
+          "wins": 6
+        }
+      ],
+      "quantile_monotonicity": {
+        "average_net_profit": "non-monotonic",
+        "expectancy": "non-monotonic",
+        "profit_factor": "non-monotonic",
+        "win_rate": "non-monotonic"
+      },
+      "rank_biserial": -0.01658615136876007,
+      "spearman_profit": 0.01045769937779009,
+      "spearman_profit_p_value": 0.8924927647596164
+    },
+    "shadow_score": {
+      "auc": 0.48027375201288247,
+      "auc_ci_high": 0.5717455621301775,
+      "auc_ci_low": 0.39244992295839753,
+      "auc_permutation_p_value": 0.6856571714142928,
+      "descriptive_statistics": {
+        "count": 169,
+        "first_quartile": 43.0,
+        "maximum": 59.0,
+        "mean": 46.260355029585796,
+        "median": 46.0,
+        "minimum": 29.0,
+        "missing_value_count": 0,
+        "standard_deviation": 6.486498972544648,
+        "third_quartile": 51.0,
+        "unique_value_count": 24
+      },
+      "fixed_bin_monotonicity": {
+        "average_net_profit": "non-monotonic",
+        "expectancy": "non-monotonic",
+        "profit_factor": "non-monotonic",
+        "win_rate": "non-monotonic"
+      },
+      "fixed_bins": [
+        {
+          "average_net_profit": -90.72,
+          "confidence_interval_high": 0.7934506856227626,
+          "confidence_interval_low": 0,
+          "direction_composition": {
+            "BUY": 1
+          },
+          "expectancy": -90.72,
+          "losses": 1,
+          "lower": 25.0,
+          "median_net_profit": -90.72,
+          "profit_factor": 0.0,
+          "sample_status": "INSUFFICIENT",
+          "score_interval": "[25, 30)",
+          "symbol_composition": {
+            "EURUSD": 1
+          },
+          "total_net_profit": -90.72,
+          "trade_count": 1,
+          "upper": 30.0,
+          "upper_inclusive": false,
+          "win_rate": 0.0,
+          "wins": 0
+        },
+        {
+          "average_net_profit": -52.114285714285714,
+          "confidence_interval_high": 0.5131278292743189,
+          "confidence_interval_low": 0.02567962434474355,
+          "direction_composition": {
+            "BUY": 7
+          },
+          "expectancy": -52.114285714285714,
+          "losses": 6,
+          "lower": 30.0,
+          "median_net_profit": -92.16,
+          "profit_factor": 0.3429158110882957,
+          "sample_status": "INSUFFICIENT",
+          "score_interval": "[30, 35)",
+          "symbol_composition": {
+            "EURUSD": 7
+          },
+          "total_net_profit": -364.8,
+          "trade_count": 7,
+          "upper": 35.0,
+          "upper_inclusive": false,
+          "win_rate": 0.14285714285714285,
+          "wins": 1
+        },
+        {
+          "average_net_profit": 20.34882352941176,
+          "confidence_interval_high": 0.6399455735700021,
+          "confidence_interval_low": 0.2161105679021481,
+          "direction_composition": {
+            "BUY": 14,
+            "SELL": 3
+          },
+          "expectancy": 20.34882352941176,
+          "losses": 10,
+          "lower": 35.0,
+          "median_net_profit": -88.27,
+          "profit_factor": 1.3677172468774912,
+          "sample_status": "INSUFFICIENT",
+          "score_interval": "[35, 40)",
+          "symbol_composition": {
+            "EURUSD": 10,
+            "XAUUSD": 7
+          },
+          "total_net_profit": 345.92999999999995,
+          "trade_count": 17,
+          "upper": 40.0,
+          "upper_inclusive": false,
+          "win_rate": 0.4117647058823529,
+          "wins": 7
+        },
+        {
+          "average_net_profit": -10.4016,
+          "confidence_interval_high": 0.45810297308144077,
+          "confidence_interval_low": 0.20758216260656845,
+          "direction_composition": {
+            "BUY": 32,
+            "SELL": 18
+          },
+          "expectancy": -10.4016,
+          "losses": 34,
+          "lower": 40.0,
+          "median_net_profit": -90.04,
+          "profit_factor": 0.8408816249606089,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[40, 45)",
+          "symbol_composition": {
+            "EURUSD": 20,
+            "XAUUSD": 30
+          },
+          "total_net_profit": -520.08,
+          "trade_count": 50,
+          "upper": 45.0,
+          "upper_inclusive": false,
+          "win_rate": 0.32,
+          "wins": 16
+        },
+        {
+          "average_net_profit": 25.44421052631579,
+          "confidence_interval_high": 0.5528213200395746,
+          "confidence_interval_low": 0.25598075748160104,
+          "direction_composition": {
+            "BUY": 14,
+            "SELL": 24
+          },
+          "expectancy": 25.44421052631579,
+          "losses": 23,
+          "lower": 45.0,
+          "median_net_profit": -81.89,
+          "profit_factor": 1.4600225519909031,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[45, 50)",
+          "symbol_composition": {
+            "EURUSD": 10,
+            "XAUUSD": 28
+          },
+          "total_net_profit": 966.88,
+          "trade_count": 38,
+          "upper": 50.0,
+          "upper_inclusive": false,
+          "win_rate": 0.39473684210526316,
+          "wins": 15
+        },
+        {
+          "average_net_profit": -17.61341463414634,
+          "confidence_interval_high": 0.41933533107076637,
+          "confidence_interval_low": 0.1569496404781167,
+          "direction_composition": {
+            "BUY": 7,
+            "SELL": 34
+          },
+          "expectancy": -17.61341463414634,
+          "losses": 30,
+          "lower": 50.0,
+          "median_net_profit": -88.88,
+          "profit_factor": 0.7416334533069057,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[50, 55)",
+          "symbol_composition": {
+            "EURUSD": 21,
+            "XAUUSD": 20
+          },
+          "total_net_profit": -722.1500000000001,
+          "trade_count": 41,
+          "upper": 55.0,
+          "upper_inclusive": false,
+          "win_rate": 0.2682926829268293,
+          "wins": 11
+        },
+        {
+          "average_net_profit": -19.154,
+          "confidence_interval_high": 0.5195043405598057,
+          "confidence_interval_low": 0.10897453325692374,
+          "direction_composition": {
+            "SELL": 15
+          },
+          "expectancy": -19.154,
+          "losses": 11,
+          "lower": 55.0,
+          "median_net_profit": -83.16,
+          "profit_factor": 0.7104372014271028,
+          "sample_status": "INSUFFICIENT",
+          "score_interval": "[55, 60)",
+          "symbol_composition": {
+            "EURUSD": 15
+          },
+          "total_net_profit": -287.31,
+          "trade_count": 15,
+          "upper": 60.0,
+          "upper_inclusive": false,
+          "win_rate": 0.26666666666666666,
+          "wins": 4
+        }
+      ],
+      "mann_whitney_p_value": 0.6776127682715286,
+      "mann_whitney_u": 2982.5,
+      "quantile_groups": [
+        {
+          "average_net_profit": -19.80891891891892,
+          "confidence_interval_high": 0.4297816832471427,
+          "confidence_interval_low": 0.15397461511049093,
+          "direction_composition": {
+            "BUY": 29,
+            "SELL": 8
+          },
+          "expectancy": -19.80891891891892,
+          "losses": 27,
+          "lower": 29.0,
+          "median_net_profit": -89.65,
+          "profit_factor": 0.7138333593627987,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[29, 41]",
+          "symbol_composition": {
+            "EURUSD": 21,
+            "XAUUSD": 16
+          },
+          "total_net_profit": -732.9300000000001,
+          "trade_count": 37,
+          "upper": 41.0,
+          "upper_inclusive": true,
+          "win_rate": 0.2702702702702703,
+          "wins": 10
+        },
+        {
+          "average_net_profit": 10.64969696969697,
+          "confidence_interval_high": 0.5631655918005977,
+          "confidence_interval_low": 0.2468310743447709,
+          "direction_composition": {
+            "BUY": 23,
+            "SELL": 10
+          },
+          "expectancy": 10.64969696969697,
+          "losses": 20,
+          "lower": 43.0,
+          "median_net_profit": -83.66,
+          "profit_factor": 1.1869839107857325,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[43, 43]",
+          "symbol_composition": {
+            "EURUSD": 17,
+            "XAUUSD": 16
+          },
+          "total_net_profit": 351.44,
+          "trade_count": 33,
+          "upper": 43.0,
+          "upper_inclusive": true,
+          "win_rate": 0.3939393939393939,
+          "wins": 13
+        },
+        {
+          "average_net_profit": 16.713953488372095,
+          "confidence_interval_high": 0.5214019084031153,
+          "confidence_interval_low": 0.24376339009650572,
+          "direction_composition": {
+            "BUY": 16,
+            "SELL": 27
+          },
+          "expectancy": 16.713953488372095,
+          "losses": 27,
+          "lower": 44.0,
+          "median_net_profit": -85.05,
+          "profit_factor": 1.2856234475906607,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[44, 49]",
+          "symbol_composition": {
+            "EURUSD": 10,
+            "XAUUSD": 33
+          },
+          "total_net_profit": 718.7,
+          "trade_count": 43,
+          "upper": 49.0,
+          "upper_inclusive": true,
+          "win_rate": 0.37209302325581395,
+          "wins": 16
+        },
+        {
+          "average_net_profit": -2.282500000000001,
+          "confidence_interval_high": 0.5066115681914238,
+          "confidence_interval_low": 0.1793324692249496,
+          "direction_composition": {
+            "BUY": 7,
+            "SELL": 21
+          },
+          "expectancy": -2.282500000000001,
+          "losses": 19,
+          "lower": 50.0,
+          "median_net_profit": -87.37,
+          "profit_factor": 0.9644236871110319,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[50, 51]",
+          "symbol_composition": {
+            "EURUSD": 8,
+            "XAUUSD": 20
+          },
+          "total_net_profit": -63.910000000000025,
+          "trade_count": 28,
+          "upper": 51.0,
+          "upper_inclusive": true,
+          "win_rate": 0.32142857142857145,
+          "wins": 9
+        },
+        {
+          "average_net_profit": -33.769642857142856,
+          "confidence_interval_high": 0.3953858565372187,
+          "confidence_interval_low": 0.1021246033289788,
+          "direction_composition": {
+            "SELL": 28
+          },
+          "expectancy": -33.769642857142856,
+          "losses": 22,
+          "lower": 52.0,
+          "median_net_profit": -89.3,
+          "profit_factor": 0.5250544990607073,
+          "sample_status": "SUFFICIENT",
+          "score_interval": "[52, 59]",
+          "symbol_composition": {
+            "EURUSD": 28
+          },
+          "total_net_profit": -945.5500000000001,
+          "trade_count": 28,
+          "upper": 59.0,
+          "upper_inclusive": true,
+          "win_rate": 0.21428571428571427,
+          "wins": 6
+        }
+      ],
+      "quantile_monotonicity": {
+        "average_net_profit": "non-monotonic",
+        "expectancy": "non-monotonic",
+        "profit_factor": "non-monotonic",
+        "win_rate": "non-monotonic"
+      },
+      "rank_biserial": -0.03945249597423506,
+      "spearman_profit": 0.02062808692464517,
+      "spearman_profit_p_value": 0.7897537734177766
+    }
+  },
+  "schema_version": "SPRINT_83_V1",
+  "score_analysis": {
+    "auc": 0.48027375201288247,
+    "auc_ci_high": 0.5717455621301775,
+    "auc_ci_low": 0.39244992295839753,
+    "auc_permutation_p_value": 0.6856571714142928,
+    "descriptive_statistics": {
+      "count": 169,
+      "first_quartile": 43.0,
+      "maximum": 59.0,
+      "mean": 46.260355029585796,
+      "median": 46.0,
+      "minimum": 29.0,
+      "missing_value_count": 0,
+      "standard_deviation": 6.486498972544648,
+      "third_quartile": 51.0,
+      "unique_value_count": 24
+    },
+    "fixed_bin_monotonicity": {
+      "average_net_profit": "non-monotonic",
+      "expectancy": "non-monotonic",
+      "profit_factor": "non-monotonic",
+      "win_rate": "non-monotonic"
+    },
+    "fixed_bins": [
+      {
+        "average_net_profit": -90.72,
+        "confidence_interval_high": 0.7934506856227626,
+        "confidence_interval_low": 0,
+        "direction_composition": {
+          "BUY": 1
+        },
+        "expectancy": -90.72,
+        "losses": 1,
+        "lower": 25.0,
+        "median_net_profit": -90.72,
+        "profit_factor": 0.0,
+        "sample_status": "INSUFFICIENT",
+        "score_interval": "[25, 30)",
+        "symbol_composition": {
+          "EURUSD": 1
+        },
+        "total_net_profit": -90.72,
+        "trade_count": 1,
+        "upper": 30.0,
+        "upper_inclusive": false,
+        "win_rate": 0.0,
+        "wins": 0
+      },
+      {
+        "average_net_profit": -52.114285714285714,
+        "confidence_interval_high": 0.5131278292743189,
+        "confidence_interval_low": 0.02567962434474355,
+        "direction_composition": {
+          "BUY": 7
+        },
+        "expectancy": -52.114285714285714,
+        "losses": 6,
+        "lower": 30.0,
+        "median_net_profit": -92.16,
+        "profit_factor": 0.3429158110882957,
+        "sample_status": "INSUFFICIENT",
+        "score_interval": "[30, 35)",
+        "symbol_composition": {
+          "EURUSD": 7
+        },
+        "total_net_profit": -364.8,
+        "trade_count": 7,
+        "upper": 35.0,
+        "upper_inclusive": false,
+        "win_rate": 0.14285714285714285,
+        "wins": 1
+      },
+      {
+        "average_net_profit": 20.34882352941176,
+        "confidence_interval_high": 0.6399455735700021,
+        "confidence_interval_low": 0.2161105679021481,
+        "direction_composition": {
+          "BUY": 14,
+          "SELL": 3
+        },
+        "expectancy": 20.34882352941176,
+        "losses": 10,
+        "lower": 35.0,
+        "median_net_profit": -88.27,
+        "profit_factor": 1.3677172468774912,
+        "sample_status": "INSUFFICIENT",
+        "score_interval": "[35, 40)",
+        "symbol_composition": {
+          "EURUSD": 10,
+          "XAUUSD": 7
+        },
+        "total_net_profit": 345.92999999999995,
+        "trade_count": 17,
+        "upper": 40.0,
+        "upper_inclusive": false,
+        "win_rate": 0.4117647058823529,
+        "wins": 7
+      },
+      {
+        "average_net_profit": -10.4016,
+        "confidence_interval_high": 0.45810297308144077,
+        "confidence_interval_low": 0.20758216260656845,
+        "direction_composition": {
+          "BUY": 32,
+          "SELL": 18
+        },
+        "expectancy": -10.4016,
+        "losses": 34,
+        "lower": 40.0,
+        "median_net_profit": -90.04,
+        "profit_factor": 0.8408816249606089,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[40, 45)",
+        "symbol_composition": {
+          "EURUSD": 20,
+          "XAUUSD": 30
+        },
+        "total_net_profit": -520.08,
+        "trade_count": 50,
+        "upper": 45.0,
+        "upper_inclusive": false,
+        "win_rate": 0.32,
+        "wins": 16
+      },
+      {
+        "average_net_profit": 25.44421052631579,
+        "confidence_interval_high": 0.5528213200395746,
+        "confidence_interval_low": 0.25598075748160104,
+        "direction_composition": {
+          "BUY": 14,
+          "SELL": 24
+        },
+        "expectancy": 25.44421052631579,
+        "losses": 23,
+        "lower": 45.0,
+        "median_net_profit": -81.89,
+        "profit_factor": 1.4600225519909031,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[45, 50)",
+        "symbol_composition": {
+          "EURUSD": 10,
+          "XAUUSD": 28
+        },
+        "total_net_profit": 966.88,
+        "trade_count": 38,
+        "upper": 50.0,
+        "upper_inclusive": false,
+        "win_rate": 0.39473684210526316,
+        "wins": 15
+      },
+      {
+        "average_net_profit": -17.61341463414634,
+        "confidence_interval_high": 0.41933533107076637,
+        "confidence_interval_low": 0.1569496404781167,
+        "direction_composition": {
+          "BUY": 7,
+          "SELL": 34
+        },
+        "expectancy": -17.61341463414634,
+        "losses": 30,
+        "lower": 50.0,
+        "median_net_profit": -88.88,
+        "profit_factor": 0.7416334533069057,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[50, 55)",
+        "symbol_composition": {
+          "EURUSD": 21,
+          "XAUUSD": 20
+        },
+        "total_net_profit": -722.1500000000001,
+        "trade_count": 41,
+        "upper": 55.0,
+        "upper_inclusive": false,
+        "win_rate": 0.2682926829268293,
+        "wins": 11
+      },
+      {
+        "average_net_profit": -19.154,
+        "confidence_interval_high": 0.5195043405598057,
+        "confidence_interval_low": 0.10897453325692374,
+        "direction_composition": {
+          "SELL": 15
+        },
+        "expectancy": -19.154,
+        "losses": 11,
+        "lower": 55.0,
+        "median_net_profit": -83.16,
+        "profit_factor": 0.7104372014271028,
+        "sample_status": "INSUFFICIENT",
+        "score_interval": "[55, 60)",
+        "symbol_composition": {
+          "EURUSD": 15
+        },
+        "total_net_profit": -287.31,
+        "trade_count": 15,
+        "upper": 60.0,
+        "upper_inclusive": false,
+        "win_rate": 0.26666666666666666,
+        "wins": 4
+      }
+    ],
+    "mann_whitney_p_value": 0.6776127682715286,
+    "mann_whitney_u": 2982.5,
+    "quantile_groups": [
+      {
+        "average_net_profit": -19.80891891891892,
+        "confidence_interval_high": 0.4297816832471427,
+        "confidence_interval_low": 0.15397461511049093,
+        "direction_composition": {
+          "BUY": 29,
+          "SELL": 8
+        },
+        "expectancy": -19.80891891891892,
+        "losses": 27,
+        "lower": 29.0,
+        "median_net_profit": -89.65,
+        "profit_factor": 0.7138333593627987,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[29, 41]",
+        "symbol_composition": {
+          "EURUSD": 21,
+          "XAUUSD": 16
+        },
+        "total_net_profit": -732.9300000000001,
+        "trade_count": 37,
+        "upper": 41.0,
+        "upper_inclusive": true,
+        "win_rate": 0.2702702702702703,
+        "wins": 10
+      },
+      {
+        "average_net_profit": 10.64969696969697,
+        "confidence_interval_high": 0.5631655918005977,
+        "confidence_interval_low": 0.2468310743447709,
+        "direction_composition": {
+          "BUY": 23,
+          "SELL": 10
+        },
+        "expectancy": 10.64969696969697,
+        "losses": 20,
+        "lower": 43.0,
+        "median_net_profit": -83.66,
+        "profit_factor": 1.1869839107857325,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[43, 43]",
+        "symbol_composition": {
+          "EURUSD": 17,
+          "XAUUSD": 16
+        },
+        "total_net_profit": 351.44,
+        "trade_count": 33,
+        "upper": 43.0,
+        "upper_inclusive": true,
+        "win_rate": 0.3939393939393939,
+        "wins": 13
+      },
+      {
+        "average_net_profit": 16.713953488372095,
+        "confidence_interval_high": 0.5214019084031153,
+        "confidence_interval_low": 0.24376339009650572,
+        "direction_composition": {
+          "BUY": 16,
+          "SELL": 27
+        },
+        "expectancy": 16.713953488372095,
+        "losses": 27,
+        "lower": 44.0,
+        "median_net_profit": -85.05,
+        "profit_factor": 1.2856234475906607,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[44, 49]",
+        "symbol_composition": {
+          "EURUSD": 10,
+          "XAUUSD": 33
+        },
+        "total_net_profit": 718.7,
+        "trade_count": 43,
+        "upper": 49.0,
+        "upper_inclusive": true,
+        "win_rate": 0.37209302325581395,
+        "wins": 16
+      },
+      {
+        "average_net_profit": -2.282500000000001,
+        "confidence_interval_high": 0.5066115681914238,
+        "confidence_interval_low": 0.1793324692249496,
+        "direction_composition": {
+          "BUY": 7,
+          "SELL": 21
+        },
+        "expectancy": -2.282500000000001,
+        "losses": 19,
+        "lower": 50.0,
+        "median_net_profit": -87.37,
+        "profit_factor": 0.9644236871110319,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[50, 51]",
+        "symbol_composition": {
+          "EURUSD": 8,
+          "XAUUSD": 20
+        },
+        "total_net_profit": -63.910000000000025,
+        "trade_count": 28,
+        "upper": 51.0,
+        "upper_inclusive": true,
+        "win_rate": 0.32142857142857145,
+        "wins": 9
+      },
+      {
+        "average_net_profit": -33.769642857142856,
+        "confidence_interval_high": 0.3953858565372187,
+        "confidence_interval_low": 0.1021246033289788,
+        "direction_composition": {
+          "SELL": 28
+        },
+        "expectancy": -33.769642857142856,
+        "losses": 22,
+        "lower": 52.0,
+        "median_net_profit": -89.3,
+        "profit_factor": 0.5250544990607073,
+        "sample_status": "SUFFICIENT",
+        "score_interval": "[52, 59]",
+        "symbol_composition": {
+          "EURUSD": 28
+        },
+        "total_net_profit": -945.5500000000001,
+        "trade_count": 28,
+        "upper": 59.0,
+        "upper_inclusive": true,
+        "win_rate": 0.21428571428571427,
+        "wins": 6
+      }
+    ],
+    "quantile_monotonicity": {
+      "average_net_profit": "non-monotonic",
+      "expectancy": "non-monotonic",
+      "profit_factor": "non-monotonic",
+      "win_rate": "non-monotonic"
+    },
+    "rank_biserial": -0.03945249597423506,
+    "spearman_profit": 0.02062808692464517,
+    "spearman_profit_p_value": 0.7897537734177766
+  },
+  "score_confidence_redundancy": {
+    "confidence_additional_discrimination": "NOT_DEMONSTRATED",
+    "confidence_auc_minus_score_auc": 0.011433172302737493,
+    "evidence_of_redundancy": "HIGH",
+    "pearson_correlation": 0.9115291205221693,
+    "spearman_correlation": 0.975146867986575,
+    "unique_score_confidence_pairs": 27
+  },
+  "symbol_analysis": {
+    "EURUSD": {
+      "average_net_profit": -23.55488095238095,
+      "confidence_interval_high": 0.35214273465871976,
+      "confidence_interval_low": 0.16972312954861019,
+      "expectancy": -23.55488095238095,
+      "losses": 63,
+      "median_net_profit": -89.06,
+      "profit_factor": 0.6533315812527376,
+      "sample_status": "SUFFICIENT",
+      "shadow_confidence": {
+        "auc": 0.5264550264550265,
+        "direction": 1,
+        "range": [
+          56.02,
+          77.79
+        ],
+        "spearman_profit": -0.018701605271721725
+      },
+      "shadow_score": {
+        "auc": 0.526832955404384,
+        "direction": 1,
+        "range": [
+          29.0,
+          59.0
+        ],
+        "spearman_profit": -0.018283843021016766
+      },
+      "total_net_profit": -1978.6100000000001,
+      "trade_count": 84,
+      "win_rate": 0.25,
+      "wins": 21
+    },
+    "XAUUSD": {
+      "average_net_profit": 15.368941176470587,
+      "confidence_interval_high": 0.49452288767036445,
+      "confidence_interval_low": 0.29161299694689413,
+      "expectancy": 15.368941176470587,
+      "losses": 52,
+      "median_net_profit": -82.49,
+      "profit_factor": 1.259365662381496,
+      "sample_status": "SUFFICIENT",
+      "shadow_confidence": {
+        "auc": 0.442016317016317,
+        "direction": -1,
+        "range": [
+          67.61,
+          74.49
+        ],
+        "spearman_profit": 0.03339826380047473
+      },
+      "shadow_score": {
+        "auc": 0.442016317016317,
+        "direction": -1,
+        "range": [
+          37.0,
+          51.0
+        ],
+        "spearman_profit": 0.03339826380047473
+      },
+      "total_net_profit": 1306.36,
+      "trade_count": 85,
+      "win_rate": 0.38823529411764707,
+      "wins": 33
+    }
+  },
+  "temporal_stability": {
+    "first_half": {
+      "end": "2026-06-10 06:15:00",
+      "shadow_confidence": {
+        "auc": 0.45503826530612246,
+        "fixed_groups": [
+          {
+            "average_net_profit": -45.05,
+            "confidence_interval_high": 0.5635028221864702,
+            "confidence_interval_low": 0.030053369748306635,
+            "direction_composition": {
+              "BUY": 6
+            },
+            "expectancy": -45.05,
+            "losses": 5,
+            "lower": 55.0,
+            "median_net_profit": -91.845,
+            "profit_factor": 0.41325866110966397,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 6
+            },
+            "total_net_profit": -270.3,
+            "trade_count": 6,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.16666666666666666,
+            "wins": 1
+          },
+          {
+            "average_net_profit": -20.62666666666667,
+            "confidence_interval_high": 0.5195043405598057,
+            "confidence_interval_low": 0.10897453325692374,
+            "direction_composition": {
+              "BUY": 15
+            },
+            "expectancy": -20.62666666666667,
+            "losses": 11,
+            "lower": 60.0,
+            "median_net_profit": -91.0,
+            "profit_factor": 0.6985051938180896,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[60, 65)",
+            "symbol_composition": {
+              "EURUSD": 15
+            },
+            "total_net_profit": -309.40000000000003,
+            "trade_count": 15,
+            "upper": 65.0,
+            "upper_inclusive": false,
+            "win_rate": 0.26666666666666666,
+            "wins": 4
+          },
+          {
+            "average_net_profit": 39.185,
+            "confidence_interval_high": 0.7847839377861224,
+            "confidence_interval_low": 0.21521606221387757,
+            "direction_composition": {
+              "BUY": 4,
+              "SELL": 4
+            },
+            "expectancy": 39.185,
+            "losses": 4,
+            "lower": 65.0,
+            "median_net_profit": 24.445,
+            "profit_factor": 1.8362811791383218,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[65, 70)",
+            "symbol_composition": {
+              "EURUSD": 1,
+              "XAUUSD": 7
+            },
+            "total_net_profit": 313.48,
+            "trade_count": 8,
+            "upper": 70.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5,
+            "wins": 4
+          },
+          {
+            "average_net_profit": 21.241904761904763,
+            "confidence_interval_high": 0.5550568724996064,
+            "confidence_interval_low": 0.27042861147481323,
+            "direction_composition": {
+              "BUY": 11,
+              "SELL": 31
+            },
+            "expectancy": 21.241904761904763,
+            "losses": 25,
+            "lower": 70.0,
+            "median_net_profit": -78.49000000000001,
+            "profit_factor": 1.3925361116855346,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[70, 75)",
+            "symbol_composition": {
+              "EURUSD": 11,
+              "XAUUSD": 31
+            },
+            "total_net_profit": 892.16,
+            "trade_count": 42,
+            "upper": 75.0,
+            "upper_inclusive": false,
+            "win_rate": 0.40476190476190477,
+            "wins": 17
+          },
+          {
+            "average_net_profit": -51.949230769230766,
+            "confidence_interval_high": 0.4223463101948254,
+            "confidence_interval_low": 0.043258178358081184,
+            "direction_composition": {
+              "SELL": 13
+            },
+            "expectancy": -51.949230769230766,
+            "losses": 11,
+            "lower": 75.0,
+            "median_net_profit": -93.24,
+            "profit_factor": 0.3462089529120198,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[75, 80)",
+            "symbol_composition": {
+              "EURUSD": 13
+            },
+            "total_net_profit": -675.34,
+            "trade_count": 13,
+            "upper": 80.0,
+            "upper_inclusive": false,
+            "win_rate": 0.15384615384615385,
+            "wins": 2
+          }
+        ],
+        "range": [
+          57.46,
+          77.79
+        ],
+        "spearman_profit": -0.0631692427699617
+      },
+      "shadow_score": {
+        "auc": 0.43558673469387754,
+        "fixed_groups": [
+          {
+            "average_net_profit": -45.05,
+            "confidence_interval_high": 0.5635028221864702,
+            "confidence_interval_low": 0.030053369748306635,
+            "direction_composition": {
+              "BUY": 6
+            },
+            "expectancy": -45.05,
+            "losses": 5,
+            "lower": 30.0,
+            "median_net_profit": -91.845,
+            "profit_factor": 0.41325866110966397,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[30, 35)",
+            "symbol_composition": {
+              "EURUSD": 6
+            },
+            "total_net_profit": -270.3,
+            "trade_count": 6,
+            "upper": 35.0,
+            "upper_inclusive": false,
+            "win_rate": 0.16666666666666666,
+            "wins": 1
+          },
+          {
+            "average_net_profit": 60.512857142857136,
+            "confidence_interval_high": 0.8417801447485302,
+            "confidence_interval_low": 0.2504583645276572,
+            "direction_composition": {
+              "BUY": 5,
+              "SELL": 2
+            },
+            "expectancy": 60.512857142857136,
+            "losses": 3,
+            "lower": 35.0,
+            "median_net_profit": 131.38,
+            "profit_factor": 2.5416727325666035,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[35, 40)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 2
+            },
+            "total_net_profit": 423.59,
+            "trade_count": 7,
+            "upper": 40.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5714285714285714,
+            "wins": 4
+          },
+          {
+            "average_net_profit": -10.281666666666668,
+            "confidence_interval_high": 0.5329368316186824,
+            "confidence_interval_low": 0.1797219032729775,
+            "direction_composition": {
+              "BUY": 15,
+              "SELL": 9
+            },
+            "expectancy": -10.281666666666668,
+            "losses": 16,
+            "lower": 40.0,
+            "median_net_profit": -91.09,
+            "profit_factor": 0.8359755651717283,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[40, 45)",
+            "symbol_composition": {
+              "EURUSD": 10,
+              "XAUUSD": 14
+            },
+            "total_net_profit": -246.76000000000005,
+            "trade_count": 24,
+            "upper": 45.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3333333333333333,
+            "wins": 8
+          },
+          {
+            "average_net_profit": 37.57736842105263,
+            "confidence_interval_high": 0.6372409646574496,
+            "confidence_interval_low": 0.23141891282454238,
+            "direction_composition": {
+              "BUY": 8,
+              "SELL": 11
+            },
+            "expectancy": 37.57736842105263,
+            "losses": 11,
+            "lower": 45.0,
+            "median_net_profit": -69.99,
+            "profit_factor": 1.7202505851020902,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[45, 50)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 14
+            },
+            "total_net_profit": 713.97,
+            "trade_count": 19,
+            "upper": 50.0,
+            "upper_inclusive": false,
+            "win_rate": 0.42105263157894735,
+            "wins": 8
+          },
+          {
+            "average_net_profit": -23.075,
+            "confidence_interval_high": 0.468700877618744,
+            "confidence_interval_low": 0.11186170140766569,
+            "direction_composition": {
+              "BUY": 2,
+              "SELL": 18
+            },
+            "expectancy": -23.075,
+            "losses": 15,
+            "lower": 50.0,
+            "median_net_profit": -90.345,
+            "profit_factor": 0.6632296387107133,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[50, 55)",
+            "symbol_composition": {
+              "EURUSD": 12,
+              "XAUUSD": 8
+            },
+            "total_net_profit": -461.5,
+            "trade_count": 20,
+            "upper": 55.0,
+            "upper_inclusive": false,
+            "win_rate": 0.25,
+            "wins": 5
+          },
+          {
+            "average_net_profit": -26.05,
+            "confidence_interval_high": 0.5907245696898311,
+            "confidence_interval_low": 0.071479212752109,
+            "direction_composition": {
+              "SELL": 8
+            },
+            "expectancy": -26.05,
+            "losses": 6,
+            "lower": 55.0,
+            "median_net_profit": -93.37,
+            "profit_factor": 0.6318151302074132,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 8
+            },
+            "total_net_profit": -208.4,
+            "trade_count": 8,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.25,
+            "wins": 2
+          }
+        ],
+        "range": [
+          31.0,
+          59.0
+        ],
+        "spearman_profit": -0.0845574604209683
+      },
+      "start": "2026-03-09 19:15:00",
+      "trade_count": 84
+    },
+    "fold_1": {
+      "end": "2026-05-12 06:15:00",
+      "shadow_confidence": {
+        "auc": 0.3682266009852217,
+        "fixed_groups": [
+          {
+            "average_net_profit": -91.53,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -91.53,
+            "losses": 1,
+            "lower": 55.0,
+            "median_net_profit": -91.53,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -91.53,
+            "trade_count": 1,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": 9.061249999999996,
+            "confidence_interval_high": 0.6942576053973727,
+            "confidence_interval_low": 0.13684428582359742,
+            "direction_composition": {
+              "BUY": 8
+            },
+            "expectancy": 9.061249999999996,
+            "losses": 5,
+            "lower": 60.0,
+            "median_net_profit": -90.52000000000001,
+            "profit_factor": 1.1552447851972416,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[60, 65)",
+            "symbol_composition": {
+              "EURUSD": 8
+            },
+            "total_net_profit": 72.48999999999997,
+            "trade_count": 8,
+            "upper": 65.0,
+            "upper_inclusive": false,
+            "win_rate": 0.375,
+            "wins": 3
+          },
+          {
+            "average_net_profit": 71.04,
+            "confidence_interval_high": 0.9385080552796037,
+            "confidence_interval_low": 0.2076596008020477,
+            "direction_composition": {
+              "BUY": 1,
+              "SELL": 2
+            },
+            "expectancy": 71.04,
+            "losses": 1,
+            "lower": 65.0,
+            "median_net_profit": 131.38,
+            "profit_factor": 3.1971134020618557,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[65, 70)",
+            "symbol_composition": {
+              "EURUSD": 1,
+              "XAUUSD": 2
+            },
+            "total_net_profit": 213.12,
+            "trade_count": 3,
+            "upper": 70.0,
+            "upper_inclusive": false,
+            "win_rate": 0.6666666666666666,
+            "wins": 2
+          },
+          {
+            "average_net_profit": 11.128846153846155,
+            "confidence_interval_high": 0.5377942881118918,
+            "confidence_interval_low": 0.1941223032294052,
+            "direction_composition": {
+              "BUY": 9,
+              "SELL": 17
+            },
+            "expectancy": 11.128846153846155,
+            "losses": 17,
+            "lower": 70.0,
+            "median_net_profit": -83.09,
+            "profit_factor": 1.1893701405795962,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[70, 75)",
+            "symbol_composition": {
+              "EURUSD": 6,
+              "XAUUSD": 20
+            },
+            "total_net_profit": 289.35,
+            "trade_count": 26,
+            "upper": 75.0,
+            "upper_inclusive": false,
+            "win_rate": 0.34615384615384615,
+            "wins": 9
+          },
+          {
+            "average_net_profit": -94.848,
+            "confidence_interval_high": 0.43448246478317476,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "SELL": 5
+            },
+            "expectancy": -94.848,
+            "losses": 5,
+            "lower": 75.0,
+            "median_net_profit": -93.5,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[75, 80)",
+            "symbol_composition": {
+              "EURUSD": 5
+            },
+            "total_net_profit": -474.24,
+            "trade_count": 5,
+            "upper": 80.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          }
+        ],
+        "range": [
+          58.84,
+          77.79
+        ],
+        "spearman_profit": -0.12982528271397242
+      },
+      "shadow_score": {
+        "auc": 0.3583743842364532,
+        "fixed_groups": [
+          {
+            "average_net_profit": -91.53,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -91.53,
+            "losses": 1,
+            "lower": 30.0,
+            "median_net_profit": -91.53,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[30, 35)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -91.53,
+            "trade_count": 1,
+            "upper": 35.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": 101.22999999999999,
+            "confidence_interval_high": 0.9544127391902995,
+            "confidence_interval_low": 0.30064184258240184,
+            "direction_composition": {
+              "BUY": 3,
+              "SELL": 1
+            },
+            "expectancy": 101.22999999999999,
+            "losses": 1,
+            "lower": 35.0,
+            "median_net_profit": 155.115,
+            "profit_factor": 5.547619047619047,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[35, 40)",
+            "symbol_composition": {
+              "EURUSD": 3,
+              "XAUUSD": 1
+            },
+            "total_net_profit": 404.91999999999996,
+            "trade_count": 4,
+            "upper": 40.0,
+            "upper_inclusive": false,
+            "win_rate": 0.75,
+            "wins": 3
+          },
+          {
+            "average_net_profit": -22.537000000000003,
+            "confidence_interval_high": 0.6032218525388546,
+            "confidence_interval_low": 0.10779126740630099,
+            "direction_composition": {
+              "BUY": 7,
+              "SELL": 3
+            },
+            "expectancy": -22.537000000000003,
+            "losses": 7,
+            "lower": 40.0,
+            "median_net_profit": -92.72,
+            "profit_factor": 0.6529993225349511,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[40, 45)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 5
+            },
+            "total_net_profit": -225.37,
+            "trade_count": 10,
+            "upper": 45.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3,
+            "wins": 3
+          },
+          {
+            "average_net_profit": 30.745384615384616,
+            "confidence_interval_high": 0.6447710848733431,
+            "confidence_interval_low": 0.17709707797762575,
+            "direction_composition": {
+              "BUY": 7,
+              "SELL": 6
+            },
+            "expectancy": 30.745384615384616,
+            "losses": 8,
+            "lower": 45.0,
+            "median_net_profit": -85.56,
+            "profit_factor": 1.5391744233104008,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[45, 50)",
+            "symbol_composition": {
+              "EURUSD": 3,
+              "XAUUSD": 10
+            },
+            "total_net_profit": 399.69,
+            "trade_count": 13,
+            "upper": 50.0,
+            "upper_inclusive": false,
+            "win_rate": 0.38461538461538464,
+            "wins": 5
+          },
+          {
+            "average_net_profit": -21.986153846153847,
+            "confidence_interval_high": 0.5025637594672749,
+            "confidence_interval_low": 0.08179528718498569,
+            "direction_composition": {
+              "BUY": 1,
+              "SELL": 12
+            },
+            "expectancy": -21.986153846153847,
+            "losses": 10,
+            "lower": 50.0,
+            "median_net_profit": -89.67,
+            "profit_factor": 0.6801548756742238,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[50, 55)",
+            "symbol_composition": {
+              "EURUSD": 7,
+              "XAUUSD": 6
+            },
+            "total_net_profit": -285.82,
+            "trade_count": 13,
+            "upper": 55.0,
+            "upper_inclusive": false,
+            "win_rate": 0.23076923076923078,
+            "wins": 3
+          },
+          {
+            "average_net_profit": -96.35,
+            "confidence_interval_high": 0.6576197724933469,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "SELL": 2
+            },
+            "expectancy": -96.35,
+            "losses": 2,
+            "lower": 55.0,
+            "median_net_profit": -96.35,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 2
+            },
+            "total_net_profit": -192.7,
+            "trade_count": 2,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          }
+        ],
+        "range": [
+          33.0,
+          59.0
+        ],
+        "spearman_profit": -0.1405913490310917
+      },
+      "start": "2026-03-09 19:15:00",
+      "trade_count": 43
+    },
+    "fold_2": {
+      "end": "2026-06-11 00:15:00",
+      "shadow_confidence": {
+        "auc": 0.5226190476190476,
+        "fixed_groups": [
+          {
+            "average_net_profit": -35.754,
+            "confidence_interval_high": 0.6244653702374747,
+            "confidence_interval_low": 0.03622410863243014,
+            "direction_composition": {
+              "BUY": 5
+            },
+            "expectancy": -35.754,
+            "losses": 4,
+            "lower": 55.0,
+            "median_net_profit": -92.16,
+            "profit_factor": 0.5157253149126372,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 5
+            },
+            "total_net_profit": -178.76999999999998,
+            "trade_count": 5,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2,
+            "wins": 1
+          },
+          {
+            "average_net_profit": -54.55571428571429,
+            "confidence_interval_high": 0.5131278292743189,
+            "confidence_interval_low": 0.02567962434474355,
+            "direction_composition": {
+              "BUY": 7
+            },
+            "expectancy": -54.55571428571429,
+            "losses": 6,
+            "lower": 60.0,
+            "median_net_profit": -91.0,
+            "profit_factor": 0.3171756544128165,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[60, 65)",
+            "symbol_composition": {
+              "EURUSD": 7
+            },
+            "total_net_profit": -381.89,
+            "trade_count": 7,
+            "upper": 65.0,
+            "upper_inclusive": false,
+            "win_rate": 0.14285714285714285,
+            "wins": 1
+          },
+          {
+            "average_net_profit": 49.05166666666666,
+            "confidence_interval_high": 0.8123836935173494,
+            "confidence_interval_low": 0.1876163064826506,
+            "direction_composition": {
+              "BUY": 3,
+              "SELL": 3
+            },
+            "expectancy": 49.05166666666666,
+            "losses": 3,
+            "lower": 65.0,
+            "median_net_profit": 45.665,
+            "profit_factor": 2.059240597444664,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[65, 70)",
+            "symbol_composition": {
+              "XAUUSD": 6
+            },
+            "total_net_profit": 294.30999999999995,
+            "trade_count": 6,
+            "upper": 70.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5,
+            "wins": 3
+          },
+          {
+            "average_net_profit": 30.408823529411762,
+            "confidence_interval_high": 0.6903676493999558,
+            "confidence_interval_low": 0.26165106442409436,
+            "direction_composition": {
+              "BUY": 2,
+              "SELL": 15
+            },
+            "expectancy": 30.408823529411762,
+            "losses": 9,
+            "lower": 70.0,
+            "median_net_profit": -55.52,
+            "profit_factor": 1.622298997243322,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[70, 75)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 12
+            },
+            "total_net_profit": 516.9499999999999,
+            "trade_count": 17,
+            "upper": 75.0,
+            "upper_inclusive": false,
+            "win_rate": 0.47058823529411764,
+            "wins": 8
+          },
+          {
+            "average_net_profit": -25.1375,
+            "confidence_interval_high": 0.5907245696898311,
+            "confidence_interval_low": 0.071479212752109,
+            "direction_composition": {
+              "SELL": 8
+            },
+            "expectancy": -25.1375,
+            "losses": 6,
+            "lower": 75.0,
+            "median_net_profit": -91.62,
+            "profit_factor": 0.6400701603665521,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[75, 80)",
+            "symbol_composition": {
+              "EURUSD": 8
+            },
+            "total_net_profit": -201.1,
+            "trade_count": 8,
+            "upper": 80.0,
+            "upper_inclusive": false,
+            "win_rate": 0.25,
+            "wins": 2
+          }
+        ],
+        "range": [
+          57.46,
+          77.79
+        ],
+        "spearman_profit": -0.03589836925276837
+      },
+      "shadow_score": {
+        "auc": 0.48333333333333334,
+        "fixed_groups": [
+          {
+            "average_net_profit": -35.754,
+            "confidence_interval_high": 0.6244653702374747,
+            "confidence_interval_low": 0.03622410863243014,
+            "direction_composition": {
+              "BUY": 5
+            },
+            "expectancy": -35.754,
+            "losses": 4,
+            "lower": 30.0,
+            "median_net_profit": -92.16,
+            "profit_factor": 0.5157253149126372,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[30, 35)",
+            "symbol_composition": {
+              "EURUSD": 5
+            },
+            "total_net_profit": -178.76999999999998,
+            "trade_count": 5,
+            "upper": 35.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2,
+            "wins": 1
+          },
+          {
+            "average_net_profit": 53.154999999999994,
+            "confidence_interval_high": 0.8499610108478506,
+            "confidence_interval_low": 0.15003898915214947,
+            "direction_composition": {
+              "BUY": 2,
+              "SELL": 2
+            },
+            "expectancy": 53.154999999999994,
+            "losses": 2,
+            "lower": 35.0,
+            "median_net_profit": 51.474999999999994,
+            "profit_factor": 2.1448416971785482,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[35, 40)",
+            "symbol_composition": {
+              "EURUSD": 2,
+              "XAUUSD": 2
+            },
+            "total_net_profit": 212.61999999999998,
+            "trade_count": 4,
+            "upper": 40.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5,
+            "wins": 2
+          },
+          {
+            "average_net_profit": -1.527857142857145,
+            "confidence_interval_high": 0.612355768960926,
+            "confidence_interval_low": 0.1634473175355414,
+            "direction_composition": {
+              "BUY": 8,
+              "SELL": 6
+            },
+            "expectancy": -1.527857142857145,
+            "losses": 9,
+            "lower": 40.0,
+            "median_net_profit": -90.04,
+            "profit_factor": 0.9749804077526815,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[40, 45)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 9
+            },
+            "total_net_profit": -21.39000000000003,
+            "trade_count": 14,
+            "upper": 45.0,
+            "upper_inclusive": false,
+            "win_rate": 0.35714285714285715,
+            "wins": 5
+          },
+          {
+            "average_net_profit": 52.379999999999995,
+            "confidence_interval_high": 0.8123836935173494,
+            "confidence_interval_low": 0.1876163064826506,
+            "direction_composition": {
+              "BUY": 1,
+              "SELL": 5
+            },
+            "expectancy": 52.379999999999995,
+            "losses": 3,
+            "lower": 45.0,
+            "median_net_profit": 60.459999999999994,
+            "profit_factor": 2.2572205776462115,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[45, 50)",
+            "symbol_composition": {
+              "EURUSD": 2,
+              "XAUUSD": 4
+            },
+            "total_net_profit": 314.28,
+            "trade_count": 6,
+            "upper": 50.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5,
+            "wins": 3
+          },
+          {
+            "average_net_profit": -32.692499999999995,
+            "confidence_interval_high": 0.5907245696898311,
+            "confidence_interval_low": 0.071479212752109,
+            "direction_composition": {
+              "BUY": 1,
+              "SELL": 7
+            },
+            "expectancy": -32.692499999999995,
+            "losses": 6,
+            "lower": 50.0,
+            "median_net_profit": -89.995,
+            "profit_factor": 0.5351309077335987,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[50, 55)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 3
+            },
+            "total_net_profit": -261.53999999999996,
+            "trade_count": 8,
+            "upper": 55.0,
+            "upper_inclusive": false,
+            "win_rate": 0.25,
+            "wins": 2
+          },
+          {
+            "average_net_profit": -2.616666666666667,
+            "confidence_interval_high": 0.700006684861608,
+            "confidence_interval_low": 0.09677141110578041,
+            "direction_composition": {
+              "SELL": 6
+            },
+            "expectancy": -2.616666666666667,
+            "losses": 4,
+            "lower": 55.0,
+            "median_net_profit": -91.62,
+            "profit_factor": 0.9579449266045216,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 6
+            },
+            "total_net_profit": -15.700000000000003,
+            "trade_count": 6,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3333333333333333,
+            "wins": 2
+          }
+        ],
+        "range": [
+          31.0,
+          59.0
+        ],
+        "spearman_profit": -0.09068275918426562
+      },
+      "start": "2026-05-12 11:30:00",
+      "trade_count": 43
+    },
+    "fold_3": {
+      "end": "2026-07-03 22:30:00",
+      "shadow_confidence": {
+        "auc": 0.5511111111111111,
+        "fixed_groups": [
+          {
+            "average_net_profit": -94.5,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -94.5,
+            "losses": 1,
+            "lower": 55.0,
+            "median_net_profit": -94.5,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -94.5,
+            "trade_count": 1,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -1.8583333333333318,
+            "confidence_interval_high": 0.700006684861608,
+            "confidence_interval_low": 0.09677141110578041,
+            "direction_composition": {
+              "BUY": 6
+            },
+            "expectancy": -1.8583333333333318,
+            "losses": 4,
+            "lower": 60.0,
+            "median_net_profit": -89.36500000000001,
+            "profit_factor": 0.9691844236243541,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[60, 65)",
+            "symbol_composition": {
+              "EURUSD": 6
+            },
+            "total_net_profit": -11.149999999999991,
+            "trade_count": 6,
+            "upper": 65.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3333333333333333,
+            "wins": 2
+          },
+          {
+            "average_net_profit": 11.611999999999998,
+            "confidence_interval_high": 0.769275718723987,
+            "confidence_interval_low": 0.11762077423264783,
+            "direction_composition": {
+              "BUY": 4,
+              "SELL": 1
+            },
+            "expectancy": 11.611999999999998,
+            "losses": 3,
+            "lower": 65.0,
+            "median_net_profit": -101.12,
+            "profit_factor": 1.1726332064700284,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[65, 70)",
+            "symbol_composition": {
+              "XAUUSD": 5
+            },
+            "total_net_profit": 58.05999999999999,
+            "trade_count": 5,
+            "upper": 70.0,
+            "upper_inclusive": false,
+            "win_rate": 0.4,
+            "wins": 2
+          },
+          {
+            "average_net_profit": 29.900714285714283,
+            "confidence_interval_high": 0.6092921437253123,
+            "confidence_interval_low": 0.26508547124123694,
+            "direction_composition": {
+              "BUY": 9,
+              "SELL": 19
+            },
+            "expectancy": 29.900714285714283,
+            "losses": 16,
+            "lower": 70.0,
+            "median_net_profit": -81.89,
+            "profit_factor": 1.5494110312694822,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[70, 75)",
+            "symbol_composition": {
+              "EURUSD": 6,
+              "XAUUSD": 22
+            },
+            "total_net_profit": 837.2199999999999,
+            "trade_count": 28,
+            "upper": 75.0,
+            "upper_inclusive": false,
+            "win_rate": 0.42857142857142855,
+            "wins": 12
+          },
+          {
+            "average_net_profit": 88.46666666666667,
+            "confidence_interval_high": 0.9385080552796037,
+            "confidence_interval_low": 0.2076596008020477,
+            "direction_composition": {
+              "SELL": 3
+            },
+            "expectancy": 88.46666666666667,
+            "losses": 1,
+            "lower": 75.0,
+            "median_net_profit": 175.95,
+            "profit_factor": 3.7605575202829202,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[75, 80)",
+            "symbol_composition": {
+              "EURUSD": 3
+            },
+            "total_net_profit": 265.4,
+            "trade_count": 3,
+            "upper": 80.0,
+            "upper_inclusive": false,
+            "win_rate": 0.6666666666666666,
+            "wins": 2
+          }
+        ],
+        "range": [
+          58.84,
+          77.79
+        ],
+        "spearman_profit": 0.10609501599273854
+      },
+      "shadow_score": {
+        "auc": 0.5633333333333334,
+        "fixed_groups": [
+          {
+            "average_net_profit": -94.5,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -94.5,
+            "losses": 1,
+            "lower": 30.0,
+            "median_net_profit": -94.5,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[30, 35)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -94.5,
+            "trade_count": 1,
+            "upper": 35.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": 1.5416666666666643,
+            "confidence_interval_high": 0.700006684861608,
+            "confidence_interval_low": 0.09677141110578041,
+            "direction_composition": {
+              "BUY": 6
+            },
+            "expectancy": 1.5416666666666643,
+            "losses": 4,
+            "lower": 35.0,
+            "median_net_profit": -89.36500000000001,
+            "profit_factor": 1.024017864097837,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[35, 40)",
+            "symbol_composition": {
+              "EURUSD": 3,
+              "XAUUSD": 3
+            },
+            "total_net_profit": 9.249999999999986,
+            "trade_count": 6,
+            "upper": 40.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3333333333333333,
+            "wins": 2
+          },
+          {
+            "average_net_profit": 23.184285714285714,
+            "confidence_interval_high": 0.6740935542034926,
+            "confidence_interval_low": 0.21380798904474121,
+            "direction_composition": {
+              "BUY": 8,
+              "SELL": 6
+            },
+            "expectancy": 23.184285714285714,
+            "losses": 8,
+            "lower": 40.0,
+            "median_net_profit": -94.6,
+            "profit_factor": 1.388026156917596,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[40, 45)",
+            "symbol_composition": {
+              "EURUSD": 3,
+              "XAUUSD": 11
+            },
+            "total_net_profit": 324.58,
+            "trade_count": 14,
+            "upper": 45.0,
+            "upper_inclusive": false,
+            "win_rate": 0.42857142857142855,
+            "wins": 6
+          },
+          {
+            "average_net_profit": 54.15083333333333,
+            "confidence_interval_high": 0.7462184023662939,
+            "confidence_interval_low": 0.2537815976337061,
+            "direction_composition": {
+              "BUY": 3,
+              "SELL": 9
+            },
+            "expectancy": 54.15083333333333,
+            "losses": 6,
+            "lower": 45.0,
+            "median_net_profit": 56.405,
+            "profit_factor": 2.277569156361206,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[45, 50)",
+            "symbol_composition": {
+              "EURUSD": 3,
+              "XAUUSD": 9
+            },
+            "total_net_profit": 649.81,
+            "trade_count": 12,
+            "upper": 50.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5,
+            "wins": 6
+          },
+          {
+            "average_net_profit": 9.554999999999996,
+            "confidence_interval_high": 0.6942576053973727,
+            "confidence_interval_low": 0.13684428582359742,
+            "direction_composition": {
+              "BUY": 2,
+              "SELL": 6
+            },
+            "expectancy": 9.554999999999996,
+            "losses": 5,
+            "lower": 50.0,
+            "median_net_profit": -89.96000000000001,
+            "profit_factor": 1.1554448398576511,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[50, 55)",
+            "symbol_composition": {
+              "EURUSD": 4,
+              "XAUUSD": 4
+            },
+            "total_net_profit": 76.43999999999997,
+            "trade_count": 8,
+            "upper": 55.0,
+            "upper_inclusive": false,
+            "win_rate": 0.375,
+            "wins": 3
+          },
+          {
+            "average_net_profit": 44.725,
+            "confidence_interval_high": 0.9054687942657693,
+            "confidence_interval_low": 0.09453120573423074,
+            "direction_composition": {
+              "SELL": 2
+            },
+            "expectancy": 44.725,
+            "losses": 1,
+            "lower": 55.0,
+            "median_net_profit": 44.725,
+            "profit_factor": 1.9304139796130644,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 2
+            },
+            "total_net_profit": 89.45,
+            "trade_count": 2,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.5,
+            "wins": 1
+          }
+        ],
+        "range": [
+          33.0,
+          59.0
+        ],
+        "spearman_profit": 0.12306475769794617
+      },
+      "start": "2026-06-11 05:00:00",
+      "trade_count": 43
+    },
+    "fold_4": {
+      "end": "2026-08-03 12:30:00",
+      "shadow_confidence": {
+        "auc": 0.6147186147186147,
+        "fixed_groups": [
+          {
+            "average_net_profit": -90.72,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -90.72,
+            "losses": 1,
+            "lower": 55.0,
+            "median_net_profit": -90.72,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -90.72,
+            "trade_count": 1,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -57.37444444444444,
+            "confidence_interval_high": 0.434999705576656,
+            "confidence_interval_low": 0.019890887638544907,
+            "direction_composition": {
+              "BUY": 9
+            },
+            "expectancy": -57.37444444444444,
+            "losses": 8,
+            "lower": 60.0,
+            "median_net_profit": -83.66,
+            "profit_factor": 0.24035307098197867,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[60, 65)",
+            "symbol_composition": {
+              "EURUSD": 9
+            },
+            "total_net_profit": -516.37,
+            "trade_count": 9,
+            "upper": 65.0,
+            "upper_inclusive": false,
+            "win_rate": 0.1111111111111111,
+            "wins": 1
+          },
+          {
+            "average_net_profit": -104.88333333333334,
+            "confidence_interval_high": 0.5614970317550454,
+            "confidence_interval_low": 5.551115123125783e-17,
+            "direction_composition": {
+              "BUY": 1,
+              "SELL": 2
+            },
+            "expectancy": -104.88333333333334,
+            "losses": 3,
+            "lower": 65.0,
+            "median_net_profit": -105.65,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[65, 70)",
+            "symbol_composition": {
+              "XAUUSD": 3
+            },
+            "total_net_profit": -314.65,
+            "trade_count": 3,
+            "upper": 70.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -31.630454545454544,
+            "confidence_interval_high": 0.4343995317522171,
+            "confidence_interval_low": 0.10123039985248516,
+            "direction_composition": {
+              "BUY": 8,
+              "SELL": 14
+            },
+            "expectancy": -31.630454545454544,
+            "losses": 17,
+            "lower": 70.0,
+            "median_net_profit": -90.33500000000001,
+            "profit_factor": 0.5815700069150056,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[70, 75)",
+            "symbol_composition": {
+              "EURUSD": 7,
+              "XAUUSD": 15
+            },
+            "total_net_profit": -695.87,
+            "trade_count": 22,
+            "upper": 75.0,
+            "upper_inclusive": false,
+            "win_rate": 0.22727272727272727,
+            "wins": 5
+          },
+          {
+            "average_net_profit": -33.672000000000004,
+            "confidence_interval_high": 0.6244653702374747,
+            "confidence_interval_low": 0.03622410863243014,
+            "direction_composition": {
+              "SELL": 5
+            },
+            "expectancy": -33.672000000000004,
+            "losses": 4,
+            "lower": 75.0,
+            "median_net_profit": -82.62,
+            "profit_factor": 0.4899109252863115,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[75, 80)",
+            "symbol_composition": {
+              "EURUSD": 5
+            },
+            "total_net_profit": -168.36,
+            "trade_count": 5,
+            "upper": 80.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2,
+            "wins": 1
+          }
+        ],
+        "range": [
+          56.02,
+          77.79
+        ],
+        "spearman_profit": 0.21948844703881734
+      },
+      "shadow_score": {
+        "auc": 0.6212121212121212,
+        "fixed_groups": [
+          {
+            "average_net_profit": -90.72,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -90.72,
+            "losses": 1,
+            "lower": 25.0,
+            "median_net_profit": -90.72,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[25, 30)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -90.72,
+            "trade_count": 1,
+            "upper": 30.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -93.62,
+            "confidence_interval_high": 0.5614970317550454,
+            "confidence_interval_low": 5.551115123125783e-17,
+            "direction_composition": {
+              "BUY": 3
+            },
+            "expectancy": -93.62,
+            "losses": 3,
+            "lower": 35.0,
+            "median_net_profit": -88.27,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[35, 40)",
+            "symbol_composition": {
+              "EURUSD": 2,
+              "XAUUSD": 1
+            },
+            "total_net_profit": -280.86,
+            "trade_count": 3,
+            "upper": 40.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -49.824999999999996,
+            "confidence_interval_high": 0.4480308622529734,
+            "confidence_interval_low": 0.04696514218385378,
+            "direction_composition": {
+              "BUY": 9,
+              "SELL": 3
+            },
+            "expectancy": -49.824999999999996,
+            "losses": 10,
+            "lower": 40.0,
+            "median_net_profit": -84.00999999999999,
+            "profit_factor": 0.35544032513664153,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[40, 45)",
+            "symbol_composition": {
+              "EURUSD": 7,
+              "XAUUSD": 5
+            },
+            "total_net_profit": -597.9,
+            "trade_count": 12,
+            "upper": 45.0,
+            "upper_inclusive": false,
+            "win_rate": 0.16666666666666666,
+            "wins": 2
+          },
+          {
+            "average_net_profit": -56.699999999999996,
+            "confidence_interval_high": 0.5131278292743189,
+            "confidence_interval_low": 0.02567962434474355,
+            "direction_composition": {
+              "BUY": 3,
+              "SELL": 4
+            },
+            "expectancy": -56.699999999999996,
+            "losses": 6,
+            "lower": 45.0,
+            "median_net_profit": -97.95,
+            "profit_factor": 0.3405881375643795,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[45, 50)",
+            "symbol_composition": {
+              "EURUSD": 2,
+              "XAUUSD": 5
+            },
+            "total_net_profit": -396.9,
+            "trade_count": 7,
+            "upper": 50.0,
+            "upper_inclusive": false,
+            "win_rate": 0.14285714285714285,
+            "wins": 1
+          },
+          {
+            "average_net_profit": -20.935833333333335,
+            "confidence_interval_high": 0.5323053349335657,
+            "confidence_interval_low": 0.08894166839405471,
+            "direction_composition": {
+              "BUY": 3,
+              "SELL": 9
+            },
+            "expectancy": -20.935833333333335,
+            "losses": 9,
+            "lower": 50.0,
+            "median_net_profit": -85.09,
+            "profit_factor": 0.7034164423667185,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[50, 55)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 7
+            },
+            "total_net_profit": -251.23000000000002,
+            "trade_count": 12,
+            "upper": 55.0,
+            "upper_inclusive": false,
+            "win_rate": 0.25,
+            "wins": 3
+          },
+          {
+            "average_net_profit": -33.672000000000004,
+            "confidence_interval_high": 0.6244653702374747,
+            "confidence_interval_low": 0.03622410863243014,
+            "direction_composition": {
+              "SELL": 5
+            },
+            "expectancy": -33.672000000000004,
+            "losses": 4,
+            "lower": 55.0,
+            "median_net_profit": -82.62,
+            "profit_factor": 0.4899109252863115,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 5
+            },
+            "total_net_profit": -168.36,
+            "trade_count": 5,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2,
+            "wins": 1
+          }
+        ],
+        "range": [
+          29.0,
+          59.0
+        ],
+        "spearman_profit": 0.289845138893832
+      },
+      "start": "2026-07-06 16:30:00",
+      "trade_count": 40
+    },
+    "second_half": {
+      "end": "2026-08-03 12:30:00",
+      "shadow_confidence": {
+        "auc": 0.5365058670143416,
+        "fixed_groups": [
+          {
+            "average_net_profit": -92.61,
+            "confidence_interval_high": 0.6576197724933469,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 2
+            },
+            "expectancy": -92.61,
+            "losses": 2,
+            "lower": 55.0,
+            "median_net_profit": -92.61,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 2
+            },
+            "total_net_profit": -185.22,
+            "trade_count": 2,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -35.168,
+            "confidence_interval_high": 0.45185448715169363,
+            "confidence_interval_low": 0.07047549346981563,
+            "direction_composition": {
+              "BUY": 15
+            },
+            "expectancy": -35.168,
+            "losses": 12,
+            "lower": 60.0,
+            "median_net_profit": -84.36,
+            "profit_factor": 0.49353866241671307,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[60, 65)",
+            "symbol_composition": {
+              "EURUSD": 15
+            },
+            "total_net_profit": -527.52,
+            "trade_count": 15,
+            "upper": 65.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2,
+            "wins": 3
+          },
+          {
+            "average_net_profit": -6.9600000000000035,
+            "confidence_interval_high": 0.6457978644196036,
+            "confidence_interval_low": 0.1205838183869109,
+            "direction_composition": {
+              "BUY": 5,
+              "SELL": 4
+            },
+            "expectancy": -6.9600000000000035,
+            "losses": 6,
+            "lower": 65.0,
+            "median_net_profit": -101.12,
+            "profit_factor": 0.9037743674823723,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[65, 70)",
+            "symbol_composition": {
+              "XAUUSD": 9
+            },
+            "total_net_profit": -62.64000000000003,
+            "trade_count": 9,
+            "upper": 70.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3333333333333333,
+            "wins": 3
+          },
+          {
+            "average_net_profit": 1.0880392156862737,
+            "confidence_interval_high": 0.47031622143029195,
+            "confidence_interval_low": 0.21969931853588517,
+            "direction_composition": {
+              "BUY": 17,
+              "SELL": 34
+            },
+            "expectancy": 1.0880392156862737,
+            "losses": 34,
+            "lower": 70.0,
+            "median_net_profit": -85.86,
+            "profit_factor": 1.0169551082266957,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[70, 75)",
+            "symbol_composition": {
+              "EURUSD": 13,
+              "XAUUSD": 38
+            },
+            "total_net_profit": 55.48999999999996,
+            "trade_count": 51,
+            "upper": 75.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3333333333333333,
+            "wins": 17
+          },
+          {
+            "average_net_profit": 12.129999999999997,
+            "confidence_interval_high": 0.6942576053973727,
+            "confidence_interval_low": 0.13684428582359742,
+            "direction_composition": {
+              "SELL": 8
+            },
+            "expectancy": 12.129999999999997,
+            "losses": 5,
+            "lower": 75.0,
+            "median_net_profit": -81.87,
+            "profit_factor": 1.2276865321445332,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[75, 80)",
+            "symbol_composition": {
+              "EURUSD": 8
+            },
+            "total_net_profit": 97.03999999999998,
+            "trade_count": 8,
+            "upper": 80.0,
+            "upper_inclusive": false,
+            "win_rate": 0.375,
+            "wins": 3
+          }
+        ],
+        "range": [
+          56.02,
+          77.79
+        ],
+        "spearman_profit": 0.09974372622914027
+      },
+      "shadow_score": {
+        "auc": 0.5319426336375489,
+        "fixed_groups": [
+          {
+            "average_net_profit": -90.72,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -90.72,
+            "losses": 1,
+            "lower": 25.0,
+            "median_net_profit": -90.72,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[25, 30)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -90.72,
+            "trade_count": 1,
+            "upper": 30.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -94.5,
+            "confidence_interval_high": 0.7934506856227626,
+            "confidence_interval_low": 0,
+            "direction_composition": {
+              "BUY": 1
+            },
+            "expectancy": -94.5,
+            "losses": 1,
+            "lower": 30.0,
+            "median_net_profit": -94.5,
+            "profit_factor": 0.0,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[30, 35)",
+            "symbol_composition": {
+              "EURUSD": 1
+            },
+            "total_net_profit": -94.5,
+            "trade_count": 1,
+            "upper": 35.0,
+            "upper_inclusive": false,
+            "win_rate": 0.0,
+            "wins": 0
+          },
+          {
+            "average_net_profit": -7.766000000000003,
+            "confidence_interval_high": 0.6032218525388546,
+            "confidence_interval_low": 0.10779126740630099,
+            "direction_composition": {
+              "BUY": 9,
+              "SELL": 1
+            },
+            "expectancy": -7.766000000000003,
+            "losses": 7,
+            "lower": 35.0,
+            "median_net_profit": -88.675,
+            "profit_factor": 0.8833916425171547,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[35, 40)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 5
+            },
+            "total_net_profit": -77.66000000000003,
+            "trade_count": 10,
+            "upper": 40.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3,
+            "wins": 3
+          },
+          {
+            "average_net_profit": -10.512307692307692,
+            "confidence_interval_high": 0.4998825832219837,
+            "confidence_interval_low": 0.16501315595463767,
+            "direction_composition": {
+              "BUY": 17,
+              "SELL": 9
+            },
+            "expectancy": -10.512307692307692,
+            "losses": 18,
+            "lower": 40.0,
+            "median_net_profit": -86.11,
+            "profit_factor": 0.8450654724788844,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[40, 45)",
+            "symbol_composition": {
+              "EURUSD": 10,
+              "XAUUSD": 16
+            },
+            "total_net_profit": -273.32,
+            "trade_count": 26,
+            "upper": 45.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3076923076923077,
+            "wins": 8
+          },
+          {
+            "average_net_profit": 13.311052631578947,
+            "confidence_interval_high": 0.5896046683519693,
+            "confidence_interval_low": 0.19149512745135072,
+            "direction_composition": {
+              "BUY": 6,
+              "SELL": 13
+            },
+            "expectancy": 13.311052631578947,
+            "losses": 12,
+            "lower": 45.0,
+            "median_net_profit": -82.4,
+            "profit_factor": 1.2277381070299767,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[45, 50)",
+            "symbol_composition": {
+              "EURUSD": 5,
+              "XAUUSD": 14
+            },
+            "total_net_profit": 252.91,
+            "trade_count": 19,
+            "upper": 50.0,
+            "upper_inclusive": false,
+            "win_rate": 0.3684210526315789,
+            "wins": 7
+          },
+          {
+            "average_net_profit": -12.411904761904765,
+            "confidence_interval_high": 0.49956380716085597,
+            "confidence_interval_low": 0.1381386295212213,
+            "direction_composition": {
+              "BUY": 5,
+              "SELL": 16
+            },
+            "expectancy": -12.411904761904765,
+            "losses": 15,
+            "lower": 50.0,
+            "median_net_profit": -85.86,
+            "profit_factor": 0.8170479191964567,
+            "sample_status": "SUFFICIENT",
+            "score_interval": "[50, 55)",
+            "symbol_composition": {
+              "EURUSD": 9,
+              "XAUUSD": 12
+            },
+            "total_net_profit": -260.6500000000001,
+            "trade_count": 21,
+            "upper": 55.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2857142857142857,
+            "wins": 6
+          },
+          {
+            "average_net_profit": -11.272857142857145,
+            "confidence_interval_high": 0.6410655481673808,
+            "confidence_interval_low": 0.08221892400405678,
+            "direction_composition": {
+              "SELL": 7
+            },
+            "expectancy": -11.272857142857145,
+            "losses": 5,
+            "lower": 55.0,
+            "median_net_profit": -82.62,
+            "profit_factor": 0.8148521820741436,
+            "sample_status": "INSUFFICIENT",
+            "score_interval": "[55, 60)",
+            "symbol_composition": {
+              "EURUSD": 7
+            },
+            "total_net_profit": -78.91000000000001,
+            "trade_count": 7,
+            "upper": 60.0,
+            "upper_inclusive": false,
+            "win_rate": 0.2857142857142857,
+            "wins": 2
+          }
+        ],
+        "range": [
+          29.0,
+          59.0
+        ],
+        "spearman_profit": 0.13385556348747168
+      },
+      "start": "2026-06-10 18:45:00",
+      "trade_count": 85
+    }
+  },
+  "unresolved_diagnostics": [
+    {
+      "entry_time": "2026-08-05 21:45:00",
+      "status": "OPEN",
+      "symbol": "XAUUSD",
+      "trade_id": 86
+    }
+  ],
+  "verdicts": {
+    "shadow_confidence": "NOT_RELIABLE",
+    "shadow_score": "NOT_RELIABLE"
+  },
+  "win_loss_comparison": {
+    "legacy_confidence": {
+      "loser_count": 115,
+      "loser_mean": 22.73,
+      "loser_median": 22.73,
+      "losers": {
+        "count": 115,
+        "first_quartile": 22.73,
+        "maximum": 22.73,
+        "mean": 22.73,
+        "median": 22.73,
+        "minimum": 22.73,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 22.73,
+        "unique_value_count": 1
+      },
+      "mann_whitney_p_value": 1.0,
+      "mann_whitney_u": 3105.0,
+      "winner_count": 54,
+      "winner_mean": 22.73,
+      "winner_median": 22.73,
+      "winners": {
+        "count": 54,
+        "first_quartile": 22.73,
+        "maximum": 22.73,
+        "mean": 22.73,
+        "median": 22.73,
+        "minimum": 22.73,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 22.73,
+        "unique_value_count": 1
+      }
+    },
+    "legacy_score": {
+      "loser_count": 115,
+      "loser_mean": 25.0,
+      "loser_median": 25.0,
+      "losers": {
+        "count": 115,
+        "first_quartile": 25.0,
+        "maximum": 25.0,
+        "mean": 25.0,
+        "median": 25.0,
+        "minimum": 25.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 25.0,
+        "unique_value_count": 1
+      },
+      "mann_whitney_p_value": 1.0,
+      "mann_whitney_u": 3105.0,
+      "winner_count": 54,
+      "winner_mean": 25.0,
+      "winner_median": 25.0,
+      "winners": {
+        "count": 54,
+        "first_quartile": 25.0,
+        "maximum": 25.0,
+        "mean": 25.0,
+        "median": 25.0,
+        "minimum": 25.0,
+        "missing_value_count": 0,
+        "standard_deviation": 0.0,
+        "third_quartile": 25.0,
+        "unique_value_count": 1
+      }
+    },
+    "shadow_confidence": {
+      "loser_count": 115,
+      "loser_mean": 70.62,
+      "loser_median": 72.23,
+      "losers": {
+        "count": 115,
+        "first_quartile": 64.99,
+        "maximum": 77.79,
+        "mean": 70.62,
+        "median": 72.23,
+        "minimum": 56.02,
+        "missing_value_count": 0,
+        "standard_deviation": 5.466185205584822,
+        "third_quartile": 74.49,
+        "unique_value_count": 24
+      },
+      "mann_whitney_p_value": 0.8616582747176617,
+      "mann_whitney_u": 3053.5,
+      "winner_count": 54,
+      "winner_mean": 71.15333333333334,
+      "winner_median": 72.23,
+      "winners": {
+        "count": 54,
+        "first_quartile": 68.975,
+        "maximum": 77.79,
+        "mean": 71.15333333333334,
+        "median": 72.23,
+        "minimum": 59.51,
+        "missing_value_count": 0,
+        "standard_deviation": 4.315843563010292,
+        "third_quartile": 74.3825,
+        "unique_value_count": 19
+      }
+    },
+    "shadow_score": {
+      "loser_count": 115,
+      "loser_mean": 46.3304347826087,
+      "loser_median": 46.0,
+      "losers": {
+        "count": 115,
+        "first_quartile": 43.0,
+        "maximum": 59.0,
+        "mean": 46.3304347826087,
+        "median": 46.0,
+        "minimum": 29.0,
+        "missing_value_count": 0,
+        "standard_deviation": 6.762540967389525,
+        "third_quartile": 51.0,
+        "unique_value_count": 22
+      },
+      "mann_whitney_p_value": 0.6776127682715286,
+      "mann_whitney_u": 2982.5,
+      "winner_count": 54,
+      "winner_mean": 46.111111111111114,
+      "winner_median": 46.0,
+      "winners": {
+        "count": 54,
+        "first_quartile": 43.0,
+        "maximum": 59.0,
+        "mean": 46.111111111111114,
+        "median": 46.0,
+        "minimum": 34.0,
+        "missing_value_count": 0,
+        "standard_deviation": 5.91342146807747,
+        "third_quartile": 50.75,
+        "unique_value_count": 17
+      }
+    }
+  }
+}
