@@ -79,6 +79,9 @@ def config(**overrides):
 def metadata():
     return BacktestSymbolMetadata(
         point=0.01,
+        digits=2,
+        tick_size=0.01,
+        tick_value=1.0,
         contract_size=100.0,
         volume_min=0.01,
         volume_max=100.0,
@@ -184,6 +187,41 @@ def test_spread_slippage_and_commission_reduce_result():
     assert with_cost.trades[0].slippage == 0.01
     assert with_cost.trades[0].commission > 0
     assert with_cost.trades[0].profit < no_cost.trades[0].profit
+
+
+def test_minimum_volume_that_exceeds_risk_is_rejected():
+    pipeline = PipelineStub(signal_calls={1}, stop=80.0)
+    candles = [candle(0), candle(1), candle(2, high=103, low=79.0)]
+    expensive_tick = BacktestSymbolMetadata(
+        point=1.0, digits=0, tick_size=1.0, tick_value=1000.0,
+        contract_size=1.0, volume_min=0.01, volume_max=100.0,
+        volume_step=0.01, spread_points=0,
+    )
+
+    result = HistoricalBacktestEngine(pipeline).run(
+        "TEST", "M15", candles, config(), expensive_tick,
+    )
+
+    assert result.trades == []
+    assert result.diagnostics.rejection_reasons == {
+        "MIN_VOLUME_EXCEEDS_RISK": 1,
+    }
+
+
+def test_missing_tick_metadata_rejects_safely():
+    pipeline = PipelineStub(signal_calls={1})
+    candles = [candle(0), candle(1), candle(2, high=103, low=98.5)]
+    incomplete = metadata()
+    incomplete.tick_value = None
+
+    result = HistoricalBacktestEngine(pipeline).run(
+        "TEST", "M15", candles, config(), incomplete,
+    )
+
+    assert result.trades == []
+    assert result.diagnostics.rejection_reasons == {
+        "VALUATION_METADATA_UNAVAILABLE:MISSING_TICK_VALUE": 1,
+    }
 
 
 def test_equity_drawdown_and_extended_metrics():

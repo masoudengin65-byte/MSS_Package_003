@@ -35,7 +35,9 @@ def _metadata(symbol):
     info = mt5.symbol_info(symbol)
     if info is None:
         raise RuntimeError(f"symbol_info failed for {symbol}: {mt5.last_error()}")
-    return BacktestSymbolMetadata(point=info.point, contract_size=info.trade_contract_size,
+    return BacktestSymbolMetadata(point=info.point, digits=info.digits,
+        tick_size=info.trade_tick_size, tick_value=info.trade_tick_value,
+        contract_size=info.trade_contract_size,
         volume_min=info.volume_min, volume_max=info.volume_max,
         volume_step=info.volume_step, spread_points=info.spread)
 

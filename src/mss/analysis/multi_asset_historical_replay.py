@@ -402,6 +402,8 @@ class MultiAssetHistoricalReplay(MultiAssetRegistry):
             "asset_class": definition.asset_class,
             "digits": self._required_number(metadata, "digits", integral=True),
             "point": self._required_number(metadata, "point"),
+            "tick_size": self._required_number(metadata, "trade_tick_size"),
+            "tick_value": self._required_number(metadata, "trade_tick_value"),
             "contract_size": self._required_number(
                 metadata, "trade_contract_size", alternate="contract_size",
             ),
@@ -429,6 +431,9 @@ class MultiAssetHistoricalReplay(MultiAssetRegistry):
         )
         return BacktestSymbolMetadata(
             point=row["point"],
+            digits=row["digits"],
+            tick_size=row["tick_size"],
+            tick_value=row["tick_value"],
             contract_size=row["contract_size"],
             volume_min=row["volume_min"],
             volume_max=row["volume_max"],

@@ -1,0 +1,254 @@
+{
+  "corrected_formula_summary": {
+    "minimum_volume": "reject MIN_VOLUME_EXCEEDS_RISK when raw_volume is below volume_min",
+    "monetary_value": "tick_count * tick_value * volume",
+    "position_sizing": "risk_amount / ((stop_distance / tick_size) * tick_value)",
+    "rounding": "floor to volume_step, cap at volume_max, never round above target risk",
+    "tick_count": "abs(price_delta) / tick_size"
+  },
+  "full_multi_asset_replay_run": false,
+  "instruments_tested": [
+    {
+      "actual_buy_gain_at_2r": 200.00000000000017,
+      "actual_buy_loss_at_sl": -99.99999999998897,
+      "expected_gain_at_2r": 200.0,
+      "expected_loss_at_sl": -100.0,
+      "metadata": {
+        "contract_size": 100000.0,
+        "tick_size": 1e-05,
+        "tick_value": 1.0,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "pass": true,
+      "raw_volume": 1.0,
+      "risk_amount": 100.0,
+      "risk_per_lot": 100.0,
+      "rounded_volume": 1.0,
+      "sell_gain_at_2r": 200.00000000000017,
+      "sell_loss_at_sl": -99.99999999998897,
+      "stop_price_distance": 0.001,
+      "stop_tick_count": 100.0,
+      "symbol": "EURUSD"
+    },
+    {
+      "actual_buy_gain_at_2r": 199.46976391868583,
+      "actual_buy_loss_at_sl": -99.73488195934291,
+      "expected_gain_at_2r": 199.46976391869717,
+      "expected_loss_at_sl": -99.73488195934858,
+      "metadata": {
+        "contract_size": 100000.0,
+        "tick_size": 0.001,
+        "tick_value": 0.6312334301224594,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "pass": true,
+      "raw_volume": 1.5841999999999998,
+      "risk_amount": 100.0,
+      "risk_per_lot": 63.12334301224594,
+      "rounded_volume": 1.58,
+      "sell_gain_at_2r": 199.46976391868583,
+      "sell_loss_at_sl": -99.73488195934291,
+      "stop_price_distance": 0.1,
+      "stop_tick_count": 100.0,
+      "symbol": "USDJPY"
+    },
+    {
+      "actual_buy_gain_at_2r": 199.7845181268776,
+      "actual_buy_loss_at_sl": -99.89225906342769,
+      "expected_gain_at_2r": 199.78451812687743,
+      "expected_loss_at_sl": -99.89225906343871,
+      "metadata": {
+        "contract_size": 100000.0,
+        "tick_size": 1e-05,
+        "tick_value": 0.7135161361674194,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "pass": true,
+      "raw_volume": 1.40151,
+      "risk_amount": 100.0,
+      "risk_per_lot": 71.35161361674194,
+      "rounded_volume": 1.4,
+      "sell_gain_at_2r": 199.7845181268776,
+      "sell_loss_at_sl": -99.89225906342769,
+      "stop_price_distance": 0.001,
+      "stop_tick_count": 100.0,
+      "symbol": "USDCAD"
+    },
+    {
+      "actual_buy_gain_at_2r": 200.0,
+      "actual_buy_loss_at_sl": -100.0,
+      "expected_gain_at_2r": 200.0,
+      "expected_loss_at_sl": -100.0,
+      "metadata": {
+        "contract_size": 100.0,
+        "tick_size": 0.01,
+        "tick_value": 0.1,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "pass": true,
+      "raw_volume": 1.0,
+      "risk_amount": 100.0,
+      "risk_per_lot": 100.0,
+      "rounded_volume": 1.0,
+      "sell_gain_at_2r": 200.0,
+      "sell_loss_at_sl": -100.0,
+      "stop_price_distance": 10.0,
+      "stop_tick_count": 1000.0,
+      "symbol": "XAUUSD"
+    },
+    {
+      "actual_buy_gain_at_2r": 200.0,
+      "actual_buy_loss_at_sl": -100.0,
+      "expected_gain_at_2r": 200.0,
+      "expected_loss_at_sl": -100.0,
+      "metadata": {
+        "contract_size": 1.0,
+        "tick_size": 0.01,
+        "tick_value": 0.01,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "pass": true,
+      "raw_volume": 0.1,
+      "risk_amount": 100.0,
+      "risk_per_lot": 1000.0,
+      "rounded_volume": 0.1,
+      "sell_gain_at_2r": 200.0,
+      "sell_loss_at_sl": -100.0,
+      "stop_price_distance": 1000.0,
+      "stop_tick_count": 100000.0,
+      "symbol": "BTCUSD"
+    },
+    {
+      "actual_buy_gain_at_2r": 200.0,
+      "actual_buy_loss_at_sl": -100.0,
+      "expected_gain_at_2r": 200.0,
+      "expected_loss_at_sl": -100.0,
+      "metadata": {
+        "contract_size": 5.0,
+        "tick_size": 0.01,
+        "tick_value": 0.05,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "pass": true,
+      "raw_volume": 0.2,
+      "risk_amount": 100.0,
+      "risk_per_lot": 500.0,
+      "rounded_volume": 0.2,
+      "sell_gain_at_2r": 200.0,
+      "sell_loss_at_sl": -100.0,
+      "stop_price_distance": 100.0,
+      "stop_tick_count": 10000.0,
+      "symbol": "ETHUSD"
+    }
+  ],
+  "minimum_volume_rejection_behavior": {
+    "above_maximum": {
+      "raw_volume": 100.0,
+      "reason": "",
+      "risk_amount": 100.0,
+      "risk_per_lot": 1.0,
+      "rounded_risk_amount": 2.0,
+      "rounded_volume": 2.0,
+      "stop_tick_count": 1.0,
+      "valid": true
+    },
+    "below_minimum": {
+      "raw_volume": 0.005,
+      "reason": "MIN_VOLUME_EXCEEDS_RISK",
+      "risk_amount": 100.0,
+      "risk_per_lot": 20000.0,
+      "rounded_risk_amount": 0.0,
+      "rounded_volume": 0.0,
+      "stop_tick_count": 20.0,
+      "valid": false
+    },
+    "between_steps": {
+      "raw_volume": 0.105,
+      "reason": "",
+      "risk_amount": 105.0,
+      "risk_per_lot": 1000.0,
+      "rounded_risk_amount": 100.0,
+      "rounded_volume": 0.1,
+      "stop_tick_count": 10.0,
+      "valid": true
+    },
+    "exactly_at_minimum": {
+      "raw_volume": 0.01,
+      "reason": "",
+      "risk_amount": 100.0,
+      "risk_per_lot": 10000.0,
+      "rounded_risk_amount": 100.0,
+      "rounded_volume": 0.01,
+      "stop_tick_count": 10.0,
+      "valid": true
+    },
+    "pass": true
+  },
+  "mode": "FIX_AND_SYNTHETIC_UNIT_VALIDATION_ONLY",
+  "old_formula_summary": {
+    "defect": "quote-price movement was treated as account currency and minimum volume could exceed target risk",
+    "pnl": "signed(exit - entry) * volume * contract_size - commission",
+    "position_sizing": "risk_amount / (abs(entry - stop_loss) * contract_size)",
+    "volume_minimum": "max(volume_min, floor_to_step(raw_volume))"
+  },
+  "overall_status": "PASS",
+  "production_impact_statement": {
+    "historical_simulation_monetary_valuation_changed": true,
+    "live_order_logic_changed": false,
+    "signal_or_entry_logic_changed": false,
+    "strategy_parameters_changed": false,
+    "v1_evidence_overwritten": false
+  },
+  "regression_results": {
+    "USDCAD": {
+      "broker_value_per_tick_per_lot": 0.7135161361674194,
+      "corrected_value_per_tick_per_lot": 0.7135161361674194,
+      "old_engine_value_per_tick_per_lot": 1.0,
+      "old_to_broker_ratio": 1.40151,
+      "pass": true
+    },
+    "USDJPY": {
+      "broker_value_per_tick_per_lot": 0.6312334301224594,
+      "corrected_value_per_tick_per_lot": 0.6312334301224594,
+      "old_engine_value_per_tick_per_lot": 100.0,
+      "old_to_broker_ratio": 158.42,
+      "pass": true
+    },
+    "XAUUSD": {
+      "broker_value_per_tick_per_lot": 0.1,
+      "corrected_value_per_tick_per_lot": 0.1,
+      "old_engine_value_per_tick_per_lot": 1.0,
+      "old_to_broker_ratio": 10.0,
+      "pass": true
+    }
+  },
+  "required_metadata": [
+    "point",
+    "digits",
+    "tick_size",
+    "tick_value",
+    "contract_size",
+    "volume_min",
+    "volume_max",
+    "volume_step"
+  ],
+  "schema_version": "SPRINT_92A1_VALUATION_FIX_VALIDATION_V1",
+  "test_results": {
+    "adjacent_multi_asset_score_and_audit": "20 passed",
+    "focused_historical_valuation": "21 passed in 0.07s",
+    "full_repository": "304 passed in 60.48s",
+    "relevant_historical_engine": "11 passed in 0.63s"
+  }
+}

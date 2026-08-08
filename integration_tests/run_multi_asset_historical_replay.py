@@ -11,7 +11,7 @@ from mss.analysis.multi_asset_historical_replay import MultiAssetHistoricalRepla
 from mss.domain.historical_backtest import HistoricalBacktestConfig
 
 
-JSON_PATH = Path("reports/MSS_Multi_Asset_Historical_Replay_v1.json")
+JSON_PATH = Path("reports/MSS_Multi_Asset_Historical_Replay_v2.json")
 TARGET_CANDLE_COUNT = 10000
 TIMEFRAME = mt5.TIMEFRAME_M15
 
@@ -75,6 +75,8 @@ def main():
                 "asset_class": definition.asset_class,
                 "digits": info["digits"],
                 "point": info["point"],
+                "trade_tick_size": info["trade_tick_size"],
+                "trade_tick_value": info["trade_tick_value"],
                 "trade_contract_size": info["trade_contract_size"],
                 "volume_min": info["volume_min"],
                 "volume_max": info["volume_max"],

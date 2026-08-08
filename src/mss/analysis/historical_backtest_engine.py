@@ -1,12 +1,12 @@
 """Chronological, no-look-ahead historical paper backtest engine."""
 
-import math
 import time
 
 from mss.analysis.order_builder import OrderBuilder
 from mss.analysis.performance_analyzer import PerformanceAnalyzer
 from mss.analysis.position_manager import PositionManager
 from mss.analysis.risk_engine import RiskEngine
+from mss.analysis.historical_valuation import HistoricalValuation
 from mss.analysis.smart_money_pipeline import SmartMoneyPipeline
 from mss.analysis.context_capture_engine import ContextCaptureEngine
 from mss.analysis.score_engine import ScoreEngine
@@ -171,6 +171,14 @@ class HistoricalBacktestEngine:
         metadata,
         result,
     ):
+        metadata_error = HistoricalValuation.metadata_error(metadata)
+        if metadata_error:
+            self._reject(
+                result.diagnostics,
+                f"VALUATION_METADATA_UNAVAILABLE:{metadata_error}",
+            )
+            return None
+
         pipeline_result = pending["pipeline_result"]
         direction = pending["direction"]
         spread_points = (
@@ -212,13 +220,13 @@ class HistoricalBacktestEngine:
             self._reject(result.diagnostics, "RISK_REJECTED")
             return None
 
-        raw_volume = risk_profile.risk_amount / (
-            stop_distance * metadata.contract_size
+        sizing = HistoricalValuation.size_for_risk(
+            risk_profile.risk_amount, stop_distance, metadata,
         )
-        volume = self._normalize_volume(raw_volume, metadata)
-        if volume <= 0:
-            self._reject(result.diagnostics, "INVALID_VOLUME")
+        if not sizing.valid:
+            self._reject(result.diagnostics, sizing.reason)
             return None
+        volume = sizing.rounded_volume
         risk_profile.lot_size = volume
 
         take_profit = float(
@@ -323,18 +331,16 @@ class HistoricalBacktestEngine:
         metadata,
         closed_positions,
     ):
-        multiplier = 1.0 if trade.direction == "BUY" else -1.0
-        gross_profit = (
-            (exit_price - trade.entry_price)
-            * multiplier
-            * trade.volume
-            * metadata.contract_size
+        net_profit = HistoricalValuation.signed_pnl(
+            trade.entry_price,
+            exit_price,
+            trade.direction,
+            trade.volume,
+            metadata,
+            trade.commission,
         )
-        net_profit = float(gross_profit - trade.commission)
-        risk_value = (
-            abs(trade.entry_price - trade.stop_loss)
-            * trade.volume
-            * metadata.contract_size
+        risk_value = HistoricalValuation.monetary_value(
+            abs(trade.entry_price - trade.stop_loss), trade.volume, metadata,
         )
 
         trade.exit_time = candle.time
@@ -363,16 +369,6 @@ class HistoricalBacktestEngine:
         if pipeline_result.bos_direction == "BEARISH":
             return "SELL"
         return "WAIT"
-
-    @staticmethod
-    def _normalize_volume(raw_volume, metadata):
-        if metadata.volume_step <= 0:
-            return 0.0
-        steps = math.floor((raw_volume + 1e-12) / metadata.volume_step)
-        volume = steps * metadata.volume_step
-        volume = max(metadata.volume_min, min(metadata.volume_max, volume))
-        decimals = max(0, len(str(metadata.volume_step).split(".")[-1]))
-        return round(volume, decimals)
 
     @staticmethod
     def _detector_states(pipeline_result):

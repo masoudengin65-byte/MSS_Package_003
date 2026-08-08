@@ -23,11 +23,14 @@ class HistoricalBacktestConfig:
 
 @dataclass
 class BacktestSymbolMetadata:
-    point: float = 0.00001
-    contract_size: float = 100000.0
-    volume_min: float = 0.01
-    volume_max: float = 100.0
-    volume_step: float = 0.01
+    point: float | None = None
+    digits: int | None = None
+    tick_size: float | None = None
+    tick_value: float | None = None
+    contract_size: float | None = None
+    volume_min: float | None = None
+    volume_max: float | None = None
+    volume_step: float | None = None
     spread_points: float = 0.0
 
 

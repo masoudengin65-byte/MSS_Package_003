@@ -61,6 +61,9 @@ def main():
             symbol_info = mt5.symbol_info(history.resolved_symbol)
             metadata = BacktestSymbolMetadata(
                 point=symbol_info.point,
+                digits=symbol_info.digits,
+                tick_size=symbol_info.trade_tick_size,
+                tick_value=symbol_info.trade_tick_value,
                 contract_size=symbol_info.trade_contract_size,
                 volume_min=symbol_info.volume_min,
                 volume_max=symbol_info.volume_max,
