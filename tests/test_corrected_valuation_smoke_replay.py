@@ -16,6 +16,8 @@ def metadata(symbol):
     }
     tick_size, tick_value, contract_size, digits = values[symbol]
     return BacktestSymbolMetadata(
+        account_currency="USD", currency_base="USD", currency_profit="USD",
+        currency_margin="USD", trade_calc_mode=0,
         point=tick_size, digits=digits, tick_size=tick_size,
         tick_value=tick_value, contract_size=contract_size,
         volume_min=0.01, volume_max=100.0, volume_step=0.01,

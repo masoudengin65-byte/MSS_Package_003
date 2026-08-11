@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
+from bisect import bisect_right
 import math
 
 
@@ -18,13 +20,82 @@ class HistoricalPositionSizing:
     rounded_risk_amount: float
 
 
+@dataclass(frozen=True)
+class HistoricalConversionPoint:
+    """A rate whose timestamp is the candle completion time."""
+    timestamp: datetime
+    rate: float
+
+
+@dataclass(frozen=True)
+class HistoricalConversionResult:
+    available: bool
+    reason: str
+    from_currency: str
+    to_currency: str
+    requested_time: datetime
+    rate_time: datetime | None = None
+    factor: float = 0.0
+    path: str = ""
+
+
+class HistoricalFxResolver:
+    """Resolve deterministic one-leg direct/inverse completed-candle FX rates."""
+
+    def __init__(self, series=None):
+        self._series = {}
+        for symbol, value in (series or {}).items():
+            base, quote, points = value
+            ordered = tuple(sorted(points, key=lambda item: item.timestamp))
+            self._series[symbol] = (str(base).upper(), str(quote).upper(), ordered)
+
+    def resolve(self, from_currency, to_currency, timestamp):
+        source, target = str(from_currency).upper(), str(to_currency).upper()
+        if source == target:
+            return HistoricalConversionResult(
+                True, "", source, target, timestamp, timestamp, 1.0,
+                f"{source}->{target}:IDENTITY",
+            )
+        candidates = []
+        for symbol, (base, quote, points) in sorted(self._series.items()):
+            inverse = source == quote and target == base
+            direct = source == base and target == quote
+            if not (direct or inverse):
+                continue
+            times = [point.timestamp for point in points]
+            index = bisect_right(times, timestamp) - 1
+            if index < 0:
+                continue
+            point = points[index]
+            if not math.isfinite(float(point.rate)) or float(point.rate) <= 0:
+                continue
+            factor = (1.0 / float(point.rate)) if inverse else float(point.rate)
+            path = f"{source}->{target}:{symbol}:{'INVERSE' if inverse else 'DIRECT'}"
+            candidates.append((point.timestamp, symbol, factor, path))
+        if not candidates:
+            return HistoricalConversionResult(
+                False, "HISTORICAL_CONVERSION_UNAVAILABLE", source, target,
+                timestamp,
+            )
+        rate_time, _, factor, path = max(candidates, key=lambda item: (item[0], item[1]))
+        return HistoricalConversionResult(
+            True, "", source, target, timestamp, rate_time, factor, path,
+        )
+
+
 class HistoricalValuation:
-    """Convert price movement to account currency using broker tick economics."""
+    """Value supported historical trades without current broker tick economics."""
 
     REQUIRED_FIELDS = (
         "point", "digits", "tick_size", "tick_value", "contract_size",
         "volume_min", "volume_max", "volume_step",
     )
+    REQUIRED_TEXT_FIELDS = (
+        "account_currency", "currency_base", "currency_profit", "currency_margin",
+    )
+    # MT5 FOREX (0), CFD (1), and CFDLEVERAGE (4) all use contract-size
+    # price-difference profit in the broker metadata verified for this project.
+    SUPPORTED_TRADE_CALC_MODES = (0, 1, 4)
 
     @classmethod
     def metadata_error(cls, metadata):
@@ -47,6 +118,17 @@ class HistoricalValuation:
                 return f"INVALID_{field.upper()}"
         if float(metadata.volume_min) > float(metadata.volume_max):
             return "INVALID_VOLUME_RANGE"
+        for field in cls.REQUIRED_TEXT_FIELDS:
+            value = getattr(metadata, field, None)
+            if not isinstance(value, str) or not value.strip():
+                return f"MISSING_{field.upper()}"
+        mode = getattr(metadata, "trade_calc_mode", None)
+        if mode is None:
+            return "MISSING_TRADE_CALC_MODE"
+        if isinstance(mode, bool) or not isinstance(mode, int):
+            return "INVALID_TRADE_CALC_MODE"
+        if mode not in cls.SUPPORTED_TRADE_CALC_MODES:
+            return f"UNSUPPORTED_TRADE_CALC_MODE:{mode}"
         return ""
 
     @classmethod
@@ -60,18 +142,23 @@ class HistoricalValuation:
         return delta / float(metadata.tick_size)
 
     @classmethod
-    def monetary_value(cls, price_delta, volume, metadata):
+    def native_monetary_value(cls, price_delta, volume, metadata):
         error = cls.metadata_error(metadata)
         if error:
             raise ValueError(error)
         volume = float(volume)
         if not math.isfinite(volume) or volume < 0:
             raise ValueError("INVALID_VOLUME")
-        return cls.tick_count(price_delta, metadata) * float(metadata.tick_value) * volume
+        return abs(float(price_delta)) * float(metadata.contract_size) * volume
+
+    @classmethod
+    def monetary_value(cls, price_delta, volume, metadata, conversion_factor=1.0):
+        return cls.native_monetary_value(price_delta, volume, metadata) * float(conversion_factor)
 
     @classmethod
     def signed_pnl(
-        cls, entry_price, exit_price, direction, volume, metadata, commission=0.0,
+        cls, entry_price, exit_price, direction, volume, metadata,
+        conversion_factor=1.0, commission=0.0,
     ):
         error = cls.metadata_error(metadata)
         if error:
@@ -81,15 +168,13 @@ class HistoricalValuation:
         price_delta = float(exit_price) - float(entry_price)
         direction_sign = 1.0 if direction == "BUY" else -1.0
         gross = (
-            price_delta / float(metadata.tick_size)
-            * float(metadata.tick_value)
-            * float(volume)
+            price_delta * float(metadata.contract_size) * float(volume)
             * direction_sign
         )
-        return gross - float(commission)
+        return gross * float(conversion_factor) - float(commission)
 
     @classmethod
-    def size_for_risk(cls, risk_amount, stop_distance, metadata):
+    def size_for_risk(cls, risk_amount, stop_distance, metadata, conversion_factor=1.0):
         error = cls.metadata_error(metadata)
         risk_amount = float(risk_amount)
         stop_distance = abs(float(stop_distance))
@@ -101,7 +186,10 @@ class HistoricalValuation:
             return cls._rejected("INVALID_STOP_DISTANCE", risk_amount)
 
         stop_ticks = cls.tick_count(stop_distance, metadata)
-        risk_per_lot = stop_ticks * float(metadata.tick_value)
+        factor = float(conversion_factor)
+        if not math.isfinite(factor) or factor <= 0:
+            return cls._rejected("INVALID_CONVERSION_FACTOR", risk_amount)
+        risk_per_lot = stop_distance * float(metadata.contract_size) * factor
         raw_volume = risk_amount / risk_per_lot
         minimum = float(metadata.volume_min)
         maximum = float(metadata.volume_max)

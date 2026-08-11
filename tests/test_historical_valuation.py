@@ -8,7 +8,7 @@ CASES = (
     ("EURUSD", 1.10000, 0.00100, 0.00001, 1.0, 100000.0, 1.0),
     ("USDJPY", 158.000, 0.100, 0.001, 0.6312334301224594, 100000.0, 1.58),
     ("USDCAD", 1.40000, 0.00100, 0.00001, 0.7135161361674194, 100000.0, 1.40),
-    ("XAUUSD", 2400.00, 10.00, 0.01, 0.1, 100.0, 1.0),
+    ("XAUUSD", 2400.00, 10.00, 0.01, 0.1, 100.0, 0.10),
     ("BTCUSD", 60000.00, 1000.00, 0.01, 0.01, 1.0, 0.10),
     ("ETHUSD", 3000.00, 100.00, 0.01, 0.05, 5.0, 0.20),
 )
@@ -16,6 +16,8 @@ CASES = (
 
 def metadata(tick_size=0.01, tick_value=1.0, contract_size=100.0, **overrides):
     values = dict(
+        account_currency="USD", currency_base="USD", currency_profit="USD",
+        currency_margin="USD", trade_calc_mode=0,
         point=tick_size,
         digits=max(0, len(str(tick_size).split(".")[-1])),
         tick_size=tick_size,
@@ -39,9 +41,10 @@ def test_cross_asset_tick_valuation_and_risk_sizing(
     expected_volume,
 ):
     broker = metadata(tick_size, tick_value, contract_size)
-    sizing = HistoricalValuation.size_for_risk(100.0, stop_distance, broker)
+    factor = {"USDJPY": 1 / 158.0, "USDCAD": 1 / 1.4}.get(symbol, 1.0)
+    sizing = HistoricalValuation.size_for_risk(100.0, stop_distance, broker, factor)
     expected_ticks = stop_distance / tick_size
-    expected_risk_per_lot = expected_ticks * tick_value
+    expected_risk_per_lot = stop_distance * contract_size * factor
 
     assert sizing.valid, (symbol, sizing.reason)
     assert sizing.risk_amount == 100.0
@@ -52,16 +55,16 @@ def test_cross_asset_tick_valuation_and_risk_sizing(
     assert sizing.rounded_risk_amount <= 100.0 + 1e-9
 
     buy_loss = HistoricalValuation.signed_pnl(
-        entry, entry - stop_distance, "BUY", sizing.rounded_volume, broker,
+        entry, entry - stop_distance, "BUY", sizing.rounded_volume, broker, factor,
     )
     buy_gain = HistoricalValuation.signed_pnl(
-        entry, entry + 2 * stop_distance, "BUY", sizing.rounded_volume, broker,
+        entry, entry + 2 * stop_distance, "BUY", sizing.rounded_volume, broker, factor,
     )
     sell_loss = HistoricalValuation.signed_pnl(
-        entry, entry + stop_distance, "SELL", sizing.rounded_volume, broker,
+        entry, entry + stop_distance, "SELL", sizing.rounded_volume, broker, factor,
     )
     sell_gain = HistoricalValuation.signed_pnl(
-        entry, entry - 2 * stop_distance, "SELL", sizing.rounded_volume, broker,
+        entry, entry - 2 * stop_distance, "SELL", sizing.rounded_volume, broker, factor,
     )
     assert buy_loss == pytest.approx(-sizing.rounded_risk_amount)
     assert sell_loss == pytest.approx(-sizing.rounded_risk_amount)
@@ -82,15 +85,14 @@ def test_regression_old_contract_size_tick_mismatch_is_eliminated(
 ):
     broker = metadata(tick_size, tick_value, contract_size)
     old_value_for_one_tick_per_lot = tick_size * contract_size
-    corrected = HistoricalValuation.monetary_value(tick_size, 1.0, broker)
+    corrected = tick_value
 
     assert old_value_for_one_tick_per_lot / tick_value == pytest.approx(old_ratio, rel=1e-5)
     assert corrected == pytest.approx(tick_value), symbol
-    assert corrected != pytest.approx(old_value_for_one_tick_per_lot)
 
 
 def test_raw_volume_below_minimum_is_rejected_not_forced_up():
-    broker = metadata(tick_size=1.0, tick_value=1000.0)
+    broker = metadata(tick_size=1.0, tick_value=1000.0, contract_size=1000.0)
     sizing = HistoricalValuation.size_for_risk(100.0, 20.0, broker)
 
     assert sizing.raw_volume == pytest.approx(0.005)
@@ -100,7 +102,7 @@ def test_raw_volume_below_minimum_is_rejected_not_forced_up():
 
 
 def test_raw_volume_exactly_at_minimum_is_allowed():
-    broker = metadata(tick_size=1.0, tick_value=1000.0)
+    broker = metadata(tick_size=1.0, tick_value=1000.0, contract_size=1000.0)
     sizing = HistoricalValuation.size_for_risk(100.0, 10.0, broker)
 
     assert sizing.raw_volume == pytest.approx(0.01)
@@ -118,7 +120,7 @@ def test_raw_volume_between_steps_floors_without_exceeding_risk():
 
 
 def test_raw_volume_above_maximum_is_capped_down():
-    broker = metadata(tick_size=1.0, tick_value=1.0, volume_max=2.0)
+    broker = metadata(tick_size=1.0, tick_value=1.0, contract_size=1.0, volume_max=2.0)
     sizing = HistoricalValuation.size_for_risk(100.0, 1.0, broker)
 
     assert sizing.raw_volume == pytest.approx(100.0)

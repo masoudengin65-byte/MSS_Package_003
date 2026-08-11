@@ -1,0 +1,2229 @@
+{
+  "acceptance": {
+    "current_tick_value_not_used_for_historical_monetary_valuation": true,
+    "entry_and_exit_conversion_timestamps_not_future": true,
+    "full_eight_symbol_replay_not_run": true,
+    "losses_above_1_25_percent_zero": true,
+    "no_conversion_unavailable": true,
+    "repeat_calculation_identical": true,
+    "xauusd_identity_conversion_exactly_one": true
+  },
+  "acceptance_status": "PASS",
+  "anomalies": [],
+  "conversion_paths": {
+    "USDCAD": "CAD->USD:USDCAD:INVERSE",
+    "USDJPY": "JPY->USD:USDJPY:INVERSE",
+    "XAUUSD": "USD->USD:IDENTITY"
+  },
+  "determinism_checks": {
+    "repeated_replays_identical": true
+  },
+  "full_eight_symbol_replay_run": false,
+  "metadata": {
+    "account_currency": "USD",
+    "baseline_commit": "fac310a",
+    "current_tick_value_role": "REFERENCE_METADATA_ONLY",
+    "risk_percent": 1.0,
+    "symbols": [
+      "USDJPY",
+      "USDCAD",
+      "XAUUSD"
+    ],
+    "target_r": 2.0
+  },
+  "real_orders_sent": false,
+  "risk_distribution": {
+    "losing_trade_count": 240,
+    "losses_above_1_25_percent": 0,
+    "losses_above_1_50_percent": 0,
+    "losses_above_2_00_percent": 0,
+    "maximum_realized_loss_percent": 1.02661,
+    "median_realized_loss_percent": 0.996572,
+    "p90_realized_loss_percent": 1.00797
+  },
+  "schema_version": "MSS_SPRINT92A2C_HISTORICAL_CURRENCY_CONVERSION_VALIDATION_V1",
+  "strategy_behavior_changed": false,
+  "symbols": {
+    "USDCAD": {
+      "before_current_tick_vs_historical_conversion": [
+        {
+          "current_tick_value_reference": 0.7182772837626238,
+          "difference": 0.012161563897050143,
+          "historical_entry_tick_value": 0.7304388476596739,
+          "trade_id": 1
+        },
+        {
+          "current_tick_value_reference": 0.7182772837626238,
+          "difference": 0.01177761636586594,
+          "historical_entry_tick_value": 0.7300549001284897,
+          "trade_id": 2
+        },
+        {
+          "current_tick_value_reference": 0.7182772837626238,
+          "difference": 0.012268287670122113,
+          "historical_entry_tick_value": 0.7305455714327459,
+          "trade_id": 3
+        },
+        {
+          "current_tick_value_reference": 0.7182772837626238,
+          "difference": 0.009318231338621086,
+          "historical_entry_tick_value": 0.7275955151012449,
+          "trade_id": 4
+        },
+        {
+          "current_tick_value_reference": 0.7182772837626238,
+          "difference": 0.01061756586636875,
+          "historical_entry_tick_value": 0.7288948496289925,
+          "trade_id": 5
+        }
+      ],
+      "conversion_path": "CAD->USD:USDCAD:INVERSE",
+      "conversion_probe": {
+        "available": true,
+        "factor": 0.7304388476596739,
+        "from_currency": "CAD",
+        "path": "CAD->USD:USDCAD:INVERSE",
+        "rate_time": "2026-03-17T11:15:00",
+        "reason": "",
+        "requested_time": "2026-03-17T11:15:00",
+        "to_currency": "USD"
+      },
+      "conversion_unavailable_count": 0,
+      "deterministic_repeat": true,
+      "historical_window": {
+        "candle_count": 10000,
+        "end": "2026-08-07T16:45:00",
+        "start": "2026-03-13T07:45:00"
+      },
+      "metadata": {
+        "account_currency": "USD",
+        "contract_size": 100000.0,
+        "currency_base": "USD",
+        "currency_margin": "USD",
+        "currency_profit": "CAD",
+        "digits": 5,
+        "point": 1e-05,
+        "spread_points": 24,
+        "tick_size": 1e-05,
+        "tick_value": 0.7182772837626238,
+        "trade_calc_mode": 0,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "performance": {
+        "average_holding_minutes": 1147.14,
+        "average_r": -0.2336,
+        "ending_balance": 7414.77,
+        "equity_curve": [
+          [
+            0,
+            10000.0
+          ],
+          [
+            1,
+            9899.42
+          ],
+          [
+            2,
+            9799.39
+          ],
+          [
+            3,
+            9700.82
+          ],
+          [
+            4,
+            9603.33
+          ],
+          [
+            5,
+            9507.17
+          ],
+          [
+            6,
+            9411.4
+          ],
+          [
+            7,
+            9317.61
+          ],
+          [
+            8,
+            9499.18
+          ],
+          [
+            9,
+            9686.89
+          ],
+          [
+            10,
+            9589.54
+          ],
+          [
+            11,
+            9492.86
+          ],
+          [
+            12,
+            9679.89
+          ],
+          [
+            13,
+            9583.48
+          ],
+          [
+            14,
+            9772.7
+          ],
+          [
+            15,
+            9674.37
+          ],
+          [
+            16,
+            9577.15
+          ],
+          [
+            17,
+            9478.83
+          ],
+          [
+            18,
+            9384.44
+          ],
+          [
+            19,
+            9290.95
+          ],
+          [
+            20,
+            9197.3
+          ],
+          [
+            21,
+            9106.09
+          ],
+          [
+            22,
+            9015.12
+          ],
+          [
+            23,
+            8924.44
+          ],
+          [
+            24,
+            8834.85
+          ],
+          [
+            25,
+            8748.39
+          ],
+          [
+            26,
+            8922.74
+          ],
+          [
+            27,
+            9100.5
+          ],
+          [
+            28,
+            9009.51
+          ],
+          [
+            29,
+            8919.99
+          ],
+          [
+            30,
+            9097.67
+          ],
+          [
+            31,
+            9006.46
+          ],
+          [
+            32,
+            8916.23
+          ],
+          [
+            33,
+            8826.44
+          ],
+          [
+            34,
+            8737.96
+          ],
+          [
+            35,
+            8650.34
+          ],
+          [
+            36,
+            8823.31
+          ],
+          [
+            37,
+            8735.86
+          ],
+          [
+            38,
+            8648.45
+          ],
+          [
+            39,
+            8560.58
+          ],
+          [
+            40,
+            8474.52
+          ],
+          [
+            41,
+            8389.27
+          ],
+          [
+            42,
+            8304.75
+          ],
+          [
+            43,
+            8220.74
+          ],
+          [
+            44,
+            8138.98
+          ],
+          [
+            45,
+            8300.6
+          ],
+          [
+            46,
+            8465.49
+          ],
+          [
+            47,
+            8632.57
+          ],
+          [
+            48,
+            8545.1
+          ],
+          [
+            49,
+            8459.91
+          ],
+          [
+            50,
+            8374.7
+          ],
+          [
+            51,
+            8540.48
+          ],
+          [
+            52,
+            8455.14
+          ],
+          [
+            53,
+            8369.98
+          ],
+          [
+            54,
+            8284.91
+          ],
+          [
+            55,
+            8448.22
+          ],
+          [
+            56,
+            8363.72
+          ],
+          [
+            57,
+            8279.89
+          ],
+          [
+            58,
+            8196.71
+          ],
+          [
+            59,
+            8114.71
+          ],
+          [
+            60,
+            8275.28
+          ],
+          [
+            61,
+            8191.99
+          ],
+          [
+            62,
+            8353.37
+          ],
+          [
+            63,
+            8519.32
+          ],
+          [
+            64,
+            8434.25
+          ],
+          [
+            65,
+            8350.86
+          ],
+          [
+            66,
+            8267.76
+          ],
+          [
+            67,
+            8185.02
+          ],
+          [
+            68,
+            8102.42
+          ],
+          [
+            69,
+            8262.96
+          ],
+          [
+            70,
+            8179.74
+          ],
+          [
+            71,
+            8098.47
+          ],
+          [
+            72,
+            8017.11
+          ],
+          [
+            73,
+            7936.23
+          ],
+          [
+            74,
+            7857.24
+          ],
+          [
+            75,
+            7778.37
+          ],
+          [
+            76,
+            7700.21
+          ],
+          [
+            77,
+            7852.37
+          ],
+          [
+            78,
+            7773.71
+          ],
+          [
+            79,
+            7696.61
+          ],
+          [
+            80,
+            7849.66
+          ],
+          [
+            81,
+            8004.4
+          ],
+          [
+            82,
+            7924.21
+          ],
+          [
+            83,
+            7845.49
+          ],
+          [
+            84,
+            7766.79
+          ],
+          [
+            85,
+            7689.19
+          ],
+          [
+            86,
+            7840.72
+          ],
+          [
+            87,
+            7996.1
+          ],
+          [
+            88,
+            8154.73
+          ],
+          [
+            89,
+            8072.53
+          ],
+          [
+            90,
+            8232.58
+          ],
+          [
+            91,
+            8150.48
+          ],
+          [
+            92,
+            8068.48
+          ],
+          [
+            93,
+            8227.56
+          ],
+          [
+            94,
+            8144.85
+          ],
+          [
+            95,
+            8306.44
+          ],
+          [
+            96,
+            8223.79
+          ],
+          [
+            97,
+            8142.12
+          ],
+          [
+            98,
+            8060.37
+          ],
+          [
+            99,
+            7980.02
+          ],
+          [
+            100,
+            7899.41
+          ],
+          [
+            101,
+            7820.37
+          ],
+          [
+            102,
+            7975.88
+          ],
+          [
+            103,
+            8133.18
+          ],
+          [
+            104,
+            8053.34
+          ],
+          [
+            105,
+            7972.52
+          ],
+          [
+            106,
+            8130.37
+          ],
+          [
+            107,
+            8048.66
+          ],
+          [
+            108,
+            7968.25
+          ],
+          [
+            109,
+            8126.23
+          ],
+          [
+            110,
+            8046.41
+          ],
+          [
+            111,
+            8206.65
+          ],
+          [
+            112,
+            8125.23
+          ],
+          [
+            113,
+            8043.31
+          ],
+          [
+            114,
+            7962.38
+          ],
+          [
+            115,
+            7882.23
+          ],
+          [
+            116,
+            7802.62
+          ],
+          [
+            117,
+            7724.14
+          ],
+          [
+            118,
+            7646.95
+          ],
+          [
+            119,
+            7570.45
+          ],
+          [
+            120,
+            7494.49
+          ],
+          [
+            121,
+            7419.15
+          ],
+          [
+            122,
+            7344.97
+          ],
+          [
+            123,
+            7271.27
+          ],
+          [
+            124,
+            7414.77
+          ]
+        ],
+        "expectancy": -20.85,
+        "gross_loss": 7843.23,
+        "gross_profit": 5258.0,
+        "losing_trades": 92,
+        "maximum_consecutive_losses": 12,
+        "maximum_consecutive_wins": 3,
+        "maximum_drawdown": 2728.73,
+        "maximum_drawdown_percent": 27.2873,
+        "net_profit": -2585.23,
+        "profit_factor": 0.6704,
+        "return_percent": -25.8523,
+        "total_trades": 124,
+        "win_rate": 25.806451612903224,
+        "winning_trades": 32
+      },
+      "rejection_reasons": {
+        "POSITION_ALREADY_OPEN": 1011
+      },
+      "risk_distribution": {
+        "losing_trade_count": 92,
+        "losses_above_1_25_percent": 0,
+        "losses_above_1_50_percent": 0,
+        "losses_above_2_00_percent": 0,
+        "maximum_realized_loss_percent": 1.02661,
+        "median_realized_loss_percent": 1.00325,
+        "p90_realized_loss_percent": 1.008842
+      },
+      "sample_entry_conversions": [
+        {
+          "account_currency_stop_risk": 99.59533687841403,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7304388476596739,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-17T11:15:00",
+          "entry_time": "2026-03-17T11:15:00",
+          "exit_conversion_factor": 0.7304548542377338,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-17T19:30:00",
+          "exit_time": "2026-03-17T19:30:00",
+          "historical_entry_tick_value": 0.7304388476596739,
+          "realized_account_currency_pnl": -100.58,
+          "trade_id": 1,
+          "volume": 1.35
+        },
+        {
+          "account_currency_stop_risk": 98.77642798738982,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7300549001284897,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-18T09:00:00",
+          "entry_time": "2026-03-18T09:00:00",
+          "exit_conversion_factor": 0.7303961668809161,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-18T15:30:00",
+          "exit_time": "2026-03-18T15:30:00",
+          "historical_entry_tick_value": 0.7300549001284897,
+          "realized_account_currency_pnl": -100.03,
+          "trade_id": 2,
+          "volume": 1.65
+        },
+        {
+          "account_currency_stop_risk": 97.82005201485063,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7305455714327459,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-18T17:30:00",
+          "entry_time": "2026-03-18T17:30:00",
+          "exit_conversion_factor": 0.7305455714327459,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-18T17:30:00",
+          "exit_time": "2026-03-18T17:30:00",
+          "historical_entry_tick_value": 0.7305455714327459,
+          "realized_account_currency_pnl": -98.57,
+          "trade_id": 3,
+          "volume": 1.03
+        },
+        {
+          "account_currency_stop_risk": 96.76292755331743,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7275955151012449,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-19T14:30:00",
+          "entry_time": "2026-03-19T14:30:00",
+          "exit_conversion_factor": 0.7279609812914029,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-19T14:45:00",
+          "exit_time": "2026-03-19T14:45:00",
+          "historical_entry_tick_value": 0.7275955151012449,
+          "realized_account_currency_pnl": -97.49,
+          "trade_id": 4,
+          "volume": 0.93
+        },
+        {
+          "account_currency_stop_risk": 95.66016006531936,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7288948496289925,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-19T19:45:00",
+          "entry_time": "2026-03-19T19:45:00",
+          "exit_conversion_factor": 0.7288948496289925,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-19T19:45:00",
+          "exit_time": "2026-03-19T19:45:00",
+          "historical_entry_tick_value": 0.7288948496289925,
+          "realized_account_currency_pnl": -96.16,
+          "trade_id": 5,
+          "volume": 0.68
+        }
+      ],
+      "sample_exit_conversions": [
+        {
+          "account_currency_stop_risk": 99.59533687841403,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7304388476596739,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-17T11:15:00",
+          "entry_time": "2026-03-17T11:15:00",
+          "exit_conversion_factor": 0.7304548542377338,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-17T19:30:00",
+          "exit_time": "2026-03-17T19:30:00",
+          "historical_entry_tick_value": 0.7304388476596739,
+          "realized_account_currency_pnl": -100.58,
+          "trade_id": 1,
+          "volume": 1.35
+        },
+        {
+          "account_currency_stop_risk": 98.77642798738982,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7300549001284897,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-18T09:00:00",
+          "entry_time": "2026-03-18T09:00:00",
+          "exit_conversion_factor": 0.7303961668809161,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-18T15:30:00",
+          "exit_time": "2026-03-18T15:30:00",
+          "historical_entry_tick_value": 0.7300549001284897,
+          "realized_account_currency_pnl": -100.03,
+          "trade_id": 2,
+          "volume": 1.65
+        },
+        {
+          "account_currency_stop_risk": 97.82005201485063,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7305455714327459,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-18T17:30:00",
+          "entry_time": "2026-03-18T17:30:00",
+          "exit_conversion_factor": 0.7305455714327459,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-18T17:30:00",
+          "exit_time": "2026-03-18T17:30:00",
+          "historical_entry_tick_value": 0.7305455714327459,
+          "realized_account_currency_pnl": -98.57,
+          "trade_id": 3,
+          "volume": 1.03
+        },
+        {
+          "account_currency_stop_risk": 96.76292755331743,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7275955151012449,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-19T14:30:00",
+          "entry_time": "2026-03-19T14:30:00",
+          "exit_conversion_factor": 0.7279609812914029,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-19T14:45:00",
+          "exit_time": "2026-03-19T14:45:00",
+          "historical_entry_tick_value": 0.7275955151012449,
+          "realized_account_currency_pnl": -97.49,
+          "trade_id": 4,
+          "volume": 0.93
+        },
+        {
+          "account_currency_stop_risk": 95.66016006531936,
+          "current_broker_tick_value_reference": 0.7182772837626238,
+          "entry_conversion_factor": 0.7288948496289925,
+          "entry_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "entry_conversion_time": "2026-03-19T19:45:00",
+          "entry_time": "2026-03-19T19:45:00",
+          "exit_conversion_factor": 0.7288948496289925,
+          "exit_conversion_path": "CAD->USD:USDCAD:INVERSE",
+          "exit_conversion_time": "2026-03-19T19:45:00",
+          "exit_time": "2026-03-19T19:45:00",
+          "historical_entry_tick_value": 0.7288948496289925,
+          "realized_account_currency_pnl": -96.16,
+          "trade_id": 5,
+          "volume": 0.68
+        }
+      ]
+    },
+    "USDJPY": {
+      "before_current_tick_vs_historical_conversion": [
+        {
+          "current_tick_value_reference": 0.6277109265640987,
+          "difference": 0.0012159355311082143,
+          "historical_entry_tick_value": 0.6289268620952069,
+          "trade_id": 1
+        },
+        {
+          "current_tick_value_reference": 0.6277109265640987,
+          "difference": 0.00127922973995509,
+          "historical_entry_tick_value": 0.6289901563040537,
+          "trade_id": 2
+        },
+        {
+          "current_tick_value_reference": 0.6277109265640987,
+          "difference": 0.0026868544357122603,
+          "historical_entry_tick_value": 0.6303977809998109,
+          "trade_id": 3
+        },
+        {
+          "current_tick_value_reference": 0.6277109265640987,
+          "difference": -0.0008499329894238183,
+          "historical_entry_tick_value": 0.6268609935746748,
+          "trade_id": 4
+        },
+        {
+          "current_tick_value_reference": 0.6277109265640987,
+          "difference": -0.001728917287045273,
+          "historical_entry_tick_value": 0.6259820092770534,
+          "trade_id": 5
+        }
+      ],
+      "conversion_path": "JPY->USD:USDJPY:INVERSE",
+      "conversion_probe": {
+        "available": true,
+        "factor": 0.006275218534485464,
+        "from_currency": "JPY",
+        "path": "JPY->USD:USDJPY:INVERSE",
+        "rate_time": "2026-03-17T11:15:00",
+        "reason": "",
+        "requested_time": "2026-03-17T11:15:00",
+        "to_currency": "USD"
+      },
+      "conversion_unavailable_count": 0,
+      "deterministic_repeat": true,
+      "historical_window": {
+        "candle_count": 10000,
+        "end": "2026-08-07T16:45:00",
+        "start": "2026-03-13T07:45:00"
+      },
+      "metadata": {
+        "account_currency": "USD",
+        "contract_size": 100000.0,
+        "currency_base": "USD",
+        "currency_margin": "USD",
+        "currency_profit": "JPY",
+        "digits": 3,
+        "point": 0.001,
+        "spread_points": 24,
+        "tick_size": 0.001,
+        "tick_value": 0.6277109265640987,
+        "trade_calc_mode": 0,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "performance": {
+        "average_holding_minutes": 1404.29,
+        "average_r": -0.1488,
+        "ending_balance": 8469.32,
+        "equity_curve": [
+          [
+            0,
+            10000.0
+          ],
+          [
+            1,
+            9899.97
+          ],
+          [
+            2,
+            10097.38
+          ],
+          [
+            3,
+            9996.34
+          ],
+          [
+            4,
+            9895.92
+          ],
+          [
+            5,
+            9796.57
+          ],
+          [
+            6,
+            9989.85
+          ],
+          [
+            7,
+            10186.89
+          ],
+          [
+            8,
+            10086.27
+          ],
+          [
+            9,
+            9986.68
+          ],
+          [
+            10,
+            9886.82
+          ],
+          [
+            11,
+            9788.65
+          ],
+          [
+            12,
+            9982.83
+          ],
+          [
+            13,
+            10181.23
+          ],
+          [
+            14,
+            10079.6
+          ],
+          [
+            15,
+            10278.53
+          ],
+          [
+            16,
+            10177.2
+          ],
+          [
+            17,
+            10379.27
+          ],
+          [
+            18,
+            10275.61
+          ],
+          [
+            19,
+            10477.87
+          ],
+          [
+            20,
+            10376.27
+          ],
+          [
+            21,
+            10580.88
+          ],
+          [
+            22,
+            10475.94
+          ],
+          [
+            23,
+            10371.02
+          ],
+          [
+            24,
+            10268.19
+          ],
+          [
+            25,
+            10472.66
+          ],
+          [
+            26,
+            10368.26
+          ],
+          [
+            27,
+            10265.3
+          ],
+          [
+            28,
+            10168.02
+          ],
+          [
+            29,
+            10066.21
+          ],
+          [
+            30,
+            10263.25
+          ],
+          [
+            31,
+            10467.25
+          ],
+          [
+            32,
+            10362.12
+          ],
+          [
+            33,
+            10258.64
+          ],
+          [
+            34,
+            10156.82
+          ],
+          [
+            35,
+            10056.1
+          ],
+          [
+            36,
+            10255.92
+          ],
+          [
+            37,
+            10154.39
+          ],
+          [
+            38,
+            10052.21
+          ],
+          [
+            39,
+            9951.64
+          ],
+          [
+            40,
+            9852.49
+          ],
+          [
+            41,
+            9753.23
+          ],
+          [
+            42,
+            9946.12
+          ],
+          [
+            43,
+            9845.83
+          ],
+          [
+            44,
+            9746.99
+          ],
+          [
+            45,
+            9649.97
+          ],
+          [
+            46,
+            9552.45
+          ],
+          [
+            47,
+            9456.13
+          ],
+          [
+            48,
+            9642.67
+          ],
+          [
+            49,
+            9545.82
+          ],
+          [
+            50,
+            9449.47
+          ],
+          [
+            51,
+            9354.93
+          ],
+          [
+            52,
+            9260.87
+          ],
+          [
+            53,
+            9168.45
+          ],
+          [
+            54,
+            9075.97
+          ],
+          [
+            55,
+            8984.69
+          ],
+          [
+            56,
+            8896.12
+          ],
+          [
+            57,
+            8806.49
+          ],
+          [
+            58,
+            8717.69
+          ],
+          [
+            59,
+            8629.35
+          ],
+          [
+            60,
+            8800.22
+          ],
+          [
+            61,
+            8971.75
+          ],
+          [
+            62,
+            9148.94
+          ],
+          [
+            63,
+            9056.55
+          ],
+          [
+            64,
+            8965.65
+          ],
+          [
+            65,
+            8875.67
+          ],
+          [
+            66,
+            8787.0
+          ],
+          [
+            67,
+            8699.43
+          ],
+          [
+            68,
+            8613.3
+          ],
+          [
+            69,
+            8526.7
+          ],
+          [
+            70,
+            8441.07
+          ],
+          [
+            71,
+            8360.21
+          ],
+          [
+            72,
+            8518.63
+          ],
+          [
+            73,
+            8434.1
+          ],
+          [
+            74,
+            8350.21
+          ],
+          [
+            75,
+            8516.48
+          ],
+          [
+            76,
+            8432.17
+          ],
+          [
+            77,
+            8347.54
+          ],
+          [
+            78,
+            8263.29
+          ],
+          [
+            79,
+            8179.98
+          ],
+          [
+            80,
+            8342.41
+          ],
+          [
+            81,
+            8258.92
+          ],
+          [
+            82,
+            8422.66
+          ],
+          [
+            83,
+            8338.24
+          ],
+          [
+            84,
+            8254.64
+          ],
+          [
+            85,
+            8171.59
+          ],
+          [
+            86,
+            8089.4
+          ],
+          [
+            87,
+            8009.0
+          ],
+          [
+            88,
+            8166.9
+          ],
+          [
+            89,
+            8328.19
+          ],
+          [
+            90,
+            8493.74
+          ],
+          [
+            91,
+            8408.78
+          ],
+          [
+            92,
+            8323.99
+          ],
+          [
+            93,
+            8488.93
+          ],
+          [
+            94,
+            8405.25
+          ],
+          [
+            95,
+            8321.04
+          ],
+          [
+            96,
+            8486.33
+          ],
+          [
+            97,
+            8403.01
+          ],
+          [
+            98,
+            8320.17
+          ],
+          [
+            99,
+            8237.54
+          ],
+          [
+            100,
+            8400.88
+          ],
+          [
+            101,
+            8318.99
+          ],
+          [
+            102,
+            8472.92
+          ],
+          [
+            103,
+            8390.61
+          ],
+          [
+            104,
+            8308.9
+          ],
+          [
+            105,
+            8469.32
+          ]
+        ],
+        "expectancy": -14.58,
+        "gross_loss": 6966.73,
+        "gross_profit": 5436.05,
+        "losing_trades": 75,
+        "maximum_consecutive_losses": 11,
+        "maximum_consecutive_wins": 3,
+        "maximum_drawdown": 2571.88,
+        "maximum_drawdown_percent": 24.3069,
+        "net_profit": -1530.68,
+        "profit_factor": 0.7803,
+        "return_percent": -15.3068,
+        "total_trades": 105,
+        "win_rate": 28.57142857142857,
+        "winning_trades": 30
+      },
+      "rejection_reasons": {
+        "POSITION_ALREADY_OPEN": 874
+      },
+      "risk_distribution": {
+        "losing_trade_count": 75,
+        "losses_above_1_25_percent": 0,
+        "losses_above_1_50_percent": 0,
+        "losses_above_2_00_percent": 0,
+        "maximum_realized_loss_percent": 1.013342,
+        "median_realized_loss_percent": 1.0003,
+        "p90_realized_loss_percent": 1.008347
+      },
+      "sample_entry_conversions": [
+        {
+          "account_currency_stop_risk": 99.40189055415448,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006289268620952069,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-17T17:15:00",
+          "entry_time": "2026-03-17T17:15:00",
+          "exit_conversion_factor": 0.006285473641866282,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-17T17:30:00",
+          "exit_time": "2026-03-17T17:30:00",
+          "historical_entry_tick_value": 0.6289268620952069,
+          "realized_account_currency_pnl": -100.03,
+          "trade_id": 1,
+          "volume": 1.09
+        },
+        {
+          "account_currency_stop_risk": 98.83951316162275,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.0062899015630405375,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-17T17:45:00",
+          "entry_time": "2026-03-17T17:45:00",
+          "exit_conversion_factor": 0.006300839901958931,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-18T10:45:00",
+          "exit_time": "2026-03-18T10:45:00",
+          "historical_entry_tick_value": 0.6289901563040537,
+          "realized_account_currency_pnl": 197.41,
+          "trade_id": 2,
+          "volume": 0.97
+        },
+        {
+          "account_currency_stop_risk": 100.96450860493091,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006303977809998109,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-18T11:45:00",
+          "entry_time": "2026-03-18T11:45:00",
+          "exit_conversion_factor": 0.006291642810854342,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-18T14:00:00",
+          "exit_time": "2026-03-18T14:00:00",
+          "historical_entry_tick_value": 0.6303977809998109,
+          "realized_account_currency_pnl": -101.04,
+          "trade_id": 3,
+          "volume": 0.44
+        },
+        {
+          "account_currency_stop_risk": 99.62074909888764,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006268609935746748,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-18T22:45:00",
+          "entry_time": "2026-03-18T22:45:00",
+          "exit_conversion_factor": 0.006272974770095475,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-18T23:15:00",
+          "exit_time": "2026-03-18T23:15:00",
+          "historical_entry_tick_value": 0.6268609935746748,
+          "realized_account_currency_pnl": -100.42,
+          "trade_id": 4,
+          "volume": 1.16
+        },
+        {
+          "account_currency_stop_risk": 98.71736286297251,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006259820092770534,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-19T11:15:00",
+          "entry_time": "2026-03-19T11:15:00",
+          "exit_conversion_factor": 0.0062622897436218575,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-19T12:30:00",
+          "exit_time": "2026-03-19T12:30:00",
+          "historical_entry_tick_value": 0.6259820092770534,
+          "realized_account_currency_pnl": -99.35,
+          "trade_id": 5,
+          "volume": 0.95
+        }
+      ],
+      "sample_exit_conversions": [
+        {
+          "account_currency_stop_risk": 99.40189055415448,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006289268620952069,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-17T17:15:00",
+          "entry_time": "2026-03-17T17:15:00",
+          "exit_conversion_factor": 0.006285473641866282,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-17T17:30:00",
+          "exit_time": "2026-03-17T17:30:00",
+          "historical_entry_tick_value": 0.6289268620952069,
+          "realized_account_currency_pnl": -100.03,
+          "trade_id": 1,
+          "volume": 1.09
+        },
+        {
+          "account_currency_stop_risk": 98.83951316162275,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.0062899015630405375,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-17T17:45:00",
+          "entry_time": "2026-03-17T17:45:00",
+          "exit_conversion_factor": 0.006300839901958931,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-18T10:45:00",
+          "exit_time": "2026-03-18T10:45:00",
+          "historical_entry_tick_value": 0.6289901563040537,
+          "realized_account_currency_pnl": 197.41,
+          "trade_id": 2,
+          "volume": 0.97
+        },
+        {
+          "account_currency_stop_risk": 100.96450860493091,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006303977809998109,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-18T11:45:00",
+          "entry_time": "2026-03-18T11:45:00",
+          "exit_conversion_factor": 0.006291642810854342,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-18T14:00:00",
+          "exit_time": "2026-03-18T14:00:00",
+          "historical_entry_tick_value": 0.6303977809998109,
+          "realized_account_currency_pnl": -101.04,
+          "trade_id": 3,
+          "volume": 0.44
+        },
+        {
+          "account_currency_stop_risk": 99.62074909888764,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006268609935746748,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-18T22:45:00",
+          "entry_time": "2026-03-18T22:45:00",
+          "exit_conversion_factor": 0.006272974770095475,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-18T23:15:00",
+          "exit_time": "2026-03-18T23:15:00",
+          "historical_entry_tick_value": 0.6268609935746748,
+          "realized_account_currency_pnl": -100.42,
+          "trade_id": 4,
+          "volume": 1.16
+        },
+        {
+          "account_currency_stop_risk": 98.71736286297251,
+          "current_broker_tick_value_reference": 0.6277109265640987,
+          "entry_conversion_factor": 0.006259820092770534,
+          "entry_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "entry_conversion_time": "2026-03-19T11:15:00",
+          "entry_time": "2026-03-19T11:15:00",
+          "exit_conversion_factor": 0.0062622897436218575,
+          "exit_conversion_path": "JPY->USD:USDJPY:INVERSE",
+          "exit_conversion_time": "2026-03-19T12:30:00",
+          "exit_time": "2026-03-19T12:30:00",
+          "historical_entry_tick_value": 0.6259820092770534,
+          "realized_account_currency_pnl": -99.35,
+          "trade_id": 5,
+          "volume": 0.95
+        }
+      ]
+    },
+    "XAUUSD": {
+      "before_current_tick_vs_historical_conversion": [
+        {
+          "current_tick_value_reference": 0.1,
+          "difference": 0.9,
+          "historical_entry_tick_value": 1.0,
+          "trade_id": 1
+        },
+        {
+          "current_tick_value_reference": 0.1,
+          "difference": 0.9,
+          "historical_entry_tick_value": 1.0,
+          "trade_id": 2
+        },
+        {
+          "current_tick_value_reference": 0.1,
+          "difference": 0.9,
+          "historical_entry_tick_value": 1.0,
+          "trade_id": 3
+        },
+        {
+          "current_tick_value_reference": 0.1,
+          "difference": 0.9,
+          "historical_entry_tick_value": 1.0,
+          "trade_id": 4
+        },
+        {
+          "current_tick_value_reference": 0.1,
+          "difference": 0.9,
+          "historical_entry_tick_value": 1.0,
+          "trade_id": 5
+        }
+      ],
+      "conversion_path": "USD->USD:IDENTITY",
+      "conversion_probe": {
+        "available": true,
+        "factor": 1.0,
+        "from_currency": "USD",
+        "path": "USD->USD:IDENTITY",
+        "rate_time": "2026-03-10T16:15:00",
+        "reason": "",
+        "requested_time": "2026-03-10T16:15:00",
+        "to_currency": "USD"
+      },
+      "conversion_unavailable_count": 0,
+      "deterministic_repeat": true,
+      "historical_window": {
+        "candle_count": 10000,
+        "end": "2026-08-07T17:00:00",
+        "start": "2026-03-06T13:00:00"
+      },
+      "metadata": {
+        "account_currency": "USD",
+        "contract_size": 100.0,
+        "currency_base": "USD",
+        "currency_margin": "USD",
+        "currency_profit": "USD",
+        "digits": 2,
+        "point": 0.01,
+        "spread_points": 19,
+        "tick_size": 0.01,
+        "tick_value": 0.1,
+        "trade_calc_mode": 4,
+        "volume_max": 100.0,
+        "volume_min": 0.01,
+        "volume_step": 0.01
+      },
+      "performance": {
+        "average_holding_minutes": 1353.55,
+        "average_r": 0.0785,
+        "ending_balance": 10945.09,
+        "equity_curve": [
+          [
+            0,
+            10000.0
+          ],
+          [
+            1,
+            9949.19
+          ],
+          [
+            2,
+            10121.34
+          ],
+          [
+            3,
+            10025.55
+          ],
+          [
+            4,
+            10222.62
+          ],
+          [
+            5,
+            10374.13
+          ],
+          [
+            6,
+            10566.22
+          ],
+          [
+            7,
+            10747.39
+          ],
+          [
+            8,
+            10686.32
+          ],
+          [
+            9,
+            10896.02
+          ],
+          [
+            10,
+            10793.5
+          ],
+          [
+            11,
+            10739.01
+          ],
+          [
+            12,
+            10653.33
+          ],
+          [
+            13,
+            10827.54
+          ],
+          [
+            14,
+            10739.9
+          ],
+          [
+            15,
+            10935.24
+          ],
+          [
+            16,
+            11092.82
+          ],
+          [
+            17,
+            10989.97
+          ],
+          [
+            18,
+            11200.09
+          ],
+          [
+            19,
+            11094.64
+          ],
+          [
+            20,
+            11005.46
+          ],
+          [
+            21,
+            10908.62
+          ],
+          [
+            22,
+            10832.84
+          ],
+          [
+            23,
+            11022.86
+          ],
+          [
+            24,
+            10917.13
+          ],
+          [
+            25,
+            10834.21
+          ],
+          [
+            26,
+            10733.65
+          ],
+          [
+            27,
+            10635.3
+          ],
+          [
+            28,
+            10540.71
+          ],
+          [
+            29,
+            10728.26
+          ],
+          [
+            30,
+            10633.84
+          ],
+          [
+            31,
+            10533.96
+          ],
+          [
+            32,
+            10436.68
+          ],
+          [
+            33,
+            10601.86
+          ],
+          [
+            34,
+            10498.46
+          ],
+          [
+            35,
+            10399.21
+          ],
+          [
+            36,
+            10313.85
+          ],
+          [
+            37,
+            10221.99
+          ],
+          [
+            38,
+            10401.96
+          ],
+          [
+            39,
+            10319.68
+          ],
+          [
+            40,
+            10218.88
+          ],
+          [
+            41,
+            10409.83
+          ],
+          [
+            42,
+            10320.95
+          ],
+          [
+            43,
+            10249.67
+          ],
+          [
+            44,
+            10179.68
+          ],
+          [
+            45,
+            10094.12
+          ],
+          [
+            46,
+            10003.64
+          ],
+          [
+            47,
+            9906.64
+          ],
+          [
+            48,
+            10100.74
+          ],
+          [
+            49,
+            10014.56
+          ],
+          [
+            50,
+            9938.2
+          ],
+          [
+            51,
+            9844.24
+          ],
+          [
+            52,
+            10012.99
+          ],
+          [
+            53,
+            9920.26
+          ],
+          [
+            54,
+            9833.56
+          ],
+          [
+            55,
+            9739.36
+          ],
+          [
+            56,
+            9655.71
+          ],
+          [
+            57,
+            9829.53
+          ],
+          [
+            58,
+            9971.23
+          ],
+          [
+            59,
+            10097.02
+          ],
+          [
+            60,
+            10041.5
+          ],
+          [
+            61,
+            9959.01
+          ],
+          [
+            62,
+            10095.27
+          ],
+          [
+            63,
+            9994.47
+          ],
+          [
+            64,
+            9900.39
+          ],
+          [
+            65,
+            9806.23
+          ],
+          [
+            66,
+            9990.68
+          ],
+          [
+            67,
+            10146.86
+          ],
+          [
+            68,
+            10061.0
+          ],
+          [
+            69,
+            10254.95
+          ],
+          [
+            70,
+            10158.13
+          ],
+          [
+            71,
+            10087.79
+          ],
+          [
+            72,
+            10283.42
+          ],
+          [
+            73,
+            10472.01
+          ],
+          [
+            74,
+            10370.89
+          ],
+          [
+            75,
+            10567.33
+          ],
+          [
+            76,
+            10481.01
+          ],
+          [
+            77,
+            10679.76
+          ],
+          [
+            78,
+            10617.22
+          ],
+          [
+            79,
+            10783.48
+          ],
+          [
+            80,
+            10988.79
+          ],
+          [
+            81,
+            10906.39
+          ],
+          [
+            82,
+            10807.99
+          ],
+          [
+            83,
+            11001.97
+          ],
+          [
+            84,
+            11177.32
+          ],
+          [
+            85,
+            11359.14
+          ],
+          [
+            86,
+            11277.76
+          ],
+          [
+            87,
+            11488.18
+          ],
+          [
+            88,
+            11391.78
+          ],
+          [
+            89,
+            11283.12
+          ],
+          [
+            90,
+            11171.8
+          ],
+          [
+            91,
+            11392.06
+          ],
+          [
+            92,
+            11293.03
+          ],
+          [
+            93,
+            11502.52
+          ],
+          [
+            94,
+            11708.39
+          ],
+          [
+            95,
+            11596.34
+          ],
+          [
+            96,
+            11484.65
+          ],
+          [
+            97,
+            11380.09
+          ],
+          [
+            98,
+            11274.44
+          ],
+          [
+            99,
+            11178.79
+          ],
+          [
+            100,
+            11075.05
+          ],
+          [
+            101,
+            10997.67
+          ],
+          [
+            102,
+            10894.12
+          ],
+          [
+            103,
+            11085.43
+          ],
+          [
+            104,
+            10986.93
+          ],
+          [
+            105,
+            10888.53
+          ],
+          [
+            106,
+            11093.53
+          ],
+          [
+            107,
+            10983.01
+          ],
+          [
+            108,
+            10907.99
+          ],
+          [
+            109,
+            10813.19
+          ],
+          [
+            110,
+            11025.95
+          ],
+          [
+            111,
+            10970.26
+          ],
+          [
+            112,
+            10876.71
+          ],
+          [
+            113,
+            10778.76
+          ],
+          [
+            114,
+            10945.09
+          ]
+        ],
+        "expectancy": 8.29,
+        "gross_loss": 6608.09,
+        "gross_profit": 7553.18,
+        "losing_trades": 73,
+        "maximum_consecutive_losses": 8,
+        "maximum_consecutive_wins": 4,
+        "maximum_drawdown": 1544.38,
+        "maximum_drawdown_percent": 13.789,
+        "net_profit": 945.09,
+        "profit_factor": 1.143,
+        "return_percent": 9.4509,
+        "total_trades": 114,
+        "win_rate": 35.96491228070175,
+        "winning_trades": 41
+      },
+      "rejection_reasons": {
+        "INVALID_BUY_STOP": 1,
+        "MIN_VOLUME_EXCEEDS_RISK": 20,
+        "POSITION_ALREADY_OPEN": 1012
+      },
+      "risk_distribution": {
+        "losing_trade_count": 73,
+        "losses_above_1_25_percent": 0,
+        "losses_above_1_50_percent": 0,
+        "losses_above_2_00_percent": 0,
+        "maximum_realized_loss_percent": 0.998487,
+        "median_realized_loss_percent": 0.888554,
+        "p90_realized_loss_percent": 0.963149
+      },
+      "sample_entry_conversions": [
+        {
+          "account_currency_stop_risk": 50.80000000000018,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-10T21:15:00",
+          "entry_time": "2026-03-10T21:15:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-10T23:45:00",
+          "exit_time": "2026-03-10T23:45:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": -50.81,
+          "trade_id": 1,
+          "volume": 0.01
+        },
+        {
+          "account_currency_stop_risk": 86.10000000000127,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-11T14:15:00",
+          "entry_time": "2026-03-11T14:15:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-12T04:15:00",
+          "exit_time": "2026-03-12T04:15:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": 172.15,
+          "trade_id": 2,
+          "volume": 0.05
+        },
+        {
+          "account_currency_stop_risk": 95.76000000000295,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-12T13:15:00",
+          "entry_time": "2026-03-12T13:15:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-12T19:15:00",
+          "exit_time": "2026-03-12T19:15:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": -95.79,
+          "trade_id": 3,
+          "volume": 0.03
+        },
+        {
+          "account_currency_stop_risk": 98.54999999999836,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-12T23:30:00",
+          "entry_time": "2026-03-12T23:30:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-13T20:15:00",
+          "exit_time": "2026-03-13T20:15:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": 197.07,
+          "trade_id": 4,
+          "volume": 0.03
+        },
+        {
+          "account_currency_stop_risk": 75.76000000000022,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-13T20:30:00",
+          "entry_time": "2026-03-13T20:30:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-18T18:00:00",
+          "exit_time": "2026-03-18T18:00:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": 151.51,
+          "trade_id": 5,
+          "volume": 0.01
+        }
+      ],
+      "sample_exit_conversions": [
+        {
+          "account_currency_stop_risk": 50.80000000000018,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-10T21:15:00",
+          "entry_time": "2026-03-10T21:15:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-10T23:45:00",
+          "exit_time": "2026-03-10T23:45:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": -50.81,
+          "trade_id": 1,
+          "volume": 0.01
+        },
+        {
+          "account_currency_stop_risk": 86.10000000000127,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-11T14:15:00",
+          "entry_time": "2026-03-11T14:15:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-12T04:15:00",
+          "exit_time": "2026-03-12T04:15:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": 172.15,
+          "trade_id": 2,
+          "volume": 0.05
+        },
+        {
+          "account_currency_stop_risk": 95.76000000000295,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-12T13:15:00",
+          "entry_time": "2026-03-12T13:15:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-12T19:15:00",
+          "exit_time": "2026-03-12T19:15:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": -95.79,
+          "trade_id": 3,
+          "volume": 0.03
+        },
+        {
+          "account_currency_stop_risk": 98.54999999999836,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-12T23:30:00",
+          "entry_time": "2026-03-12T23:30:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-13T20:15:00",
+          "exit_time": "2026-03-13T20:15:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": 197.07,
+          "trade_id": 4,
+          "volume": 0.03
+        },
+        {
+          "account_currency_stop_risk": 75.76000000000022,
+          "current_broker_tick_value_reference": 0.1,
+          "entry_conversion_factor": 1.0,
+          "entry_conversion_path": "USD->USD:IDENTITY",
+          "entry_conversion_time": "2026-03-13T20:30:00",
+          "entry_time": "2026-03-13T20:30:00",
+          "exit_conversion_factor": 1.0,
+          "exit_conversion_path": "USD->USD:IDENTITY",
+          "exit_conversion_time": "2026-03-18T18:00:00",
+          "exit_time": "2026-03-18T18:00:00",
+          "historical_entry_tick_value": 1.0,
+          "realized_account_currency_pnl": 151.51,
+          "trade_id": 5,
+          "volume": 0.01
+        }
+      ]
+    }
+  }
+}

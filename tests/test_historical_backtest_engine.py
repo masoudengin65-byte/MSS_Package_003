@@ -78,6 +78,8 @@ def config(**overrides):
 
 def metadata():
     return BacktestSymbolMetadata(
+        account_currency="USD", currency_base="USD", currency_profit="USD",
+        currency_margin="USD", trade_calc_mode=0,
         point=0.01,
         digits=2,
         tick_size=0.01,
@@ -193,8 +195,10 @@ def test_minimum_volume_that_exceeds_risk_is_rejected():
     pipeline = PipelineStub(signal_calls={1}, stop=80.0)
     candles = [candle(0), candle(1), candle(2, high=103, low=79.0)]
     expensive_tick = BacktestSymbolMetadata(
+        account_currency="USD", currency_base="USD", currency_profit="USD",
+        currency_margin="USD", trade_calc_mode=0,
         point=1.0, digits=0, tick_size=1.0, tick_value=1000.0,
-        contract_size=1.0, volume_min=0.01, volume_max=100.0,
+        contract_size=1000.0, volume_min=0.01, volume_max=100.0,
         volume_step=0.01, spread_points=0,
     )
 

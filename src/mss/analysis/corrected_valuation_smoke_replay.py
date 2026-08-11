@@ -89,9 +89,9 @@ class CorrectedValuationSmokeReplay:
             metadata,
         )
         engine_implied_old_tick_value = metadata.tick_size * metadata.contract_size
-        corrected_tick_value = HistoricalValuation.monetary_value(
-            metadata.tick_size, 1.0, metadata,
-        )
+        # Sprint 92A.2a evidence intentionally describes its then-current
+        # broker-tick valuation and must remain reproducible after 92A.2c.
+        corrected_tick_value = float(metadata.tick_value)
         metrics = result.metrics
         return {
             "historical_window": row["historical_window"],
@@ -146,8 +146,9 @@ class CorrectedValuationSmokeReplay:
         for trade in trades:
             pre_trade_equity = balance
             intended = pre_trade_equity * float(risk_percent) / 100.0
-            sl_risk = HistoricalValuation.monetary_value(
-                abs(trade.entry_price - trade.stop_loss), trade.volume, metadata,
+            sl_risk = (
+                abs(trade.entry_price - trade.stop_loss) / metadata.tick_size
+                * metadata.tick_value * trade.volume
             )
             at_minimum = math.isclose(
                 trade.volume, metadata.volume_min, rel_tol=0.0, abs_tol=1e-12,

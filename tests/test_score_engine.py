@@ -70,7 +70,9 @@ def _candles():
 def _run():
     return HistoricalBacktestEngine(VariablePipeline()).run("TEST", "M15", _candles(),
         HistoricalBacktestConfig(warmup_candles=2, analysis_lookback=10, spread_points=0, slippage_points=0),
-        BacktestSymbolMetadata(point=.01, digits=2, tick_size=.01, tick_value=1,
+        BacktestSymbolMetadata(account_currency="USD", currency_base="USD",
+                               currency_profit="USD", currency_margin="USD",
+                               trade_calc_mode=0, point=.01, digits=2, tick_size=.01, tick_value=1,
             contract_size=100, volume_min=.01, volume_max=100, volume_step=.01))
 
 

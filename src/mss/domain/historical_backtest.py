@@ -23,6 +23,11 @@ class HistoricalBacktestConfig:
 
 @dataclass
 class BacktestSymbolMetadata:
+    account_currency: str | None = None
+    currency_base: str | None = None
+    currency_profit: str | None = None
+    currency_margin: str | None = None
+    trade_calc_mode: int | None = None
     point: float | None = None
     digits: int | None = None
     tick_size: float | None = None
@@ -65,6 +70,13 @@ class HistoricalTrade:
     detector_states: dict = field(default_factory=dict)
     context_snapshot: ContextSnapshot | None = None
     status: str = "OPEN"
+    entry_conversion_factor: float | None = None
+    entry_conversion_time: datetime | None = None
+    entry_conversion_path: str = ""
+    exit_conversion_factor: float | None = None
+    exit_conversion_time: datetime | None = None
+    exit_conversion_path: str = ""
+    account_currency_stop_risk: float = 0.0
 
 
 @dataclass

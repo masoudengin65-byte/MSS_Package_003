@@ -6,7 +6,7 @@ from mss.analysis.order_builder import OrderBuilder
 from mss.analysis.performance_analyzer import PerformanceAnalyzer
 from mss.analysis.position_manager import PositionManager
 from mss.analysis.risk_engine import RiskEngine
-from mss.analysis.historical_valuation import HistoricalValuation
+from mss.analysis.historical_valuation import HistoricalFxResolver, HistoricalValuation
 from mss.analysis.smart_money_pipeline import SmartMoneyPipeline
 from mss.analysis.context_capture_engine import ContextCaptureEngine
 from mss.analysis.score_engine import ScoreEngine
@@ -38,9 +38,11 @@ class HistoricalBacktestEngine:
         candles,
         config=None,
         metadata=None,
+        conversion_rates=None,
     ) -> HistoricalBacktestResult:
         config = config or HistoricalBacktestConfig()
         metadata = metadata or BacktestSymbolMetadata()
+        fx_resolver = HistoricalFxResolver(conversion_rates)
         result = HistoricalBacktestResult(
             symbol=symbol,
             timeframe=timeframe,
@@ -78,6 +80,7 @@ class HistoricalBacktestEngine:
                         config,
                         metadata,
                         result,
+                        fx_resolver,
                     )
                     if opened is not None:
                         active_trade, active_position = opened
@@ -104,6 +107,7 @@ class HistoricalBacktestEngine:
                         balance,
                         metadata,
                         closed_positions,
+                        fx_resolver,
                     )
                     result.diagnostics.closed_trades += 1
                     active_trade = None
@@ -170,6 +174,7 @@ class HistoricalBacktestEngine:
         config,
         metadata,
         result,
+        fx_resolver,
     ):
         metadata_error = HistoricalValuation.metadata_error(metadata)
         if metadata_error:
@@ -220,8 +225,14 @@ class HistoricalBacktestEngine:
             self._reject(result.diagnostics, "RISK_REJECTED")
             return None
 
+        conversion = fx_resolver.resolve(
+            metadata.currency_profit, metadata.account_currency, candle.time,
+        )
+        if not conversion.available:
+            self._reject(result.diagnostics, conversion.reason)
+            return None
         sizing = HistoricalValuation.size_for_risk(
-            risk_profile.risk_amount, stop_distance, metadata,
+            risk_profile.risk_amount, stop_distance, metadata, conversion.factor,
         )
         if not sizing.valid:
             self._reject(result.diagnostics, sizing.reason)
@@ -288,6 +299,10 @@ class HistoricalBacktestEngine:
             shadow_score_result=shadow,
             detector_states=self._detector_states(pipeline_result),
             context_snapshot=entry_snapshot,
+            entry_conversion_factor=conversion.factor,
+            entry_conversion_time=conversion.rate_time,
+            entry_conversion_path=conversion.path,
+            account_currency_stop_risk=sizing.rounded_risk_amount,
         )
         return trade, position
 
@@ -330,18 +345,27 @@ class HistoricalBacktestEngine:
         balance,
         metadata,
         closed_positions,
+        fx_resolver,
     ):
+        conversion = fx_resolver.resolve(
+            metadata.currency_profit, metadata.account_currency, candle.time,
+        )
+        if not conversion.available:
+            trade.status = "VALUATION_UNAVAILABLE"
+            trade.exit_time = candle.time
+            trade.exit_price = exit_price
+            trade.exit_reason = conversion.reason
+            return balance
         net_profit = HistoricalValuation.signed_pnl(
             trade.entry_price,
             exit_price,
             trade.direction,
             trade.volume,
             metadata,
+            conversion.factor,
             trade.commission,
         )
-        risk_value = HistoricalValuation.monetary_value(
-            abs(trade.entry_price - trade.stop_loss), trade.volume, metadata,
-        )
+        risk_value = trade.account_currency_stop_risk
 
         trade.exit_time = candle.time
         trade.exit_price = exit_price
@@ -349,6 +373,9 @@ class HistoricalBacktestEngine:
         trade.profit = round(net_profit, 2)
         trade.r_multiple = round(net_profit / risk_value, 4) if risk_value else 0.0
         trade.status = "CLOSED"
+        trade.exit_conversion_factor = conversion.factor
+        trade.exit_conversion_time = conversion.rate_time
+        trade.exit_conversion_path = conversion.path
 
         position = self.position_manager.close_position(
             position,
