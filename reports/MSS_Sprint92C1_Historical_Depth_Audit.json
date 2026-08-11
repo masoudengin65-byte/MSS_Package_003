@@ -1,0 +1,4255 @@
+{
+  "acceptance": {
+    "all_32_symbol_timeframes_available": true,
+    "all_m15_stability_checks_completed": true,
+    "no_strategy_or_replay_run": true,
+    "no_trading_operations": true
+  },
+  "crypto_specific_audit": {
+    "BTCUSD": [
+      {
+        "approximate_duration_days": 534.864583,
+        "approximate_duration_months": 17.572914,
+        "approximate_duration_years": 1.464409,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 50000,
+        "broker_depth_limit_reached": false,
+        "broker_symbol": "BITCOIN",
+        "canonical_symbol": "BTCUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+        "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+        "depth_classification": "DEEP_HISTORY",
+        "historical_duration_seconds": 46212300,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 99,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 1347,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 15300,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T02:45:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-12T02:30:00Z",
+        "ohlc_sha256": "7e39cd628599abf401961273f6a16872729958ad2ce3f866074638424cd67e77",
+        "oldest_candle_open_timestamp": "2025-02-23T06:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-08-01T08:45:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 5000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-06-19T16:45:00Z",
+            "raw_returned_count": 5000,
+            "requested_count": 5000
+          },
+          {
+            "completed_returned_count": 10000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-04-27T10:45:00Z",
+            "raw_returned_count": 10000,
+            "requested_count": 10000
+          },
+          {
+            "completed_returned_count": 20000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-01-10T05:45:00Z",
+            "raw_returned_count": 20000,
+            "requested_count": 20000
+          },
+          {
+            "completed_returned_count": 50000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2025-02-23T06:00:00Z",
+            "raw_returned_count": 50000,
+            "requested_count": 50000
+          },
+          {
+            "completed_returned_count": 0,
+            "error": {
+              "code": -2,
+              "message": "Terminal: Invalid params"
+            },
+            "raw_returned_count": 0,
+            "requested_count": 100000
+          }
+        ],
+        "requested_maximum": 100000,
+        "retrieval_error": {
+          "code": -2,
+          "message": "Terminal: Invalid params"
+        },
+        "returned_candle_count": 50000,
+        "stop_reason": "RETRIEVAL_ERROR",
+        "supports_at_least_20000_m15": true,
+        "supports_at_least_30000_m15": true,
+        "supports_at_least_50000_m15": true,
+        "timeframe": "M15",
+        "total_available_candles": null
+      },
+      {
+        "approximate_duration_days": 1790.541667,
+        "approximate_duration_months": 58.828039,
+        "approximate_duration_years": 4.902337,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 41577,
+        "broker_depth_limit_reached": true,
+        "broker_symbol": "BITCOIN",
+        "canonical_symbol": "BTCUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+        "data_retrieval_status": "AVAILABLE",
+        "depth_classification": null,
+        "historical_duration_seconds": 154702800,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 310,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 1396,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 270000,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+        "ohlc_sha256": "2ae746cc51fe75a40ec2af4f4ef137eda7c5d95e624dab0ac08d939b34f66cbc",
+        "oldest_candle_open_timestamp": "2021-09-16T13:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2026-06-30T10:00:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 5000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2026-01-10T05:00:00Z",
+            "raw_returned_count": 5000,
+            "requested_count": 5000
+          },
+          {
+            "completed_returned_count": 10000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2025-06-10T13:00:00Z",
+            "raw_returned_count": 10000,
+            "requested_count": 10000
+          },
+          {
+            "completed_returned_count": 20000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2024-04-08T09:00:00Z",
+            "raw_returned_count": 20000,
+            "requested_count": 20000
+          },
+          {
+            "completed_returned_count": 41577,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2021-09-16T13:00:00Z",
+            "raw_returned_count": 41577,
+            "requested_count": 50000
+          }
+        ],
+        "requested_maximum": 50000,
+        "retrieval_error": {
+          "code": 1,
+          "message": "Success"
+        },
+        "returned_candle_count": 41577,
+        "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+        "supports_at_least_20000_m15": null,
+        "supports_at_least_30000_m15": null,
+        "supports_at_least_50000_m15": null,
+        "timeframe": "H1",
+        "total_available_candles": 41577
+      },
+      {
+        "approximate_duration_days": 1790.5,
+        "approximate_duration_months": 58.82667,
+        "approximate_duration_years": 4.902222,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 10675,
+        "broker_depth_limit_reached": true,
+        "broker_symbol": "BITCOIN",
+        "canonical_symbol": "BTCUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+        "data_retrieval_status": "AVAILABLE",
+        "depth_classification": null,
+        "historical_duration_seconds": 154699200,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 8,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 68,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 259200,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+        "ohlc_sha256": "8c1f0f17c7f64ee95ef399b44641c186e1af9a16193a1bc423f7372dc9d697e3",
+        "oldest_candle_open_timestamp": "2021-09-16T12:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2026-02-26T08:00:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 5000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2024-04-30T16:00:00Z",
+            "raw_returned_count": 5000,
+            "requested_count": 5000
+          },
+          {
+            "completed_returned_count": 10000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2022-01-11T08:00:00Z",
+            "raw_returned_count": 10000,
+            "requested_count": 10000
+          },
+          {
+            "completed_returned_count": 10675,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2021-09-16T12:00:00Z",
+            "raw_returned_count": 10675,
+            "requested_count": 20000
+          }
+        ],
+        "requested_maximum": 20000,
+        "retrieval_error": {
+          "code": 1,
+          "message": "Success"
+        },
+        "returned_candle_count": 10675,
+        "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+        "supports_at_least_20000_m15": null,
+        "supports_at_least_30000_m15": null,
+        "supports_at_least_50000_m15": null,
+        "timeframe": "H4",
+        "total_available_candles": 10675
+      },
+      {
+        "approximate_duration_days": 1791.0,
+        "approximate_duration_months": 58.843097,
+        "approximate_duration_years": 4.903591,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 1781,
+        "broker_depth_limit_reached": true,
+        "broker_symbol": "BITCOIN",
+        "canonical_symbol": "BTCUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+        "data_retrieval_status": "AVAILABLE",
+        "depth_classification": null,
+        "historical_duration_seconds": 154742400,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 6,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 10,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 259200,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+        "ohlc_sha256": "eb9da4ebaa98f311a97701e6018fd9fc74d46a738a44ab00f27901ee5ca547b6",
+        "oldest_candle_open_timestamp": "2021-09-16T00:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T00:00:00Z",
+            "oldest_open_timestamp": "2023-11-14T00:00:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 1781,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T00:00:00Z",
+            "oldest_open_timestamp": "2021-09-16T00:00:00Z",
+            "raw_returned_count": 1781,
+            "requested_count": 5000
+          }
+        ],
+        "requested_maximum": 5000,
+        "retrieval_error": {
+          "code": 1,
+          "message": "Success"
+        },
+        "returned_candle_count": 1781,
+        "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+        "supports_at_least_20000_m15": null,
+        "supports_at_least_30000_m15": null,
+        "supports_at_least_50000_m15": null,
+        "timeframe": "D1",
+        "total_available_candles": 1781
+      }
+    ],
+    "ETHUSD": [
+      {
+        "approximate_duration_days": 534.833333,
+        "approximate_duration_months": 17.571887,
+        "approximate_duration_years": 1.464324,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 50000,
+        "broker_depth_limit_reached": false,
+        "broker_symbol": "ETHEREUM",
+        "canonical_symbol": "ETHUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+        "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+        "depth_classification": "DEEP_HISTORY",
+        "historical_duration_seconds": 46209600,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 98,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 1344,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 15300,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T02:45:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-12T02:30:00Z",
+        "ohlc_sha256": "f4c1ecdf39c19b33616667917a639c0e78347181bc38fbb6b9dd5804e84e713a",
+        "oldest_candle_open_timestamp": "2025-02-23T06:45:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-08-01T08:45:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 5000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-06-19T16:45:00Z",
+            "raw_returned_count": 5000,
+            "requested_count": 5000
+          },
+          {
+            "completed_returned_count": 10000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-04-27T10:45:00Z",
+            "raw_returned_count": 10000,
+            "requested_count": 10000
+          },
+          {
+            "completed_returned_count": 20000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2026-01-10T05:45:00Z",
+            "raw_returned_count": 20000,
+            "requested_count": 20000
+          },
+          {
+            "completed_returned_count": 50000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T02:30:00Z",
+            "oldest_open_timestamp": "2025-02-23T06:45:00Z",
+            "raw_returned_count": 50000,
+            "requested_count": 50000
+          },
+          {
+            "completed_returned_count": 0,
+            "error": {
+              "code": -2,
+              "message": "Terminal: Invalid params"
+            },
+            "raw_returned_count": 0,
+            "requested_count": 100000
+          }
+        ],
+        "requested_maximum": 100000,
+        "retrieval_error": {
+          "code": -2,
+          "message": "Terminal: Invalid params"
+        },
+        "returned_candle_count": 50000,
+        "stop_reason": "RETRIEVAL_ERROR",
+        "supports_at_least_20000_m15": true,
+        "supports_at_least_30000_m15": true,
+        "supports_at_least_50000_m15": true,
+        "timeframe": "M15",
+        "total_available_candles": null
+      },
+      {
+        "approximate_duration_days": 1790.541667,
+        "approximate_duration_months": 58.828039,
+        "approximate_duration_years": 4.902337,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 41577,
+        "broker_depth_limit_reached": true,
+        "broker_symbol": "ETHEREUM",
+        "canonical_symbol": "ETHUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+        "data_retrieval_status": "AVAILABLE",
+        "depth_classification": null,
+        "historical_duration_seconds": 154702800,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 310,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 1396,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 270000,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+        "ohlc_sha256": "61f3d4931aa46129a0f6faa1cf860ff78d5818b021faedcc9fbd459eeb0ebf47",
+        "oldest_candle_open_timestamp": "2021-09-16T13:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2026-06-30T10:00:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 5000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2026-01-10T05:00:00Z",
+            "raw_returned_count": 5000,
+            "requested_count": 5000
+          },
+          {
+            "completed_returned_count": 10000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2025-06-10T13:00:00Z",
+            "raw_returned_count": 10000,
+            "requested_count": 10000
+          },
+          {
+            "completed_returned_count": 20000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2024-04-08T09:00:00Z",
+            "raw_returned_count": 20000,
+            "requested_count": 20000
+          },
+          {
+            "completed_returned_count": 41577,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-12T01:00:00Z",
+            "oldest_open_timestamp": "2021-09-16T13:00:00Z",
+            "raw_returned_count": 41577,
+            "requested_count": 50000
+          }
+        ],
+        "requested_maximum": 50000,
+        "retrieval_error": {
+          "code": 1,
+          "message": "Success"
+        },
+        "returned_candle_count": 41577,
+        "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+        "supports_at_least_20000_m15": null,
+        "supports_at_least_30000_m15": null,
+        "supports_at_least_50000_m15": null,
+        "timeframe": "H1",
+        "total_available_candles": 41577
+      },
+      {
+        "approximate_duration_days": 1790.5,
+        "approximate_duration_months": 58.82667,
+        "approximate_duration_years": 4.902222,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 10675,
+        "broker_depth_limit_reached": true,
+        "broker_symbol": "ETHEREUM",
+        "canonical_symbol": "ETHUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+        "data_retrieval_status": "AVAILABLE",
+        "depth_classification": null,
+        "historical_duration_seconds": 154699200,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 8,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 68,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 259200,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+        "ohlc_sha256": "6cfcef8545742d816e6935b3e7d7713b859ca370af8929db5ce8703b97acd18b",
+        "oldest_candle_open_timestamp": "2021-09-16T12:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2026-02-26T08:00:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 5000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2024-04-30T16:00:00Z",
+            "raw_returned_count": 5000,
+            "requested_count": 5000
+          },
+          {
+            "completed_returned_count": 10000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2022-01-11T08:00:00Z",
+            "raw_returned_count": 10000,
+            "requested_count": 10000
+          },
+          {
+            "completed_returned_count": 10675,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T20:00:00Z",
+            "oldest_open_timestamp": "2021-09-16T12:00:00Z",
+            "raw_returned_count": 10675,
+            "requested_count": 20000
+          }
+        ],
+        "requested_maximum": 20000,
+        "retrieval_error": {
+          "code": 1,
+          "message": "Success"
+        },
+        "returned_candle_count": 10675,
+        "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+        "supports_at_least_20000_m15": null,
+        "supports_at_least_30000_m15": null,
+        "supports_at_least_50000_m15": null,
+        "timeframe": "H4",
+        "total_available_candles": 10675
+      },
+      {
+        "approximate_duration_days": 1791.0,
+        "approximate_duration_months": 58.843097,
+        "approximate_duration_years": 4.903591,
+        "asset_class": "CRYPTO",
+        "availability_lower_bound": 1781,
+        "broker_depth_limit_reached": true,
+        "broker_symbol": "ETHEREUM",
+        "canonical_symbol": "ETHUSD",
+        "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+        "data_retrieval_status": "AVAILABLE",
+        "depth_classification": null,
+        "historical_duration_seconds": 154742400,
+        "integrity": {
+          "chronological_order": true,
+          "duplicate_timestamp_count": 0,
+          "future_candle_count": 0,
+          "gap_event_count": 6,
+          "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+          "implied_missing_interval_count": 10,
+          "invalid_ohlc_count": 0,
+          "largest_gap_seconds": 259200,
+          "negative_spread_count": 0,
+          "negative_volume_count": 0,
+          "nonfinite_price_count": 0,
+          "strictly_increasing_timestamps": true
+        },
+        "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+        "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+        "ohlc_sha256": "c2fae7f90cf64bf453f015d5e634865fdd6db149ac18e9708e8bf9cb6fa736ef",
+        "oldest_candle_open_timestamp": "2021-09-16T00:00:00Z",
+        "probe_results": [
+          {
+            "completed_returned_count": 1000,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T00:00:00Z",
+            "oldest_open_timestamp": "2023-11-14T00:00:00Z",
+            "raw_returned_count": 1000,
+            "requested_count": 1000
+          },
+          {
+            "completed_returned_count": 1781,
+            "error": {
+              "code": 1,
+              "message": "Success"
+            },
+            "newest_open_timestamp": "2026-08-11T00:00:00Z",
+            "oldest_open_timestamp": "2021-09-16T00:00:00Z",
+            "raw_returned_count": 1781,
+            "requested_count": 5000
+          }
+        ],
+        "requested_maximum": 5000,
+        "retrieval_error": {
+          "code": 1,
+          "message": "Success"
+        },
+        "returned_candle_count": 1781,
+        "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+        "supports_at_least_20000_m15": null,
+        "supports_at_least_30000_m15": null,
+        "supports_at_least_50000_m15": null,
+        "timeframe": "D1",
+        "total_available_candles": 1781
+      }
+    ]
+  },
+  "depth_results": [
+    {
+      "approximate_duration_days": 743.875,
+      "approximate_duration_months": 24.439927,
+      "approximate_duration_years": 2.036661,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 64270800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:30:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "ohlc_sha256": "bd88af4289ac00f7a44450d60703d3d0fdf6798fc8db79825c22a82dd26363c9",
+      "oldest_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-07-28T13:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-05-29T11:15:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-03-17T18:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2025-10-17T08:15:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2024-07-29T05:30:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 2958.958333,
+      "approximate_duration_months": 97.216233,
+      "approximate_duration_years": 8.101353,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 255654000,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 432,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21015,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 273600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "574ee351b6d923b111e52c2f46e7eff9bfdc92b8f7f2c7f6660e1e76dbdbca14",
+      "oldest_candle_open_timestamp": "2018-07-06T03:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-15T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-10-21T12:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-01-02T01:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2023-05-19T00:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2018-07-06T03:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 4702.166667,
+      "approximate_duration_months": 154.489141,
+      "approximate_duration_years": 12.874095,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 20000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 406267200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 684,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 8213,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 302400,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "34e3814778d5345037d77b8bc52de4959cc1a79fe5d486385da3eca76f16e7b0",
+      "oldest_candle_open_timestamp": "2013-09-26T20:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2025-12-18T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2023-05-24T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2020-03-10T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2013-09-26T20:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 20000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 13371.0,
+      "approximate_duration_months": 439.302655,
+      "approximate_duration_years": 36.608555,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 7305,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 1155254400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 1498,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 6066,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 264816000,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "5f9ace7e513b13f29860e120538afd29aa4f8fa352496d5fc88107d1f2ef9e3a",
+      "oldest_candle_open_timestamp": "1990-01-02T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2022-10-04T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2007-04-23T00:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 7305,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "1990-01-02T00:00:00Z",
+          "raw_returned_count": 7305,
+          "requested_count": 10000
+        }
+      ],
+      "requested_maximum": 10000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 7305,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 7305
+    },
+    {
+      "approximate_duration_days": 743.875,
+      "approximate_duration_months": 24.439927,
+      "approximate_duration_years": 2.036661,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 64270800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:30:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "ohlc_sha256": "4d9d1ce19791fdce0173eba313e73a0ce557445a5c40f54811808c85c16e9426",
+      "oldest_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-07-28T13:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-05-29T11:15:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-03-17T18:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2025-10-17T08:15:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2024-07-29T05:30:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 2958.916667,
+      "approximate_duration_months": 97.214864,
+      "approximate_duration_years": 8.101239,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 255650400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 431,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21014,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 273600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "67e666f4880fddfe90b50444b73700314d24c34c7a6fed1b27be73ff54598d6c",
+      "oldest_candle_open_timestamp": "2018-07-06T04:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-15T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-10-21T12:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-01-02T01:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2023-05-19T00:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2018-07-06T04:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 4703.833333,
+      "approximate_duration_months": 154.543899,
+      "approximate_duration_years": 12.878658,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 20000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 406411200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 684,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 8223,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 302400,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "d691654e5324b3b642ab0e6aa117d13fa48892ceb78c86875fb172fe60e86801",
+      "oldest_candle_open_timestamp": "2013-09-25T04:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2025-12-18T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2023-05-24T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2020-03-10T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2013-09-25T04:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 20000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 10082.0,
+      "approximate_duration_months": 331.242941,
+      "approximate_duration_years": 27.603578,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 7171,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 871084800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 1458,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 2911,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 345600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "d55c5d456ac5b76f45d83ed2dccacda1451700a10015e39b7bfc416b9278366c",
+      "oldest_candle_open_timestamp": "1999-01-04T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2022-10-04T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2007-05-03T00:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 7171,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "1999-01-04T00:00:00Z",
+          "raw_returned_count": 7171,
+          "requested_count": 10000
+        }
+      ],
+      "requested_maximum": 10000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 7171,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 7171
+    },
+    {
+      "approximate_duration_days": 743.875,
+      "approximate_duration_months": 24.439927,
+      "approximate_duration_years": 2.036661,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 64270800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:30:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "ohlc_sha256": "5814a100b02bac91e77c54f79ead5470f52e3a69926a7257b3d054fc1cdd8348",
+      "oldest_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-07-28T13:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-05-29T11:15:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-03-17T18:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2025-10-17T08:15:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2024-07-29T05:30:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 2958.916667,
+      "approximate_duration_months": 97.214864,
+      "approximate_duration_years": 8.101239,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 255650400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 431,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21014,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 273600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "f2ddef6a99159b795ecf327b33fbcaa19f67cb70b1b944757e40bd2aa94b724e",
+      "oldest_candle_open_timestamp": "2018-07-06T04:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-15T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-10-21T12:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-01-02T01:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2023-05-19T00:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2018-07-06T04:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 4702.166667,
+      "approximate_duration_months": 154.489141,
+      "approximate_duration_years": 12.874095,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 20000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 406267200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 684,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 8213,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 302400,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "32bf6de9ef97b52bfc96091af7509276c2ebfac762b3fb4e07bf9d3ebd3e981c",
+      "oldest_candle_open_timestamp": "2013-09-26T20:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2025-12-18T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2023-05-24T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2020-03-10T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2013-09-26T20:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 20000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 13372.0,
+      "approximate_duration_months": 439.33551,
+      "approximate_duration_years": 36.611292,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 7307,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 1155340800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 1498,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 6065,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 264816000,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "e5881b69a185b53e8f656edc50304f4f9a3d16fcc08d00cdebb9557582a2eeb0",
+      "oldest_candle_open_timestamp": "1990-01-01T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2022-10-04T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2007-04-23T00:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 7307,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "1990-01-01T00:00:00Z",
+          "raw_returned_count": 7307,
+          "requested_count": 10000
+        }
+      ],
+      "requested_maximum": 10000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 7307,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 7307
+    },
+    {
+      "approximate_duration_days": 743.875,
+      "approximate_duration_months": 24.439927,
+      "approximate_duration_years": 2.036661,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 64270800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:30:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "ohlc_sha256": "7db09ed92fb8505dadd1ed4cabf891820132333481d44abf6d871f46b2484bdd",
+      "oldest_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-07-28T13:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-05-29T11:15:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-03-17T18:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2025-10-17T08:15:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2024-07-29T05:30:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 2958.958333,
+      "approximate_duration_months": 97.216233,
+      "approximate_duration_years": 8.101353,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 255654000,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 432,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21015,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 273600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "4f51b534d801189b0ffba2753505d25921475ee86278e58d26621d0adaf900f8",
+      "oldest_candle_open_timestamp": "2018-07-06T03:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-15T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-10-21T12:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-01-02T01:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2023-05-19T00:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2018-07-06T03:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 4703.833333,
+      "approximate_duration_months": 154.543899,
+      "approximate_duration_years": 12.878658,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 20000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 406411200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 684,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 8223,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 302400,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "cc791c145897470a6ae204914acb57c64a1a6dfbb1e09160b1d1906e12757794",
+      "oldest_candle_open_timestamp": "2013-09-25T04:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2025-12-18T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2023-05-24T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2020-03-10T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2013-09-25T04:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 20000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 10082.0,
+      "approximate_duration_months": 331.242941,
+      "approximate_duration_years": 27.603578,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 7169,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 871084800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 1459,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 2913,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 345600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "8a7222da0a15b4e3ce3d539d0a6343ed12c4743de20750f4011a8124572bd897",
+      "oldest_candle_open_timestamp": "1999-01-04T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2022-10-04T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2007-05-03T00:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 7169,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "1999-01-04T00:00:00Z",
+          "raw_returned_count": 7169,
+          "requested_count": 10000
+        }
+      ],
+      "requested_maximum": 10000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 7169,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 7169
+    },
+    {
+      "approximate_duration_days": 743.875,
+      "approximate_duration_months": 24.439927,
+      "approximate_duration_years": 2.036661,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 64270800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:30:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "ohlc_sha256": "1b3bc5e95607a84fccf807bdc32a611f9854ef0a6666c1a1e029e7f913cc8df5",
+      "oldest_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-07-28T13:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-05-29T11:15:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2026-03-17T18:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2025-10-17T08:15:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:15:00Z",
+          "oldest_open_timestamp": "2024-07-29T05:30:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 2958.916667,
+      "approximate_duration_months": 97.214864,
+      "approximate_duration_years": 8.101239,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 255650400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 431,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21014,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 273600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "cdca786fd7047ebd0feff136651ca46a1deec74f6ef276c1d82f257faeae0fdc",
+      "oldest_candle_open_timestamp": "2018-07-06T04:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-15T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-10-21T12:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-01-02T01:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2023-05-19T00:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2018-07-06T04:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 4702.166667,
+      "approximate_duration_months": 154.489141,
+      "approximate_duration_years": 12.874095,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 20000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 406267200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 684,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 8213,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 302400,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "2d79e9d6cb0ab98168443dcf577193ad0514d8381bf4b43d60219bb49bd452fa",
+      "oldest_candle_open_timestamp": "2013-09-26T20:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2025-12-18T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2023-05-24T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2020-03-10T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2013-09-26T20:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 20000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 10082.0,
+      "approximate_duration_months": 331.242941,
+      "approximate_duration_years": 27.603578,
+      "asset_class": "FOREX",
+      "availability_lower_bound": 7149,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 871084800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 1476,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 2933,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 345600,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "bbb40538f4d3c1c9135bbec3520019267a1b97cf91ed3694226fb02e1fdcb2d8",
+      "oldest_candle_open_timestamp": "1999-01-04T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2022-10-04T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2007-04-23T00:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 7149,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "1999-01-04T00:00:00Z",
+          "raw_returned_count": 7149,
+          "requested_count": 10000
+        }
+      ],
+      "requested_maximum": 10000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 7149,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 7149
+    },
+    {
+      "approximate_duration_days": 777.677083,
+      "approximate_duration_months": 25.55049,
+      "approximate_duration_years": 2.129208,
+      "asset_class": "METAL",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 67191300,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 550,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 24657,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 263700,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:45:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:30:00Z",
+      "ohlc_sha256": "ea1fd4f650473b8353393a138d0a842dbacf3197ad56ed3fa866a0b4e9f723fb",
+      "oldest_candle_open_timestamp": "2024-06-25T10:30:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-07-28T05:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-05-27T09:45:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-03-10T20:45:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2025-10-06T15:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2024-06-25T10:30:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 3197.041667,
+      "approximate_duration_months": 105.038433,
+      "approximate_duration_years": 8.753203,
+      "asset_class": "METAL",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 276224400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 2256,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 26729,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 306000,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "024013dc0888137c39ae17093e9990e6638cb4abd39ebd3ddeebcf02c251471a",
+      "oldest_candle_open_timestamp": "2017-11-10T01:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-11T06:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-10-06T18:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2024-11-29T13:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2023-03-01T17:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2017-11-10T01:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 4740.333333,
+      "approximate_duration_months": 155.743102,
+      "approximate_duration_years": 12.978592,
+      "asset_class": "METAL",
+      "availability_lower_bound": 20000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": null,
+      "historical_duration_seconds": 409564800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 729,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 8442,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 302400,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "29ee1b99afc5c773e193edfd459c1f45d4ee5087ea4171bda9783f7a7d01c785",
+      "oldest_candle_open_timestamp": "2013-08-19T16:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2025-12-17T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2023-05-19T04:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2020-02-24T04:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2013-08-19T16:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 20000,
+      "stop_reason": "PROBE_CEILING_REACHED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 8097.0,
+      "approximate_duration_months": 266.025996,
+      "approximate_duration_years": 22.168833,
+      "asset_class": "METAL",
+      "availability_lower_bound": 5694,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 699580800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 1187,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 2403,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 432000,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "b3a29fa52b9e0f83f96757bbd8184421fd3d60e4a7faf481c8730c1b1f853c2b",
+      "oldest_candle_open_timestamp": "2004-06-11T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2022-09-26T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2007-03-14T00:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 5694,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2004-06-11T00:00:00Z",
+          "raw_returned_count": 5694,
+          "requested_count": 10000
+        }
+      ],
+      "requested_maximum": 10000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 5694,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 5694
+    },
+    {
+      "approximate_duration_days": 534.864583,
+      "approximate_duration_months": 17.572914,
+      "approximate_duration_years": 1.464409,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 46212300,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 99,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 1347,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 15300,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:45:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:30:00Z",
+      "ohlc_sha256": "7e39cd628599abf401961273f6a16872729958ad2ce3f866074638424cd67e77",
+      "oldest_candle_open_timestamp": "2025-02-23T06:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-08-01T08:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-06-19T16:45:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-04-27T10:45:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-01-10T05:45:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2025-02-23T06:00:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 1790.541667,
+      "approximate_duration_months": 58.828039,
+      "approximate_duration_years": 4.902337,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 41577,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 154702800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 310,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 1396,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 270000,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "2ae746cc51fe75a40ec2af4f4ef137eda7c5d95e624dab0ac08d939b34f66cbc",
+      "oldest_candle_open_timestamp": "2021-09-16T13:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-30T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-01-10T05:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-06-10T13:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2024-04-08T09:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 41577,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2021-09-16T13:00:00Z",
+          "raw_returned_count": 41577,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 41577,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": 41577
+    },
+    {
+      "approximate_duration_days": 1790.5,
+      "approximate_duration_months": 58.82667,
+      "approximate_duration_years": 4.902222,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 10675,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 154699200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 8,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 68,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 259200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "8c1f0f17c7f64ee95ef399b44641c186e1af9a16193a1bc423f7372dc9d697e3",
+      "oldest_candle_open_timestamp": "2021-09-16T12:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2026-02-26T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2024-04-30T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2022-01-11T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 10675,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2021-09-16T12:00:00Z",
+          "raw_returned_count": 10675,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 10675,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": 10675
+    },
+    {
+      "approximate_duration_days": 1791.0,
+      "approximate_duration_months": 58.843097,
+      "approximate_duration_years": 4.903591,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 1781,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 154742400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 6,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 10,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 259200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "eb9da4ebaa98f311a97701e6018fd9fc74d46a738a44ab00f27901ee5ca547b6",
+      "oldest_candle_open_timestamp": "2021-09-16T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2023-11-14T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 1781,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2021-09-16T00:00:00Z",
+          "raw_returned_count": 1781,
+          "requested_count": 5000
+        }
+      ],
+      "requested_maximum": 5000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 1781,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 1781
+    },
+    {
+      "approximate_duration_days": 534.833333,
+      "approximate_duration_months": 17.571887,
+      "approximate_duration_years": 1.464324,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 50000,
+      "broker_depth_limit_reached": false,
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+      "data_retrieval_status": "AVAILABLE_LOWER_BOUND",
+      "depth_classification": "DEEP_HISTORY",
+      "historical_duration_seconds": 46209600,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 98,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 1344,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 15300,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:45:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T02:30:00Z",
+      "ohlc_sha256": "f4c1ecdf39c19b33616667917a639c0e78347181bc38fbb6b9dd5804e84e713a",
+      "oldest_candle_open_timestamp": "2025-02-23T06:45:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-08-01T08:45:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-06-19T16:45:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-04-27T10:45:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2026-01-10T05:45:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 50000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T02:30:00Z",
+          "oldest_open_timestamp": "2025-02-23T06:45:00Z",
+          "raw_returned_count": 50000,
+          "requested_count": 50000
+        },
+        {
+          "completed_returned_count": 0,
+          "error": {
+            "code": -2,
+            "message": "Terminal: Invalid params"
+          },
+          "raw_returned_count": 0,
+          "requested_count": 100000
+        }
+      ],
+      "requested_maximum": 100000,
+      "retrieval_error": {
+        "code": -2,
+        "message": "Terminal: Invalid params"
+      },
+      "returned_candle_count": 50000,
+      "stop_reason": "RETRIEVAL_ERROR",
+      "supports_at_least_20000_m15": true,
+      "supports_at_least_30000_m15": true,
+      "supports_at_least_50000_m15": true,
+      "timeframe": "M15",
+      "total_available_candles": null
+    },
+    {
+      "approximate_duration_days": 1790.541667,
+      "approximate_duration_months": 58.828039,
+      "approximate_duration_years": 4.902337,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 41577,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 154702800,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 310,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 1396,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 270000,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T02:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-12T01:00:00Z",
+      "ohlc_sha256": "61f3d4931aa46129a0f6faa1cf860ff78d5818b021faedcc9fbd459eeb0ebf47",
+      "oldest_candle_open_timestamp": "2021-09-16T13:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-06-30T10:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2026-01-10T05:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2025-06-10T13:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 20000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2024-04-08T09:00:00Z",
+          "raw_returned_count": 20000,
+          "requested_count": 20000
+        },
+        {
+          "completed_returned_count": 41577,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-12T01:00:00Z",
+          "oldest_open_timestamp": "2021-09-16T13:00:00Z",
+          "raw_returned_count": 41577,
+          "requested_count": 50000
+        }
+      ],
+      "requested_maximum": 50000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 41577,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H1",
+      "total_available_candles": 41577
+    },
+    {
+      "approximate_duration_days": 1790.5,
+      "approximate_duration_months": 58.82667,
+      "approximate_duration_years": 4.902222,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 10675,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 154699200,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 8,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 68,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 259200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T20:00:00Z",
+      "ohlc_sha256": "6cfcef8545742d816e6935b3e7d7713b859ca370af8929db5ce8703b97acd18b",
+      "oldest_candle_open_timestamp": "2021-09-16T12:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2026-02-26T08:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 5000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2024-04-30T16:00:00Z",
+          "raw_returned_count": 5000,
+          "requested_count": 5000
+        },
+        {
+          "completed_returned_count": 10000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2022-01-11T08:00:00Z",
+          "raw_returned_count": 10000,
+          "requested_count": 10000
+        },
+        {
+          "completed_returned_count": 10675,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T20:00:00Z",
+          "oldest_open_timestamp": "2021-09-16T12:00:00Z",
+          "raw_returned_count": 10675,
+          "requested_count": 20000
+        }
+      ],
+      "requested_maximum": 20000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 10675,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "H4",
+      "total_available_candles": 10675
+    },
+    {
+      "approximate_duration_days": 1791.0,
+      "approximate_duration_months": 58.843097,
+      "approximate_duration_years": 4.903591,
+      "asset_class": "CRYPTO",
+      "availability_lower_bound": 1781,
+      "broker_depth_limit_reached": true,
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T00:00:00Z",
+      "data_retrieval_status": "AVAILABLE",
+      "depth_classification": null,
+      "historical_duration_seconds": 154742400,
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 6,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 10,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 259200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "newest_candle_close_timestamp": "2026-08-12T00:00:00Z",
+      "newest_completed_candle_open_timestamp": "2026-08-11T00:00:00Z",
+      "ohlc_sha256": "c2fae7f90cf64bf453f015d5e634865fdd6db149ac18e9708e8bf9cb6fa736ef",
+      "oldest_candle_open_timestamp": "2021-09-16T00:00:00Z",
+      "probe_results": [
+        {
+          "completed_returned_count": 1000,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2023-11-14T00:00:00Z",
+          "raw_returned_count": 1000,
+          "requested_count": 1000
+        },
+        {
+          "completed_returned_count": 1781,
+          "error": {
+            "code": 1,
+            "message": "Success"
+          },
+          "newest_open_timestamp": "2026-08-11T00:00:00Z",
+          "oldest_open_timestamp": "2021-09-16T00:00:00Z",
+          "raw_returned_count": 1781,
+          "requested_count": 5000
+        }
+      ],
+      "requested_maximum": 5000,
+      "retrieval_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "returned_candle_count": 1781,
+      "stop_reason": "RETURNED_FEWER_THAN_REQUESTED",
+      "supports_at_least_20000_m15": null,
+      "supports_at_least_30000_m15": null,
+      "supports_at_least_50000_m15": null,
+      "timeframe": "D1",
+      "total_available_candles": 1781
+    }
+  ],
+  "generated_as_of_utc": "2026-08-11T23:44:40Z",
+  "limitations": [
+    "Accessible depth reflects this broker account, terminal history configuration, and capture time; it is not a universal market-data bound.",
+    "A PROBE_CEILING_REACHED result is a lower bound rather than an exact maximum.",
+    "Calendar-agnostic gap counts include legitimate market closures and session breaks.",
+    "Recent completed bars may change later because of broker corrections or backfills; M15 duplicate retrieval is the bounded stability check.",
+    "No common crypto/forex start date is imposed."
+  ],
+  "m15_stability": {
+    "AUDUSD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "7db09ed92fb8505dadd1ed4cabf891820132333481d44abf6d871f46b2484bdd",
+      "first_timestamp": "2024-07-29T05:30:00Z",
+      "last_timestamp": "2026-08-12T02:15:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2024-07-29T05:30:00Z",
+      "second_last_timestamp": "2026-08-12T02:15:00Z",
+      "second_ohlc_sha256": "7db09ed92fb8505dadd1ed4cabf891820132333481d44abf6d871f46b2484bdd",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "BTCUSD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "7e39cd628599abf401961273f6a16872729958ad2ce3f866074638424cd67e77",
+      "first_timestamp": "2025-02-23T06:00:00Z",
+      "last_timestamp": "2026-08-12T02:30:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2025-02-23T06:00:00Z",
+      "second_last_timestamp": "2026-08-12T02:30:00Z",
+      "second_ohlc_sha256": "7e39cd628599abf401961273f6a16872729958ad2ce3f866074638424cd67e77",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "ETHUSD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "f4c1ecdf39c19b33616667917a639c0e78347181bc38fbb6b9dd5804e84e713a",
+      "first_timestamp": "2025-02-23T06:45:00Z",
+      "last_timestamp": "2026-08-12T02:30:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2025-02-23T06:45:00Z",
+      "second_last_timestamp": "2026-08-12T02:30:00Z",
+      "second_ohlc_sha256": "f4c1ecdf39c19b33616667917a639c0e78347181bc38fbb6b9dd5804e84e713a",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "EURUSD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "bd88af4289ac00f7a44450d60703d3d0fdf6798fc8db79825c22a82dd26363c9",
+      "first_timestamp": "2024-07-29T05:30:00Z",
+      "last_timestamp": "2026-08-12T02:15:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2024-07-29T05:30:00Z",
+      "second_last_timestamp": "2026-08-12T02:15:00Z",
+      "second_ohlc_sha256": "bd88af4289ac00f7a44450d60703d3d0fdf6798fc8db79825c22a82dd26363c9",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "GBPUSD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "4d9d1ce19791fdce0173eba313e73a0ce557445a5c40f54811808c85c16e9426",
+      "first_timestamp": "2024-07-29T05:30:00Z",
+      "last_timestamp": "2026-08-12T02:15:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2024-07-29T05:30:00Z",
+      "second_last_timestamp": "2026-08-12T02:15:00Z",
+      "second_ohlc_sha256": "4d9d1ce19791fdce0173eba313e73a0ce557445a5c40f54811808c85c16e9426",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "USDCAD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "1b3bc5e95607a84fccf807bdc32a611f9854ef0a6666c1a1e029e7f913cc8df5",
+      "first_timestamp": "2024-07-29T05:30:00Z",
+      "last_timestamp": "2026-08-12T02:15:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2024-07-29T05:30:00Z",
+      "second_last_timestamp": "2026-08-12T02:15:00Z",
+      "second_ohlc_sha256": "1b3bc5e95607a84fccf807bdc32a611f9854ef0a6666c1a1e029e7f913cc8df5",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "USDJPY": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "5814a100b02bac91e77c54f79ead5470f52e3a69926a7257b3d054fc1cdd8348",
+      "first_timestamp": "2024-07-29T05:30:00Z",
+      "last_timestamp": "2026-08-12T02:15:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2024-07-29T05:30:00Z",
+      "second_last_timestamp": "2026-08-12T02:15:00Z",
+      "second_ohlc_sha256": "5814a100b02bac91e77c54f79ead5470f52e3a69926a7257b3d054fc1cdd8348",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    },
+    "XAUUSD": {
+      "first_count": 50000,
+      "first_ohlc_sha256": "ea1fd4f650473b8353393a138d0a842dbacf3197ad56ed3fa866a0b4e9f723fb",
+      "first_timestamp": "2024-06-25T10:30:00Z",
+      "last_timestamp": "2026-08-12T02:30:00Z",
+      "second_count": 50000,
+      "second_first_timestamp": "2024-06-25T10:30:00Z",
+      "second_last_timestamp": "2026-08-12T02:30:00Z",
+      "second_ohlc_sha256": "ea1fd4f650473b8353393a138d0a842dbacf3197ad56ed3fa866a0b4e9f723fb",
+      "second_request_count": 50000,
+      "second_request_error": {
+        "code": 1,
+        "message": "Success"
+      },
+      "status": "STABLE"
+    }
+  },
+  "m15_summary": [
+    {
+      "approximate_months": 24.439927,
+      "approximate_years": 2.036661,
+      "asset_class": "FOREX",
+      "available_candles": 50000,
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:15:00Z",
+      "oldest_timestamp": "2024-07-29T05:30:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 24.439927,
+      "approximate_years": 2.036661,
+      "asset_class": "FOREX",
+      "available_candles": 50000,
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:15:00Z",
+      "oldest_timestamp": "2024-07-29T05:30:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 24.439927,
+      "approximate_years": 2.036661,
+      "asset_class": "FOREX",
+      "available_candles": 50000,
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:15:00Z",
+      "oldest_timestamp": "2024-07-29T05:30:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 24.439927,
+      "approximate_years": 2.036661,
+      "asset_class": "FOREX",
+      "available_candles": 50000,
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:15:00Z",
+      "oldest_timestamp": "2024-07-29T05:30:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 24.439927,
+      "approximate_years": 2.036661,
+      "asset_class": "FOREX",
+      "available_candles": 50000,
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:15:00Z",
+      "oldest_timestamp": "2024-07-29T05:30:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 25.55049,
+      "approximate_years": 2.129208,
+      "asset_class": "METAL",
+      "available_candles": 50000,
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:30:00Z",
+      "oldest_timestamp": "2024-06-25T10:30:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 17.572914,
+      "approximate_years": 1.464409,
+      "asset_class": "CRYPTO",
+      "available_candles": 50000,
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:30:00Z",
+      "oldest_timestamp": "2025-02-23T06:00:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    },
+    {
+      "approximate_months": 17.571887,
+      "approximate_years": 1.464324,
+      "asset_class": "CRYPTO",
+      "available_candles": 50000,
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "classification": "DEEP_HISTORY",
+      "exact_depth_known": false,
+      "newest_timestamp": "2026-08-12T02:30:00Z",
+      "oldest_timestamp": "2025-02-23T06:45:00Z",
+      "stability": "STABLE",
+      "supports_20000": true,
+      "supports_30000": true,
+      "supports_50000": true
+    }
+  ],
+  "methodology": {
+    "completed_candle_rule": "start_position=1 and candle_open_epoch + timeframe_seconds <= broker current-bar open boundary for the same symbol/timeframe",
+    "depth_thresholds_m15": {
+      "DEEP_HISTORY": ">=30000",
+      "LIMITED_HISTORY": "<10000",
+      "MODERATE_HISTORY": "10000-29999"
+    },
+    "gap_policy": "Calendar-agnostic interval gaps reported without imputation or automatic bad-data classification.",
+    "history_start_position": 1,
+    "request_sizes_by_timeframe": {
+      "D1": [
+        1000,
+        5000,
+        10000
+      ],
+      "H1": [
+        1000,
+        5000,
+        10000,
+        20000,
+        50000
+      ],
+      "H4": [
+        1000,
+        5000,
+        10000,
+        20000
+      ],
+      "M15": [
+        1000,
+        5000,
+        10000,
+        20000,
+        50000,
+        100000
+      ]
+    },
+    "source": "ALPARI_MT5_READ_ONLY_COPY_RATES_FROM_POS",
+    "stopping_rules": [
+      "RETURNED_FEWER_THAN_REQUESTED",
+      "OLDEST_TIMESTAMP_NOT_MOVING",
+      "RETRIEVAL_ERROR",
+      "PROBE_CEILING_REACHED"
+    ],
+    "strategy_or_replay_run": false,
+    "trading_operations_performed": 0
+  },
+  "mode": "DATA_AVAILABILITY_AUDIT_ONLY",
+  "proposed_future_dataset_split": {
+    "current_v2_period_status": "RESEARCH_EXPOSED_NOT_TRUE_OOS",
+    "current_v2_windows": {
+      "AUDUSD": {
+        "asset_class": "FOREX",
+        "broker_symbol": "AUDUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "AUDUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "5674a45546522b0a515e1b684ed1bf69d7ac62c7fbfb6551217185f2c0cc0527"
+      },
+      "BTCUSD": {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "BITCOIN",
+        "candle_count": 10000,
+        "canonical_symbol": "BTCUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-04-23T01:15:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "29d4e9639b7cc9dcc483acf71343fc691a7f8a162acf6d283958860a3bcaf1ca"
+      },
+      "ETHUSD": {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "ETHEREUM",
+        "candle_count": 10000,
+        "canonical_symbol": "ETHUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-04-23T01:15:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "0bf6cb205b1b08213bc4cc87d5d2247cff50cfbf82d4f9e5656c1f112c018db1"
+      },
+      "EURUSD": {
+        "asset_class": "FOREX",
+        "broker_symbol": "EURUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "EURUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T08:00:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "a6447fe187feef28d09868f57ac3efc8b7901caece9e2b28156dd5e32b0717d7"
+      },
+      "GBPUSD": {
+        "asset_class": "FOREX",
+        "broker_symbol": "GBPUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "GBPUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "f3ac38e0b13725a883f5947ed9a56b8a3917fc6b3007d8dc6e498a40eee5f988"
+      },
+      "USDCAD": {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDCAD",
+        "candle_count": 10000,
+        "canonical_symbol": "USDCAD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "4a129d79b0c752e9fc693a525723023b3fdafe70a773fdb87a309d3291c253e5"
+      },
+      "USDJPY": {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDJPY",
+        "candle_count": 10000,
+        "canonical_symbol": "USDJPY",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "ce3981d16e291ed8869ff226912a50729b1a6c5d06bf0e3146837630e475b5df"
+      },
+      "XAUUSD": {
+        "asset_class": "METAL",
+        "broker_symbol": "XAUUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "XAUUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-06T13:00:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "09ae96523177e39c736cc0a950c10c6e5369eabc11c8b95d638944b79b56c820"
+      }
+    },
+    "important_limitation": "March-August 2026 v2 history has already been analyzed extensively and cannot be relabeled as untouched OOS.",
+    "method": "CHRONOLOGICAL_NO_SHUFFLE",
+    "proposal": {
+      "development": "Oldest available completed M15 history before the validation boundary; target approximately 60% of a future frozen pre-OOS dataset.",
+      "true_out_of_sample": "Newest approximately 20%, frozen only after sufficient candles strictly later than each symbol's v2 last close have accumulated and before any analysis of that segment.",
+      "validation": "Chronologically following development segment; target approximately 20%; must remain before the true-OOS boundary."
+    }
+  },
+  "research_suitability": {
+    "AUDUSD": "DEEP_HISTORY",
+    "BTCUSD": "DEEP_HISTORY",
+    "ETHUSD": "DEEP_HISTORY",
+    "EURUSD": "DEEP_HISTORY",
+    "GBPUSD": "DEEP_HISTORY",
+    "USDCAD": "DEEP_HISTORY",
+    "USDJPY": "DEEP_HISTORY",
+    "XAUUSD": "DEEP_HISTORY"
+  },
+  "schema_version": "MSS_SPRINT92C1_HISTORICAL_DEPTH_AUDIT_V1",
+  "timeframes": [
+    "M15",
+    "H1",
+    "H4",
+    "D1"
+  ],
+  "universe": [
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD"
+    },
+    {
+      "asset_class": "METAL",
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD"
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD"
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD"
+    }
+  ]
+}
