@@ -257,6 +257,13 @@ class MultiAssetHistoricalReplay(MultiAssetRegistry):
             "canonical_symbol": definition.canonical_symbol,
             "broker_symbol": self._broker_symbol(metadata),
             "asset_class": definition.asset_class,
+            "account_currency": self._required_text(metadata, "account_currency"),
+            "currency_base": self._required_text(metadata, "currency_base"),
+            "currency_profit": self._required_text(metadata, "currency_profit"),
+            "currency_margin": self._required_text(metadata, "currency_margin"),
+            "trade_calc_mode": self._required_number(
+                metadata, "trade_calc_mode", integral=True, allow_zero=True,
+            ),
             "source_candles": common_count,
             "data_start": diagnostics.data_start.isoformat(),
             "data_end": diagnostics.data_end.isoformat(),
@@ -400,6 +407,13 @@ class MultiAssetHistoricalReplay(MultiAssetRegistry):
             "canonical_symbol": definition.canonical_symbol,
             "broker_symbol": self._broker_symbol(metadata),
             "asset_class": definition.asset_class,
+            "account_currency": self._required_text(metadata, "account_currency"),
+            "currency_base": self._required_text(metadata, "currency_base"),
+            "currency_profit": self._required_text(metadata, "currency_profit"),
+            "currency_margin": self._required_text(metadata, "currency_margin"),
+            "trade_calc_mode": self._required_number(
+                metadata, "trade_calc_mode", integral=True, allow_zero=True,
+            ),
             "digits": self._required_number(metadata, "digits", integral=True),
             "point": self._required_number(metadata, "point"),
             "tick_size": self._required_number(metadata, "trade_tick_size"),
@@ -430,6 +444,11 @@ class MultiAssetHistoricalReplay(MultiAssetRegistry):
             metadata,
         )
         return BacktestSymbolMetadata(
+            account_currency=row["account_currency"],
+            currency_base=row["currency_base"],
+            currency_profit=row["currency_profit"],
+            currency_margin=row["currency_margin"],
+            trade_calc_mode=row["trade_calc_mode"],
             point=row["point"],
             digits=row["digits"],
             tick_size=row["tick_size"],
@@ -494,6 +513,12 @@ class MultiAssetHistoricalReplay(MultiAssetRegistry):
         if not math.isfinite(number) or number < 0 or (number == 0 and not allow_zero):
             raise ValueError(f"Valid broker metadata is required: {field}")
         return int(number) if integral else number
+
+    def _required_text(self, metadata, field):
+        value = self._value(metadata, field, None)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"Valid broker metadata is required: {field}")
+        return value
 
     def input_sha256(self, history_results, broker_metadata, config):
         history = []

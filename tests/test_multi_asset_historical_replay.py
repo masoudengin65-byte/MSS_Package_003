@@ -90,6 +90,11 @@ def inputs(count=6):
         }
         metadata[canonical] = {
             "broker_symbol": broker_symbol,
+            "account_currency": "USD",
+            "currency_base": "USD",
+            "currency_profit": "USD",
+            "currency_margin": "USD",
+            "trade_calc_mode": 0,
             "digits": 5,
             "point": 0.01,
             "trade_tick_size": 0.01,
@@ -231,8 +236,13 @@ def test_required_broker_metadata_is_captured_and_validated():
     btc = next(row for row in result["broker_metadata"] if row["canonical_symbol"] == "BTCUSD")
     assert btc == {
         "canonical_symbol": "BTCUSD",
-        "broker_symbol": "BITCOIN",
-        "asset_class": "CRYPTO",
+            "broker_symbol": "BITCOIN",
+            "asset_class": "CRYPTO",
+            "account_currency": "USD",
+            "currency_base": "USD",
+            "currency_profit": "USD",
+            "currency_margin": "USD",
+            "trade_calc_mode": 0,
         "digits": 5,
         "point": 0.01,
         "tick_size": 0.01,

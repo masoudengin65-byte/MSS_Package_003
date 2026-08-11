@@ -10,6 +10,12 @@ import zipfile
 RELATIONSHIP_ID = re.compile(
     rb'(<Relationship\b[^>]*\bId=")([^"]+)(")'
 )
+CREATED_TIMESTAMP = re.compile(
+    rb'(<dcterms:created\b[^>]*>)([^<]+)(</dcterms:created>)'
+)
+MODIFIED_TIMESTAMP = re.compile(
+    rb'(<dcterms:modified\b[^>]*>)([^<]+)(</dcterms:modified>)'
+)
 
 
 def owner_for_relationships(name):
@@ -28,6 +34,15 @@ def normalize(path):
     with zipfile.ZipFile(path, "r") as source:
         infos = {item.filename: item for item in source.infolist()}
         content = {name: source.read(name) for name in infos}
+
+    core_name = "docProps/core.xml"
+    if core_name in content:
+        created = CREATED_TIMESTAMP.search(content[core_name])
+        if created:
+            content[core_name] = MODIFIED_TIMESTAMP.sub(
+                lambda match: match.group(1) + created.group(2) + match.group(3),
+                content[core_name],
+            )
 
     for name in sorted(item for item in content if item.endswith(".rels")):
         counter = 0
