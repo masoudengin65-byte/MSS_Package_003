@@ -1,0 +1,36 @@
+{
+  "aggregate_ledger_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+  "chunk_count": 1,
+  "chunks": [
+    {
+      "file_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+      "first_epoch": 1786556700,
+      "first_open_broker_time_label": "2026-08-12T17:45:00Z",
+      "last_epoch": 1786560300,
+      "last_open_broker_time_label": "2026-08-12T18:45:00Z",
+      "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000001.jsonl",
+      "record_sha256": [
+        "246acfb035994242046c62f500028d138af618d0b31b4e550b79471874b9d82a",
+        "b0159572e699d45c5a1b2413da23b7e3f869f0cc3eecd7f5cb6d79270094f5f6",
+        "49377869a33a3d9a46d00789997e620a55db03920457dce4d1d30c3369704b8f",
+        "fe25fec979d5ebb8f2bf50b1f7027a6462c77e66c278e2d50dd31a35c89260b6",
+        "30e09ba2e1143a46f80edf67a2a42cda600f3049b3634dc9b8a52ad248a28ec9"
+      ],
+      "row_count": 5,
+      "sequence": 1
+    }
+  ],
+  "eligibility_status": "ACCRUAL_IN_PROGRESS",
+  "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+  "first_candle_open_epoch": 1786556700,
+  "last_candle_open_epoch": 1786560300,
+  "manifest_sequence": 1,
+  "previous_manifest_sha256": "8fdbd541eee43aa140dc9819f4b2907851e847e801cce6be3caf9a1775d260ee",
+  "raw_true_oos_boundary_epoch": 1786556700,
+  "row_count": 5,
+  "schema_version": "MSS_TRUE_OOS_LEDGER_MANIFEST_V1",
+  "symbol": "USDJPY",
+  "time_authority": "RAW_MT5_TIME_FIELD",
+  "timeframe": "M15",
+  "true_oos_boundary": "2026-08-12T17:45:00Z"
+}

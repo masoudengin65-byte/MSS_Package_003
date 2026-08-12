@@ -1,0 +1,132 @@
+{
+  "acceptance": {
+    "broker_time_authority_preserved": true,
+    "first_chunk_created": true,
+    "first_manifest_successor_created": true,
+    "no_orders": true,
+    "no_outcome_inspection": true,
+    "no_replay": true,
+    "raw_boundary_preserved": true,
+    "source_integrity_passed": true
+  },
+  "accrual": {
+    "completed_rows_appended": 5,
+    "current_bar_epoch": 1786561200,
+    "eligibility_status": "ACCRUAL_IN_PROGRESS",
+    "first_appended_epoch": 1786556700,
+    "last_appended_epoch": 1786560300,
+    "remaining_rows": 9995,
+    "required_final_rows": 10000
+  },
+  "audit": {
+    "completed_market_data_acquired": true,
+    "mt5_accessed": true,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "pnl_computed": false,
+    "production_behavior_changed": false,
+    "signals_generated": false,
+    "strategy_pipeline_imported": false,
+    "strategy_replay_run": false,
+    "trades_generated": false
+  },
+  "baseline_commit": "3c8cba0",
+  "chunk": {
+    "file_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+    "first_epoch": 1786556700,
+    "first_open_broker_time_label": "2026-08-12T17:45:00Z",
+    "last_epoch": 1786560300,
+    "last_open_broker_time_label": "2026-08-12T18:45:00Z",
+    "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000001.jsonl",
+    "record_sha256": [
+      "246acfb035994242046c62f500028d138af618d0b31b4e550b79471874b9d82a",
+      "b0159572e699d45c5a1b2413da23b7e3f869f0cc3eecd7f5cb6d79270094f5f6",
+      "49377869a33a3d9a46d00789997e620a55db03920457dce4d1d30c3369704b8f",
+      "fe25fec979d5ebb8f2bf50b1f7027a6462c77e66c278e2d50dd31a35c89260b6",
+      "30e09ba2e1143a46f80edf67a2a42cda600f3049b3634dc9b8a52ad248a28ec9"
+    ],
+    "row_count": 5,
+    "sequence": 1
+  },
+  "created_artifacts": {
+    "chunk_path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000001.jsonl",
+    "chunk_rows": 5,
+    "chunk_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+    "manifest_path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/manifest_000001.json",
+    "manifest_sha256": "d385b8923caa3226ab92da1cab9993d2f1471fe9d1cd842a3b4b5b8a8dc97b33"
+  },
+  "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+  "immutability": {
+    "broker_revision_overwrite_allowed": false,
+    "chunk_000001_write_once": true,
+    "genesis_manifest_modified": false,
+    "historical_row_replacement_allowed": false,
+    "manifest_000001_write_once": true
+  },
+  "integrity": {
+    "chronological_order": true,
+    "duplicate_timestamp_count": 0,
+    "future_candle_count": 0,
+    "gap_event_count": 0,
+    "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+    "implied_missing_interval_count": 0,
+    "invalid_ohlc_count": 0,
+    "largest_gap_seconds": 0,
+    "negative_spread_count": 0,
+    "negative_volume_count": 0,
+    "nonfinite_price_count": 0,
+    "pass": true,
+    "strictly_increasing_timestamps": true
+  },
+  "mode": "FIRST_APPEND_ONLY_TRUE_OOS_ACCRUAL_NO_STRATEGY_REPLAY_NO_OUTCOMES",
+  "next_manifest": {
+    "aggregate_ledger_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+    "chunk_count": 1,
+    "chunks": [
+      {
+        "file_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+        "first_epoch": 1786556700,
+        "first_open_broker_time_label": "2026-08-12T17:45:00Z",
+        "last_epoch": 1786560300,
+        "last_open_broker_time_label": "2026-08-12T18:45:00Z",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000001.jsonl",
+        "record_sha256": [
+          "246acfb035994242046c62f500028d138af618d0b31b4e550b79471874b9d82a",
+          "b0159572e699d45c5a1b2413da23b7e3f869f0cc3eecd7f5cb6d79270094f5f6",
+          "49377869a33a3d9a46d00789997e620a55db03920457dce4d1d30c3369704b8f",
+          "fe25fec979d5ebb8f2bf50b1f7027a6462c77e66c278e2d50dd31a35c89260b6",
+          "30e09ba2e1143a46f80edf67a2a42cda600f3049b3634dc9b8a52ad248a28ec9"
+        ],
+        "row_count": 5,
+        "sequence": 1
+      }
+    ],
+    "eligibility_status": "ACCRUAL_IN_PROGRESS",
+    "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+    "first_candle_open_epoch": 1786556700,
+    "last_candle_open_epoch": 1786560300,
+    "manifest_sequence": 1,
+    "previous_manifest_sha256": "8fdbd541eee43aa140dc9819f4b2907851e847e801cce6be3caf9a1775d260ee",
+    "raw_true_oos_boundary_epoch": 1786556700,
+    "row_count": 5,
+    "schema_version": "MSS_TRUE_OOS_LEDGER_MANIFEST_V1",
+    "symbol": "USDJPY",
+    "time_authority": "RAW_MT5_TIME_FIELD",
+    "timeframe": "M15",
+    "true_oos_boundary": "2026-08-12T17:45:00Z"
+  },
+  "schema_version": "MSS_SPRINT92H12_FIRST_APPEND_ONLY_TRUE_OOS_ACCRUAL_V1",
+  "source_file_sha256": {
+    "genesis": "8fdbd541eee43aa140dc9819f4b2907851e847e801cce6be3caf9a1775d260ee",
+    "h10": "b87a9e3ea6d45204259529df05721a5a5f2445c3b8521d3ddabe1554fabb5b44",
+    "h11": "475231fcc95352b36f8b6819472e1fbc3b0020702b8586a632dca44d4fc1162b",
+    "h111": "ba3576ec6d18d7331e7d871e3d82f4a7366a5feb7ebcd2622295d5bf11c26664"
+  },
+  "time_contract": {
+    "boundary_epoch": 1786556700,
+    "boundary_string_is_execution_authority": false,
+    "execution_time_domain": "RAW_MT5_BROKER_EPOCH_DOMAIN",
+    "raw_mt5_time_field_is_execution_authority": true,
+    "stored_candle_epochs_shifted": false
+  }
+}
