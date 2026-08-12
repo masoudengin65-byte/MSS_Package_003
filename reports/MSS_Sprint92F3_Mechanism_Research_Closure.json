@@ -1,0 +1,61 @@
+{
+  "acceptance": {
+    "external_closure_respected": true,
+    "f2_decision_respected": true,
+    "no_mechanism_advanced": true,
+    "production_change_justified": false
+  },
+  "allowed_future_work": [
+    "FORMULATE_A_NEW_CAUSAL_STRATEGY_HYPOTHESIS_FROM_MARKET_MICROSTRUCTURE_OR_EXTERNAL_THEORY",
+    "IMPLEMENT_ONLY_AFTER_A_SEPARATE_SPEC_AND_COMMIT",
+    "USE_NEW_VALIDATION_DATA_ONLY_AFTER_PREREGISTRATION"
+  ],
+  "audit": {
+    "deterministic_rebuild": true,
+    "mt5_accessed": false,
+    "outcomes_recomputed": false,
+    "strategy_code_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false
+  },
+  "baseline_commit": "9b4b8a3",
+  "closed_branch": {
+    "advanced_mechanisms": [],
+    "decision": "NO_STRATEGY_REVISION_ADVANCED",
+    "further_threshold_search_on_consumed_development_trades": "PROHIBITED_TO_AVOID_DATA_MINING",
+    "locked_hypothesis_count": 5,
+    "name": "UNCHANGED_STRATEGY_MECHANISM_DISCOVERY",
+    "scientific_conclusion": "NO_PREREGISTERED_ENTRY_AVAILABLE_MECHANISM_WAS_STABLE_ACROSS_AT_LEAST_SIX_OF_EIGHT_SYMBOLS"
+  },
+  "data_governance": {
+    "development_outcomes_exposed": true,
+    "external_history_exposure_ledger_preserved": true,
+    "true_future_oos_remains_sealed": true,
+    "validation_remains_closed_to_new_analysis": true
+  },
+  "mode": "MECHANISM_RESEARCH_CLOSURE_ONLY",
+  "not_allowed_future_work": [
+    "REPEAT_F2_WITH_NEW_CUTPOINTS",
+    "PROMOTE_H1_DIRECTION_DESPITE_FIVE_OF_EIGHT_CONSISTENCY",
+    "REUSE_E4_OR_E7_AS_CONFIRMATORY",
+    "UNSEAL_TRUE_OOS_FOR_EXPLORATION"
+  ],
+  "production_governance": {
+    "production_status": "UNCHANGED",
+    "reason": "NO_EXTERNAL_CONFIRMATION_AND_NO_STABLE_DEVELOPMENT_MECHANISM",
+    "risk_change_authorized": false,
+    "strategy_change_authorized": false,
+    "symbol_filter_change_authorized": false
+  },
+  "schema_version": "MSS_SPRINT92F3_MECHANISM_RESEARCH_CLOSURE_V1",
+  "source_artifacts": {
+    "e8_payload_sha256": "5d36f1e557e7ed02a592968a41029f4f9687aac95a41c7ebe3f83c676ee97a33",
+    "f1_payload_sha256": "43b02b8d3a631bc8a772225faf83619ce38f18f7fef7c69c84300254c9c24d70",
+    "f2_payload_sha256": "efad696c9ff859e828a6aa229e97de4ec2d474b83ac99726c847c0559bbfda58"
+  },
+  "source_file_sha256": {
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92E8_External_Historical_Validation_Closure.json": "40d1d2c53009c62cef146d109c6cd52e7a4feae9de688a0c4857bb39248ed8ac",
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92F1_Mechanism_Discovery_Preregistration.json": "be788a6c340d847465bc00bc3aeeb4b2ffa6b71a65c8d01789fd4e519ec035fe",
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92F2_Mechanism_Discovery_Analysis.json": "3c532567f7d40276dda2e96df5dbf04e7dec2eeb35599191c6a05e5248644b17"
+  }
+}
