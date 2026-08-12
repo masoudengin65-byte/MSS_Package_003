@@ -1,0 +1,106 @@
+{
+  "audit": {
+    "deterministic_rebuild": true,
+    "mt5_accessed": false,
+    "outcomes_analyzed": false,
+    "strategy_code_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "794cab3",
+  "candidate_contract": {
+    "baseline": "UNCHANGED_COMMIT_06377a7",
+    "no_direction_specific_rules": true,
+    "no_new_numeric_thresholds": true,
+    "no_symbol_specific_rules": true,
+    "single_change": "ENTRY_ELIGIBLE_ONLY_WHEN_EXISTING_CONFLUENCE_ENGINE_RETURNS_VALID_DIRECTION_MATCHING_BOS",
+    "unchanged": [
+      "swing detection",
+      "structure detection",
+      "BOS detection",
+      "stop placement",
+      "next-candle entry",
+      "risk 1%",
+      "reward-risk 2.0",
+      "valuation",
+      "ambiguous exit STOP_LOSS_FIRST",
+      "one-position policy"
+    ]
+  },
+  "causal_hypothesis": {
+    "claim": "NAKED_BOS_ENTRIES_INCLUDE_FALSE_BREAKOUTS; REQUIRING_EXISTING_DIRECTION_ALIGNED_CONFLUENCE_REDUCES_FALSE_ENTRIES AND IMPROVES OUT_OF_SAMPLE_MEAN_R",
+    "falsifiable": true,
+    "id": "G1_FALSE_BREAKOUT_CONFLUENCE_GATE",
+    "mechanism": "DISPLACEMENT_SUPPORTS_IMPULSE; ORDER_BLOCK_AND_FVG_REQUIRE_LOCATION_AND_IMBALANCE CONSISTENT_WITH_THE_BOS_DIRECTION",
+    "not_derived_from_f2_threshold_search": true
+  },
+  "development_test_protocol": {
+    "advance_only_if_all": [
+      "pooled mean-R difference > 0",
+      "ordinary and moving-block bootstrap 95% lower bounds for pooled mean-R difference > 0",
+      "candidate mean R > baseline in at least 6 of 8 symbols",
+      "candidate net PnL > baseline in at least 6 of 8 symbols",
+      "BUY and SELL pooled net PnL > 0",
+      "maximum realized loss <= 1.25%",
+      "zero integrity or lookahead failures"
+    ],
+    "candidate_replay_count": 1,
+    "dataset": "SPRINT_92C3_DEVELOPMENT_30000_CANDLES_PER_EIGHT_SYMBOLS",
+    "failure_decision": "REJECT_CONFLUENCE_GATE_NO_VALIDATION_ACCESS",
+    "minimum_candidate_closed_trades_per_symbol": 50,
+    "minimum_pooled_candidate_closed_trades": 400,
+    "paired_baseline_required": true,
+    "pass_decision": "WRITE_SEPARATE_VALIDATION_PREREGISTRATION_BEFORE_ACCESS",
+    "primary_metric": "MEAN_R_DIFFERENCE_CANDIDATE_MINUS_BASELINE",
+    "secondary_metrics": [
+      "closed trades",
+      "net PnL",
+      "profit factor",
+      "expectancy",
+      "maximum drawdown",
+      "BUY net PnL",
+      "SELL net PnL"
+    ],
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ]
+  },
+  "implementation_sequence": [
+    "G2_EXPOSE_EXISTING_CONFLUENCE_SIGNAL_WITH_UNIT_TESTS",
+    "COMMIT_IMPLEMENTATION_BEFORE_OUTCOME_REPLAY",
+    "G3_RUN_ONE_DEVELOPMENT_PAIRED_REPLAY",
+    "DO_NOT_ACCESS_VALIDATION_UNLESS_G3_ALL_PASS"
+  ],
+  "mode": "CAUSAL_HYPOTHESIS_PREREGISTRATION_ONLY",
+  "observed_architecture": {
+    "existing_unused_confluence_contract": "DIRECTION_ALIGNED_BOS_AND_DISPLACEMENT_AND_ORDER_BLOCK_AND_FAIR_VALUE_GAP",
+    "historical_entry_rule": "pipeline_result.valid AND pipeline_result.bos_detected",
+    "smart_money_recommendation": "TRADE_ON_ANY_DETECTED_BOS",
+    "structural_gap": "HISTORICAL_ENTRY_PATH_DOES_NOT_REQUIRE_EXISTING_CONFLUENCE_ENGINE_SIGNAL"
+  },
+  "prohibitions": [
+    "no optimization of confluence components",
+    "no partial-component search",
+    "no threshold search",
+    "no symbol exclusion",
+    "no validation access",
+    "no external-history access",
+    "no true-OOS access",
+    "no production change"
+  ],
+  "schema_version": "MSS_SPRINT92G1_CONFLUENCE_GATE_HYPOTHESIS_PREREGISTRATION_V1",
+  "source_file_sha256": {
+    "confluence_engine": "2c9cfb1598055d0966b691203af4e5990bd5f34607c0cfe89b5f2936d9a92356",
+    "f3_closure": "066c8d74bc16a2c9840e10a51d526dd9773d67ee55ba9ca5d689df3270707a00",
+    "historical_backtest_engine": "b99fa507993001e24256e6a9950051f55a35ae5f042c3e02b93ada3d05f64889",
+    "smart_money_pipeline": "986fe5a30e5d5850d78508766162724e0de5dd3b11a1cbd02d222a4cb4ed0c3a"
+  }
+}
