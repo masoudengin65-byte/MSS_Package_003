@@ -1,0 +1,107 @@
+{
+  "acceptance": {
+    "all_windows_eligible": true,
+    "freeze_has_14_exploratory": true,
+    "freeze_has_8_original": true,
+    "no_replay_or_outcome_inspection": true,
+    "usdjpy_is_only_confirmatory": true
+  },
+  "audit": {
+    "deterministic_rebuild": true,
+    "history_downloaded": false,
+    "mt5_accessed": false,
+    "outcomes_analyzed": false,
+    "production_behavior_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false
+  },
+  "baseline_commit": "2b909f0",
+  "confirmatory_test": {
+    "all_pass_requirements": [
+      "source hash and exact window match",
+      "observed expectancy > 0",
+      "observed mean R > 0",
+      "profit factor > 1",
+      "ordinary bootstrap 95% expectancy and mean-R lower bounds > 0",
+      "moving-block bootstrap 95% expectancy and mean-R lower bounds > 0",
+      "BUY net PnL > 0",
+      "SELL net PnL > 0",
+      "maximum realized loss <= 1.25% pre-trade equity",
+      "zero lookahead, valuation, reconciliation, or integrity failures"
+    ],
+    "candle_count": 10000,
+    "decision_if_all_pass": "CONFIRMED_RESEARCH_CANDIDATE_REQUIRES_SEPARATE_PRODUCTION_GOVERNANCE",
+    "decision_if_any_fail": "NOT_CONFIRMED_NO_PRODUCTION_CHANGE",
+    "minimum_closed_trades": 100,
+    "snapshot_rule": "FIRST_10000_CHRONOLOGICAL_CANDLES_FROM_FROZEN_OLDER_WINDOW",
+    "source_window_sha256": "aaf057d10a9249dc4f915e2bc8e6f0af92c538be0ad42055794ec85846f71309",
+    "strategy_contract": {
+      "ambiguous_exit": "STOP_LOSS_FIRST",
+      "code_commit": "06377a7",
+      "entry": "NEXT_CANDLE_OPEN",
+      "lookback": 500,
+      "optimization": false,
+      "real_orders": false,
+      "reward_risk_ratio": 2.0,
+      "risk_percent": 1.0,
+      "starting_balance": 10000.0,
+      "timeframe": "M15",
+      "warmup": 200
+    },
+    "symbol": "USDJPY"
+  },
+  "execution_policy": {
+    "authoritative_runs": 1,
+    "failed_and_null_results_must_be_preserved": true,
+    "inspect_prices_before_run": false,
+    "interim_peeking": false,
+    "parameter_tuning": false,
+    "symbol_selection_after_results": false,
+    "threshold_tuning": false
+  },
+  "exploratory_tests": {
+    "metrics": [
+      "closed trades",
+      "net PnL",
+      "expectancy",
+      "mean R",
+      "profit factor",
+      "win rate",
+      "maximum drawdown",
+      "risk audit",
+      "rejections"
+    ],
+    "post_hoc_symbol_exclusion": false,
+    "production_claims_allowed": false,
+    "report_all_symbols": true,
+    "symbols": [
+      "AUDCAD",
+      "AUDJPY",
+      "AUDUSD",
+      "BTCUSD",
+      "CADJPY",
+      "CHFJPY",
+      "ETHUSD",
+      "EURCHF",
+      "EURGBP",
+      "EURJPY",
+      "EURUSD",
+      "GBPCHF",
+      "GBPJPY",
+      "GBPUSD",
+      "NAS100",
+      "NZDJPY",
+      "NZDUSD",
+      "US30",
+      "USDCAD",
+      "WTI",
+      "XAUUSD"
+    ],
+    "window_rule": "FIRST_10000_CHRONOLOGICAL_CANDLES_FROM_EACH_FROZEN_WINDOW"
+  },
+  "freeze_file_sha256": "c596782776748e9599ec972a5d0535d74f39bd0d5de8a875993f71d63a2410bd",
+  "freeze_payload_sha256": "c2bde4f917957b3ab6f7dd5168d573f7407ac65f044e9fdf2cb24d11ed06145d",
+  "freeze_schema": "MSS_SPRINT92E1_EXTENDED_HISTORICAL_UNIVERSE_FREEZE_V1",
+  "mode": "PREREGISTRATION_ONLY_NO_REPLAY",
+  "schema_version": "MSS_SPRINT92E2_EXTERNAL_HISTORICAL_OOS_PREREGISTRATION_V1"
+}
