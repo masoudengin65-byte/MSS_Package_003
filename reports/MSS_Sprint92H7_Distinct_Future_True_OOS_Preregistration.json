@@ -1,0 +1,190 @@
+{
+  "acceptance": {
+    "distinct_execution_id_defined": true,
+    "eligibility_not_checked": true,
+    "execution_hashes_locked": true,
+    "immutable_snapshot_rule_locked": true,
+    "legacy_consumed_data_excluded": true,
+    "outcomes_not_inspected": true,
+    "pass_fail_gate_locked": true,
+    "production_change_justified": false,
+    "true_oos_boundary_locked": true,
+    "true_oos_remains_sealed": true
+  },
+  "audit": {
+    "deterministic_rebuild": true,
+    "eligibility_checked": false,
+    "external_history_accessed": false,
+    "mt5_accessed": false,
+    "outcomes_analyzed": false,
+    "production_behavior_changed": false,
+    "strategy_code_changed": false,
+    "strategy_replay_run": false,
+    "true_oos_used": false,
+    "validation_accessed": false
+  },
+  "authoritative_execution_contract": {
+    "authoritative_snapshot_exports": 1,
+    "authoritative_strategy_replays": 1,
+    "eligibility_check_runs_after_h7_commit_only": true,
+    "partial_replay": false,
+    "replacement_snapshot_after_outcome_inspection": false,
+    "rerun_after_outcome_inspection": false
+  },
+  "baseline_commit": "6f2189c",
+  "broker_metadata_contract": {
+    "current_mt5_symbol_info_prohibited": true,
+    "current_tick_value_not_historical_valuation_authority": true,
+    "metadata_refresh_before_replay_prohibited": true,
+    "source": "FROZEN_METADATA_FROM_SPRINT92H3_IMMUTABLE_DEVELOPMENT_REPLAY_PREREGISTRATION"
+  },
+  "data_governance": {
+    "development_reuse_for_selection": false,
+    "eligibility_checked_in_h7": false,
+    "external_history_reuse_for_confirmation": false,
+    "research_quarantine_reuse_for_confirmation": false,
+    "true_oos_current_status": "SEALED",
+    "true_oos_outcomes_inspected_in_h7": false,
+    "validation_reuse_for_confirmation": false
+  },
+  "execution_id": "MSS_92H7_USDJPY_TRUE_OOS_V1",
+  "execution_identity": {
+    "any_hash_change_before_replay_requires_new_protocol": true,
+    "baseline_commit": "6f2189c",
+    "classification": "BASELINE_TRADING_DECISION_PATH_UNCHANGED;CONFLUENCE_DIAGNOSTIC_CAPTURE_PRESENT",
+    "execution_file_sha256": {
+      "src/mss/analysis/confluence_engine.py": "2c9cfb1598055d0966b691203af4e5990bd5f34607c0cfe89b5f2936d9a92356",
+      "src/mss/analysis/context_capture_engine.py": "a4f433a4f8c0e37764ed917deda0e6ddda4a796e85c1afff7e520b40dbe49734",
+      "src/mss/analysis/historical_backtest_engine.py": "b99fa507993001e24256e6a9950051f55a35ae5f042c3e02b93ada3d05f64889",
+      "src/mss/analysis/historical_valuation.py": "b45bc20bb709dab6257dfb4a06eb90fc019ab6e01bfc720180ad445aa5507f84",
+      "src/mss/analysis/order_builder.py": "be3d62c537703319565397f38728259a7f6158ab831fcc5a8275e257fc1cdded",
+      "src/mss/analysis/position_manager.py": "4c506d69c10e5bd3174605f968eae08c0c97ef5fb8f1d5c91bb36543f01930e5",
+      "src/mss/analysis/risk_engine.py": "709ef557406ffa4902d656c1b831d33cb6e62956c247f53085138ebe464d8e69",
+      "src/mss/analysis/score_engine.py": "0c6df509ad7506b11c9de553f53cb8630b7e8063607875edd10cfd527b86c23e",
+      "src/mss/analysis/smart_money_pipeline.py": "4d7e87f4e16f1f913098534fe88b80851487f738afa059e09b6575ecff2febc6",
+      "src/mss/domain/pipeline_result.py": "6ce5d0fa380855f4612b1e58ee4185c48bb4dbd57c7c5e9f81a51e0354718568"
+    },
+    "identity_type": "HASH_FROZEN_CURRENT_EXECUTION_VERSION",
+    "legacy_c6_binary_identity_claimed": false
+  },
+  "immutable_snapshot_contract": {
+    "all_or_fail": true,
+    "atomic_staging_then_promotion": true,
+    "broker_history_fallback_after_verification_failure": false,
+    "file_sha256_before_parse_required": true,
+    "interim_peeking": false,
+    "overwrite_prohibited": true,
+    "partial_snapshot_outcome_analysis": false,
+    "prefix_rule": "THE_EXISTING_227_FROZEN_NO_ANALYSIS_CANDLES_MUST_MATCH_THE_PREFIX_OF_THE_FINAL_10000_SNAPSHOT_BY_TIMESTAMP_AND_OHLCV",
+    "required_completed_candles": 10000,
+    "row_count_boundary_and_ohlcv_hash_after_parse_required": true,
+    "selection_rule": "FIRST_10000_ELIGIBLE_COMPLETED_M15_CANDLES_IN_STRICT_CHRONOLOGICAL_ORDER_STARTING_AT_2026-08-07T17:00:00Z",
+    "snapshot_before_strategy_replay": true,
+    "symbol": "USDJPY",
+    "timeframe": "M15",
+    "write_once": true
+  },
+  "mode": "PREREGISTRATION_ONLY_NO_ELIGIBILITY_CHECK_NO_REPLAY_NO_OUTCOME_INSPECTION",
+  "primary_confirmation_gate": {
+    "all_requirements_must_pass": true,
+    "decision_if_all_pass": "TRUE_OOS_RESEARCH_CONFIRMED_CANDIDATE_REQUIRES_SEPARATE_PRODUCTION_GOVERNANCE_REVIEW",
+    "decision_if_any_fail": "TRUE_OOS_NOT_CONFIRMED_NO_PRODUCTION_CHANGE",
+    "minimum_closed_trades": 100,
+    "requirements": [
+      "observed expectancy > 0",
+      "observed mean R > 0",
+      "observed profit factor > 1",
+      "ordinary bootstrap 95% CI lower bound for expectancy > 0",
+      "ordinary bootstrap 95% CI lower bound for mean R > 0",
+      "circular moving-block bootstrap 95% CI lower bound for expectancy > 0",
+      "circular moving-block bootstrap 95% CI lower bound for mean R > 0",
+      "ordinary bootstrap probability expectancy > 0 >= 0.975",
+      "moving-block bootstrap probability expectancy > 0 >= 0.975",
+      "BUY net PnL > 0",
+      "SELL net PnL > 0",
+      "maximum realized loss <= 1.25% of pre-trade equity",
+      "zero source hash, boundary, lookahead, reconciliation, or valuation failures"
+    ],
+    "symbol": "USDJPY"
+  },
+  "reporting_contract": {
+    "preserve_failed_or_null_result": true,
+    "report_all_closed_trades": true,
+    "report_all_rejection_reasons": true,
+    "report_directional_results": true,
+    "report_moving_block_bootstrap": true,
+    "report_ordinary_bootstrap": true,
+    "report_risk_audit": true,
+    "report_source_hash_audit": true,
+    "report_unresolved_trades": true,
+    "report_valuation_audit": true
+  },
+  "research_hypothesis": {
+    "claim": "UNCHANGED_BASELINE_TRADING_DECISION_PATH_HAS_POSITIVE_EXPECTANCY_ON_DISTINCT_TRUE_FUTURE_OOS",
+    "development_status": "DEVELOPMENT_PROMISING_NOT_CONFIRMED",
+    "development_temporal_status": "MIXED",
+    "primary_symbol": "USDJPY",
+    "production_status_before_experiment": "UNCHANGED"
+  },
+  "schema_version": "MSS_SPRINT92H7_DISTINCT_FUTURE_TRUE_OOS_PREREGISTRATION_V1",
+  "source_file_sha256": {
+    "c2": "72d3cc50874bd8049982e73a1db55916ea1c2c9fd2c461df46b1903f9e30b679",
+    "h6": "ce67778431af1cb33dd7e1d882a82a3e75d0c1f3e41c173b3e7550187d14a3c6"
+  },
+  "source_lineage": {
+    "development": {
+      "candles": 30000,
+      "first_open": "2024-07-29T05:30:00Z",
+      "last_close": "2025-10-17T08:15:00Z",
+      "status": "CONSUMED"
+    },
+    "existing_frozen_unanalyzed_prefix": {
+      "candles": 227,
+      "first_open": "2026-08-07T17:00:00Z",
+      "last_close": "2026-08-12T02:30:00Z",
+      "last_open": "2026-08-12T02:15:00Z",
+      "may_form_prefix_of_future_snapshot": true,
+      "ohlcv_sha256": "f65b4f41b2bedc4cc1fe4fed39e1c2f1e844098db95c904d38be2c8a30ad9d8e",
+      "outcome_analysis_before_full_snapshot": false,
+      "status": "FROZEN_NO_ANALYSIS"
+    },
+    "research_exposed_quarantine": {
+      "candles": 9773,
+      "first_open": "2026-03-17T18:00:00Z",
+      "last_close": "2026-08-07T17:00:00Z",
+      "status": "PROHIBITED_FOR_CONFIRMATION"
+    },
+    "true_oos_boundary": {
+      "authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+      "authority_sha256": "ce3981d16e291ed8869ff226912a50729b1a6c5d06bf0e3146837630e475b5df",
+      "rule": "CANDLE_OPEN_TIMESTAMP_MUST_BE_AT_OR_AFTER_V2_LAST_CANDLE_CLOSE_TIMESTAMP",
+      "timestamp": "2026-08-07T17:00:00Z"
+    },
+    "validation": {
+      "candles": 10000,
+      "first_open": "2025-10-17T08:15:00Z",
+      "last_close": "2026-03-17T18:00:00Z",
+      "status": "CONSUMED_NOT_CONFIRMATORY"
+    }
+  },
+  "strategy_contract": {
+    "ambiguous_exit_policy": "STOP_LOSS_FIRST",
+    "analysis_lookback": 500,
+    "commission_per_lot": 0.0,
+    "completed_candles_only": true,
+    "direction_filtering": false,
+    "entry_rule": "NEXT_CANDLE_OPEN",
+    "historical_account_currency_valuation": true,
+    "parameter_optimization": false,
+    "post_hoc_filtering": false,
+    "real_orders": false,
+    "retuning": false,
+    "reward_risk_ratio": 2.0,
+    "risk_percent": 1.0,
+    "slippage_points": 1.0,
+    "spread_points": null,
+    "starting_balance": 10000.0,
+    "timeframe": "M15",
+    "warmup_candles": 200
+  }
+}
