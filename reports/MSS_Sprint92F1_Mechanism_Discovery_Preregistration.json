@@ -1,0 +1,132 @@
+{
+  "acceptance": {
+    "development_only_locked": true,
+    "external_validation_closed_not_confirmed": true,
+    "required_fields_available": true
+  },
+  "audit": {
+    "deterministic_rebuild": true,
+    "mechanism_outcomes_analyzed": false,
+    "mt5_accessed": false,
+    "strategy_code_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false
+  },
+  "baseline_commit": "1b8395c",
+  "candidate_gate": {
+    "all_required": [
+      "entry-available and causal-plausible",
+      "same direction in at least 6 of 8 symbols",
+      "pooled ordinary and block bootstrap support",
+      "minimum subgroup sizes met",
+      "not driven by one asset class"
+    ],
+    "if_gate_fails": "NO_STRATEGY_REVISION_ADVANCED",
+    "if_gate_passes": "WRITE_SEPARATE_IMPLEMENTATION_SPEC_BEFORE_CODE_CHANGE",
+    "maximum_mechanisms_advanced": 2
+  },
+  "data_scope": {
+    "development_closed_trade_count": 2747,
+    "source_segment": "SPRINT_92C3_DEVELOPMENT_ONLY",
+    "sprint92e_windows_access_prohibited": true,
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "true_future_oos_access_prohibited": true,
+    "unit": "CLOSED_TRADE",
+    "validation_segment_access_prohibited": true
+  },
+  "locked_hypothesis_families": [
+    {
+      "cuts": [
+        "BUY",
+        "SELL"
+      ],
+      "entry_available_driver": "direction",
+      "expected_pattern": "ONE_DIRECTION_CONCENTRATES_NEGATIVE_EXPECTANCY",
+      "id": "H1_DIRECTION"
+    },
+    {
+      "cuts": "POOLED_DEVELOPMENT_QUARTILES_LOCKED_BEFORE_OUTCOME_JOIN",
+      "entry_available_driver": "(spread+slippage)/abs(entry_price-stop_loss)",
+      "expected_pattern": "EXPECTANCY_DECREASES_AS_COST_BURDEN_INCREASES",
+      "id": "H2_COST_BURDEN"
+    },
+    {
+      "cuts": "POOLED_DEVELOPMENT_QUINTILES_LOCKED_BEFORE_OUTCOME_JOIN",
+      "entry_available_driver": "score",
+      "expected_pattern": "MEAN_R_MONOTONICALLY_INCREASES_WITH_SCORE",
+      "id": "H3_LEGACY_SCORE"
+    },
+    {
+      "cuts": "POOLED_DEVELOPMENT_QUINTILES_LOCKED_BEFORE_OUTCOME_JOIN",
+      "entry_available_driver": "shadow_score",
+      "expected_pattern": "SHADOW_SCORE_HAS_STRONGER_MONOTONIC_ASSOCIATION_WITH_R_THAN_LEGACY_SCORE",
+      "id": "H4_SHADOW_SCORE"
+    },
+    {
+      "cuts": {
+        "AMERICAS": [
+          16,
+          24
+        ],
+        "ASIA": [
+          0,
+          8
+        ],
+        "EUROPE": [
+          8,
+          16
+        ]
+      },
+      "entry_available_driver": "entry_time_utc_hour",
+      "expected_pattern": "NEGATIVE_EXPECTANCY_IS_CONCENTRATED_IN_A_PREDEFINED_SESSION",
+      "id": "H5_UTC_SESSION"
+    }
+  ],
+  "mode": "PREREGISTRATION_ONLY_NO_ANALYSIS_NO_REPLAY",
+  "prohibitions": [
+    "no threshold optimization",
+    "no symbol exclusion",
+    "no strategy code change",
+    "no validation replay",
+    "no external-history replay",
+    "no production claim"
+  ],
+  "research_question": "WHICH_ENTRY_AVAILABLE_MECHANISMS_EXPLAIN_FAILURE_OF_THE_UNCHANGED_STRATEGY",
+  "schema_version": "MSS_SPRINT92F1_MECHANISM_DISCOVERY_PREREGISTRATION_V1",
+  "source_file_sha256": {
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92C3_Extended_Development_Validation_Replay.json": "d9ba317d5ea8bfec50242b7afede75cfe644d4fd9906afeaea9ec67a7feb3b1d",
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92E8_External_Historical_Validation_Closure.json": "40d1d2c53009c62cef146d109c6cd52e7a4feae9de688a0c4857bb39248ed8ac"
+  },
+  "source_hashes": {
+    "c3_payload_sha256": "26c7c64dbb1b153afe0b2db86f7a6a62caf3caf4b33e20d8d1594e2191821479",
+    "e8_payload_sha256": "5d36f1e557e7ed02a592968a41029f4f9687aac95a41c7ebe3f83c676ee97a33"
+  },
+  "statistics": {
+    "effect_sizes_required": true,
+    "metrics": [
+      "count",
+      "net PnL",
+      "expectancy",
+      "mean R",
+      "profit factor",
+      "win rate"
+    ],
+    "minimum_subgroup_trades": 30,
+    "missing_or_small_subgroups": "REPORT_AS_INSUFFICIENT_NEVER_DROP",
+    "multiplicity": "BENJAMINI_HOCHBERG_FDR_0.05_ACROSS_LOCKED_HYPOTHESIS_SYMBOL_TESTS",
+    "report_per_symbol_and_pooled": true,
+    "uncertainty": [
+      "ordinary bootstrap 95% interval",
+      "circular moving-block bootstrap 95% interval"
+    ]
+  }
+}
