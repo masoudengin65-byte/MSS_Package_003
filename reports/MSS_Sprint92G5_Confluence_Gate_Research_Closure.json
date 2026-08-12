@@ -1,0 +1,81 @@
+{
+  "acceptance": {
+    "development_drift_diagnosed": true,
+    "g3_failure_preserved": true,
+    "g3_rerun_remains_prohibited": true,
+    "no_false_scientific_rejection": true
+  },
+  "allowed_next_actions": [
+    "ARCHIVE_G1_CANDIDATE_AS_UNEVALUATED",
+    "DESIGN_SOURCE_IMMUTABILITY_STORAGE_BEFORE_ANY_NEW_STRATEGY_EXPERIMENT",
+    "ONLY_THEN_PREREGISTER_A_DISTINCT_FUTURE_EXPERIMENT"
+  ],
+  "audit": {
+    "deterministic_rebuild": true,
+    "mt5_accessed": false,
+    "outcomes_recomputed": false,
+    "production_behavior_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "208dfcb",
+  "data_governance": {
+    "external_history_remains_out_of_scope": true,
+    "partial_g3_outcomes_used": false,
+    "true_future_oos_remains_sealed": true,
+    "validation_remains_sealed": true
+  },
+  "governance": {
+    "baseline_production_status": "UNCHANGED",
+    "candidate_pipeline_status": "RESEARCH_ONLY_UNVALIDATED",
+    "future_retest_requires": "NEW_HYPOTHESIS_VERSION_AND_NEW_PREREGISTERED_EXECUTION_ID; MUST NOT BE_LABELLED_G3_RERUN",
+    "g3_rerun_authorized": false,
+    "production_change_authorized": false,
+    "validation_access_authorized": false
+  },
+  "hypothesis_status": {
+    "candidate_outcomes_interpretable": false,
+    "id": "G1_FALSE_BREAKOUT_CONFLUENCE_GATE",
+    "reason": "G3_STOPPED_BEFORE_COMPLETE_EIGHT_SYMBOL_EVALUATION_AND_PARTIAL_OUTCOMES_WERE_NOT_REPORTED",
+    "statistically_confirmed": false,
+    "statistically_rejected": false,
+    "status": "NOT_EVALUATED_DUE_TO_AUTHORITATIVE_SOURCE_INTEGRITY_FAILURE"
+  },
+  "mode": "CONFLUENCE_GATE_RESEARCH_CLOSURE_ONLY",
+  "schema_version": "MSS_SPRINT92G5_CONFLUENCE_GATE_RESEARCH_CLOSURE_V1",
+  "source_artifacts": {
+    "g1": {
+      "payload_sha256": "5f45c0b2ab8cbd9737aa27315bc492ee0c6803ce1ec34fc113d622e49c73c002",
+      "schema_version": "MSS_SPRINT92G1_CONFLUENCE_GATE_HYPOTHESIS_PREREGISTRATION_V1"
+    },
+    "g2": {
+      "payload_sha256": "29e09079da8f6887d77cf693d146c9e79ac9b3b6ec9db15a6884fc92692580c1",
+      "schema_version": "MSS_SPRINT92G2_CONFLUENCE_GATE_IMPLEMENTATION_VALIDATION_V1"
+    },
+    "g3": {
+      "payload_sha256": "d1ade24ca5480e7178ffbc2413ec81c34407d1c0e8a128994c8da7a5d4417e42",
+      "schema_version": "MSS_SPRINT92G3_CONFLUENCE_GATE_DEVELOPMENT_EVALUATION_V1"
+    },
+    "g4": {
+      "payload_sha256": "bcb983c2f33954d65406e8c53537f18b8c8e8d4f55c6875ef8d6c0fcc0ddff72",
+      "schema_version": "MSS_SPRINT92G4_FROZEN_SOURCE_DRIFT_AUDIT_V1"
+    }
+  },
+  "source_diagnosis": {
+    "development_slice_exact_symbols": 8,
+    "full_window_drifted_symbols": [
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD"
+    ],
+    "full_window_exact_symbols": 5,
+    "interpretation": "BROKER_REVISED_POST_DEVELOPMENT_CONTENT_FOR_THREE_SYMBOLS_WHILE_ALL_EIGHT_DEVELOPMENT_SLICES_REMAIN_HASH_EXACT"
+  },
+  "source_file_sha256": {
+    "g1": "2b50143a0ae9d6a1e9b653ac7bc2fe6313ad40b9599904d2ae9f5f2f0602941e",
+    "g2": "e359945a7c7a2b3fd3e5d295fc425152b1ea43243046e105f39328d28b2e1296",
+    "g3": "ec4e21b670806d5f320abfade866999eca5e5f77e6413c87da6cb577bcd818e9",
+    "g4": "59b037adbf2db996ee667ddadc733d4c8021fd2d0f995c67059b0ac3be3daecb"
+  }
+}
