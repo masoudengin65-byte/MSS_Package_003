@@ -1,0 +1,123 @@
+{
+  "acceptance": {
+    "boundary_preserved": true,
+    "canonical_format_locked": true,
+    "empty_ledger_initialized": true,
+    "no_mt5_access": true,
+    "no_outcome_inspection": true,
+    "no_strategy_replay": true,
+    "versioned_manifest_model_locked": true,
+    "write_once_chunk_model_locked": true,
+    "zero_market_rows_written": true
+  },
+  "audit": {
+    "completed_candles_acquired": 0,
+    "deterministic_rebuild": true,
+    "ledger_rows_written": 0,
+    "market_data_acquired": false,
+    "mt5_accessed": false,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "pnl_computed": false,
+    "signals_generated": false,
+    "strategy_replay_run": false,
+    "trades_generated": false
+  },
+  "baseline_commit": "80cfaed",
+  "canonical_serialization": {
+    "allow_nan": false,
+    "bom": false,
+    "compact_separators": true,
+    "container": "WRITE_ONCE_UTF8_JSONL_CHUNKS",
+    "float_fields": [
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "integer_fields": [
+      "time",
+      "tick_volume",
+      "spread",
+      "real_volume"
+    ],
+    "newline": "LF",
+    "record_layout": [
+      "time",
+      "open",
+      "high",
+      "low",
+      "close",
+      "tick_volume",
+      "spread",
+      "real_volume"
+    ],
+    "record_type": "JSON_ARRAY"
+  },
+  "created_artifacts": {
+    "chunk_files_created": 0,
+    "initial_manifest": "research_data/sprint92h_true_oos_v2/USDJPY_M15/manifest_000000.json",
+    "initial_manifest_sha256": "8fdbd541eee43aa140dc9819f4b2907851e847e801cce6be3caf9a1775d260ee",
+    "market_rows_written": 0
+  },
+  "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+  "immutability_contract": {
+    "aggregate_ledger_sha256_required": true,
+    "atomic_temporary_write_then_promotion": true,
+    "broker_revision_may_not_replace_frozen_row": true,
+    "chunk_sequence_reuse_prohibited": true,
+    "duplicate_timestamp_prohibited": true,
+    "existing_chunk_deletion_prohibited": true,
+    "existing_chunk_modification_prohibited": true,
+    "existing_manifest_deletion_prohibited": true,
+    "existing_manifest_modification_prohibited": true,
+    "later_broker_revision_is_drift_evidence_only": true,
+    "manifest_sequence_reuse_prohibited": true,
+    "per_chunk_sha256_required": true,
+    "per_record_sha256_required": true,
+    "timestamp_regression_prohibited": true
+  },
+  "initial_state": {
+    "aggregate_ledger_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "chunk_count": 0,
+    "chunks": [],
+    "eligibility_status": "ACCRUAL_NOT_STARTED",
+    "first_candle_open_timestamp": null,
+    "last_candle_open_timestamp": null,
+    "manifest_sequence": 0,
+    "row_count": 0
+  },
+  "ledger_identity": {
+    "broker_symbol": "USDJPY",
+    "canonical_symbol": "USDJPY",
+    "required_completed_candles": 10000,
+    "storage_model": "APPEND_ONLY_WRITE_ONCE_JSONL_CHUNK_LEDGER",
+    "timeframe": "M15",
+    "true_oos_boundary": "2026-08-12T17:45:00Z"
+  },
+  "mode": "EMPTY_LEDGER_INITIALIZATION_ONLY_NO_MT5_NO_MARKET_DATA_NO_REPLAY_NO_OUTCOMES",
+  "next_append_contract": {
+    "append_only_new_completed_rows": true,
+    "completed_candles_only": true,
+    "first_allowed_candle_open_timestamp": "2026-08-12T17:45:00Z",
+    "next_chunk_sequence": 1,
+    "next_manifest_sequence": 1,
+    "outcome_analysis_during_append": false,
+    "read_existing_frozen_rows_before_append": true,
+    "strategy_replay_during_append": false,
+    "verify_all_existing_chunk_hashes_before_append": true,
+    "verify_manifest_chain_before_append": true
+  },
+  "physical_layout": {
+    "chunk_directory": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks",
+    "chunk_name_pattern": "chunk_{sequence:06d}.jsonl",
+    "initial_manifest": "research_data/sprint92h_true_oos_v2/USDJPY_M15/manifest_000000.json",
+    "manifest_name_pattern": "manifest_{sequence:06d}.json",
+    "root": "research_data/sprint92h_true_oos_v2/USDJPY_M15"
+  },
+  "schema_version": "MSS_SPRINT92H11_APPEND_ONLY_TRUE_OOS_LEDGER_INITIALIZATION_V1",
+  "source_file_sha256": {
+    "h10": "b87a9e3ea6d45204259529df05721a5a5f2445c3b8521d3ddabe1554fabb5b44",
+    "h9": "df9f8522788b9bd88d6641a137285a1250be49b8b444acfa8f53bd412f5ad83f"
+  }
+}

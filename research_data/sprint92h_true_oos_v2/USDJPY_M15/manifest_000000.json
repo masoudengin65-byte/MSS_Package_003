@@ -1,0 +1,16 @@
+{
+  "aggregate_ledger_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "chunk_count": 0,
+  "chunks": [],
+  "eligibility_status": "ACCRUAL_NOT_STARTED",
+  "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+  "first_candle_open_timestamp": null,
+  "last_candle_open_timestamp": null,
+  "manifest_sequence": 0,
+  "previous_manifest_sha256": null,
+  "row_count": 0,
+  "schema_version": "MSS_TRUE_OOS_LEDGER_MANIFEST_V1",
+  "symbol": "USDJPY",
+  "timeframe": "M15",
+  "true_oos_boundary": "2026-08-12T17:45:00Z"
+}
