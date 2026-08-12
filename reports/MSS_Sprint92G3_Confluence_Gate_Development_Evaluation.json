@@ -1,0 +1,38 @@
+{
+  "schema_version": "MSS_SPRINT92G3_CONFLUENCE_GATE_DEVELOPMENT_EVALUATION_V1",
+  "status": "RUN_FAILED_SOURCE_MISMATCH",
+  "authoritative_candidate_replay_count": 1,
+  "rerun_prohibited": true,
+  "baseline_commit": "ea1c08c",
+  "failure": {
+    "failed_symbol": "USDJPY",
+    "stage": "FULL_FROZEN_SOURCE_HASH_VERIFICATION_BEFORE_SYMBOL_REPLAY",
+    "reason": "FROZEN_SOURCE_MISMATCH",
+    "exception": "RuntimeError: USDJPY: source mismatch",
+    "symbols_started_before_failure": ["EURUSD", "GBPUSD"],
+    "partial_symbol_run_count": 2,
+    "partial_outcomes_preserved_in_memory": false,
+    "partial_outcomes_analyzed_or_reported": false
+  },
+  "decision": {
+    "all_pass": false,
+    "result": "REJECT_CONFLUENCE_GATE_NO_VALIDATION_ACCESS",
+    "reason": "AUTHORITATIVE_RUN_FAILED_SOURCE_INTEGRITY_GATE"
+  },
+  "input_file_sha256": {
+    "manifest": "72d3cc50874bd8049982e73a1db55916ea1c2c9fd2c461df46b1903f9e30b679",
+    "baseline": "d9ba317d5ea8bfec50242b7afede75cfe644d4fd9906afeaea9ec67a7feb3b1d",
+    "protocol": "2b50143a0ae9d6a1e9b653ac7bc2fe6313ad40b9599904d2ae9f5f2f0602941e"
+  },
+  "audit": {
+    "authoritative_candidate_replay_count": 1,
+    "completed_symbol_runs": 2,
+    "failed_before_usdjpy_replay": true,
+    "validation_accessed": false,
+    "external_history_accessed": false,
+    "true_future_oos_used": false,
+    "parameter_optimization": false,
+    "real_orders_sent": false,
+    "rerun_attempted": false
+  }
+}
