@@ -1,0 +1,129 @@
+{
+  "audit": {
+    "authoritative_exports": 1,
+    "external_history_exported": false,
+    "outcomes_analyzed": false,
+    "real_orders_sent": false,
+    "strategy_replay_run": false,
+    "true_future_oos_exported": false,
+    "validation_exported": false
+  },
+  "baseline_commit": "90b502a",
+  "mode": "IMMUTABLE_DEVELOPMENT_DATA_EXPORT",
+  "protocol_sha256": "99a1705adb250d970b04c50a2946ef584e638a83bd0b1beef1d276a62004674e",
+  "schema_version": "MSS_SPRINT92H2_IMMUTABLE_RESEARCH_DATA_STORE_V1",
+  "storage_root": "research_data/sprint92h/development",
+  "summary": {
+    "all_files_verified": true,
+    "atomic_all_eight_promotion": true,
+    "symbol_count": 8,
+    "total_rows": 240000,
+    "total_size_bytes": 33954440
+  },
+  "symbols": [
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "file_sha256": "f0017311eb9aa85b3901a5749b6fbe3acb30b94388dce94f125a6595d2923878",
+      "file_size_bytes": 4212971,
+      "first_epoch": 1722231000,
+      "last_epoch": 1760688000,
+      "ohlcv_sha256": "81d3377c8c1917bbbd55c13b975492913b8e0243c2e66849590c7af29534aa51",
+      "relative_path": "research_data/sprint92h/development/EURUSD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "file_sha256": "94bac56e5e2c5fae1f9bf60dd7103a7542fa460ea9af8ca47c6ab7a94e6a2b35",
+      "file_size_bytes": 4320185,
+      "first_epoch": 1722231000,
+      "last_epoch": 1760688000,
+      "ohlcv_sha256": "b8546bc4fc8e0b937ee3010c72ba15338f2d8c417650e2dfbbe54bb1c46fccc7",
+      "relative_path": "research_data/sprint92h/development/GBPUSD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "file_sha256": "2100f36b93a98637c42d953a3488302f776f14a7db191bf4561241aede58a5a4",
+      "file_size_bytes": 4166875,
+      "first_epoch": 1722231000,
+      "last_epoch": 1760688000,
+      "ohlcv_sha256": "085c0a5c0419b480b335cef79ae5b3f8547cee309e5627fa591b985ed0e8d406",
+      "relative_path": "research_data/sprint92h/development/USDJPY_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "file_sha256": "4bd448b1679869a54e7780793a523802e1a141f8f5d0e966720b7d1846918173",
+      "file_size_bytes": 4160110,
+      "first_epoch": 1722231000,
+      "last_epoch": 1760688000,
+      "ohlcv_sha256": "ab3432e905af5d840d77545ab148a2ecee2e2279770eb2e4137d81c1f373277a",
+      "relative_path": "research_data/sprint92h/development/AUDUSD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "file_sha256": "741b99df0e16ebfa43245ec728bc6f140ca9607b420f017a9ace7b627e389153",
+      "file_size_bytes": 4325891,
+      "first_epoch": 1722231000,
+      "last_epoch": 1760688000,
+      "ohlcv_sha256": "7f3a2f81444ae30684453bd67a7eaaf043b2558226a880e9b7163475f6ad0d43",
+      "relative_path": "research_data/sprint92h/development/USDCAD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "METAL",
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "file_sha256": "69dd3a11b6b0654409972cbda9835fd949a0e347c89fb968f4f21eb05e2f86bc",
+      "file_size_bytes": 4202935,
+      "first_epoch": 1719311400,
+      "last_epoch": 1759761900,
+      "ohlcv_sha256": "352008043c1c92ec1476cd68a22aca11eb4a8647ed5595d51f7d626a399de9c6",
+      "relative_path": "research_data/sprint92h/development/XAUUSD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "file_sha256": "3468d9e5cd3807e8c86f71eea51662d47f98b5f9c8c589afd0ba5bea136a5cd3",
+      "file_size_bytes": 4374241,
+      "first_epoch": 1740290400,
+      "last_epoch": 1768023000,
+      "ohlcv_sha256": "c398eca10cbcdc8942bd16f8042ef78348f7bcf6ffe00280159d750c61bf425d",
+      "relative_path": "research_data/sprint92h/development/BTCUSD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "file_sha256": "17d9035330d1ed6b0447f842d484dab2b9b9a99a5ffcae66dcfae1250ee1d994",
+      "file_size_bytes": 4191232,
+      "first_epoch": 1740293100,
+      "last_epoch": 1768023000,
+      "ohlcv_sha256": "e7fce17934a091321b763a5754305c1b5d0e485f73c0c4bfc05979b39434c75a",
+      "relative_path": "research_data/sprint92h/development/ETHUSD_M15_30000.jsonl",
+      "row_count": 30000,
+      "verified": true
+    }
+  ]
+}
