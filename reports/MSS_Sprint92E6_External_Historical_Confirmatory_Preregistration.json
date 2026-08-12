@@ -1,0 +1,144 @@
+{
+  "audit": {
+    "deterministic_rebuild": true,
+    "history_downloaded": false,
+    "mt5_accessed": false,
+    "outcomes_analyzed": false,
+    "production_behavior_changed": false,
+    "second_window_ohlc_inspected": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false
+  },
+  "baseline_commit": "47bed7c",
+  "confirmatory_family": {
+    "candles_per_symbol": 10000,
+    "correction": "BONFERRONI",
+    "familywise_alpha": 0.05,
+    "hypothesis_count": 6,
+    "minimum_closed_trades": 100,
+    "per_symbol_alpha": 0.008333333333333333,
+    "per_symbol_two_sided_confidence_percent": 99.16666666666667,
+    "symbols": [
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "GBPUSD",
+        "canonical_symbol": "GBPUSD",
+        "full_frozen_window_count": 49970,
+        "full_frozen_window_sha256": "9360a9093acedea4cb8c0091d4205f7120000c05534fdf4f0a1fdabd272d1d95",
+        "slice_end_index_exclusive": 20000,
+        "slice_start_index_zero_based": 10000
+      },
+      {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "BITCOIN",
+        "canonical_symbol": "BTCUSD",
+        "full_frozen_window_count": 49998,
+        "full_frozen_window_sha256": "72c207030bf3d236d51ed5e63ea1ae734a478c01586669f7aa4e9f93b4c58429",
+        "slice_end_index_exclusive": 20000,
+        "slice_start_index_zero_based": 10000
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "EURGBP",
+        "canonical_symbol": "EURGBP",
+        "full_frozen_window_count": 50000,
+        "full_frozen_window_sha256": "9015d62f03bf9c780c468ed15a803f0fe06f5bd7d568b5877735d4c22a60ac14",
+        "slice_end_index_exclusive": 20000,
+        "slice_start_index_zero_based": 10000
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "CHFJPY",
+        "canonical_symbol": "CHFJPY",
+        "full_frozen_window_count": 50000,
+        "full_frozen_window_sha256": "8b89e588b080377ef04739b0a8a3b8e496bc5381ed934ba52b33de51153c848b",
+        "slice_end_index_exclusive": 20000,
+        "slice_start_index_zero_based": 10000
+      },
+      {
+        "asset_class": "METAL",
+        "broker_symbol": "XAUUSD",
+        "canonical_symbol": "XAUUSD",
+        "full_frozen_window_count": 49971,
+        "full_frozen_window_sha256": "077772ea2a7fead9746cf281579ad3fe67d809e7fb78c4f22e004e5fb0d04a51",
+        "slice_end_index_exclusive": 20000,
+        "slice_start_index_zero_based": 10000
+      },
+      {
+        "asset_class": "INDEX",
+        "broker_symbol": "NAS100",
+        "canonical_symbol": "NAS100",
+        "full_frozen_window_count": 50000,
+        "full_frozen_window_sha256": "37103486658b69567e7803ba1fcc81303cee3b0b9b3d28cb2aefda8636353d29",
+        "slice_end_index_exclusive": 20000,
+        "slice_start_index_zero_based": 10000
+      }
+    ],
+    "window_previously_replayed_or_analyzed": false,
+    "window_rule": "CANDLES_10001_THROUGH_20000_CHRONOLOGICAL_FROM_E1_FROZEN_WINDOW"
+  },
+  "decision_rule": {
+    "family_reporting": "REPORT_ALL_SIX_WITH_NO_POST_HOC_EXCLUSION",
+    "symbol_fail": "NOT_CONFIRMED_NO_PRODUCTION_CHANGE",
+    "symbol_pass": "CONFIRMED_WITHIN_SIX_SYMBOL_FAMILY_REQUIRES_SEPARATE_PRODUCTION_GOVERNANCE"
+  },
+  "execution_policy": {
+    "authoritative_family_runs": 1,
+    "failed_and_null_results_preserved": true,
+    "inspect_second_window_prices_before_run": false,
+    "interim_peeking": false,
+    "parameter_tuning": false,
+    "rerun_prohibited": true,
+    "threshold_tuning": false
+  },
+  "mode": "PREREGISTRATION_ONLY_NO_PRICE_INSPECTION_NO_REPLAY",
+  "per_symbol_all_pass_requirements": [
+    "exact full frozen source hash and exact second slice",
+    "at least 100 closed trades",
+    "observed expectancy > 0",
+    "observed mean R > 0",
+    "profit factor > 1",
+    "Bonferroni-adjusted ordinary bootstrap expectancy and mean-R lower bounds > 0",
+    "Bonferroni-adjusted moving-block bootstrap expectancy and mean-R lower bounds > 0",
+    "BUY net PnL > 0",
+    "SELL net PnL > 0",
+    "maximum realized loss <= 1.25% pre-trade equity",
+    "zero lookahead, valuation, reconciliation, or integrity failures"
+  ],
+  "schema_version": "MSS_SPRINT92E6_EXTERNAL_HISTORICAL_CONFIRMATORY_PREREGISTRATION_V1",
+  "selection": {
+    "post_selection_inference_acknowledged": true,
+    "rule": "ALL_E5_EXPLORATORY_POSITIVE_UNCERTAIN_SYMBOLS",
+    "selection_matches_frozen_e5_tier": true,
+    "symbols": [
+      "GBPUSD",
+      "BTCUSD",
+      "EURGBP",
+      "CHFJPY",
+      "XAUUSD",
+      "NAS100"
+    ]
+  },
+  "source_hashes": {
+    "e5_file_sha256": "7f663a60c22595f87978afea8a75adabe7c962080488246fc9e2618def49652b",
+    "e5_payload_sha256": "2414e3ea4bdacabf385d35b80b5e51e212eccd510cb3681a239224414877dad3",
+    "freeze_file_sha256": "c596782776748e9599ec972a5d0535d74f39bd0d5de8a875993f71d63a2410bd",
+    "freeze_payload_sha256": "c2bde4f917957b3ab6f7dd5168d573f7407ac65f044e9fdf2cb24d11ed06145d"
+  },
+  "strategy_contract": {
+    "ambiguous_exit": "STOP_LOSS_FIRST",
+    "code_commit": "06377a7",
+    "commission_per_lot": 0.0,
+    "entry": "NEXT_CANDLE_OPEN",
+    "lookback": 500,
+    "optimization": false,
+    "real_orders": false,
+    "reward_risk_ratio": 2.0,
+    "risk_percent": 1.0,
+    "slippage_points": 1.0,
+    "spread_points": "HISTORICAL_CANDLE_OR_FROZEN_BROKER_METADATA",
+    "starting_balance": 10000.0,
+    "timeframe": "M15",
+    "warmup": 200
+  }
+}
