@@ -1,0 +1,74 @@
+{
+  "acceptance": {
+    "broker_offset_characterized": true,
+    "h10_anchor_preserved": true,
+    "h11_genesis_preserved": true,
+    "m15_bar_same_broker_time_domain": true,
+    "no_outcome_inspection": true,
+    "no_replay": true,
+    "no_true_oos_candles_written": true
+  },
+  "audit": {
+    "completed_true_oos_rows_written": 0,
+    "ledger_modified": false,
+    "market_time_metadata_only": true,
+    "mt5_accessed": true,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "pnl_computed": false,
+    "signals_generated": false,
+    "strategy_replay_run": false,
+    "trades_generated": false
+  },
+  "baseline_commit": "c57ab9b",
+  "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+  "h10_anchor_interpretation": {
+    "approx_normalized_utc_epoch": 1786545900,
+    "h10_anchor_replacement_required": false,
+    "legacy_reported_label": "2026-08-12T17:45:00Z",
+    "legacy_z_suffix_is_true_utc_authority": false,
+    "raw_anchor_remains_execution_boundary": true,
+    "raw_boundary_epoch": 1786556700
+  },
+  "h11_ledger_interpretation": {
+    "future_rows_use_raw_mt5_time": true,
+    "future_timestamp_comparisons_use_raw_mt5_time": true,
+    "genesis_manifest_remains_valid": true,
+    "ledger_reinitialization_required": false
+  },
+  "h12_requirements": {
+    "may_add_normalized_utc_display_field_to_reports": true,
+    "may_start_only_if_status_confirmed": true,
+    "must_not_rewrite_h10_anchor": true,
+    "must_not_shift_stored_candle_epochs": true,
+    "must_preserve_raw_mt5_time_field": true,
+    "normalized_utc_must_not_drive_eligibility": true
+  },
+  "mode": "READ_ONLY_MT5_TIME_AUTHORITY_AUDIT_NO_CANDLE_ACCRUAL_NO_REPLAY_NO_OUTCOMES",
+  "observation": {
+    "bar_m15_aligned": true,
+    "bar_matches_broker_clock": true,
+    "expected_broker_offset_seconds": 10800,
+    "expected_current_bar_epoch_from_tick": 1786560300,
+    "mt5_current_m15_bar_epoch": 1786560300,
+    "mt5_tick_epoch": 1786561010,
+    "observed_tick_minus_windows_seconds": 10793,
+    "offset_near_three_hours": true,
+    "offset_tolerance_seconds": 15,
+    "windows_utc_epoch": 1786550217
+  },
+  "schema_version": "MSS_SPRINT92H11_1_MT5_TIME_AUTHORITY_AUDIT_V1",
+  "source_file_sha256": {
+    "h10": "b87a9e3ea6d45204259529df05721a5a5f2445c3b8521d3ddabe1554fabb5b44",
+    "h11": "475231fcc95352b36f8b6819472e1fbc3b0020702b8586a632dca44d4fc1162b"
+  },
+  "time_authority": {
+    "boundary_comparison_authority": "RAW_MT5_TIME_FIELD",
+    "broker_clock_observed_offset": "UTC_PLUS_03_APPROXIMATELY",
+    "candle_ordering_authority": "RAW_MT5_TIME_FIELD",
+    "do_not_treat_raw_mt5_epoch_as_true_utc": true,
+    "execution_time_domain": "RAW_MT5_BROKER_EPOCH_DOMAIN",
+    "status": "BROKER_TIME_DOMAIN_CONFIRMED",
+    "utc_normalization_for_human_reporting_only": true
+  }
+}
