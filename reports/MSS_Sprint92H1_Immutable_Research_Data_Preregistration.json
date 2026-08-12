@@ -1,0 +1,170 @@
+{
+  "acceptance": {
+    "all_eight_development_slices_currently_reproduce": true,
+    "immutable_storage_not_yet_created": true,
+    "scope_is_development_only": true
+  },
+  "audit": {
+    "candles_exported": false,
+    "deterministic_rebuild": true,
+    "mt5_accessed": false,
+    "outcomes_analyzed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "a5e7787",
+  "canonical_format": {
+    "bom": false,
+    "container": "ONE_UNCOMPRESSED_UTF8_JSONL_FILE_PER_SYMBOL",
+    "fields_in_semantic_schema": [
+      "time_epoch_seconds",
+      "open",
+      "high",
+      "low",
+      "close",
+      "tick_volume",
+      "spread",
+      "real_volume"
+    ],
+    "header_row": false,
+    "json_serialization": "SORT_KEYS_TRUE_COMPACT_SEPARATORS_NO_NAN",
+    "newline": "LF",
+    "numeric_policy": "PRESERVE_MT5_FLOAT_AND_INTEGER_VALUES_WITH_PYTHON_JSON_ROUNDTRIP",
+    "row_order": "STRICTLY_ASCENDING_EPOCH_SECONDS"
+  },
+  "dataset_scope": {
+    "candles_per_symbol": 30000,
+    "external_history_export_prohibited": true,
+    "segment": "SPRINT_92C2_DEVELOPMENT_ONLY",
+    "symbol_count": 8,
+    "symbols": [
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "EURUSD",
+        "candle_count": 30000,
+        "canonical_symbol": "EURUSD",
+        "expected_ohlcv_sha256": "81d3377c8c1917bbbd55c13b975492913b8e0243c2e66849590c7af29534aa51",
+        "first_open_timestamp": "2024-07-29T05:30:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2025-10-17T08:00:00Z",
+        "target_path": "research_data/sprint92h/development/EURUSD_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "GBPUSD",
+        "candle_count": 30000,
+        "canonical_symbol": "GBPUSD",
+        "expected_ohlcv_sha256": "b8546bc4fc8e0b937ee3010c72ba15338f2d8c417650e2dfbbe54bb1c46fccc7",
+        "first_open_timestamp": "2024-07-29T05:30:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2025-10-17T08:00:00Z",
+        "target_path": "research_data/sprint92h/development/GBPUSD_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDJPY",
+        "candle_count": 30000,
+        "canonical_symbol": "USDJPY",
+        "expected_ohlcv_sha256": "085c0a5c0419b480b335cef79ae5b3f8547cee309e5627fa591b985ed0e8d406",
+        "first_open_timestamp": "2024-07-29T05:30:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2025-10-17T08:00:00Z",
+        "target_path": "research_data/sprint92h/development/USDJPY_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "AUDUSD",
+        "candle_count": 30000,
+        "canonical_symbol": "AUDUSD",
+        "expected_ohlcv_sha256": "ab3432e905af5d840d77545ab148a2ecee2e2279770eb2e4137d81c1f373277a",
+        "first_open_timestamp": "2024-07-29T05:30:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2025-10-17T08:00:00Z",
+        "target_path": "research_data/sprint92h/development/AUDUSD_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDCAD",
+        "candle_count": 30000,
+        "canonical_symbol": "USDCAD",
+        "expected_ohlcv_sha256": "7f3a2f81444ae30684453bd67a7eaaf043b2558226a880e9b7163475f6ad0d43",
+        "first_open_timestamp": "2024-07-29T05:30:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2025-10-17T08:00:00Z",
+        "target_path": "research_data/sprint92h/development/USDCAD_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "METAL",
+        "broker_symbol": "XAUUSD",
+        "candle_count": 30000,
+        "canonical_symbol": "XAUUSD",
+        "expected_ohlcv_sha256": "352008043c1c92ec1476cd68a22aca11eb4a8647ed5595d51f7d626a399de9c6",
+        "first_open_timestamp": "2024-06-25T10:30:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2025-10-06T14:45:00Z",
+        "target_path": "research_data/sprint92h/development/XAUUSD_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "BITCOIN",
+        "candle_count": 30000,
+        "canonical_symbol": "BTCUSD",
+        "expected_ohlcv_sha256": "c398eca10cbcdc8942bd16f8042ef78348f7bcf6ffe00280159d750c61bf425d",
+        "first_open_timestamp": "2025-02-23T06:00:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2026-01-10T05:30:00Z",
+        "target_path": "research_data/sprint92h/development/BTCUSD_M15_30000.jsonl"
+      },
+      {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "ETHEREUM",
+        "candle_count": 30000,
+        "canonical_symbol": "ETHUSD",
+        "expected_ohlcv_sha256": "e7fce17934a091321b763a5754305c1b5d0e485f73c0c4bfc05979b39434c75a",
+        "first_open_timestamp": "2025-02-23T06:45:00Z",
+        "g4_live_development_slice_reproduced": true,
+        "last_open_timestamp": "2026-01-10T05:30:00Z",
+        "target_path": "research_data/sprint92h/development/ETHUSD_M15_30000.jsonl"
+      }
+    ],
+    "total_candles": 240000,
+    "true_future_oos_export_prohibited": true,
+    "validation_export_prohibited": true
+  },
+  "execution_policy": {
+    "authoritative_exports": 1,
+    "failed_export_artifacts_must_be_quarantined_not_promoted": true,
+    "outcome_analysis": false,
+    "raw_price_preview_before_export": false,
+    "strategy_replay": false
+  },
+  "future_reader_contract": {
+    "must_not_fallback_to_mt5_on_verification_failure": true,
+    "must_verify_file_sha256_before_parse": true,
+    "must_verify_row_count_boundaries_and_ohlcv_sha256_after_parse": true,
+    "strategy_replay_requires_explicit_separate_protocol": true
+  },
+  "integrity_contract": {
+    "all_eight_or_fail_without_partial_promotion": true,
+    "atomic_temporary_write_then_rename": true,
+    "compute_sha256_for_each_jsonl_file": true,
+    "manifest_must_record_file_size_row_count_boundaries_content_hash_and_file_hash": true,
+    "reopen_and_rehash_after_write": true,
+    "verify_expected_development_ohlcv_sha256_before_write": true,
+    "write_once_no_overwrite": true
+  },
+  "mode": "STORAGE_PREREGISTRATION_ONLY_NO_CANDLE_EXPORT",
+  "purpose": "REMOVE_FUTURE_RESEARCH_DEPENDENCE_ON_MUTABLE_BROKER_HISTORY",
+  "schema_version": "MSS_SPRINT92H1_IMMUTABLE_RESEARCH_DATA_PREREGISTRATION_V1",
+  "source_file_sha256": {
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92C2_Extended_Dataset_Manifest.json": "72d3cc50874bd8049982e73a1db55916ea1c2c9fd2c461df46b1903f9e30b679",
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92G4_Frozen_Source_Drift_Audit.json": "59b037adbf2db996ee667ddadc733d4c8021fd2d0f995c67059b0ac3be3daecb",
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92G5_Confluence_Gate_Research_Closure.json": "988c3b6b27959eab8556b90dbb3a6caf28d1ca446649af38c554dd70c493e96b"
+  },
+  "source_hashes": {
+    "c2_manifest_payload_sha256": "92068a7db4793306f4cd1836c3137b4b94438e3449886482b07bdd2f6e036836",
+    "g4_drift_payload_sha256": "bcb983c2f33954d65406e8c53537f18b8c8e8d4f55c6875ef8d6c0fcc0ddff72",
+    "g5_closure_payload_sha256": "d99d9b4e1699efef17681c9e4976912e64e8ab19c993bc00e7f7f282b020c0b1"
+  }
+}
