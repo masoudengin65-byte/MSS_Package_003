@@ -1,0 +1,744 @@
+{
+  "acceptance": {
+    "all_c1_stable": true,
+    "all_fixed_50000": true,
+    "all_frozen_hashes_match_c1": true,
+    "all_partitions_reconcile": true,
+    "performance_metrics_computed": false,
+    "strategy_or_replay_run": false,
+    "symbol_count": 8,
+    "trading_operations_performed": 0,
+    "true_oos_never_analyzed": true
+  },
+  "limitations": [
+    "Hashes freeze broker-returned candle content; raw 50k payloads are intentionally not committed to Git.",
+    "A later broker correction can change a repeated retrieval; any mismatch must be reported, never silently accepted.",
+    "True OOS accrual is identified and hashed only; no outcome, signal, trade, or performance analysis is present."
+  ],
+  "methodology": {
+    "completed_candles_only": true,
+    "development_count": 30000,
+    "fixed_history_count_per_symbol": 50000,
+    "freeze_anchor": "PER_SYMBOL_SPRINT_92C1_NEWEST_COMPLETED_M15_OPEN_TIMESTAMP",
+    "performance_metrics_computed": false,
+    "raw_candle_payload_committed": false,
+    "remaining_partition": "V2_EXPOSURE_BOUNDARY",
+    "strategy_or_replay_run": false,
+    "timeframe": "M15",
+    "trading_operations_performed": 0,
+    "true_oos_access": "FROZEN_NO_ANALYSIS",
+    "validation_count": 10000
+  },
+  "mode": "DATASET_FREEZE_AND_OOS_QUARANTINE_ONLY",
+  "schema_version": "MSS_SPRINT92C2_EXTENDED_DATASET_MANIFEST_V1",
+  "source_authorities": {
+    "depth_audit": "MSS_Sprint92C1_Historical_Depth_Audit.json",
+    "v2_exposure_boundaries": "MSS_Multi_Asset_Historical_Replay_v2.json"
+  },
+  "symbols": [
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "EURUSD",
+      "c1_expected_50000_sha256": "bd88af4289ac00f7a44450d60703d3d0fdf6798fc8db79825c22a82dd26363c9",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "EURUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:15:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "bd88af4289ac00f7a44450d60703d3d0fdf6798fc8db79825c22a82dd26363c9",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+          "last_candle_close_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_open_timestamp": "2025-10-17T08:00:00Z",
+          "ohlcv_sha256": "81d3377c8c1917bbbd55c13b975492913b8e0243c2e66849590c7af29534aa51",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_close_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_open_timestamp": "2026-03-17T17:45:00Z",
+          "ohlcv_sha256": "d48026edc642e1ee7b4d28fc56f073ef3e597e06cc5ae0d4a4b11fd0fe1fa3ca",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9774,
+          "first_candle_open_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "ohlcv_sha256": "9caa8f2524e86a587a52ccfa8ba39332d2d4c39cf8657a6c7695fce4c4f3a125",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 226,
+          "first_candle_open_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:30:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+          "ohlcv_sha256": "8ae6758fcd6ee5d2961f75d4dfb10a0490aac00ea0fd8c94d707bff8753dc39b",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "FOREX",
+        "broker_symbol": "EURUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "EURUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T08:00:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "a6447fe187feef28d09868f57ac3efc8b7901caece9e2b28156dd5e32b0717d7"
+      }
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "GBPUSD",
+      "c1_expected_50000_sha256": "4d9d1ce19791fdce0173eba313e73a0ce557445a5c40f54811808c85c16e9426",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "GBPUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:15:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "4d9d1ce19791fdce0173eba313e73a0ce557445a5c40f54811808c85c16e9426",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+          "last_candle_close_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_open_timestamp": "2025-10-17T08:00:00Z",
+          "ohlcv_sha256": "b8546bc4fc8e0b937ee3010c72ba15338f2d8c417650e2dfbbe54bb1c46fccc7",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_close_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_open_timestamp": "2026-03-17T17:45:00Z",
+          "ohlcv_sha256": "83be2f52612c1d67ec5436c2ef3bd77b1d1bcccaade1e2e8b0062ff5b1393393",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9773,
+          "first_candle_open_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_open_timestamp": "2026-08-07T16:45:00Z",
+          "ohlcv_sha256": "4b646a6bdd69fcbcf04c50a7641da1be75685a338f5efd8c6bdae6ad123cbbf8",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 227,
+          "first_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:30:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+          "ohlcv_sha256": "0978e9ea54be802154f6a17a90adb8993d11a60b8ea628cab4403b71df43c200",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "FOREX",
+        "broker_symbol": "GBPUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "GBPUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "f3ac38e0b13725a883f5947ed9a56b8a3917fc6b3007d8dc6e498a40eee5f988"
+      }
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDJPY",
+      "c1_expected_50000_sha256": "5814a100b02bac91e77c54f79ead5470f52e3a69926a7257b3d054fc1cdd8348",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "USDJPY",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:15:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "5814a100b02bac91e77c54f79ead5470f52e3a69926a7257b3d054fc1cdd8348",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+          "last_candle_close_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_open_timestamp": "2025-10-17T08:00:00Z",
+          "ohlcv_sha256": "085c0a5c0419b480b335cef79ae5b3f8547cee309e5627fa591b985ed0e8d406",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_close_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_open_timestamp": "2026-03-17T17:45:00Z",
+          "ohlcv_sha256": "a835b227103a7a6ac5d89ebf8d8f9c3fab3def798e8a1cf08bcf7408b9c191c1",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9773,
+          "first_candle_open_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_open_timestamp": "2026-08-07T16:45:00Z",
+          "ohlcv_sha256": "f4a7d5b235cdb543981fc9a97e2938ef6a6d79a6280f9f1261fde4bfb57f5bfd",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 227,
+          "first_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:30:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+          "ohlcv_sha256": "f65b4f41b2bedc4cc1fe4fed39e1c2f1e844098db95c904d38be2c8a30ad9d8e",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDJPY",
+        "candle_count": 10000,
+        "canonical_symbol": "USDJPY",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "ce3981d16e291ed8869ff226912a50729b1a6c5d06bf0e3146837630e475b5df"
+      }
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "AUDUSD",
+      "c1_expected_50000_sha256": "7db09ed92fb8505dadd1ed4cabf891820132333481d44abf6d871f46b2484bdd",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "AUDUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:15:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "7db09ed92fb8505dadd1ed4cabf891820132333481d44abf6d871f46b2484bdd",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+          "last_candle_close_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_open_timestamp": "2025-10-17T08:00:00Z",
+          "ohlcv_sha256": "ab3432e905af5d840d77545ab148a2ecee2e2279770eb2e4137d81c1f373277a",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_close_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_open_timestamp": "2026-03-17T17:45:00Z",
+          "ohlcv_sha256": "1e929324303870f32dfaa267f16e4b1ed17f82f0bd55cbe8f0b3d98b353d2789",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9773,
+          "first_candle_open_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_open_timestamp": "2026-08-07T16:45:00Z",
+          "ohlcv_sha256": "4d0942e91b82d4dc6574b46252fa2a71925a4dfca5f70a97a2c4cf38c71baf5d",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 227,
+          "first_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:30:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+          "ohlcv_sha256": "85788f3dd1844447c79497f07805c9352992c8b935a9e34ca6bb9599e28ff81a",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "FOREX",
+        "broker_symbol": "AUDUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "AUDUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "5674a45546522b0a515e1b684ed1bf69d7ac62c7fbfb6551217185f2c0cc0527"
+      }
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDCAD",
+      "c1_expected_50000_sha256": "1b3bc5e95607a84fccf807bdc32a611f9854ef0a6666c1a1e029e7f913cc8df5",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "USDCAD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:30:00Z",
+      "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:15:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "1b3bc5e95607a84fccf807bdc32a611f9854ef0a6666c1a1e029e7f913cc8df5",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 580,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 21412,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 178200,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2024-07-29T05:30:00Z",
+          "last_candle_close_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_open_timestamp": "2025-10-17T08:00:00Z",
+          "ohlcv_sha256": "7f3a2f81444ae30684453bd67a7eaaf043b2558226a880e9b7163475f6ad0d43",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2025-10-17T08:15:00Z",
+          "last_candle_close_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_open_timestamp": "2026-03-17T17:45:00Z",
+          "ohlcv_sha256": "95ee74ae4e851c74c9567d3ef8b69a1b169dcb31e0688531ab69492890b0983c",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9773,
+          "first_candle_open_timestamp": "2026-03-17T18:00:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_open_timestamp": "2026-08-07T16:45:00Z",
+          "ohlcv_sha256": "44595cde68fa782efdb5b71737c54ec3b5a7c3579520974d1e79ce9059a2461a",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 227,
+          "first_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:30:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:15:00Z",
+          "ohlcv_sha256": "c5627cee6340f1d18d3f327956823b371f5be98f5540117edb506944649aff8b",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDCAD",
+        "candle_count": 10000,
+        "canonical_symbol": "USDCAD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "4a129d79b0c752e9fc693a525723023b3fdafe70a773fdb87a309d3291c253e5"
+      }
+    },
+    {
+      "asset_class": "METAL",
+      "broker_symbol": "XAUUSD",
+      "c1_expected_50000_sha256": "ea1fd4f650473b8353393a138d0a842dbacf3197ad56ed3fa866a0b4e9f723fb",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "XAUUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+      "first_candle_open_timestamp": "2024-06-25T10:30:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:30:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "ea1fd4f650473b8353393a138d0a842dbacf3197ad56ed3fa866a0b4e9f723fb",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 550,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 24657,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 263700,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:30:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2024-06-25T10:30:00Z",
+          "last_candle_close_timestamp": "2025-10-06T15:00:00Z",
+          "last_candle_open_timestamp": "2025-10-06T14:45:00Z",
+          "ohlcv_sha256": "352008043c1c92ec1476cd68a22aca11eb4a8647ed5595d51f7d626a399de9c6",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2025-10-06T15:00:00Z",
+          "last_candle_close_timestamp": "2026-03-10T20:45:00Z",
+          "last_candle_open_timestamp": "2026-03-10T20:30:00Z",
+          "ohlcv_sha256": "b27be2676152348aa840af275ca8ea191fc2ac1a323b27c75ea743f88a733df4",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9782,
+          "first_candle_open_timestamp": "2026-03-10T20:45:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "ohlcv_sha256": "4c9b549456c9d92f7fb85d5843917a8ef62947ed0d7c119144822bf8a0e5728e",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 218,
+          "first_candle_open_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:45:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:30:00Z",
+          "ohlcv_sha256": "ca743caf29d48b5632fc8cc6dd43d5f114ab369911ca5366c4a178e7ac7ccead",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "METAL",
+        "broker_symbol": "XAUUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "XAUUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-06T13:00:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "09ae96523177e39c736cc0a950c10c6e5369eabc11c8b95d638944b79b56c820"
+      }
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "BITCOIN",
+      "c1_expected_50000_sha256": "7e39cd628599abf401961273f6a16872729958ad2ce3f866074638424cd67e77",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "BTCUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+      "first_candle_open_timestamp": "2025-02-23T06:00:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:30:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "7e39cd628599abf401961273f6a16872729958ad2ce3f866074638424cd67e77",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 99,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 1347,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 15300,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:30:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2025-02-23T06:00:00Z",
+          "last_candle_close_timestamp": "2026-01-10T05:45:00Z",
+          "last_candle_open_timestamp": "2026-01-10T05:30:00Z",
+          "ohlcv_sha256": "c398eca10cbcdc8942bd16f8042ef78348f7bcf6ffe00280159d750c61bf425d",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2026-01-10T05:45:00Z",
+          "last_candle_close_timestamp": "2026-04-27T10:45:00Z",
+          "last_candle_open_timestamp": "2026-04-27T10:30:00Z",
+          "ohlcv_sha256": "a5c0cb85807d864e187d1a9fcc75b8fe5382ef4d72e6afcf97b98d3d485d09f9",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9594,
+          "first_candle_open_timestamp": "2026-04-27T10:45:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "ohlcv_sha256": "4742ab1a47e54c55eb705aab7d8f9c18fcf7ded6315a596ab9f5ef3b683237b5",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 406,
+          "first_candle_open_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:45:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:30:00Z",
+          "ohlcv_sha256": "2651cf7745fc921a3595c1d2bf9133d86fcc233e764cec5ba8de10540ad6efb2",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "BITCOIN",
+        "candle_count": 10000,
+        "canonical_symbol": "BTCUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-04-23T01:15:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "29d4e9639b7cc9dcc483acf71343fc691a7f8a162acf6d283958860a3bcaf1ca"
+      }
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "ETHEREUM",
+      "c1_expected_50000_sha256": "f4c1ecdf39c19b33616667917a639c0e78347181bc38fbb6b9dd5804e84e713a",
+      "c1_stability_status": "STABLE",
+      "canonical_symbol": "ETHUSD",
+      "completed_candle_boundary_timestamp": "2026-08-12T02:45:00Z",
+      "first_candle_open_timestamp": "2025-02-23T06:45:00Z",
+      "freeze_anchor_timestamp": "2026-08-12T02:30:00Z",
+      "freeze_authority": "SPRINT_92C1_EXACT_50000_M15_WINDOW",
+      "frozen_candle_count": 50000,
+      "full_dataset_sha256": "f4c1ecdf39c19b33616667917a639c0e78347181bc38fbb6b9dd5804e84e713a",
+      "integrity": {
+        "chronological_order": true,
+        "duplicate_timestamp_count": 0,
+        "future_candle_count": 0,
+        "gap_event_count": 98,
+        "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+        "implied_missing_interval_count": 1344,
+        "invalid_ohlc_count": 0,
+        "largest_gap_seconds": 15300,
+        "negative_spread_count": 0,
+        "negative_volume_count": 0,
+        "nonfinite_price_count": 0,
+        "strictly_increasing_timestamps": true
+      },
+      "last_candle_open_timestamp": "2026-08-12T02:30:00Z",
+      "matches_c1_50000_sha256": true,
+      "partition_reconciliation": {
+        "chronological": true,
+        "equals_frozen_dataset": true,
+        "no_overlap": true,
+        "slice_candle_sum": 50000
+      },
+      "partition_rule": "30000_DEVELOPMENT_THEN_10000_VALIDATION_THEN_V2_BOUNDARY_QUARANTINE",
+      "slices": [
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 30000,
+          "first_candle_open_timestamp": "2025-02-23T06:45:00Z",
+          "last_candle_close_timestamp": "2026-01-10T05:45:00Z",
+          "last_candle_open_timestamp": "2026-01-10T05:30:00Z",
+          "ohlcv_sha256": "e7fce17934a091321b763a5754305c1b5d0e485f73c0c4bfc05979b39434c75a",
+          "slice": "DEVELOPMENT"
+        },
+        {
+          "analysis_access": "ANALYSIS_ALLOWED_FUTURE_SPRINT",
+          "candle_count": 10000,
+          "first_candle_open_timestamp": "2026-01-10T05:45:00Z",
+          "last_candle_close_timestamp": "2026-04-27T10:45:00Z",
+          "last_candle_open_timestamp": "2026-04-27T10:30:00Z",
+          "ohlcv_sha256": "0a9572b7aa5312e29f6e32261a1d00e40edcdf2fc3c0460a65e635ef4527b3d5",
+          "slice": "VALIDATION"
+        },
+        {
+          "analysis_access": "QUARANTINED_ALREADY_EXPOSED",
+          "candle_count": 9594,
+          "first_candle_open_timestamp": "2026-04-27T10:45:00Z",
+          "last_candle_close_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_open_timestamp": "2026-08-07T17:00:00Z",
+          "ohlcv_sha256": "bfdf7ab6da49955ff6adc2df42e7822c35ce6a8c07c82521f30995c46c650eb9",
+          "slice": "RESEARCH_EXPOSED_QUARANTINE"
+        },
+        {
+          "analysis_access": "FROZEN_NO_ANALYSIS",
+          "candle_count": 406,
+          "first_candle_open_timestamp": "2026-08-07T17:15:00Z",
+          "last_candle_close_timestamp": "2026-08-12T02:45:00Z",
+          "last_candle_open_timestamp": "2026-08-12T02:30:00Z",
+          "ohlcv_sha256": "2c27fdb7df9c1a360dfe177da47433e4df519356a4a949b6c78a6fa977b3442f",
+          "slice": "TRUE_OOS_ACCRUAL"
+        }
+      ],
+      "timeframe": "M15",
+      "true_oos_rule": "candle_open_timestamp >= v2_last_candle_close_timestamp",
+      "v2_exposure_boundary": {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "ETHEREUM",
+        "candle_count": 10000,
+        "canonical_symbol": "ETHUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-04-23T01:15:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "0bf6cb205b1b08213bc4cc87d5d2247cff50cfbf82d4f9e5656c1f112c018db1"
+      }
+    }
+  ]
+}
