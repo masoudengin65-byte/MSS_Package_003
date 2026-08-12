@@ -1,0 +1,87 @@
+{
+  "acceptance": {
+    "frozen_227_prefix_verified": false,
+    "locked_boundary_respected": true,
+    "no_orders": true,
+    "no_outcome_inspection": true,
+    "no_strategy_replay": true,
+    "source_integrity_passed": true
+  },
+  "audit": {
+    "deterministic_report_build": true,
+    "mt5_access_purpose": "READ_ONLY_CANDLE_ELIGIBILITY_CHECK_ONLY",
+    "mt5_accessed": true,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "strategy_pipeline_imported": false,
+    "strategy_replay_run": false
+  },
+  "baseline_commit": "618ff82",
+  "eligibility": {
+    "available_completed_candles": 265,
+    "first_eligible_open_timestamp": "2026-08-07T17:00:00Z",
+    "last_eligible_close_timestamp": "2026-08-12T12:00:00Z",
+    "last_eligible_open_timestamp": "2026-08-12T11:45:00Z",
+    "remaining_candles": 9735,
+    "required_completed_candles": 10000,
+    "snapshot_export_authorized": false,
+    "snapshot_exported": false,
+    "status": "PREFIX_INTEGRITY_FAILURE"
+  },
+  "execution_id": "MSS_92H7_USDJPY_TRUE_OOS_V1",
+  "frozen_prefix_audit": {
+    "actual_count": 227,
+    "actual_ohlcv_sha256": "92d5de63e192ffa8e63018e16f45aa4b2e88adf8a033a43cb8dd768a73b0dfb0",
+    "available": true,
+    "count_match": true,
+    "expected_count": 227,
+    "expected_ohlcv_sha256": "f65b4f41b2bedc4cc1fe4fed39e1c2f1e844098db95c904d38be2c8a30ad9d8e",
+    "first_open_match": true,
+    "last_close_match": true,
+    "last_open_match": true,
+    "match": false,
+    "ohlcv_sha256_match": false,
+    "reason": null
+  },
+  "governance": {
+    "outcomes_inspected": false,
+    "partial_snapshot_exported": false,
+    "pnl_computed": false,
+    "signals_generated": false,
+    "strategy_replay_authorized": false,
+    "strategy_replay_run": false,
+    "trades_generated": false,
+    "true_oos_snapshot_exported": false,
+    "valuation_metadata_accessed": false
+  },
+  "mode": "READ_ONLY_TRUE_OOS_ELIGIBILITY_AND_FROZEN_PREFIX_INTEGRITY_CHECK",
+  "schema_version": "MSS_SPRINT92H8_1_TRUE_OOS_ELIGIBILITY_AUDIT_V1",
+  "source": {
+    "access_mode": "READ_ONLY_MARKET_DATA",
+    "broker": "ALPARI_MT5",
+    "broker_symbol": "USDJPY",
+    "canonical_symbol": "USDJPY",
+    "current_bar_open_epoch": 1786536000,
+    "current_bar_open_timestamp": "2026-08-12T12:00:00Z",
+    "h7_protocol_file_sha256": "225b1b61f67c7cb401f68233aedfdfebbf33fa8612d47cc080ab524d9db4ace5",
+    "locked_boundary": "2026-08-07T17:00:00Z",
+    "requested_history_count": 20000,
+    "returned_history_count": 20000,
+    "timeframe": "M15"
+  },
+  "source_integrity": {
+    "chronological_order": true,
+    "duplicate_timestamp_count": 0,
+    "future_candle_count": 0,
+    "gap_event_count": 3,
+    "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+    "implied_missing_interval_count": 195,
+    "invalid_ohlc_count": 0,
+    "largest_gap_seconds": 174600,
+    "negative_spread_count": 0,
+    "negative_volume_count": 0,
+    "nonfinite_price_count": 0,
+    "pass": true,
+    "strictly_increasing_timestamps": true
+  }
+}
