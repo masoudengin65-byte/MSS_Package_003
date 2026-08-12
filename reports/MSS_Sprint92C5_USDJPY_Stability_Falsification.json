@@ -1,0 +1,536 @@
+{
+  "caveats": [
+    "This audit follows a symbol selected after observing C3/C4 results and therefore cannot provide unbiased discovery evidence.",
+    "Calendar months differ in trade count and market conditions; comparisons are descriptive.",
+    "Concentration gates are sensitivity diagnostics, not formal significance tests.",
+    "Development and Validation are not True OOS; production changes remain unjustified."
+  ],
+  "final_assessment": "FAILS_ONE_OR_MORE_STABILITY_CHECKS",
+  "methodology": {
+    "month_assignment": "ENTRY_TIME_CALENDAR_MONTH",
+    "optimization_or_filter_creation": false,
+    "tests_predefined_before_result_inspection": [
+      "overall net positive",
+      "BUY and SELL independently net positive",
+      "strict majority of calendar months net positive",
+      "every leave-one-month-out net positive",
+      "best month contribution <= total net",
+      "top five winning trades contribution <= total net"
+    ],
+    "threshold_interpretation": "DESCRIPTIVE_FALSIFICATION_GATES_NOT_HYPOTHESIS_TEST_P_VALUES",
+    "timezone": "SOURCE_TRADE_TIMESTAMPS_NAIVE_BROKER_TIME_AS_FROZEN"
+  },
+  "mode": "FROZEN_TRADES_FALSIFICATION_ONLY",
+  "production_change_justified": false,
+  "reconciliation": {
+    "DEVELOPMENT": {
+      "closed_trade_count_difference": 0,
+      "net_pnl_difference": 0.0
+    },
+    "VALIDATION": {
+      "closed_trade_count_difference": 0,
+      "net_pnl_difference": 0.0
+    }
+  },
+  "schema_version": "MSS_SPRINT92C5_USDJPY_STABILITY_FALSIFICATION_V1",
+  "segment_results": {
+    "DEVELOPMENT": {
+      "concentration": {
+        "best_month": "2025-10",
+        "best_month_net_pnl": 1756.81,
+        "best_month_share_of_total_net": 0.59559544,
+        "positive_month_count": 9,
+        "positive_month_share": 0.6,
+        "top_five_share_of_total_net": 0.42049111,
+        "top_five_trade_net_pnl": 1240.31,
+        "total_month_count": 15
+      },
+      "directions": {
+        "BUY": {
+          "expectancy": 7.28693548,
+          "mean_r": 0.07283065,
+          "net_pnl": 1355.37,
+          "profit_factor": 1.11973307,
+          "trades": 186,
+          "win_rate": 0.36021505
+        },
+        "SELL": {
+          "expectancy": 9.72134146,
+          "mean_r": 0.09965,
+          "net_pnl": 1594.3,
+          "profit_factor": 1.16384934,
+          "trades": 164,
+          "win_rate": 0.36585366
+        }
+      },
+      "leave_one_month_out": [
+        {
+          "excluded_month": "2024-08",
+          "expectancy": 9.72164179,
+          "mean_r": 0.09822597,
+          "net_pnl": 3256.75,
+          "profit_factor": 1.16284312,
+          "trades": 335,
+          "win_rate": 0.36716418
+        },
+        {
+          "excluded_month": "2024-09",
+          "expectancy": 7.79954545,
+          "mean_r": 0.07781071,
+          "net_pnl": 2402.26,
+          "profit_factor": 1.12981646,
+          "trades": 308,
+          "win_rate": 0.36038961
+        },
+        {
+          "excluded_month": "2024-10",
+          "expectancy": 9.92906627,
+          "mean_r": 0.0994738,
+          "net_pnl": 3296.45,
+          "profit_factor": 1.1671404,
+          "trades": 332,
+          "win_rate": 0.36746988
+        },
+        {
+          "excluded_month": "2024-11",
+          "expectancy": 7.05697531,
+          "mean_r": 0.07079691,
+          "net_pnl": 2286.46,
+          "profit_factor": 1.11685495,
+          "trades": 324,
+          "win_rate": 0.35802469
+        },
+        {
+          "excluded_month": "2024-12",
+          "expectancy": 10.29448718,
+          "mean_r": 0.10265513,
+          "net_pnl": 3211.88,
+          "profit_factor": 1.17490327,
+          "trades": 312,
+          "win_rate": 0.36858974
+        },
+        {
+          "excluded_month": "2025-01",
+          "expectancy": 12.42546296,
+          "mean_r": 0.1264321,
+          "net_pnl": 4025.85,
+          "profit_factor": 1.21123446,
+          "trades": 324,
+          "win_rate": 0.37654321
+        },
+        {
+          "excluded_month": "2025-02",
+          "expectancy": 11.10463722,
+          "mean_r": 0.11337634,
+          "net_pnl": 3520.17,
+          "profit_factor": 1.18596851,
+          "trades": 317,
+          "win_rate": 0.37223975
+        },
+        {
+          "excluded_month": "2025-03",
+          "expectancy": 10.08221875,
+          "mean_r": 0.10313094,
+          "net_pnl": 3226.31,
+          "profit_factor": 1.16685216,
+          "trades": 320,
+          "win_rate": 0.36875
+        },
+        {
+          "excluded_month": "2025-04",
+          "expectancy": 8.1129052,
+          "mean_r": 0.07932171,
+          "net_pnl": 2652.92,
+          "profit_factor": 1.133134,
+          "trades": 327,
+          "win_rate": 0.36085627
+        },
+        {
+          "excluded_month": "2025-05",
+          "expectancy": 8.42804954,
+          "mean_r": 0.08354334,
+          "net_pnl": 2722.26,
+          "profit_factor": 1.13880272,
+          "trades": 323,
+          "win_rate": 0.3622291
+        },
+        {
+          "excluded_month": "2025-06",
+          "expectancy": 8.33002994,
+          "mean_r": 0.08372784,
+          "net_pnl": 2782.23,
+          "profit_factor": 1.13790921,
+          "trades": 334,
+          "win_rate": 0.36227545
+        },
+        {
+          "excluded_month": "2025-07",
+          "expectancy": 4.17720497,
+          "mean_r": 0.04050714,
+          "net_pnl": 1345.06,
+          "profit_factor": 1.06811834,
+          "trades": 322,
+          "win_rate": 0.34782609
+        },
+        {
+          "excluded_month": "2025-08",
+          "expectancy": 7.84544413,
+          "mean_r": 0.07980516,
+          "net_pnl": 2738.06,
+          "profit_factor": 1.13007281,
+          "trades": 349,
+          "win_rate": 0.36103152
+        },
+        {
+          "excluded_month": "2025-09",
+          "expectancy": 7.72979472,
+          "mean_r": 0.07898065,
+          "net_pnl": 2635.86,
+          "profit_factor": 1.12855684,
+          "trades": 341,
+          "win_rate": 0.36070381
+        },
+        {
+          "excluded_month": "2025-10",
+          "expectancy": 3.59295181,
+          "mean_r": 0.04506747,
+          "net_pnl": 1192.86,
+          "profit_factor": 1.0590274,
+          "trades": 332,
+          "win_rate": 0.34939759
+        }
+      ],
+      "monthly": [
+        {
+          "expectancy": -20.472,
+          "mean_r": -0.20110667,
+          "month": "2024-08",
+          "net_pnl": -307.08,
+          "profit_factor": 0.70779332,
+          "trades": 15,
+          "win_rate": 0.26666667
+        },
+        {
+          "expectancy": 13.03357143,
+          "mean_r": 0.14103333,
+          "month": "2024-09",
+          "net_pnl": 547.41,
+          "profit_factor": 1.21507882,
+          "trades": 42,
+          "win_rate": 0.38095238
+        },
+        {
+          "expectancy": -19.26555556,
+          "mean_r": -0.17423333,
+          "month": "2024-10",
+          "net_pnl": -346.78,
+          "profit_factor": 0.7387859,
+          "trades": 18,
+          "win_rate": 0.27777778
+        },
+        {
+          "expectancy": 25.50807692,
+          "mean_r": 0.26734231,
+          "month": "2024-11",
+          "net_pnl": 663.21,
+          "profit_factor": 1.44703955,
+          "trades": 26,
+          "win_rate": 0.42307692
+        },
+        {
+          "expectancy": -6.90026316,
+          "mean_r": -0.05629737,
+          "month": "2024-12",
+          "net_pnl": -262.21,
+          "profit_factor": 0.90239572,
+          "trades": 38,
+          "win_rate": 0.31578947
+        },
+        {
+          "expectancy": -41.39153846,
+          "mean_r": -0.42595769,
+          "month": "2025-01",
+          "net_pnl": -1076.18,
+          "profit_factor": 0.4596215,
+          "trades": 26,
+          "win_rate": 0.19230769
+        },
+        {
+          "expectancy": -17.28787879,
+          "mean_r": -0.1833697,
+          "month": "2025-02",
+          "net_pnl": -570.5,
+          "profit_factor": 0.73106875,
+          "trades": 33,
+          "win_rate": 0.27272727
+        },
+        {
+          "expectancy": -9.22133333,
+          "mean_r": -0.10376,
+          "month": "2025-03",
+          "net_pnl": -276.64,
+          "profit_factor": 0.83858752,
+          "trades": 30,
+          "win_rate": 0.3
+        },
+        {
+          "expectancy": 12.90217391,
+          "mean_r": 0.17177826,
+          "month": "2025-04",
+          "net_pnl": 296.75,
+          "profit_factor": 1.26412525,
+          "trades": 23,
+          "win_rate": 0.39130435
+        },
+        {
+          "expectancy": 8.42259259,
+          "mean_r": 0.10757778,
+          "month": "2025-05",
+          "net_pnl": 227.41,
+          "profit_factor": 1.15816855,
+          "trades": 27,
+          "win_rate": 0.37037037
+        },
+        {
+          "expectancy": 10.465,
+          "mean_r": 0.12025,
+          "month": "2025-06",
+          "net_pnl": 167.44,
+          "profit_factor": 1.19117429,
+          "trades": 16,
+          "win_rate": 0.375
+        },
+        {
+          "expectancy": 57.3075,
+          "mean_r": 0.60163571,
+          "month": "2025-07",
+          "net_pnl": 1604.61,
+          "profit_factor": 2.23026497,
+          "trades": 28,
+          "win_rate": 0.53571429
+        },
+        {
+          "expectancy": 211.61,
+          "mean_r": 2.0371,
+          "month": "2025-08",
+          "net_pnl": 211.61,
+          "profit_factor": null,
+          "trades": 1,
+          "win_rate": 1.0
+        },
+        {
+          "expectancy": 34.86777778,
+          "mean_r": 0.32852222,
+          "month": "2025-09",
+          "net_pnl": 313.81,
+          "profit_factor": 1.57395519,
+          "trades": 9,
+          "win_rate": 0.44444444
+        },
+        {
+          "expectancy": 97.60055556,
+          "mean_r": 0.82926111,
+          "month": "2025-10",
+          "net_pnl": 1756.81,
+          "profit_factor": 3.08738995,
+          "trades": 18,
+          "win_rate": 0.61111111
+        }
+      ],
+      "overall": {
+        "expectancy": 8.42762857,
+        "mean_r": 0.08539743,
+        "net_pnl": 2949.67,
+        "profit_factor": 1.14012544,
+        "trades": 350,
+        "win_rate": 0.36285714
+      },
+      "predefined_falsification_checks": {
+        "all_leave_one_month_out_net_positive": true,
+        "best_month_not_more_than_total_net": true,
+        "buy_net_positive": true,
+        "majority_of_months_positive": true,
+        "overall_net_positive": true,
+        "sell_net_positive": true,
+        "top_five_trades_not_more_than_total_net": true
+      },
+      "survives_all_predefined_checks": true
+    },
+    "VALIDATION": {
+      "concentration": {
+        "best_month": "2026-01",
+        "best_month_net_pnl": 869.48,
+        "best_month_share_of_total_net": 2.02817821,
+        "positive_month_count": 4,
+        "positive_month_share": 0.66666667,
+        "top_five_share_of_total_net": 2.68829018,
+        "top_five_trade_net_pnl": 1152.47,
+        "total_month_count": 6
+      },
+      "directions": {
+        "BUY": {
+          "expectancy": 14.37842105,
+          "mean_r": 0.14938772,
+          "net_pnl": 819.57,
+          "profit_factor": 1.21063169,
+          "trades": 57,
+          "win_rate": 0.38596491
+        },
+        "SELL": {
+          "expectancy": -8.143125,
+          "mean_r": -0.06247708,
+          "net_pnl": -390.87,
+          "profit_factor": 0.89223592,
+          "trades": 48,
+          "win_rate": 0.3125
+        }
+      },
+      "leave_one_month_out": [
+        {
+          "excluded_month": "2025-10",
+          "expectancy": 1.5078125,
+          "mean_r": 0.02674479,
+          "net_pnl": 144.75,
+          "profit_factor": 1.02063212,
+          "trades": 96,
+          "win_rate": 0.34375
+        },
+        {
+          "excluded_month": "2025-11",
+          "expectancy": -1.96422222,
+          "mean_r": -0.00445889,
+          "net_pnl": -176.78,
+          "profit_factor": 0.97339221,
+          "trades": 90,
+          "win_rate": 0.33333333
+        },
+        {
+          "excluded_month": "2025-12",
+          "expectancy": 4.89013158,
+          "mean_r": 0.061475,
+          "net_pnl": 371.65,
+          "profit_factor": 1.06825515,
+          "trades": 76,
+          "win_rate": 0.35526316
+        },
+        {
+          "excluded_month": "2026-01",
+          "expectancy": -4.95258427,
+          "mean_r": -0.02755281,
+          "net_pnl": -440.78,
+          "profit_factor": 0.93357876,
+          "trades": 89,
+          "win_rate": 0.3258427
+        },
+        {
+          "excluded_month": "2026-02",
+          "expectancy": 13.89302632,
+          "mean_r": 0.14013684,
+          "net_pnl": 1055.87,
+          "profit_factor": 1.20737204,
+          "trades": 76,
+          "win_rate": 0.38157895
+        },
+        {
+          "excluded_month": "2026-03",
+          "expectancy": 12.1305102,
+          "mean_r": 0.1280051,
+          "net_pnl": 1188.79,
+          "profit_factor": 1.17590829,
+          "trades": 98,
+          "win_rate": 0.37755102
+        }
+      ],
+      "monthly": [
+        {
+          "expectancy": 31.55,
+          "mean_r": 0.32763333,
+          "month": "2025-10",
+          "net_pnl": 283.95,
+          "profit_factor": 1.56525461,
+          "trades": 9,
+          "win_rate": 0.44444444
+        },
+        {
+          "expectancy": 40.36533333,
+          "mean_r": 0.3945,
+          "month": "2025-11",
+          "net_pnl": 605.48,
+          "profit_factor": 1.69262623,
+          "trades": 15,
+          "win_rate": 0.46666667
+        },
+        {
+          "expectancy": 1.96724138,
+          "mean_r": 0.0291069,
+          "month": "2025-12",
+          "net_pnl": 57.05,
+          "profit_factor": 1.02751931,
+          "trades": 29,
+          "win_rate": 0.34482759
+        },
+        {
+          "expectancy": 54.3425,
+          "mean_r": 0.498025,
+          "month": "2026-01",
+          "net_pnl": 869.48,
+          "profit_factor": 1.98583852,
+          "trades": 16,
+          "win_rate": 0.5
+        },
+        {
+          "expectancy": -21.62655172,
+          "mean_r": -0.17704138,
+          "month": "2026-02",
+          "net_pnl": -627.17,
+          "profit_factor": 0.74152562,
+          "trades": 29,
+          "win_rate": 0.27586207
+        },
+        {
+          "expectancy": -108.58428571,
+          "mean_r": -1.00404286,
+          "month": "2026-03",
+          "net_pnl": -760.09,
+          "profit_factor": 0.0,
+          "trades": 7,
+          "win_rate": 0.0
+        }
+      ],
+      "overall": {
+        "expectancy": 4.08285714,
+        "mean_r": 0.05253524,
+        "net_pnl": 428.7,
+        "profit_factor": 1.05702239,
+        "trades": 105,
+        "win_rate": 0.35238095
+      },
+      "predefined_falsification_checks": {
+        "all_leave_one_month_out_net_positive": false,
+        "best_month_not_more_than_total_net": false,
+        "buy_net_positive": true,
+        "majority_of_months_positive": true,
+        "overall_net_positive": true,
+        "sell_net_positive": false,
+        "top_five_trades_not_more_than_total_net": false
+      },
+      "survives_all_predefined_checks": false
+    }
+  },
+  "source": {
+    "artifact": "reports/MSS_Sprint92C3_Extended_Development_Validation_Replay.json",
+    "history_downloaded": false,
+    "research_exposed_candles_used": 0,
+    "source_sha256": "d9ba317d5ea8bfec50242b7afede75cfe644d4fd9906afeaea9ec67a7feb3b1d",
+    "strategy_replay_run": false,
+    "symbol": "USDJPY",
+    "true_oos_candles_used": 0
+  },
+  "validation": {
+    "all_source_trades_reconciled": true,
+    "deterministic_rebuild": true,
+    "research_exposed_used": false,
+    "strategy_replay_run": false,
+    "true_oos_used": false
+  }
+}
