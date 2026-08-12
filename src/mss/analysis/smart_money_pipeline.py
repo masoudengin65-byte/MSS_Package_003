@@ -7,6 +7,7 @@ Sprint : 54
 from mss.analysis.real_swing_engine import RealSwingEngine
 from mss.analysis.setup_scoring_engine import SetupScoringEngine
 from mss.analysis.structure_engine import StructureEngine
+from mss.analysis.confluence_engine import ConfluenceEngine
 from mss.domain.pipeline_result import PipelineResult
 
 
@@ -19,6 +20,8 @@ class SmartMoneyPipeline:
         self.structure_engine = StructureEngine()
 
         self.score_engine = SetupScoringEngine()
+
+        self.confluence_engine = ConfluenceEngine()
 
     def run(
         self,
@@ -64,6 +67,13 @@ class SmartMoneyPipeline:
             candles=candles,
             swings=swings,
         )
+
+        # Capture the existing strict confluence contract without changing the
+        # baseline recommendation or BOS decision path.
+        confluence = self.confluence_engine.generate(analysis)
+        result.confluence_valid = bool(confluence.valid)
+        result.confluence_signal = confluence.signal
+        result.confluence_reason = confluence.reason
 
         #
         # Structure

@@ -1,0 +1,54 @@
+{
+  "audit": {
+    "commit_created": false,
+    "deterministic_rebuild": true,
+    "external_history_accessed": false,
+    "mt5_accessed": false,
+    "outcomes_analyzed": false,
+    "push_performed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "794cab3",
+  "checks": {
+    "candidate_replay_count_locked_to_one": true,
+    "eight_symbols_locked": true,
+    "g1_protocol_present": true,
+    "g2_checks_all_pass": true,
+    "single_change_matches": true,
+    "validation_access_prohibited": true
+  },
+  "future_g3_execution_contract": {
+    "authoritative_candidate_runs": 1,
+    "baseline_comparison": "FROZEN_SPRINT92C3_DEVELOPMENT_RESULTS",
+    "dataset": "SPRINT_92C3_DEVELOPMENT_30000_CANDLES_PER_EIGHT_SYMBOLS",
+    "pipeline": "ConfluenceGatedSmartMoneyPipeline",
+    "preserve_failed_or_null_result": true,
+    "report_all_symbols": true,
+    "required_before_execution": [
+      "commit G1 protocol",
+      "commit G2 implementation and readiness",
+      "clean worktree",
+      "verify committed file hashes"
+    ],
+    "rerun_prohibited": true,
+    "status": "BLOCKED_UNTIL_G1_G2_CHECKPOINT_EXISTS"
+  },
+  "gate": {
+    "g3_execution_allowed_now": false,
+    "implementation_ready": true,
+    "reason": "IMPLEMENTATION_AND_PROTOCOL_NOT_YET_COMMITTED"
+  },
+  "implementation_file_sha256": {
+    "baseline_pipeline": "4d7e87f4e16f1f913098534fe88b80851487f738afa059e09b6575ecff2febc6",
+    "candidate_pipeline": "f984643cfb63b2859c58b38aaf7a4a0fbdfffa80612cf393a14a3553504ef4df",
+    "pipeline_result": "6ce5d0fa380855f4612b1e58ee4185c48bb4dbd57c7c5e9f81a51e0354718568"
+  },
+  "mode": "READINESS_ONLY_NO_OUTCOME_NO_REPLAY",
+  "schema_version": "MSS_SPRINT92G2B_CONFLUENCE_GATE_DEVELOPMENT_READINESS_V1",
+  "source_file_sha256": {
+    "g1": "2b50143a0ae9d6a1e9b653ac7bc2fe6313ad40b9599904d2ae9f5f2f0602941e",
+    "g2": "e359945a7c7a2b3fd3e5d295fc425152b1ea43243046e105f39328d28b2e1296"
+  }
+}

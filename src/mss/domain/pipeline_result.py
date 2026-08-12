@@ -94,6 +94,18 @@ class PipelineResult:
     fair_value_gap_detected: bool = False
 
     #
+    # Existing ConfluenceEngine evidence (observational on baseline)
+    #
+
+    confluence_valid: bool = False
+
+    confluence_signal: str = ""
+
+    confluence_reason: str = ""
+
+    confluence_gate_rejected: bool = False
+
+    #
     # Score
     #
 
@@ -109,4 +121,3 @@ class PipelineResult:
 
     logs: list[str] = field(default_factory=list)
 
-    

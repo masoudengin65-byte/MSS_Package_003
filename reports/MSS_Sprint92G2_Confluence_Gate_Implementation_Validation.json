@@ -1,0 +1,21 @@
+{
+  "audit": {
+    "external_history_accessed": false,
+    "outcomes_analyzed": false,
+    "production_behavior_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "794cab3",
+  "checks": {
+    "baseline_pipeline_default_unchanged": true,
+    "candidate_is_separate_pipeline_class": true,
+    "matching_confluence_accepts": true,
+    "missing_confluence_rejects": true
+  },
+  "mode": "IMPLEMENTATION_VALIDATION_ONLY_NO_REPLAY",
+  "protocol_sha256": "2b50143a0ae9d6a1e9b653ac7bc2fe6313ad40b9599904d2ae9f5f2f0602941e",
+  "schema_version": "MSS_SPRINT92G2_CONFLUENCE_GATE_IMPLEMENTATION_VALIDATION_V1",
+  "single_change": "ENTRY_ELIGIBLE_ONLY_WHEN_EXISTING_CONFLUENCE_ENGINE_RETURNS_VALID_DIRECTION_MATCHING_BOS"
+}
