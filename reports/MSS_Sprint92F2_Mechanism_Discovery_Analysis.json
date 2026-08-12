@@ -1,0 +1,2149 @@
+{
+  "advanced_mechanisms": [],
+  "audit": {
+    "external_history_accessed": false,
+    "post_hoc_symbol_exclusion": false,
+    "strategy_code_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "a792ea3",
+  "candidate_gate_results": [
+    {
+      "bootstrap_contrast": {
+        "moving_block": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": 0.00044591590099389176,
+            "upper": 0.21444768720906762
+          },
+          "method": "moving_block_circular",
+          "point_positive_probability": 0.9754,
+          "valid_samples": 10000
+        },
+        "ordinary": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": 0.0033978367179338395,
+            "upper": 0.2129087717516325
+          },
+          "method": "ordinary",
+          "point_positive_probability": 0.978,
+          "valid_samples": 10000
+        }
+      },
+      "consistent_symbols": 5,
+      "gate_pass": false,
+      "hypothesis_id": "H1_DIRECTION"
+    },
+    {
+      "bootstrap_contrast": {
+        "moving_block": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": -0.09247492908019063,
+            "upper": 0.1959257792339425
+          },
+          "method": "moving_block_circular",
+          "point_positive_probability": 0.7528,
+          "valid_samples": 10000
+        },
+        "ordinary": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": -0.09385706346599249,
+            "upper": 0.19382401391611623
+          },
+          "method": "ordinary",
+          "point_positive_probability": 0.7458,
+          "valid_samples": 10000
+        }
+      },
+      "consistent_symbols": 1,
+      "gate_pass": false,
+      "hypothesis_id": "H2_COST_BURDEN"
+    },
+    {
+      "bootstrap_contrast": {
+        "moving_block": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": null,
+            "upper": null
+          },
+          "method": "moving_block_circular",
+          "point_positive_probability": null,
+          "valid_samples": 0
+        },
+        "ordinary": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": null,
+            "upper": null
+          },
+          "method": "ordinary",
+          "point_positive_probability": null,
+          "valid_samples": 0
+        }
+      },
+      "consistent_symbols": 0,
+      "gate_pass": false,
+      "hypothesis_id": "H3_LEGACY_SCORE"
+    },
+    {
+      "bootstrap_contrast": {
+        "moving_block": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": -0.19651607369444646,
+            "upper": 0.14095231309588846
+          },
+          "method": "moving_block_circular",
+          "point_positive_probability": 0.3765,
+          "valid_samples": 10000
+        },
+        "ordinary": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": -0.19195795448492195,
+            "upper": 0.1328248543883476
+          },
+          "method": "ordinary",
+          "point_positive_probability": 0.3658,
+          "valid_samples": 10000
+        }
+      },
+      "consistent_symbols": 1,
+      "gate_pass": false,
+      "hypothesis_id": "H4_SHADOW_SCORE"
+    },
+    {
+      "bootstrap_contrast": {
+        "moving_block": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": -0.03256696100259379,
+            "upper": 0.19114883752469125
+          },
+          "method": "moving_block_circular",
+          "point_positive_probability": 0.9188,
+          "valid_samples": 10000
+        },
+        "ordinary": {
+          "ci_95": {
+            "level_percent": 95,
+            "lower": -0.024712407344225078,
+            "upper": 0.1842403637376772
+          },
+          "method": "ordinary",
+          "point_positive_probability": 0.9327,
+          "valid_samples": 10000
+        }
+      },
+      "consistent_symbols": 4,
+      "gate_pass": false,
+      "hypothesis_id": "H5_UTC_SESSION"
+    }
+  ],
+  "conclusion": {
+    "decision": "NO_STRATEGY_REVISION_ADVANCED",
+    "mechanisms_advanced_count": 0,
+    "strategy_revision_allowed": false
+  },
+  "data_quality": {
+    "closed_trade_count": 2747,
+    "expected_closed_trade_count": 2747,
+    "missing_required_value_count": 0,
+    "symbols_present": [
+      "AUDUSD",
+      "BTCUSD",
+      "ETHUSD",
+      "EURUSD",
+      "GBPUSD",
+      "USDCAD",
+      "USDJPY",
+      "XAUUSD"
+    ],
+    "unique_symbol_trade_keys": true,
+    "validation_rows_used": 0
+  },
+  "locked_cutpoints": {
+    "cost_burden_quartiles": [
+      0.011049723756905947,
+      0.023474178403753806,
+      0.053342578059522146
+    ],
+    "legacy_score_quintiles": [
+      25.0,
+      25.0,
+      25.0,
+      25.0
+    ],
+    "shadow_score_quintiles": [
+      39.0,
+      43.0,
+      47.0,
+      51.0
+    ]
+  },
+  "mode": "DEVELOPMENT_ONLY_MECHANISM_ANALYSIS",
+  "results": {
+    "H1_DIRECTION": {
+      "per_symbol": {
+        "AUDUSD": {
+          "BUY": {
+            "count": 203,
+            "expectancy": -23.075467980295564,
+            "mean_r": -0.3872615763546798,
+            "median_r": -1.0066,
+            "net_pnl": -4684.32,
+            "profit_factor": 0.5107785337935572,
+            "sufficient": true,
+            "win_rate": 0.20689655172413793
+          },
+          "SELL": {
+            "count": 193,
+            "expectancy": -9.240621761658032,
+            "mean_r": -0.12111295336787566,
+            "median_r": -1.0048,
+            "net_pnl": -1783.44,
+            "profit_factor": 0.779571586952572,
+            "sufficient": true,
+            "win_rate": 0.29533678756476683
+          }
+        },
+        "BTCUSD": {
+          "BUY": {
+            "count": 124,
+            "expectancy": -10.754193548387097,
+            "mean_r": -0.10483951612903225,
+            "median_r": -1.0,
+            "net_pnl": -1333.52,
+            "profit_factor": 0.8299975013130855,
+            "sufficient": true,
+            "win_rate": 0.29838709677419356
+          },
+          "SELL": {
+            "count": 142,
+            "expectancy": 1.56225352112676,
+            "mean_r": 0.014082394366197184,
+            "median_r": -1.0,
+            "net_pnl": 221.84,
+            "profit_factor": 1.0262590034504595,
+            "sufficient": true,
+            "win_rate": 0.3380281690140845
+          }
+        },
+        "ETHUSD": {
+          "BUY": {
+            "count": 168,
+            "expectancy": -0.1302380952380953,
+            "mean_r": 0.017560714285714315,
+            "median_r": -1.0002,
+            "net_pnl": -21.88,
+            "profit_factor": 0.9976258912402113,
+            "sufficient": true,
+            "win_rate": 0.3392857142857143
+          },
+          "SELL": {
+            "count": 140,
+            "expectancy": -7.344,
+            "mean_r": -0.07886499999999996,
+            "median_r": -1.0002,
+            "net_pnl": -1028.16,
+            "profit_factor": 0.8713270400188224,
+            "sufficient": true,
+            "win_rate": 0.30714285714285716
+          }
+        },
+        "EURUSD": {
+          "BUY": {
+            "count": 222,
+            "expectancy": 1.6098648648648652,
+            "mean_r": 0.03417567567567568,
+            "median_r": -1.00345,
+            "net_pnl": 357.39,
+            "profit_factor": 1.0267395403124437,
+            "sufficient": true,
+            "win_rate": 0.34684684684684686
+          },
+          "SELL": {
+            "count": 202,
+            "expectancy": -17.199752475247525,
+            "mean_r": -0.20447772277227722,
+            "median_r": -1.0041,
+            "net_pnl": -3474.35,
+            "profit_factor": 0.745237805423527,
+            "sufficient": true,
+            "win_rate": 0.26732673267326734
+          }
+        },
+        "GBPUSD": {
+          "BUY": {
+            "count": 178,
+            "expectancy": 13.496685393258426,
+            "mean_r": 0.13968988764044943,
+            "median_r": -1.0026,
+            "net_pnl": 2402.41,
+            "profit_factor": 1.1768168101862073,
+            "sufficient": true,
+            "win_rate": 0.38202247191011235
+          },
+          "SELL": {
+            "count": 154,
+            "expectancy": -6.129155844155845,
+            "mean_r": -0.05026233766233766,
+            "median_r": -1.0027,
+            "net_pnl": -943.89,
+            "profit_factor": 0.9263837988046891,
+            "sufficient": true,
+            "win_rate": 0.3181818181818182
+          }
+        },
+        "USDCAD": {
+          "BUY": {
+            "count": 147,
+            "expectancy": 3.1413605442176875,
+            "mean_r": 0.031943537414965986,
+            "median_r": -1.0053,
+            "net_pnl": 461.78,
+            "profit_factor": 1.050163053278555,
+            "sufficient": true,
+            "win_rate": 0.3469387755102041
+          },
+          "SELL": {
+            "count": 146,
+            "expectancy": -17.996986301369862,
+            "mean_r": -0.18203835616438355,
+            "median_r": -1.0030999999999999,
+            "net_pnl": -2627.56,
+            "profit_factor": 0.7419923723787415,
+            "sufficient": true,
+            "win_rate": 0.273972602739726
+          }
+        },
+        "USDJPY": {
+          "BUY": {
+            "count": 186,
+            "expectancy": 7.286935483870969,
+            "mean_r": 0.07283064516129033,
+            "median_r": -1.00435,
+            "net_pnl": 1355.37,
+            "profit_factor": 1.1197330725543355,
+            "sufficient": true,
+            "win_rate": 0.3602150537634409
+          },
+          "SELL": {
+            "count": 164,
+            "expectancy": 9.721341463414635,
+            "mean_r": 0.09965,
+            "median_r": -0.9986,
+            "net_pnl": 1594.3,
+            "profit_factor": 1.1638493445204043,
+            "sufficient": true,
+            "win_rate": 0.36585365853658536
+          }
+        },
+        "XAUUSD": {
+          "BUY": {
+            "count": 235,
+            "expectancy": 13.66208510638298,
+            "mean_r": 0.17309446808510642,
+            "median_r": -1.0006,
+            "net_pnl": 3210.59,
+            "profit_factor": 1.2545943455550526,
+            "sufficient": true,
+            "win_rate": 0.39148936170212767
+          },
+          "SELL": {
+            "count": 143,
+            "expectancy": -27.68958041958042,
+            "mean_r": -0.30878741258741255,
+            "median_r": -1.0007,
+            "net_pnl": -3959.61,
+            "profit_factor": 0.5852695437410905,
+            "sufficient": true,
+            "win_rate": 0.23076923076923078
+          }
+        }
+      },
+      "pooled": {
+        "BUY": {
+          "count": 1463,
+          "expectancy": 1.194682159945318,
+          "mean_r": 0.0018504442925495637,
+          "median_r": -1.0008,
+          "net_pnl": 1747.82,
+          "profit_factor": 1.0201538259660132,
+          "sufficient": true,
+          "win_rate": 0.33561175666438825
+        },
+        "SELL": {
+          "count": 1284,
+          "expectancy": -9.346471962616823,
+          "mean_r": -0.10580428348909657,
+          "median_r": -1.0005,
+          "net_pnl": -12000.87,
+          "profit_factor": 0.8508292731797922,
+          "sufficient": true,
+          "win_rate": 0.29906542056074764
+        }
+      }
+    },
+    "H2_COST_BURDEN": {
+      "per_symbol": {
+        "AUDUSD": [
+          {
+            "count": 6,
+            "expectancy": -44.46,
+            "group": "Q1_LOW",
+            "mean_r": -0.5015166666666667,
+            "median_r": -1.0013999999999998,
+            "net_pnl": -266.76,
+            "profit_factor": 0.17808725659354202,
+            "sufficient": false,
+            "win_rate": 0.16666666666666666
+          },
+          {
+            "count": 61,
+            "expectancy": -7.582950819672131,
+            "group": "Q2",
+            "mean_r": -0.16745081967213113,
+            "median_r": -1.0029,
+            "net_pnl": -462.56,
+            "profit_factor": 0.8215390788367015,
+            "sufficient": true,
+            "win_rate": 0.2786885245901639
+          },
+          {
+            "count": 202,
+            "expectancy": -13.93460396039604,
+            "group": "Q3",
+            "mean_r": -0.20480544554455446,
+            "median_r": -1.0057,
+            "net_pnl": -2814.79,
+            "profit_factor": 0.6807697934658965,
+            "sufficient": true,
+            "win_rate": 0.26732673267326734
+          },
+          {
+            "count": 127,
+            "expectancy": -23.020866141732284,
+            "group": "Q4_HIGH",
+            "mean_r": -0.3731858267716535,
+            "median_r": -1.0094,
+            "net_pnl": -2923.65,
+            "profit_factor": 0.5071317670025337,
+            "sufficient": true,
+            "win_rate": 0.2125984251968504
+          }
+        ],
+        "BTCUSD": [
+          {
+            "count": 52,
+            "expectancy": 0.7236538461538461,
+            "group": "Q1_LOW",
+            "mean_r": -0.019230769230769232,
+            "median_r": -1.0,
+            "net_pnl": 37.63,
+            "profit_factor": 1.0123558944150568,
+            "sufficient": true,
+            "win_rate": 0.3269230769230769
+          },
+          {
+            "count": 10,
+            "expectancy": -29.187,
+            "group": "Q2",
+            "mean_r": -0.4,
+            "median_r": -1.0,
+            "net_pnl": -291.87,
+            "profit_factor": 0.545791251030984,
+            "sufficient": false,
+            "win_rate": 0.2
+          },
+          {
+            "count": 56,
+            "expectancy": 9.328214285714287,
+            "group": "Q3",
+            "mean_r": 0.125,
+            "median_r": -1.0,
+            "net_pnl": 522.38,
+            "profit_factor": 1.167906298012947,
+            "sufficient": true,
+            "win_rate": 0.375
+          },
+          {
+            "count": 148,
+            "expectancy": -9.323108108108109,
+            "group": "Q4_HIGH",
+            "mean_r": -0.08784054054054054,
+            "median_r": -1.0,
+            "net_pnl": -1379.82,
+            "profit_factor": 0.854649147848474,
+            "sufficient": true,
+            "win_rate": 0.30405405405405406
+          }
+        ],
+        "ETHUSD": [
+          {
+            "count": 29,
+            "expectancy": -14.835172413793103,
+            "group": "Q1_LOW",
+            "mean_r": -0.17285862068965513,
+            "median_r": -1.0003,
+            "net_pnl": -430.22,
+            "profit_factor": 0.7286465757571935,
+            "sufficient": false,
+            "win_rate": 0.27586206896551724
+          },
+          {
+            "count": 11,
+            "expectancy": 24.25,
+            "group": "Q2",
+            "mean_r": 0.3633545454545455,
+            "median_r": -1.0,
+            "net_pnl": 266.75,
+            "profit_factor": 1.5195450207428471,
+            "sufficient": false,
+            "win_rate": 0.45454545454545453
+          },
+          {
+            "count": 47,
+            "expectancy": 14.296170212765956,
+            "group": "Q3",
+            "mean_r": 0.21266170212765959,
+            "median_r": -1.0001,
+            "net_pnl": 671.92,
+            "profit_factor": 1.2901534714605267,
+            "sufficient": true,
+            "win_rate": 0.40425531914893614
+          },
+          {
+            "count": 221,
+            "expectancy": -7.051990950226244,
+            "group": "Q4_HIGH",
+            "mean_r": -0.07723981900452485,
+            "median_r": -1.0002,
+            "net_pnl": -1558.49,
+            "profit_factor": 0.8781663468040446,
+            "sufficient": true,
+            "win_rate": 0.3076923076923077
+          }
+        ],
+        "EURUSD": [
+          {
+            "count": 143,
+            "expectancy": -9.746923076923077,
+            "group": "Q1_LOW",
+            "mean_r": -0.1009125874125874,
+            "median_r": -1.0025,
+            "net_pnl": -1393.81,
+            "profit_factor": 0.8437502802564908,
+            "sufficient": true,
+            "win_rate": 0.3006993006993007
+          },
+          {
+            "count": 187,
+            "expectancy": -4.814598930481283,
+            "group": "Q2",
+            "mean_r": -0.05951657754010695,
+            "median_r": -1.0048,
+            "net_pnl": -900.33,
+            "profit_factor": 0.9237248288885443,
+            "sufficient": true,
+            "win_rate": 0.3155080213903743
+          },
+          {
+            "count": 67,
+            "expectancy": -14.729253731343285,
+            "group": "Q3",
+            "mean_r": -0.1604402985074627,
+            "median_r": -1.0092,
+            "net_pnl": -986.86,
+            "profit_factor": 0.786460497161058,
+            "sufficient": true,
+            "win_rate": 0.2835820895522388
+          },
+          {
+            "count": 27,
+            "expectancy": 6.075555555555558,
+            "group": "Q4_HIGH",
+            "mean_r": 0.09600370370370372,
+            "median_r": -1.0061,
+            "net_pnl": 164.04,
+            "profit_factor": 1.0989581762353182,
+            "sufficient": false,
+            "win_rate": 0.37037037037037035
+          }
+        ],
+        "GBPUSD": [
+          {
+            "count": 97,
+            "expectancy": 9.511030927835051,
+            "group": "Q1_LOW",
+            "mean_r": 0.08010927835051546,
+            "median_r": -1.0015,
+            "net_pnl": 922.57,
+            "profit_factor": 1.123408023521323,
+            "sufficient": true,
+            "win_rate": 0.36082474226804123
+          },
+          {
+            "count": 123,
+            "expectancy": 11.611138211382112,
+            "group": "Q2",
+            "mean_r": 0.11746178861788618,
+            "median_r": -1.0036,
+            "net_pnl": 1428.17,
+            "profit_factor": 1.1493678246873114,
+            "sufficient": true,
+            "win_rate": 0.37398373983739835
+          },
+          {
+            "count": 79,
+            "expectancy": -32.027848101265825,
+            "group": "Q3",
+            "mean_r": -0.24801518987341772,
+            "median_r": -1.0061,
+            "net_pnl": -2530.2,
+            "profit_factor": 0.6538822991889447,
+            "sufficient": true,
+            "win_rate": 0.25316455696202533
+          },
+          {
+            "count": 33,
+            "expectancy": 49.63575757575757,
+            "group": "Q4_HIGH",
+            "mean_r": 0.43936969696969697,
+            "median_r": -1.0025,
+            "net_pnl": 1637.98,
+            "profit_factor": 1.7946190342204584,
+            "sufficient": true,
+            "win_rate": 0.48484848484848486
+          }
+        ],
+        "USDCAD": [
+          {
+            "count": 18,
+            "expectancy": -69.22666666666666,
+            "group": "Q1_LOW",
+            "mean_r": -0.6698333333333334,
+            "median_r": -0.9993,
+            "net_pnl": -1246.08,
+            "profit_factor": 0.24018585592507224,
+            "sufficient": false,
+            "win_rate": 0.1111111111111111
+          },
+          {
+            "count": 51,
+            "expectancy": 5.991176470588235,
+            "group": "Q2",
+            "mean_r": 0.05709411764705883,
+            "median_r": -1.001,
+            "net_pnl": 305.55,
+            "profit_factor": 1.0962386453831907,
+            "sufficient": true,
+            "win_rate": 0.35294117647058826
+          },
+          {
+            "count": 116,
+            "expectancy": 7.120258620689655,
+            "group": "Q3",
+            "mean_r": 0.08068275862068966,
+            "median_r": -1.0040499999999999,
+            "net_pnl": 825.95,
+            "profit_factor": 1.116405419803649,
+            "sufficient": true,
+            "win_rate": 0.3620689655172414
+          },
+          {
+            "count": 108,
+            "expectancy": -18.99259259259259,
+            "group": "Q4_HIGH",
+            "mean_r": -0.20459166666666667,
+            "median_r": -1.0084,
+            "net_pnl": -2051.2,
+            "profit_factor": 0.7257482692137993,
+            "sufficient": true,
+            "win_rate": 0.26851851851851855
+          }
+        ],
+        "USDJPY": [
+          {
+            "count": 199,
+            "expectancy": -4.9781909547738685,
+            "group": "Q1_LOW",
+            "mean_r": -0.052226130653266326,
+            "median_r": -0.9996,
+            "net_pnl": -990.66,
+            "profit_factor": 0.9229959642566211,
+            "sufficient": true,
+            "win_rate": 0.3165829145728643
+          },
+          {
+            "count": 111,
+            "expectancy": 11.876216216216216,
+            "group": "Q2",
+            "mean_r": 0.10405765765765766,
+            "median_r": -1.0022,
+            "net_pnl": 1318.26,
+            "profit_factor": 1.1981913718061477,
+            "sufficient": true,
+            "win_rate": 0.36936936936936937
+          },
+          {
+            "count": 32,
+            "expectancy": 62.516875,
+            "group": "Q3",
+            "mean_r": 0.680503125,
+            "median_r": 1.98155,
+            "net_pnl": 2000.54,
+            "profit_factor": 2.5738775381758967,
+            "sufficient": true,
+            "win_rate": 0.5625
+          },
+          {
+            "count": 8,
+            "expectancy": 77.69125,
+            "group": "Q4_HIGH",
+            "mean_r": 0.8694500000000001,
+            "median_r": 1.98685,
+            "net_pnl": 621.53,
+            "profit_factor": 3.3665613220119566,
+            "sufficient": false,
+            "win_rate": 0.625
+          }
+        ],
+        "XAUUSD": [
+          {
+            "count": 143,
+            "expectancy": -2.669370629370629,
+            "group": "Q1_LOW",
+            "mean_r": -0.014579020979020923,
+            "median_r": -1.0005,
+            "net_pnl": -381.72,
+            "profit_factor": 0.9529560235195235,
+            "sufficient": true,
+            "win_rate": 0.32867132867132864
+          },
+          {
+            "count": 133,
+            "expectancy": 6.019774436090225,
+            "group": "Q2",
+            "mean_r": 0.08155187969924811,
+            "median_r": -1.0009,
+            "net_pnl": 800.63,
+            "profit_factor": 1.105812183143638,
+            "sufficient": true,
+            "win_rate": 0.3609022556390977
+          },
+          {
+            "count": 88,
+            "expectancy": -13.400795454545454,
+            "group": "Q3",
+            "mean_r": -0.14979886363636363,
+            "median_r": -1.0018,
+            "net_pnl": -1179.27,
+            "profit_factor": 0.7905768738989599,
+            "sufficient": true,
+            "win_rate": 0.2840909090909091
+          },
+          {
+            "count": 14,
+            "expectancy": 0.8099999999999993,
+            "group": "Q4_HIGH",
+            "mean_r": 0.06723571428571429,
+            "median_r": -1.00305,
+            "net_pnl": 11.34,
+            "profit_factor": 1.0133983955007857,
+            "sufficient": false,
+            "win_rate": 0.35714285714285715
+          }
+        ]
+      },
+      "pooled": [
+        {
+          "count": 687,
+          "expectancy": -5.457132459970888,
+          "group": "Q1_LOW",
+          "mean_r": -0.05853959243085879,
+          "median_r": -1.0005,
+          "net_pnl": -3749.05,
+          "profit_factor": 0.9147377932142741,
+          "sufficient": true,
+          "win_rate": 0.314410480349345
+        },
+        {
+          "count": 687,
+          "expectancy": 3.5874818049490536,
+          "group": "Q2",
+          "mean_r": 0.026796506550218344,
+          "median_r": -1.0014,
+          "net_pnl": 2464.6,
+          "profit_factor": 1.0579824161253508,
+          "sufficient": true,
+          "win_rate": 0.3435225618631732
+        },
+        {
+          "count": 687,
+          "expectancy": -5.080538573508005,
+          "group": "Q3",
+          "mean_r": -0.053515720524017464,
+          "median_r": -1.0028,
+          "net_pnl": -3490.33,
+          "profit_factor": 0.9131187494663779,
+          "sufficient": true,
+          "win_rate": 0.3173216885007278
+        },
+        {
+          "count": 686,
+          "expectancy": -7.985816326530613,
+          "group": "Q4_HIGH",
+          "mean_r": -0.10870655976676384,
+          "median_r": -1.0002,
+          "net_pnl": -5478.27,
+          "profit_factor": 0.8648147179361644,
+          "sufficient": true,
+          "win_rate": 0.2988338192419825
+        }
+      ]
+    },
+    "H3_LEGACY_SCORE": {
+      "per_symbol": {
+        "AUDUSD": [
+          {
+            "count": 396,
+            "expectancy": -16.332727272727272,
+            "group": "Q1",
+            "mean_r": -0.2575477272727273,
+            "median_r": -1.0057,
+            "net_pnl": -6467.76,
+            "profit_factor": 0.633883245857542,
+            "sufficient": true,
+            "win_rate": 0.25
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "BTCUSD": [
+          {
+            "count": 266,
+            "expectancy": -4.179248120300752,
+            "group": "Q1",
+            "mean_r": -0.04135488721804511,
+            "median_r": -1.0,
+            "net_pnl": -1111.68,
+            "profit_factor": 0.9317664143793345,
+            "sufficient": true,
+            "win_rate": 0.31954887218045114
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "ETHUSD": [
+          {
+            "count": 308,
+            "expectancy": -3.409220779220779,
+            "group": "Q1",
+            "mean_r": -0.026269155844155814,
+            "median_r": -1.0002,
+            "net_pnl": -1050.04,
+            "profit_factor": 0.938974508589156,
+            "sufficient": true,
+            "win_rate": 0.3246753246753247
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "EURUSD": [
+          {
+            "count": 424,
+            "expectancy": -7.351320754716982,
+            "group": "Q1",
+            "mean_r": -0.07952240566037735,
+            "median_r": -1.0037,
+            "net_pnl": -3116.96,
+            "profit_factor": 0.8845708030375635,
+            "sufficient": true,
+            "win_rate": 0.3089622641509434
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "GBPUSD": [
+          {
+            "count": 332,
+            "expectancy": 4.393132530120481,
+            "group": "Q1",
+            "mean_r": 0.05157951807228915,
+            "median_r": -1.00265,
+            "net_pnl": 1458.52,
+            "profit_factor": 1.0552286229157966,
+            "sufficient": true,
+            "win_rate": 0.35240963855421686
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "USDCAD": [
+          {
+            "count": 293,
+            "expectancy": -7.391740614334472,
+            "group": "Q1",
+            "mean_r": -0.07468225255972695,
+            "median_r": -1.0049,
+            "net_pnl": -2165.78,
+            "profit_factor": 0.8883020915314483,
+            "sufficient": true,
+            "win_rate": 0.310580204778157
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "USDJPY": [
+          {
+            "count": 350,
+            "expectancy": 8.427628571428572,
+            "group": "Q1",
+            "mean_r": 0.08539742857142858,
+            "median_r": -1.00015,
+            "net_pnl": 2949.67,
+            "profit_factor": 1.140125442929073,
+            "sufficient": true,
+            "win_rate": 0.3628571428571429
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "XAUUSD": [
+          {
+            "count": 378,
+            "expectancy": -1.9815343915343915,
+            "group": "Q1",
+            "mean_r": -0.009204761904761886,
+            "median_r": -1.0007,
+            "net_pnl": -749.02,
+            "profit_factor": 0.9661964686407282,
+            "sufficient": true,
+            "win_rate": 0.3306878306878307
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q2",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q3",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q4",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ]
+      },
+      "pooled": [
+        {
+          "count": 2747,
+          "expectancy": -3.732453585729887,
+          "group": "Q1",
+          "mean_r": -0.04846942118674917,
+          "median_r": -1.0006,
+          "net_pnl": -10253.05,
+          "profit_factor": 0.938668595189878,
+          "sufficient": true,
+          "win_rate": 0.318529304696032
+        },
+        {
+          "count": 0,
+          "expectancy": null,
+          "group": "Q2",
+          "mean_r": null,
+          "median_r": null,
+          "net_pnl": 0,
+          "profit_factor": null,
+          "sufficient": false,
+          "win_rate": null
+        },
+        {
+          "count": 0,
+          "expectancy": null,
+          "group": "Q3",
+          "mean_r": null,
+          "median_r": null,
+          "net_pnl": 0,
+          "profit_factor": null,
+          "sufficient": false,
+          "win_rate": null
+        },
+        {
+          "count": 0,
+          "expectancy": null,
+          "group": "Q4",
+          "mean_r": null,
+          "median_r": null,
+          "net_pnl": 0,
+          "profit_factor": null,
+          "sufficient": false,
+          "win_rate": null
+        },
+        {
+          "count": 0,
+          "expectancy": null,
+          "group": "Q5",
+          "mean_r": null,
+          "median_r": null,
+          "net_pnl": 0,
+          "profit_factor": null,
+          "sufficient": false,
+          "win_rate": null
+        }
+      ]
+    },
+    "H4_SHADOW_SCORE": {
+      "per_symbol": {
+        "AUDUSD": [
+          {
+            "count": 117,
+            "expectancy": -23.86179487179487,
+            "group": "Q1",
+            "mean_r": -0.41871794871794865,
+            "median_r": -1.0069,
+            "net_pnl": -2791.83,
+            "profit_factor": 0.4840473699967843,
+            "sufficient": true,
+            "win_rate": 0.19658119658119658
+          },
+          {
+            "count": 82,
+            "expectancy": -22.69719512195122,
+            "group": "Q2",
+            "mean_r": -0.34874512195121954,
+            "median_r": -1.0063499999999999,
+            "net_pnl": -1861.17,
+            "profit_factor": 0.5363280335228376,
+            "sufficient": true,
+            "win_rate": 0.21951219512195122
+          },
+          {
+            "count": 29,
+            "expectancy": -17.833448275862068,
+            "group": "Q3",
+            "mean_r": -0.2828724137931034,
+            "median_r": -1.005,
+            "net_pnl": -517.17,
+            "profit_factor": 0.5710019659402918,
+            "sufficient": false,
+            "win_rate": 0.2413793103448276
+          },
+          {
+            "count": 55,
+            "expectancy": -23.803454545454546,
+            "group": "Q4",
+            "mean_r": -0.40803636363636364,
+            "median_r": -1.0057,
+            "net_pnl": -1309.19,
+            "profit_factor": 0.5229977191742391,
+            "sufficient": true,
+            "win_rate": 0.2
+          },
+          {
+            "count": 113,
+            "expectancy": 0.10265486725663683,
+            "group": "Q5",
+            "mean_r": 0.05525221238938052,
+            "median_r": -1.0038,
+            "net_pnl": 11.6,
+            "profit_factor": 1.0027035278708087,
+            "sufficient": true,
+            "win_rate": 0.35398230088495575
+          }
+        ],
+        "BTCUSD": [
+          {
+            "count": 34,
+            "expectancy": 24.259117647058826,
+            "group": "Q1",
+            "mean_r": 0.3235264705882353,
+            "median_r": -1.0,
+            "net_pnl": 824.81,
+            "profit_factor": 1.472321321200946,
+            "sufficient": true,
+            "win_rate": 0.4411764705882353
+          },
+          {
+            "count": 98,
+            "expectancy": -0.4755102040816333,
+            "group": "Q2",
+            "mean_r": 0.010202040816326531,
+            "median_r": -1.0,
+            "net_pnl": -46.6,
+            "profit_factor": 0.992056118578625,
+            "sufficient": true,
+            "win_rate": 0.336734693877551
+          },
+          {
+            "count": 66,
+            "expectancy": -13.798181818181817,
+            "group": "Q3",
+            "mean_r": -0.18181969696969696,
+            "median_r": -1.0,
+            "net_pnl": -910.68,
+            "profit_factor": 0.7867549606844972,
+            "sufficient": true,
+            "win_rate": 0.2727272727272727
+          },
+          {
+            "count": 68,
+            "expectancy": -14.40014705882353,
+            "group": "Q4",
+            "mean_r": -0.16176470588235295,
+            "median_r": -1.0,
+            "net_pnl": -979.21,
+            "profit_factor": 0.7779191472472643,
+            "sufficient": true,
+            "win_rate": 0.27941176470588236
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "ETHUSD": [
+          {
+            "count": 26,
+            "expectancy": 17.801153846153845,
+            "group": "Q1",
+            "mean_r": 0.2689615384615385,
+            "median_r": -1.0001,
+            "net_pnl": 462.83,
+            "profit_factor": 1.355137963843958,
+            "sufficient": false,
+            "win_rate": 0.4230769230769231
+          },
+          {
+            "count": 103,
+            "expectancy": -8.243300970873786,
+            "group": "Q2",
+            "mean_r": -0.09737281553398056,
+            "median_r": -1.0002,
+            "net_pnl": -849.06,
+            "profit_factor": 0.8558533169220323,
+            "sufficient": true,
+            "win_rate": 0.30097087378640774
+          },
+          {
+            "count": 92,
+            "expectancy": 2.6893478260869568,
+            "group": "Q3",
+            "mean_r": 0.04315978260869569,
+            "median_r": -1.0002,
+            "net_pnl": 247.42,
+            "profit_factor": 1.050044498381877,
+            "sufficient": true,
+            "win_rate": 0.34782608695652173
+          },
+          {
+            "count": 87,
+            "expectancy": -10.473908045977012,
+            "group": "Q4",
+            "mean_r": -0.10373793103448274,
+            "median_r": -1.0002,
+            "net_pnl": -911.23,
+            "profit_factor": 0.8202379519795465,
+            "sufficient": true,
+            "win_rate": 0.2988505747126437
+          },
+          {
+            "count": 0,
+            "expectancy": null,
+            "group": "Q5",
+            "mean_r": null,
+            "median_r": null,
+            "net_pnl": 0,
+            "profit_factor": null,
+            "sufficient": false,
+            "win_rate": null
+          }
+        ],
+        "EURUSD": [
+          {
+            "count": 142,
+            "expectancy": 8.32105633802817,
+            "group": "Q1",
+            "mean_r": 0.11344718309859156,
+            "median_r": -1.0035500000000002,
+            "net_pnl": 1181.59,
+            "profit_factor": 1.1462624527143452,
+            "sufficient": true,
+            "win_rate": 0.3732394366197183
+          },
+          {
+            "count": 77,
+            "expectancy": -11.34987012987013,
+            "group": "Q2",
+            "mean_r": -0.11052987012987013,
+            "median_r": -1.0037,
+            "net_pnl": -873.94,
+            "profit_factor": 0.8293255945208582,
+            "sufficient": true,
+            "win_rate": 0.2987012987012987
+          },
+          {
+            "count": 24,
+            "expectancy": -12.061666666666667,
+            "group": "Q3",
+            "mean_r": -0.13116666666666668,
+            "median_r": -1.00375,
+            "net_pnl": -289.48,
+            "profit_factor": 0.822726827356457,
+            "sufficient": false,
+            "win_rate": 0.2916666666666667
+          },
+          {
+            "count": 45,
+            "expectancy": -47.209111111111106,
+            "group": "Q4",
+            "mean_r": -0.54008,
+            "median_r": -1.0042,
+            "net_pnl": -2124.41,
+            "profit_factor": 0.3989078305156681,
+            "sufficient": true,
+            "win_rate": 0.15555555555555556
+          },
+          {
+            "count": 136,
+            "expectancy": -7.431764705882352,
+            "group": "Q5",
+            "mean_r": -0.10194558823529412,
+            "median_r": -1.0038,
+            "net_pnl": -1010.72,
+            "profit_factor": 0.8829770728985034,
+            "sufficient": true,
+            "win_rate": 0.3014705882352941
+          }
+        ],
+        "GBPUSD": [
+          {
+            "count": 116,
+            "expectancy": 9.476724137931035,
+            "group": "Q1",
+            "mean_r": 0.10499827586206895,
+            "median_r": -1.0027499999999998,
+            "net_pnl": 1099.3,
+            "profit_factor": 1.1208557196208873,
+            "sufficient": true,
+            "win_rate": 0.3706896551724138
+          },
+          {
+            "count": 58,
+            "expectancy": 18.267068965517243,
+            "group": "Q2",
+            "mean_r": 0.18446034482758622,
+            "median_r": -1.0025499999999998,
+            "net_pnl": 1059.49,
+            "profit_factor": 1.2499144928185761,
+            "sufficient": true,
+            "win_rate": 0.39655172413793105
+          },
+          {
+            "count": 30,
+            "expectancy": 11.533333333333331,
+            "group": "Q3",
+            "mean_r": 0.09599666666666666,
+            "median_r": -1.00225,
+            "net_pnl": 346.0,
+            "profit_factor": 1.150965788359927,
+            "sufficient": true,
+            "win_rate": 0.36666666666666664
+          },
+          {
+            "count": 34,
+            "expectancy": -46.309411764705885,
+            "group": "Q4",
+            "mean_r": -0.3876235294117647,
+            "median_r": -1.0030000000000001,
+            "net_pnl": -1574.52,
+            "profit_factor": 0.5278630715348078,
+            "sufficient": true,
+            "win_rate": 0.20588235294117646
+          },
+          {
+            "count": 94,
+            "expectancy": 5.61968085106383,
+            "group": "Q5",
+            "mean_r": 0.04835319148936171,
+            "median_r": -1.0026,
+            "net_pnl": 528.25,
+            "profit_factor": 1.0709384148470442,
+            "sufficient": true,
+            "win_rate": 0.35106382978723405
+          }
+        ],
+        "USDCAD": [
+          {
+            "count": 87,
+            "expectancy": -14.157241379310346,
+            "group": "Q1",
+            "mean_r": -0.14676091954022988,
+            "median_r": -1.0054,
+            "net_pnl": -1231.68,
+            "profit_factor": 0.7930046989385374,
+            "sufficient": true,
+            "win_rate": 0.28735632183908044
+          },
+          {
+            "count": 60,
+            "expectancy": 28.224333333333334,
+            "group": "Q2",
+            "mean_r": 0.29106499999999996,
+            "median_r": -1.005,
+            "net_pnl": 1693.46,
+            "profit_factor": 1.5202162627100422,
+            "sufficient": true,
+            "win_rate": 0.43333333333333335
+          },
+          {
+            "count": 24,
+            "expectancy": -15.173333333333334,
+            "group": "Q3",
+            "mean_r": -0.12696666666666664,
+            "median_r": -1.0007,
+            "net_pnl": -364.16,
+            "profit_factor": 0.7806767125597754,
+            "sufficient": false,
+            "win_rate": 0.2916666666666667
+          },
+          {
+            "count": 39,
+            "expectancy": -30.461794871794872,
+            "group": "Q4",
+            "mean_r": -0.31185641025641025,
+            "median_r": -1.0043,
+            "net_pnl": -1188.01,
+            "profit_factor": 0.5827312608223777,
+            "sufficient": true,
+            "win_rate": 0.23076923076923078
+          },
+          {
+            "count": 83,
+            "expectancy": -12.956506024096386,
+            "group": "Q5",
+            "mean_r": -0.13696385542168674,
+            "median_r": -1.0038,
+            "net_pnl": -1075.39,
+            "profit_factor": 0.8105557072517637,
+            "sufficient": true,
+            "win_rate": 0.2891566265060241
+          }
+        ],
+        "USDJPY": [
+          {
+            "count": 93,
+            "expectancy": 26.18956989247312,
+            "group": "Q1",
+            "mean_r": 0.28368602150537636,
+            "median_r": -1.0012,
+            "net_pnl": 2435.63,
+            "profit_factor": 1.4866646419194605,
+            "sufficient": true,
+            "win_rate": 0.43010752688172044
+          },
+          {
+            "count": 75,
+            "expectancy": -20.966933333333333,
+            "group": "Q2",
+            "mean_r": -0.244496,
+            "median_r": -1.0041,
+            "net_pnl": -1572.52,
+            "profit_factor": 0.7008467498768209,
+            "sufficient": true,
+            "win_rate": 0.25333333333333335
+          },
+          {
+            "count": 47,
+            "expectancy": -20.432978723404254,
+            "group": "Q3",
+            "mean_r": -0.23717659574468083,
+            "median_r": -1.0001,
+            "net_pnl": -960.35,
+            "profit_factor": 0.7049996621019715,
+            "sufficient": true,
+            "win_rate": 0.2553191489361702
+          },
+          {
+            "count": 87,
+            "expectancy": 24.9832183908046,
+            "group": "Q4",
+            "mean_r": 0.275616091954023,
+            "median_r": -0.9986,
+            "net_pnl": 2173.54,
+            "profit_factor": 1.459770066314821,
+            "sufficient": true,
+            "win_rate": 0.42528735632183906
+          },
+          {
+            "count": 48,
+            "expectancy": 18.195208333333337,
+            "group": "Q5",
+            "mean_r": 0.18775416666666667,
+            "median_r": -0.9980500000000001,
+            "net_pnl": 873.37,
+            "profit_factor": 1.3112475632833578,
+            "sufficient": true,
+            "win_rate": 0.3958333333333333
+          }
+        ],
+        "XAUUSD": [
+          {
+            "count": 50,
+            "expectancy": -5.2654,
+            "group": "Q1",
+            "mean_r": -0.041327999999999976,
+            "median_r": -1.00075,
+            "net_pnl": -263.27,
+            "profit_factor": 0.912266144135858,
+            "sufficient": true,
+            "win_rate": 0.32
+          },
+          {
+            "count": 93,
+            "expectancy": -10.148817204301075,
+            "group": "Q2",
+            "mean_r": -0.09833333333333331,
+            "median_r": -1.0007,
+            "net_pnl": -943.84,
+            "profit_factor": 0.8339873534610885,
+            "sufficient": true,
+            "win_rate": 0.3010752688172043
+          },
+          {
+            "count": 90,
+            "expectancy": -20.687444444444445,
+            "group": "Q3",
+            "mean_r": -0.23445444444444444,
+            "median_r": -1.0008,
+            "net_pnl": -1861.87,
+            "profit_factor": 0.6796766262879635,
+            "sufficient": true,
+            "win_rate": 0.25555555555555554
+          },
+          {
+            "count": 143,
+            "expectancy": 17.4672027972028,
+            "group": "Q4",
+            "mean_r": 0.21562517482517485,
+            "median_r": -1.0005,
+            "net_pnl": 2497.81,
+            "profit_factor": 1.333860850434199,
+            "sufficient": true,
+            "win_rate": 0.40559440559440557
+          },
+          {
+            "count": 2,
+            "expectancy": -88.925,
+            "group": "Q5",
+            "mean_r": -1.00075,
+            "median_r": -1.00075,
+            "net_pnl": -177.85,
+            "profit_factor": 0.0,
+            "sufficient": false,
+            "win_rate": 0.0
+          }
+        ]
+      },
+      "pooled": [
+        {
+          "count": 665,
+          "expectancy": 2.582526315789474,
+          "group": "Q1",
+          "mean_r": 0.01329383458646617,
+          "median_r": -1.0028,
+          "net_pnl": 1717.38,
+          "profit_factor": 1.0433781719426294,
+          "sufficient": true,
+          "win_rate": 0.3398496240601504
+        },
+        {
+          "count": 646,
+          "expectancy": -5.254148606811146,
+          "group": "Q2",
+          "mean_r": -0.07036702786377709,
+          "median_r": -1.0004,
+          "net_pnl": -3394.18,
+          "profit_factor": 0.9136945324800546,
+          "sufficient": true,
+          "win_rate": 0.3111455108359133
+        },
+        {
+          "count": 402,
+          "expectancy": -10.722114427860696,
+          "group": "Q3",
+          "mean_r": -0.1288462686567164,
+          "median_r": -1.0002,
+          "net_pnl": -4310.29,
+          "profit_factor": 0.8280920901757849,
+          "sufficient": true,
+          "win_rate": 0.291044776119403
+        },
+        {
+          "count": 558,
+          "expectancy": -6.1204659498207885,
+          "group": "Q4",
+          "mean_r": -0.0668448028673835,
+          "median_r": -1.0003,
+          "net_pnl": -3415.22,
+          "profit_factor": 0.8999884035019082,
+          "sufficient": true,
+          "win_rate": 0.3118279569892473
+        },
+        {
+          "count": 476,
+          "expectancy": -1.787268907563025,
+          "group": "Q5",
+          "mean_r": -0.015615966386554622,
+          "median_r": -1.0029499999999998,
+          "net_pnl": -850.74,
+          "profit_factor": 0.9706991574897036,
+          "sufficient": true,
+          "win_rate": 0.32983193277310924
+        }
+      ]
+    },
+    "H5_UTC_SESSION": {
+      "per_symbol": {
+        "AUDUSD": {
+          "AMERICAS": {
+            "count": 165,
+            "expectancy": -11.815333333333333,
+            "mean_r": -0.22494242424242422,
+            "median_r": -1.005,
+            "net_pnl": -1949.53,
+            "profit_factor": 0.7280136723518539,
+            "sufficient": true,
+            "win_rate": 0.2606060606060606
+          },
+          "ASIA": {
+            "count": 99,
+            "expectancy": -41.220202020202024,
+            "mean_r": -0.6458323232323232,
+            "median_r": -1.0081,
+            "net_pnl": -4080.8,
+            "profit_factor": 0.2353642175636884,
+            "sufficient": true,
+            "win_rate": 0.12121212121212122
+          },
+          "EUROPE": {
+            "count": 132,
+            "expectancy": -3.313863636363637,
+            "mean_r": -0.007090909090909094,
+            "median_r": -1.0051,
+            "net_pnl": -437.43,
+            "profit_factor": 0.9152459616714814,
+            "sufficient": true,
+            "win_rate": 0.3333333333333333
+          }
+        },
+        "BTCUSD": {
+          "AMERICAS": {
+            "count": 100,
+            "expectancy": -18.0916,
+            "mean_r": -0.190001,
+            "median_r": -1.0,
+            "net_pnl": -1809.16,
+            "profit_factor": 0.7232384207168853,
+            "sufficient": true,
+            "win_rate": 0.27
+          },
+          "ASIA": {
+            "count": 95,
+            "expectancy": -0.5104210526315794,
+            "mean_r": 0.010523157894736842,
+            "median_r": -1.0,
+            "net_pnl": -48.49,
+            "profit_factor": 0.991499931634839,
+            "sufficient": true,
+            "win_rate": 0.3368421052631579
+          },
+          "EUROPE": {
+            "count": 71,
+            "expectancy": 10.50661971830986,
+            "mean_r": 0.09859154929577464,
+            "median_r": -1.0,
+            "net_pnl": 745.97,
+            "profit_factor": 1.184157384366236,
+            "sufficient": true,
+            "win_rate": 0.36619718309859156
+          }
+        },
+        "ETHUSD": {
+          "AMERICAS": {
+            "count": 111,
+            "expectancy": -11.895855855855856,
+            "mean_r": -0.13539459459459458,
+            "median_r": -1.0002,
+            "net_pnl": -1320.44,
+            "profit_factor": 0.7998669255404444,
+            "sufficient": true,
+            "win_rate": 0.2882882882882883
+          },
+          "ASIA": {
+            "count": 98,
+            "expectancy": 7.728979591836734,
+            "mean_r": 0.10174387755102043,
+            "median_r": -1.0002,
+            "net_pnl": 757.44,
+            "profit_factor": 1.1485485218496394,
+            "sufficient": true,
+            "win_rate": 0.3673469387755102
+          },
+          "EUROPE": {
+            "count": 99,
+            "expectancy": -4.91959595959596,
+            "mean_r": -0.0306363636363636,
+            "median_r": -1.0002,
+            "net_pnl": -487.04,
+            "profit_factor": 0.9116052582384575,
+            "sufficient": true,
+            "win_rate": 0.32323232323232326
+          }
+        },
+        "EURUSD": {
+          "AMERICAS": {
+            "count": 171,
+            "expectancy": -13.717894736842107,
+            "mean_r": -0.12739415204678364,
+            "median_r": -1.0032,
+            "net_pnl": -2345.76,
+            "profit_factor": 0.7894604574183739,
+            "sufficient": true,
+            "win_rate": 0.29239766081871343
+          },
+          "ASIA": {
+            "count": 106,
+            "expectancy": 4.190660377358491,
+            "mean_r": 0.06759056603773585,
+            "median_r": -1.0041,
+            "net_pnl": 444.21,
+            "profit_factor": 1.069505989710466,
+            "sufficient": true,
+            "win_rate": 0.3584905660377358
+          },
+          "EUROPE": {
+            "count": 147,
+            "expectancy": -8.268095238095237,
+            "mean_r": -0.12991632653061225,
+            "median_r": -1.0046,
+            "net_pnl": -1215.41,
+            "profit_factor": 0.871664942031128,
+            "sufficient": true,
+            "win_rate": 0.2925170068027211
+          }
+        },
+        "GBPUSD": {
+          "AMERICAS": {
+            "count": 131,
+            "expectancy": -7.01763358778626,
+            "mean_r": -0.042985496183206115,
+            "median_r": -1.0023,
+            "net_pnl": -919.31,
+            "profit_factor": 0.9159476472820199,
+            "sufficient": true,
+            "win_rate": 0.32061068702290074
+          },
+          "ASIA": {
+            "count": 79,
+            "expectancy": 24.52139240506329,
+            "mean_r": 0.20874303797468355,
+            "median_r": -1.0027,
+            "net_pnl": 1937.19,
+            "profit_factor": 1.3374248837330824,
+            "sufficient": true,
+            "win_rate": 0.4050632911392405
+          },
+          "EUROPE": {
+            "count": 122,
+            "expectancy": 3.6118032786885235,
+            "mean_r": 0.05135081967213115,
+            "median_r": -1.0034,
+            "net_pnl": 440.64,
+            "profit_factor": 1.0452852526946699,
+            "sufficient": true,
+            "win_rate": 0.3524590163934426
+          }
+        },
+        "USDCAD": {
+          "AMERICAS": {
+            "count": 141,
+            "expectancy": -5.216028368794326,
+            "mean_r": -0.04789148936170212,
+            "median_r": -1.0038,
+            "net_pnl": -735.46,
+            "profit_factor": 0.919832920758353,
+            "sufficient": true,
+            "win_rate": 0.3191489361702128
+          },
+          "ASIA": {
+            "count": 74,
+            "expectancy": -22.75391891891892,
+            "mean_r": -0.2363418918918919,
+            "median_r": -1.0054500000000002,
+            "net_pnl": -1683.79,
+            "profit_factor": 0.6800064614829103,
+            "sufficient": true,
+            "win_rate": 0.25675675675675674
+          },
+          "EUROPE": {
+            "count": 78,
+            "expectancy": 3.2496153846153844,
+            "mean_r": 0.030257692307692315,
+            "median_r": -1.00505,
+            "net_pnl": 253.47,
+            "profit_factor": 1.0511690534926257,
+            "sufficient": true,
+            "win_rate": 0.34615384615384615
+          }
+        },
+        "USDJPY": {
+          "AMERICAS": {
+            "count": 128,
+            "expectancy": 15.237109375000001,
+            "mean_r": 0.14586171875,
+            "median_r": -1.00055,
+            "net_pnl": 1950.35,
+            "profit_factor": 1.2608329911907763,
+            "sufficient": true,
+            "win_rate": 0.3828125
+          },
+          "ASIA": {
+            "count": 105,
+            "expectancy": 8.768476190476191,
+            "mean_r": 0.08134285714285715,
+            "median_r": -1.001,
+            "net_pnl": 920.69,
+            "profit_factor": 1.1470605147732973,
+            "sufficient": true,
+            "win_rate": 0.3619047619047619
+          },
+          "EUROPE": {
+            "count": 117,
+            "expectancy": 0.672051282051283,
+            "mean_r": 0.022887179487179492,
+            "median_r": -0.9995,
+            "net_pnl": 78.63,
+            "profit_factor": 1.0107532616722736,
+            "sufficient": true,
+            "win_rate": 0.3418803418803419
+          }
+        },
+        "XAUUSD": {
+          "AMERICAS": {
+            "count": 145,
+            "expectancy": -13.696896551724137,
+            "mean_r": -0.13199931034482756,
+            "median_r": -1.0006,
+            "net_pnl": -1986.05,
+            "profit_factor": 0.7786978041937159,
+            "sufficient": true,
+            "win_rate": 0.2896551724137931
+          },
+          "ASIA": {
+            "count": 104,
+            "expectancy": -3.037980769230769,
+            "mean_r": -0.02085576923076921,
+            "median_r": -1.0007,
+            "net_pnl": -315.95,
+            "profit_factor": 0.9490142540621577,
+            "sufficient": true,
+            "win_rate": 0.3269230769230769
+          },
+          "EUROPE": {
+            "count": 129,
+            "expectancy": 12.03860465116279,
+            "mean_r": 0.13821317829457366,
+            "median_r": -1.0007,
+            "net_pnl": 1552.98,
+            "profit_factor": 1.2222724755003342,
+            "sufficient": true,
+            "win_rate": 0.3798449612403101
+          }
+        }
+      },
+      "pooled": {
+        "AMERICAS": {
+          "count": 1092,
+          "expectancy": -8.347399267399268,
+          "mean_r": -0.09687014652014651,
+          "median_r": -1.0007,
+          "net_pnl": -9115.36,
+          "profit_factor": 0.865965016707025,
+          "sufficient": true,
+          "win_rate": 0.3021978021978022
+        },
+        "ASIA": {
+          "count": 760,
+          "expectancy": -2.7230263157894736,
+          "mean_r": -0.0531957894736842,
+          "median_r": -1.0005,
+          "net_pnl": -2069.5,
+          "profit_factor": 0.9550030244403481,
+          "sufficient": true,
+          "win_rate": 0.3171052631578947
+        },
+        "EUROPE": {
+          "count": 895,
+          "expectancy": 1.0411284916201116,
+          "mean_r": 0.014598324022346374,
+          "median_r": -1.0006,
+          "net_pnl": 931.81,
+          "profit_factor": 1.017523377887269,
+          "sufficient": true,
+          "win_rate": 0.3396648044692737
+        }
+      },
+      "pooled_worst_session": "AMERICAS"
+    }
+  },
+  "schema_version": "MSS_SPRINT92F2_MECHANISM_DISCOVERY_ANALYSIS_V1",
+  "source": {
+    "c3_payload_sha256": "26c7c64dbb1b153afe0b2db86f7a6a62caf3caf4b33e20d8d1594e2191821479",
+    "protocol_schema": "MSS_SPRINT92F1_MECHANISM_DISCOVERY_PREREGISTRATION_V1"
+  },
+  "source_file_sha256": {
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92C3_Extended_Development_Validation_Replay.json": "d9ba317d5ea8bfec50242b7afede75cfe644d4fd9906afeaea9ec67a7feb3b1d",
+    "D:\\project\\MSS_Package_003\\reports\\MSS_Sprint92F1_Mechanism_Discovery_Preregistration.json": "be788a6c340d847465bc00bc3aeeb4b2ffa6b71a65c8d01789fd4e519ec035fe"
+  }
+}
