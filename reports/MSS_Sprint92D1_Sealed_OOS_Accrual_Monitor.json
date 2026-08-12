@@ -1,0 +1,233 @@
+{
+  "audit": {
+    "interim_strategy_analysis_performed": false,
+    "operational_count_check_only": true,
+    "outcomes_analyzed": false,
+    "production_behavior_changed": false
+  },
+  "global_gate": {
+    "all_eight_symbols_present": true,
+    "all_symbols_at_least_10000_completed_m15": false,
+    "authoritative_replay_allowed": false,
+    "status": "ACCRUING_REPLAY_PROHIBITED",
+    "timestamp_quality_pass": true
+  },
+  "mode": "TIMESTAMP_ONLY_OPERATIONAL_ACCRUAL_MONITOR",
+  "privacy_and_seal_contract": {
+    "ohlc_fields_persisted": false,
+    "ohlc_fields_read_into_report": false,
+    "only_persisted_market_data": "CANDLE_OPEN_TIMESTAMPS_AND_TIMESTAMP_DERIVED_QUALITY_METADATA",
+    "pnl_or_performance_computed": false,
+    "price_hash_computed": false,
+    "signals_or_trades_computed": false,
+    "strategy_replay_run": false
+  },
+  "protocol": {
+    "artifact": "reports/MSS_Sprint92C6_Research_Closure_True_OOS_Preregistration.json",
+    "file_sha256": "05be2b3738cb9f039ede96a459d6c5533b5d4ef37491746b092f2e021b242073",
+    "target_per_symbol": 10000
+  },
+  "schema_version": "MSS_SPRINT92D1_SEALED_OOS_ACCRUAL_MONITOR_V1",
+  "symbols": [
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "EURUSD",
+      "canonical_symbol": "EURUSD",
+      "completed_timestamp_count": 229,
+      "current_bar_open_boundary_timestamp": "2026-08-12T03:15:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:15:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T03:00:00Z",
+      "progress_percent": 2.29,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 3,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 174600,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9771,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "96a7432f76c32f841fa0986c759a03c953beb95c83200edcf58c36c281c301cd",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:15:00"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "GBPUSD",
+      "canonical_symbol": "GBPUSD",
+      "completed_timestamp_count": 230,
+      "current_bar_open_boundary_timestamp": "2026-08-12T03:15:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:00:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T03:00:00Z",
+      "progress_percent": 2.3,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 3,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 174600,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9770,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "e86868cd8b1c9f41b1127e04d55b269e8dbd635a2b9cf8a3ba5f895bb4878dd4",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:00:00"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDJPY",
+      "canonical_symbol": "USDJPY",
+      "completed_timestamp_count": 230,
+      "current_bar_open_boundary_timestamp": "2026-08-12T03:15:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:00:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T03:00:00Z",
+      "progress_percent": 2.3,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 3,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 174600,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9770,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "e86868cd8b1c9f41b1127e04d55b269e8dbd635a2b9cf8a3ba5f895bb4878dd4",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:00:00"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "AUDUSD",
+      "canonical_symbol": "AUDUSD",
+      "completed_timestamp_count": 230,
+      "current_bar_open_boundary_timestamp": "2026-08-12T03:15:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:00:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T03:00:00Z",
+      "progress_percent": 2.3,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 3,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 174600,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9770,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "e86868cd8b1c9f41b1127e04d55b269e8dbd635a2b9cf8a3ba5f895bb4878dd4",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:00:00"
+    },
+    {
+      "asset_class": "FOREX",
+      "broker_symbol": "USDCAD",
+      "canonical_symbol": "USDCAD",
+      "completed_timestamp_count": 256,
+      "current_bar_open_boundary_timestamp": "2026-08-12T09:45:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:00:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T09:30:00Z",
+      "progress_percent": 2.56,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 3,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 174600,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9744,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "e7db75b5b8745ee2f23b8394b3942b42f0dbb84e6e5d8fb41494012788c3c0b2",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:00:00"
+    },
+    {
+      "asset_class": "METAL",
+      "broker_symbol": "XAUUSD",
+      "canonical_symbol": "XAUUSD",
+      "completed_timestamp_count": 220,
+      "current_bar_open_boundary_timestamp": "2026-08-12T03:15:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:15:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T03:00:00Z",
+      "progress_percent": 2.2,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 3,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 177300,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9780,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "9c34ad7c0fda737426b263593e32be1cbe653262e45e70b7d9585f7fac948ca6",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:15:00"
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "BITCOIN",
+      "canonical_symbol": "BTCUSD",
+      "completed_timestamp_count": 434,
+      "current_bar_open_boundary_timestamp": "2026-08-12T09:45:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:15:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T09:30:00Z",
+      "progress_percent": 4.34,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 1,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 15300,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9566,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "59b001a9848bf0ea0696efb0b88e1faacfb1023ad25993bb574dc0ec746adaa0",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:15:00"
+    },
+    {
+      "asset_class": "CRYPTO",
+      "broker_symbol": "ETHEREUM",
+      "canonical_symbol": "ETHUSD",
+      "completed_timestamp_count": 434,
+      "current_bar_open_boundary_timestamp": "2026-08-12T09:45:00Z",
+      "first_eligible_open_timestamp": "2026-08-07T17:15:00Z",
+      "gate_met": false,
+      "last_completed_open_timestamp": "2026-08-12T09:30:00Z",
+      "progress_percent": 4.34,
+      "quality": {
+        "current_or_future_bar_count_included": 0,
+        "duplicate_timestamp_count": 0,
+        "gap_event_count": 1,
+        "gap_policy": "REPORTED_ONLY; MARKET_CLOSURES_NOT_IMPUTED_OR_CLASSIFIED_AS_FAILURE",
+        "largest_gap_seconds": 15300,
+        "pre_boundary_timestamp_count_included": 0,
+        "strictly_increasing": true
+      },
+      "remaining_timestamp_count": 9566,
+      "target_timestamp_count": 10000,
+      "timeframe": "M15",
+      "timestamp_sha256": "59b001a9848bf0ea0696efb0b88e1faacfb1023ad25993bb574dc0ec746adaa0",
+      "v2_exposure_boundary_timestamp": "2026-08-07T17:15:00"
+    }
+  ]
+}
