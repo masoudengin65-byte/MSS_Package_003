@@ -1,0 +1,115 @@
+{
+  "acceptance": {
+    "all_six_e7_symbols_reported": true,
+    "e4_usdjpy_not_confirmed": true,
+    "e5_has_no_strong_symbol": true,
+    "e7_has_no_confirmed_symbol": true,
+    "production_change_justified": false,
+    "true_future_oos_preserved": true
+  },
+  "audit": {
+    "deterministic_rebuild": true,
+    "history_downloaded": false,
+    "mt5_accessed": false,
+    "outcomes_recomputed": false,
+    "production_behavior_changed": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false
+  },
+  "baseline_commit": "78595e6",
+  "data_exposure_ledger": {
+    "candles_10001_through_20000_consumed_for_six_e6_symbols": true,
+    "candles_10001_through_20000_unconsumed_for_other_16_symbols": true,
+    "candles_after_20000_not_analyzed_in_sprint92e": true,
+    "first_10000_candles_consumed_for_all_22_symbols": true,
+    "true_future_oos_remains_sealed": true
+  },
+  "evidence_summary": {
+    "exploratory_positive_uncertain_symbols": [
+      "GBPUSD",
+      "BTCUSD",
+      "EURGBP",
+      "CHFJPY",
+      "XAUUSD",
+      "NAS100"
+    ],
+    "exploratory_strong_symbols": [],
+    "exploratory_symbol_count": 21,
+    "initial_confirmatory_all_pass": false,
+    "initial_confirmatory_decision": "NOT_CONFIRMED_NO_PRODUCTION_CHANGE",
+    "initial_confirmatory_symbol": "USDJPY",
+    "second_window_confirmatory_family": [
+      "GBPUSD",
+      "BTCUSD",
+      "EURGBP",
+      "CHFJPY",
+      "XAUUSD",
+      "NAS100"
+    ],
+    "second_window_confirmed_symbols": [],
+    "second_window_not_confirmed_symbols": [
+      "GBPUSD",
+      "BTCUSD",
+      "EURGBP",
+      "CHFJPY",
+      "XAUUSD",
+      "NAS100"
+    ]
+  },
+  "final_conclusions": {
+    "confirmed_robust_positive_symbols": [],
+    "production_decision": "NO_STRATEGY_OR_SYMBOL_FILTER_CHANGE",
+    "remaining_old_history_status": "SEALED_FROM_ADDITIONAL_OUTCOME_MINING_UNLESS_A_NEW_CAUSAL_HYPOTHESIS_AND_PROTOCOL_ARE_COMMITTED_FIRST",
+    "scientific_conclusion": "NO_SYMBOL_CONFIRMED_ACROSS_PREREGISTERED_EXTERNAL_HISTORICAL_TESTS",
+    "unchanged_strategy_external_validation_status": "NOT_CONFIRMED"
+  },
+  "governance": {
+    "parameter_tuning_on_consumed_windows_prohibited": true,
+    "post_hoc_promotion_prohibited": true,
+    "recommended_next_action": "PAUSE_UNCHANGED_STRATEGY_CONFIRMATION; FORMULATE_MECHANISTIC_STRATEGY_REVISION_USING_DEVELOPMENT_DATA_ONLY_AND_PREREGISTER_BEFORE_ANY_NEW_VALIDATION",
+    "repeat_e4_prohibited": true,
+    "repeat_e7_prohibited": true,
+    "true_oos_protocol_preserved_not_executed": true
+  },
+  "mode": "EXTERNAL_HISTORY_RESEARCH_CLOSURE_ONLY",
+  "schema_version": "MSS_SPRINT92E8_EXTERNAL_HISTORICAL_VALIDATION_CLOSURE_V1",
+  "source_artifacts": {
+    "e1": {
+      "payload_sha256": "c2bde4f917957b3ab6f7dd5168d573f7407ac65f044e9fdf2cb24d11ed06145d",
+      "schema_version": "MSS_SPRINT92E1_EXTENDED_HISTORICAL_UNIVERSE_FREEZE_V1"
+    },
+    "e2": {
+      "payload_sha256": "5a618d691a53f7e7a88c812ef9bf77a70f7c63a4596a47f85799386539119229",
+      "schema_version": "MSS_SPRINT92E2_EXTERNAL_HISTORICAL_OOS_PREREGISTRATION_V1"
+    },
+    "e3": {
+      "payload_sha256": "89dd9e32168342f4564079eb261fe64b7ce3a7640d5550632727b9cfefa073e1",
+      "schema_version": "MSS_SPRINT92E3_VALUATION_PREFLIGHT_V1"
+    },
+    "e4": {
+      "payload_sha256": "f408b5c599a1c3df99b80489a16c12010978a1a93a2592f89a2f640903ec7611",
+      "schema_version": "MSS_SPRINT92E4_EXTERNAL_HISTORICAL_OOS_REPLAY_V1"
+    },
+    "e5": {
+      "payload_sha256": "2414e3ea4bdacabf385d35b80b5e51e212eccd510cb3681a239224414877dad3",
+      "schema_version": "MSS_SPRINT92E5_EXTERNAL_HISTORICAL_EXPLORATORY_ANALYSIS_V1"
+    },
+    "e6": {
+      "payload_sha256": "afd5363329e2b2dd609602bc03747cff0280f4fe147d6d395cac506a042c2edd",
+      "schema_version": "MSS_SPRINT92E6_EXTERNAL_HISTORICAL_CONFIRMATORY_PREREGISTRATION_V1"
+    },
+    "e7": {
+      "payload_sha256": "44fc064b9a4f87ce79c6e29423b3ca010a9171643ba69866e7506fb98797024b",
+      "schema_version": "MSS_SPRINT92E7_EXTERNAL_HISTORICAL_CONFIRMATORY_REPLAY_V1"
+    }
+  },
+  "source_file_sha256": {
+    "e1": "c596782776748e9599ec972a5d0535d74f39bd0d5de8a875993f71d63a2410bd",
+    "e2": "f0f24708765cd946150797ce4d7531d1bb941d010b69fc8623dba798b90b26e1",
+    "e3": "5bb558c809619344fac5443d1d3e4a2468f47e55675f923aca695e6d2a69281d",
+    "e4": "987573a99e072f45d9949b404f5f0b6acc17ac7086279690f5057524d2a1887e",
+    "e5": "7f663a60c22595f87978afea8a75adabe7c962080488246fc9e2618def49652b",
+    "e6": "bf036784b1a1d9a553b38a97a67c7b3a0ba09ef6bd8c15ba2876ae5cd092483f",
+    "e7": "e554dce2f34711e632c3ef4d7c342cd60321448ee66eb8a659cf9da56e1c9b1d"
+  }
+}
