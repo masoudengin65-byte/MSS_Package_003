@@ -1,0 +1,5101 @@
+{
+  "audit": {
+    "all_21_symbols_reported": true,
+    "outcomes_recomputed": false,
+    "parameter_tuning": false,
+    "strategy_replay_run": false,
+    "true_future_oos_used": false
+  },
+  "conclusion": {
+    "negative_or_null_count": 15,
+    "next_action": "PREREGISTER_ANY_CONFIRMATORY_FOLLOWUP_ON_A_NEW_UNEXPOSED_WINDOW",
+    "positive_uncertain_count": 6,
+    "production_change_justified": false,
+    "strong_count": 0
+  },
+  "evidence_tiers": {
+    "EXPLORATORY_NEGATIVE_OR_NULL": [
+      "EURJPY",
+      "EURUSD",
+      "ETHUSD",
+      "CADJPY",
+      "NZDUSD",
+      "AUDCAD",
+      "US30",
+      "WTI",
+      "GBPJPY",
+      "EURCHF",
+      "USDCAD",
+      "AUDJPY",
+      "GBPCHF",
+      "NZDJPY",
+      "AUDUSD"
+    ],
+    "EXPLORATORY_POSITIVE_UNCERTAIN": [
+      "GBPUSD",
+      "BTCUSD",
+      "EURGBP",
+      "CHFJPY",
+      "XAUUSD",
+      "NAS100"
+    ],
+    "EXPLORATORY_STRONG_NOT_CONFIRMATORY": []
+  },
+  "mode": "POST_RUN_FROZEN_RESULTS_ANALYSIS_ONLY",
+  "ranking_by_net_profit": [
+    "GBPUSD",
+    "BTCUSD",
+    "EURGBP",
+    "CHFJPY",
+    "XAUUSD",
+    "NAS100",
+    "EURJPY",
+    "EURUSD",
+    "ETHUSD",
+    "CADJPY",
+    "NZDUSD",
+    "AUDCAD",
+    "US30",
+    "WTI",
+    "GBPJPY",
+    "EURCHF",
+    "USDCAD",
+    "AUDJPY",
+    "GBPCHF",
+    "NZDJPY",
+    "AUDUSD"
+  ],
+  "schema_version": "MSS_SPRINT92E5_EXTERNAL_HISTORICAL_EXPLORATORY_ANALYSIS_V1",
+  "scope": {
+    "confirmatory_usdjpy_excluded": true,
+    "post_hoc_symbol_exclusion": false,
+    "production_claims_allowed": false,
+    "symbol_count": 21
+  },
+  "source": {
+    "authoritative_replay_count_added": 0,
+    "protocol_sha256": "f0f24708765cd946150797ce4d7531d1bb941d010b69fc8623dba798b90b26e1",
+    "replay_sha256": "987573a99e072f45d9949b404f5f0b6acc17ac7086279690f5057524d2a1887e"
+  },
+  "symbols": [
+    {
+      "asset_class": "FOREX",
+      "average_r": 0.1787,
+      "block_expectancy_ci95_lower": -7.630709595959584,
+      "block_mean_r_ci95_lower": -0.06384553030303029,
+      "buy_net_pnl": 644.43,
+      "canonical_symbol": "GBPUSD",
+      "closed_trades": 99,
+      "evidence_tier": "EXPLORATORY_POSITIVE_UNCERTAIN",
+      "expectancy": 18.17,
+      "maximum_drawdown_percent": 8.5715,
+      "maximum_realized_loss_percent": 1.006891,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 18.35705198989899,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3.9824797979797975,
+              "upper": 40.847888888888875
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -7.630709595959584,
+              "upper": 44.63174242424242
+            },
+            "point_estimate": 18.172828282828284,
+            "probability_above_threshold": 0.9074,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.180488861010101,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.033337373737373735,
+              "upper": 0.39089823232323234
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.06384553030303029,
+              "upper": 0.42132749999999997
+            },
+            "point_estimate": 0.17870000000000003,
+            "probability_above_threshold": 0.9061,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 1817.3481470000002,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -394.2654999999999,
+              "upper": 4043.9409999999984
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -755.4402499999989,
+              "upper": 4418.5425
+            },
+            "point_estimate": 1799.1100000000001,
+            "probability_above_threshold": 0.9074,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.3030842637924853,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.9443201069399598,
+              "upper": 1.721216110776309
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.8947063956991185,
+              "upper": 1.8048530703262984
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.2834690456232787,
+            "probability_above_threshold": 0.9074,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3945353535353535,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.32323232323232326,
+              "upper": 0.46464646464646464
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.31313131313131315,
+              "upper": 0.47474747474747475
+            },
+            "point_estimate": 0.3939393939393939,
+            "probability_above_threshold": 0.007,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:GBPUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": 18.172828282828284,
+          "mean_r": 0.17870000000000003,
+          "median_r": -1.0016,
+          "net_pnl_account_currency": 1799.1100000000001,
+          "payoff_ratio": 1.9745677624973517,
+          "profit_factor": 1.2834690456232787,
+          "profit_factor_status": "DEFINED",
+          "trades": 99,
+          "win_rate": 0.3939393939393939
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 99,
+        "seed": 9202001
+      },
+      "net_profit": 1799.11,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 17.82301581818182,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -7.3550656565656585,
+              "upper": 43.45079797979797
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -11.43067171717171,
+              "upper": 47.535161616161616
+            },
+            "point_estimate": 18.172828282828284,
+            "probability_above_threshold": 0.868,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.17533042676767677,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.06374055555555555,
+              "upper": 0.4210272727272727
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.09429532828282829,
+              "upper": 0.45160924242424244
+            },
+            "point_estimate": 0.17870000000000003,
+            "probability_above_threshold": 0.8649,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 1764.478566,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -728.1515000000002,
+              "upper": 4301.628999999999
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -1131.6364999999994,
+              "upper": 4705.981
+            },
+            "point_estimate": 1799.1100000000001,
+            "probability_above_threshold": 0.868,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.2990329611957367,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.8992973404448448,
+              "upper": 1.7812587878631398
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.8461057084997567,
+              "upper": 1.8779743340941897
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.2834690456232787,
+            "probability_above_threshold": 0.868,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3928151515151515,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.31313131313131315,
+              "upper": 0.47474747474747475
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.30303030303030304,
+              "upper": 0.48484848484848486
+            },
+            "point_estimate": 0.3939393939393939,
+            "probability_above_threshold": 0.0142,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:GBPUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": 18.172828282828284,
+          "mean_r": 0.17870000000000003,
+          "median_r": -1.0016,
+          "net_pnl_account_currency": 1799.1100000000001,
+          "payoff_ratio": 1.9745677624973517,
+          "profit_factor": 1.2834690456232787,
+          "profit_factor_status": "DEFINED",
+          "trades": 99,
+          "win_rate": 0.3939393939393939
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 99,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -11.43067171717171,
+      "ordinary_mean_r_ci95_lower": -0.09429532828282829,
+      "profit_factor": 1.2835,
+      "sell_net_pnl": 1154.68,
+      "win_rate_percent": 39.39393939393939
+    },
+    {
+      "asset_class": "CRYPTO",
+      "average_r": 0.3333,
+      "block_expectancy_ci95_lower": -27.68880555555518,
+      "block_mean_r_ci95_lower": -0.2684557222222074,
+      "buy_net_pnl": 1938.84,
+      "canonical_symbol": "BTCUSD",
+      "closed_trades": 45,
+      "evidence_tier": "EXPLORATORY_POSITIVE_UNCERTAIN",
+      "expectancy": 33.96,
+      "maximum_drawdown_percent": 8.83,
+      "maximum_realized_loss_percent": 0.999848,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 34.055424,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -19.520377777777785,
+              "upper": 90.80081111111106
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -27.68880555555518,
+              "upper": 101.73437222222219
+            },
+            "point_estimate": 33.964444444444446,
+            "probability_above_threshold": 0.8374,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.33460445422222224,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.20007777777777774,
+              "upper": 0.9332666666666667
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.2684557222222074,
+              "upper": 0.99996
+            },
+            "point_estimate": 0.3332711111111111,
+            "probability_above_threshold": 0.8039,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 1532.4940800000002,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -878.4170000000003,
+              "upper": 4086.0364999999974
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -1245.996249999983,
+              "upper": 4578.046749999999
+            },
+            "point_estimate": 1528.4,
+            "probability_above_threshold": 0.8374,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.8132820720259468,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.7243335451898327,
+              "upper": 3.578692808280854
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6229673436900922,
+              "upper": 4.1327050058339125
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.630707585905229,
+            "probability_above_threshold": 0.8374,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.4448888888888889,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.26666666666666666,
+              "upper": 0.6444444444444445
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.24388888888889382,
+              "upper": 0.6666666666666666
+            },
+            "point_estimate": 0.4444444444444444,
+            "probability_above_threshold": 0.3131,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:BTCUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": 33.964444444444446,
+          "mean_r": 0.3332711111111111,
+          "median_r": -1.0,
+          "net_pnl_account_currency": 1528.4,
+          "payoff_ratio": 2.038384482381536,
+          "profit_factor": 1.630707585905229,
+          "profit_factor_status": "DEFINED",
+          "trades": 45,
+          "win_rate": 0.4444444444444444
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 45,
+        "seed": 9202001
+      },
+      "net_profit": 1528.4,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 34.12345542222222,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -1.1184222222222229,
+              "upper": 71.16798888888883
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -7.909911111111105,
+              "upper": 77.72734999999996
+            },
+            "point_estimate": 33.964444444444446,
+            "probability_above_threshold": 0.945,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.33465112288888893,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -8.666666666665713e-05,
+              "upper": 0.7332599999999999
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.06675116666666667,
+              "upper": 0.7999289444444445
+            },
+            "point_estimate": 0.3332711111111111,
+            "probability_above_threshold": 0.9144,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 1535.5554940000002,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -50.329000000000036,
+              "upper": 3202.559499999997
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -355.94599999999974,
+              "upper": 3497.730749999998
+            },
+            "point_estimate": 1528.4,
+            "probability_above_threshold": 0.945,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.7047138202306276,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.9829129057833038,
+              "upper": 2.7234872093215112
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.8833604993449966,
+              "upper": 2.9921852827019695
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.630707585905229,
+            "probability_above_threshold": 0.945,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.4449044444444445,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.3333333333333333,
+              "upper": 0.5777777777777777
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3111111111111111,
+              "upper": 0.6
+            },
+            "point_estimate": 0.4444444444444444,
+            "probability_above_threshold": 0.2326,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:BTCUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": 33.964444444444446,
+          "mean_r": 0.3332711111111111,
+          "median_r": -1.0,
+          "net_pnl_account_currency": 1528.4,
+          "payoff_ratio": 2.038384482381536,
+          "profit_factor": 1.630707585905229,
+          "profit_factor_status": "DEFINED",
+          "trades": 45,
+          "win_rate": 0.4444444444444444
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 45,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -7.909911111111105,
+      "ordinary_mean_r_ci95_lower": -0.06675116666666667,
+      "profit_factor": 1.6307,
+      "sell_net_pnl": -410.44,
+      "win_rate_percent": 44.44444444444444
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": 0.2007,
+      "block_expectancy_ci95_lower": -20.1922149122807,
+      "block_mean_r_ci95_lower": -0.16950565789473687,
+      "buy_net_pnl": 102.26,
+      "canonical_symbol": "EURGBP",
+      "closed_trades": 57,
+      "evidence_tier": "EXPLORATORY_POSITIVE_UNCERTAIN",
+      "expectancy": 19.39,
+      "maximum_drawdown_percent": 9.0903,
+      "maximum_realized_loss_percent": 1.035598,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 19.406885368421054,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -14.279736842105265,
+              "upper": 52.81035087719298
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -20.1922149122807,
+              "upper": 58.42265789473684
+            },
+            "point_estimate": 19.388947368421054,
+            "probability_above_threshold": 0.836,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.20095254210526314,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.11623043859649122,
+              "upper": 0.5174281578947368
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.16950565789473687,
+              "upper": 0.5700457894736842
+            },
+            "point_estimate": 0.20073859649122808,
+            "probability_above_threshold": 0.836,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 1106.192466,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -813.945,
+              "upper": 3010.1899999999996
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -1150.95625,
+              "upper": 3330.0914999999995
+            },
+            "point_estimate": 1105.17,
+            "probability_above_threshold": 0.836,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.335292281041813,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.8148557208496833,
+              "upper": 1.9864676949509938
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.745476641452585,
+              "upper": 2.133048397247721
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.2971102741327998,
+            "probability_above_threshold": 0.836,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.40358070175438593,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2982456140350877,
+              "upper": 0.5087719298245614
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2807017543859649,
+              "upper": 0.5263157894736842
+            },
+            "point_estimate": 0.40350877192982454,
+            "probability_above_threshold": 0.0625,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURGBP:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": 19.388947368421054,
+          "mean_r": 0.20073859649122808,
+          "median_r": -1.004,
+          "net_pnl_account_currency": 1105.17,
+          "payoff_ratio": 1.91746736176153,
+          "profit_factor": 1.2971102741327998,
+          "profit_factor_status": "DEFINED",
+          "trades": 57,
+          "win_rate": 0.40350877192982454
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 57,
+        "seed": 9202001
+      },
+      "net_profit": 1105.17,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 19.079325526315788,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -14.19636842105263,
+              "upper": 53.204491228070175
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -20.091469298245613,
+              "upper": 59.150456140350876
+            },
+            "point_estimate": 19.388947368421054,
+            "probability_above_threshold": 0.8232,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.1978379892982456,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.11530061403508775,
+              "upper": 0.5171457894736843
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.16827750000000005,
+              "upper": 0.5703123245614035
+            },
+            "point_estimate": 0.20073859649122808,
+            "probability_above_threshold": 0.8232,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 1087.521555,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -809.193,
+              "upper": 3032.6559999999995
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -1145.21375,
+              "upper": 3371.5759999999996
+            },
+            "point_estimate": 1105.17,
+            "probability_above_threshold": 0.8232,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.3310632146767465,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.8148466353709295,
+              "upper": 1.991233800521825
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.7452832211509105,
+              "upper": 2.1433631575336975
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.2971102741327998,
+            "probability_above_threshold": 0.8232,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.4025473684210526,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2982456140350877,
+              "upper": 0.5087719298245614
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2807017543859649,
+              "upper": 0.5263157894736842
+            },
+            "point_estimate": 0.40350877192982454,
+            "probability_above_threshold": 0.0685,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURGBP:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": 19.388947368421054,
+          "mean_r": 0.20073859649122808,
+          "median_r": -1.004,
+          "net_pnl_account_currency": 1105.17,
+          "payoff_ratio": 1.91746736176153,
+          "profit_factor": 1.2971102741327998,
+          "profit_factor_status": "DEFINED",
+          "trades": 57,
+          "win_rate": 0.40350877192982454
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 57,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -20.091469298245613,
+      "ordinary_mean_r_ci95_lower": -0.16827750000000005,
+      "profit_factor": 1.2971,
+      "sell_net_pnl": 1002.91,
+      "win_rate_percent": 40.35087719298245
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": 0.0627,
+      "block_expectancy_ci95_lower": -19.731286231884056,
+      "block_mean_r_ci95_lower": -0.17714322463768115,
+      "buy_net_pnl": 196.37,
+      "canonical_symbol": "CHFJPY",
+      "closed_trades": 138,
+      "evidence_tier": "EXPLORATORY_POSITIVE_UNCERTAIN",
+      "expectancy": 5.56,
+      "maximum_drawdown_percent": 10.6679,
+      "maximum_realized_loss_percent": 1.005646,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 5.341629572463767,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -15.807836956521745,
+              "upper": 26.725387681159408
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -19.731286231884056,
+              "upper": 30.972548913043475
+            },
+            "point_estimate": 5.564347826086956,
+            "probability_above_threshold": 0.6548,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.06057697420289856,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.13500376811594206,
+              "upper": 0.2598969565217391
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.17714322463768115,
+              "upper": 0.3026966666666666
+            },
+            "point_estimate": 0.0626768115942029,
+            "probability_above_threshold": 0.6564,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 737.1448809999998,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2181.481500000001,
+              "upper": 3688.1034999999983
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2722.917499999999,
+              "upper": 4274.2117499999995
+            },
+            "point_estimate": 767.8799999999999,
+            "probability_above_threshold": 0.6548,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.091532457635578,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.7906874487212853,
+              "upper": 1.438285863763796
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.742218961741038,
+              "upper": 1.5214954497881332
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.0817003130206815,
+            "probability_above_threshold": 0.6548,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3543782608695652,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2898550724637681,
+              "upper": 0.42028985507246375
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2753623188405797,
+              "upper": 0.43478260869565216
+            },
+            "point_estimate": 0.35507246376811596,
+            "probability_above_threshold": 0.0001,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:CHFJPY:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": 5.564347826086956,
+          "mean_r": 0.0626768115942029,
+          "median_r": -1.0005,
+          "net_pnl_account_currency": 767.8799999999999,
+          "payoff_ratio": 1.9647209767110334,
+          "profit_factor": 1.0817003130206815,
+          "profit_factor_status": "DEFINED",
+          "trades": 138,
+          "win_rate": 0.35507246376811596
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 138,
+        "seed": 9202001
+      },
+      "net_profit": 767.88,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 5.514549239130434,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -15.354376811594207,
+              "upper": 26.56802536231884
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -19.2966268115942,
+              "upper": 30.853874999999995
+            },
+            "point_estimate": 5.564347826086956,
+            "probability_above_threshold": 0.668,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.06219617528985508,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.1335727536231884,
+              "upper": 0.25924735507246377
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.17626695652173913,
+              "upper": 0.3021077536231884
+            },
+            "point_estimate": 0.0626768115942029,
+            "probability_above_threshold": 0.6699,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 761.0077949999999,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2118.9040000000005,
+              "upper": 3666.3874999999994
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2662.9345,
+              "upper": 4257.834749999999
+            },
+            "point_estimate": 767.8799999999999,
+            "probability_above_threshold": 0.668,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.0935240573252303,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.7955474020228356,
+              "upper": 1.4357794083100999
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.7476130023880296,
+              "upper": 1.518703964543157
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.0817003130206815,
+            "probability_above_threshold": 0.668,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3549144927536232,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2898550724637681,
+              "upper": 0.42028985507246375
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2753623188405797,
+              "upper": 0.43478260869565216
+            },
+            "point_estimate": 0.35507246376811596,
+            "probability_above_threshold": 0.0002,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:CHFJPY:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": 5.564347826086956,
+          "mean_r": 0.0626768115942029,
+          "median_r": -1.0005,
+          "net_pnl_account_currency": 767.8799999999999,
+          "payoff_ratio": 1.9647209767110334,
+          "profit_factor": 1.0817003130206815,
+          "profit_factor_status": "DEFINED",
+          "trades": 138,
+          "win_rate": 0.35507246376811596
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 138,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -19.2966268115942,
+      "ordinary_mean_r_ci95_lower": -0.17626695652173913,
+      "profit_factor": 1.0817,
+      "sell_net_pnl": 571.51,
+      "win_rate_percent": 35.507246376811594
+    },
+    {
+      "asset_class": "METAL",
+      "average_r": 0.0435,
+      "block_expectancy_ci95_lower": -19.816803030303024,
+      "block_mean_r_ci95_lower": -0.1838810984848485,
+      "buy_net_pnl": -1332.4,
+      "canonical_symbol": "XAUUSD",
+      "closed_trades": 132,
+      "evidence_tier": "EXPLORATORY_POSITIVE_UNCERTAIN",
+      "expectancy": 3.55,
+      "maximum_drawdown_percent": 21.1543,
+      "maximum_realized_loss_percent": 1.00179,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 3.580402795454545,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -16.493196969696974,
+              "upper": 24.447143939393936
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -19.816803030303024,
+              "upper": 28.730102272727272
+            },
+            "point_estimate": 3.552727272727273,
+            "probability_above_threshold": 0.6012,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.043807708939393945,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.16098337121212122,
+              "upper": 0.24814473484848484
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.1838810984848485,
+              "upper": 0.29358032196969697
+            },
+            "point_estimate": 0.043499242424242426,
+            "probability_above_threshold": 0.5988,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 472.613169,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2177.1020000000003,
+              "upper": 3227.0229999999997
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2615.8179999999993,
+              "upper": 3792.3734999999997
+            },
+            "point_estimate": 468.96000000000004,
+            "probability_above_threshold": 0.6012,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.0668393222716335,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.772763252779303,
+              "upper": 1.4166273689990176
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.7320632243172708,
+              "upper": 1.5007656020789262
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.0539350653831558,
+            "probability_above_threshold": 0.6012,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3485878787878788,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2803030303030303,
+              "upper": 0.4166666666666667
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2727272727272727,
+              "upper": 0.4318181818181818
+            },
+            "point_estimate": 0.3484848484848485,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:XAUUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": 3.552727272727273,
+          "mean_r": 0.043499242424242426,
+          "median_r": -1.0011,
+          "net_pnl_account_currency": 468.96000000000004,
+          "payoff_ratio": 1.9704003396293779,
+          "profit_factor": 1.0539350653831558,
+          "profit_factor_status": "DEFINED",
+          "trades": 132,
+          "win_rate": 0.3484848484848485
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 132,
+        "seed": 9202001
+      },
+      "net_profit": 468.96,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 3.410906916666667,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -16.794803030303033,
+              "upper": 23.93292045454545
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -20.556670454545444,
+              "upper": 28.089945075757573
+            },
+            "point_estimate": 3.552727272727273,
+            "probability_above_threshold": 0.6041,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.04179032590909091,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.16104852272727274,
+              "upper": 0.24805530303030301
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.2064106628787879,
+              "upper": 0.2934424621212121
+            },
+            "point_estimate": 0.043499242424242426,
+            "probability_above_threshold": 0.6008,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 450.239713,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2216.914,
+              "upper": 3159.145499999999
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2713.4804999999983,
+              "upper": 3707.872749999999
+            },
+            "point_estimate": 468.96000000000004,
+            "probability_above_threshold": 0.6041,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.064100213323831,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.7688462436469974,
+              "upper": 1.4061823903418942
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.7234298959839542,
+              "upper": 1.4874999612754591
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.0539350653831558,
+            "probability_above_threshold": 0.6041,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3479151515151515,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2803030303030303,
+              "upper": 0.4166666666666667
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.26515151515151514,
+              "upper": 0.4318181818181818
+            },
+            "point_estimate": 0.3484848484848485,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:XAUUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": 3.552727272727273,
+          "mean_r": 0.043499242424242426,
+          "median_r": -1.0011,
+          "net_pnl_account_currency": 468.96000000000004,
+          "payoff_ratio": 1.9704003396293779,
+          "profit_factor": 1.0539350653831558,
+          "profit_factor_status": "DEFINED",
+          "trades": 132,
+          "win_rate": 0.3484848484848485
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 132,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -20.556670454545444,
+      "ordinary_mean_r_ci95_lower": -0.2064106628787879,
+      "profit_factor": 1.0539,
+      "sell_net_pnl": 1801.36,
+      "win_rate_percent": 34.84848484848485
+    },
+    {
+      "asset_class": "INDEX",
+      "average_r": 0.0134,
+      "block_expectancy_ci95_lower": -25.90414097744361,
+      "block_mean_r_ci95_lower": -0.2346835714285714,
+      "buy_net_pnl": 430.03,
+      "canonical_symbol": "NAS100",
+      "closed_trades": 133,
+      "evidence_tier": "EXPLORATORY_POSITIVE_UNCERTAIN",
+      "expectancy": 0.26,
+      "maximum_drawdown_percent": 16.0975,
+      "maximum_realized_loss_percent": 1.0051,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 0.2855970451127819,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -21.588838345864662,
+              "upper": 22.25982330827067
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -25.90414097744361,
+              "upper": 26.958268796992474
+            },
+            "point_estimate": 0.2601503759398496,
+            "probability_above_threshold": 0.5155,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.013661166090225578,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.18962184210526314,
+              "upper": 0.21654364661654138
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.2346835714285714,
+              "upper": 0.2616511466165414
+            },
+            "point_estimate": 0.013446616541353398,
+            "probability_above_threshold": 0.5373,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 37.984407,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2871.3155,
+              "upper": 2960.556499999999
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3445.25075,
+              "upper": 3585.4497499999993
+            },
+            "point_estimate": 34.599999999999994,
+            "probability_above_threshold": 0.5155,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.0158763033634637,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.7275421883365665,
+              "upper": 1.3463514035284836
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6778835315755867,
+              "upper": 1.428323543402799
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.00362158043258,
+            "probability_above_threshold": 0.5155,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.33841729323308267,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2706766917293233,
+              "upper": 0.40601503759398494
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2556390977443609,
+              "upper": 0.42105263157894735
+            },
+            "point_estimate": 0.3383458646616541,
+            "probability_above_threshold": 0.0001,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:NAS100:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": 0.2601503759398496,
+          "mean_r": 0.013446616541353398,
+          "median_r": -1.0008,
+          "net_pnl_account_currency": 34.599999999999994,
+          "payoff_ratio": 1.9626377572903788,
+          "profit_factor": 1.00362158043258,
+          "profit_factor_status": "DEFINED",
+          "trades": 133,
+          "win_rate": 0.3383458646616541
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 133,
+        "seed": 9202001
+      },
+      "net_profit": 34.6,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": 0.34923186466165407,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -21.533849624060153,
+              "upper": 22.179714285714283
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -25.852593984962404,
+              "upper": 26.729828947368418
+            },
+            "point_estimate": 0.2601503759398496,
+            "probability_above_threshold": 0.5155,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": 0.014262166766917309,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.18957526315789475,
+              "upper": 0.21650015037593986
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.23459105263157895,
+              "upper": 0.26155415413533833
+            },
+            "point_estimate": 0.013446616541353398,
+            "probability_above_threshold": 0.5388,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": 46.447838,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2864.0020000000004,
+              "upper": 2949.9019999999996
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3438.3949999999995,
+              "upper": 3555.06725
+            },
+            "point_estimate": 34.599999999999994,
+            "probability_above_threshold": 0.5155,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 1.0166021558450713,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.7281423954812459,
+              "upper": 1.344693146482003
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6792316214617261,
+              "upper": 1.4249721766653822
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 1.00362158043258,
+            "probability_above_threshold": 0.5155,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.33861804511278193,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2706766917293233,
+              "upper": 0.40601503759398494
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2556390977443609,
+              "upper": 0.42105263157894735
+            },
+            "point_estimate": 0.3383458646616541,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:NAS100:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": 0.2601503759398496,
+          "mean_r": 0.013446616541353398,
+          "median_r": -1.0008,
+          "net_pnl_account_currency": 34.599999999999994,
+          "payoff_ratio": 1.9626377572903788,
+          "profit_factor": 1.00362158043258,
+          "profit_factor_status": "DEFINED",
+          "trades": 133,
+          "win_rate": 0.3383458646616541
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 133,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -25.852593984962404,
+      "ordinary_mean_r_ci95_lower": -0.23459105263157895,
+      "profit_factor": 1.0036,
+      "sell_net_pnl": -395.43,
+      "win_rate_percent": 33.83458646616541
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.0022,
+      "block_expectancy_ci95_lower": -23.937845238095235,
+      "block_mean_r_ci95_lower": -0.23171342857142857,
+      "buy_net_pnl": -783.85,
+      "canonical_symbol": "EURJPY",
+      "closed_trades": 105,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -0.94,
+      "maximum_drawdown_percent": 9.5093,
+      "maximum_realized_loss_percent": 1.004712,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -0.7904733619047626,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -20.64811904761905,
+              "upper": 18.90255714285714
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -23.937845238095235,
+              "upper": 22.220830952380947
+            },
+            "point_estimate": -0.9376190476190484,
+            "probability_above_threshold": 0.4639,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.0008037812380952289,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.20196661904761903,
+              "upper": 0.1979362857142857
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.23171342857142857,
+              "upper": 0.2278919523809524
+            },
+            "point_estimate": -0.0022161904761904667,
+            "probability_above_threshold": 0.4652,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -82.99970300000007,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2168.0525000000002,
+              "upper": 1984.7685
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2513.47375,
+              "upper": 2333.1872499999995
+            },
+            "point_estimate": -98.45000000000007,
+            "probability_above_threshold": 0.4639,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.998952842906033,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.718994270028746,
+              "upper": 1.3141207147344822
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6800620668762051,
+              "upper": 1.3766157420113176
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.9859711071781763,
+            "probability_above_threshold": 0.4639,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3337990476190476,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.26666666666666666,
+              "upper": 0.4
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2571428571428571,
+              "upper": 0.4095238095238095
+            },
+            "point_estimate": 0.3333333333333333,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURJPY:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -0.9376190476190484,
+          "mean_r": -0.0022161904761904667,
+          "median_r": -1.0001,
+          "net_pnl_account_currency": -98.45000000000007,
+          "payoff_ratio": 1.9719422143563523,
+          "profit_factor": 0.9859711071781763,
+          "profit_factor_status": "DEFINED",
+          "trades": 105,
+          "win_rate": 0.3333333333333333
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 105,
+        "seed": 9202001
+      },
+      "net_profit": -98.45,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -1.1054324000000009,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -23.620471428571427,
+              "upper": 21.73427142857142
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -27.244457142857122,
+              "upper": 26.88160952380952
+            },
+            "point_estimate": -0.9376190476190484,
+            "probability_above_threshold": 0.4515,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.003883558285714276,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.23079419047619046,
+              "upper": 0.2263345238095238
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.2611983333333333,
+              "upper": 0.2819377380952381
+            },
+            "point_estimate": -0.0022161904761904667,
+            "probability_above_threshold": 0.4519,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -116.07040200000007,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2480.1495,
+              "upper": 2282.0984999999996
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2860.667999999998,
+              "upper": 2822.5689999999995
+            },
+            "point_estimate": -98.45000000000007,
+            "probability_above_threshold": 0.4515,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.998019276886049,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6829100789682414,
+              "upper": 1.36663774070471
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6408916723944558,
+              "upper": 1.466831836145932
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.9859711071781763,
+            "probability_above_threshold": 0.4515,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.33278285714285716,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2571428571428571,
+              "upper": 0.4095238095238095
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.24761904761904763,
+              "upper": 0.42857142857142855
+            },
+            "point_estimate": 0.3333333333333333,
+            "probability_above_threshold": 0.0002,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURJPY:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -0.9376190476190484,
+          "mean_r": -0.0022161904761904667,
+          "median_r": -1.0001,
+          "net_pnl_account_currency": -98.45000000000007,
+          "payoff_ratio": 1.9719422143563523,
+          "profit_factor": 0.9859711071781763,
+          "profit_factor_status": "DEFINED",
+          "trades": 105,
+          "win_rate": 0.3333333333333333
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 105,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -27.244457142857122,
+      "ordinary_mean_r_ci95_lower": -0.2611983333333333,
+      "profit_factor": 0.986,
+      "sell_net_pnl": 685.4,
+      "win_rate_percent": 33.33333333333333
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.0041,
+      "block_expectancy_ci95_lower": -26.36591369047619,
+      "block_mean_r_ci95_lower": -0.25443839285714287,
+      "buy_net_pnl": -152.21,
+      "canonical_symbol": "EURUSD",
+      "closed_trades": 84,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -1.44,
+      "maximum_drawdown_percent": 11.5436,
+      "maximum_realized_loss_percent": 1.013134,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -1.4192820000000008,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -22.565553571428573,
+              "upper": 19.609654761904757
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -26.36591369047619,
+              "upper": 23.419681547619042
+            },
+            "point_estimate": -1.4434523809523818,
+            "probability_above_threshold": 0.4511,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.0038350644047619115,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.21856565476190476,
+              "upper": 0.2104382738095238
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.25443839285714287,
+              "upper": 0.24635714285714286
+            },
+            "point_estimate": -0.004070238095238102,
+            "probability_above_threshold": 0.451,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -119.21968800000008,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -1895.5065000000002,
+              "upper": 1647.2109999999996
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2214.73675,
+              "upper": 1967.2532499999993
+            },
+            "point_estimate": -121.25000000000007,
+            "probability_above_threshold": 0.4511,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.992273161738263,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6909039764358665,
+              "upper": 1.3353455534928511
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6448646469854856,
+              "upper": 1.4071309530543008
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.9780603742312084,
+            "probability_above_threshold": 0.4511,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3334119047619048,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2619047619047619,
+              "upper": 0.40476190476190477
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.25,
+              "upper": 0.4166666666666667
+            },
+            "point_estimate": 0.3333333333333333,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -1.4434523809523818,
+          "mean_r": -0.004070238095238102,
+          "median_r": -1.0022,
+          "net_pnl_account_currency": -121.25000000000007,
+          "payoff_ratio": 1.9561207484624168,
+          "profit_factor": 0.9780603742312084,
+          "profit_factor_status": "DEFINED",
+          "trades": 84,
+          "win_rate": 0.3333333333333333
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 84,
+        "seed": 9202001
+      },
+      "net_profit": -121.25,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -1.4668410357142867,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -25.753011904761905,
+              "upper": 23.148482142857137
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -29.666500000000003,
+              "upper": 27.346071428571424
+            },
+            "point_estimate": -1.4434523809523818,
+            "probability_above_threshold": 0.4458,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.004253827261904768,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.2539633333333333,
+              "upper": 0.2459702380952381
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.2898893154761905,
+              "upper": 0.28205404761904757
+            },
+            "point_estimate": -0.004070238095238102,
+            "probability_above_threshold": 0.4455,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -123.21464700000007,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2163.253,
+              "upper": 1944.4724999999996
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2491.9860000000003,
+              "upper": 2297.0699999999997
+            },
+            "point_estimate": -121.25000000000007,
+            "probability_above_threshold": 0.4458,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.9952785648967639,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6519358146980071,
+              "upper": 1.403278324924801
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6063386168447069,
+              "upper": 1.4870476198498621
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.9780603742312084,
+            "probability_above_threshold": 0.4458,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.333272619047619,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.25,
+              "upper": 0.4166666666666667
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.23809523809523808,
+              "upper": 0.42857142857142855
+            },
+            "point_estimate": 0.3333333333333333,
+            "probability_above_threshold": 0.0005,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -1.4434523809523818,
+          "mean_r": -0.004070238095238102,
+          "median_r": -1.0022,
+          "net_pnl_account_currency": -121.25000000000007,
+          "payoff_ratio": 1.9561207484624168,
+          "profit_factor": 0.9780603742312084,
+          "profit_factor_status": "DEFINED",
+          "trades": 84,
+          "win_rate": 0.3333333333333333
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 84,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -29.666500000000003,
+      "ordinary_mean_r_ci95_lower": -0.2898893154761905,
+      "profit_factor": 0.9781,
+      "sell_net_pnl": 30.96,
+      "win_rate_percent": 33.33333333333333
+    },
+    {
+      "asset_class": "CRYPTO",
+      "average_r": -0.0375,
+      "block_expectancy_ci95_lower": -26.591919724770637,
+      "block_mean_r_ci95_lower": -0.2578322247706422,
+      "buy_net_pnl": -71.16,
+      "canonical_symbol": "ETHUSD",
+      "closed_trades": 109,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -4.49,
+      "maximum_drawdown_percent": 12.476,
+      "maximum_realized_loss_percent": 1.003057,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -4.541422458715596,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -23.540174311926606,
+              "upper": 14.350844036697241
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -26.591919724770637,
+              "upper": 17.331153669724767
+            },
+            "point_estimate": -4.4935779816513755,
+            "probability_above_threshold": 0.3613,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.03803499715596328,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.230197247706422,
+              "upper": 0.15508353211009177
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.2578322247706422,
+              "upper": 0.1826825917431193
+            },
+            "point_estimate": -0.03754403669724768,
+            "probability_above_threshold": 0.3615,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -495.015048,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2565.879,
+              "upper": 1564.2419999999993
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -2898.51925,
+              "upper": 1889.0957499999995
+            },
+            "point_estimate": -489.79999999999995,
+            "probability_above_threshold": 0.3613,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.9416821233885067,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6789699404044948,
+              "upper": 1.2374922710494558
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.642177315741542,
+              "upper": 1.2917502177335922
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.9326605807303123,
+            "probability_above_threshold": 0.3613,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.32093669724770646,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.25688073394495414,
+              "upper": 0.3853211009174312
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.24770642201834864,
+              "upper": 0.3944954128440367
+            },
+            "point_estimate": 0.3211009174311927,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:ETHUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -4.4935779816513755,
+          "mean_r": -0.03754403669724768,
+          "median_r": -1.0003,
+          "net_pnl_account_currency": -489.79999999999995,
+          "payoff_ratio": 1.9719109421155177,
+          "profit_factor": 0.9326605807303123,
+          "profit_factor_status": "DEFINED",
+          "trades": 109,
+          "win_rate": 0.3211009174311927
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 109,
+        "seed": 9202001
+      },
+      "net_profit": -489.8,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -4.6628620366972475,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -25.897504587155964,
+              "upper": 16.95008256880734
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -29.024811926605505,
+              "upper": 21.64621559633026
+            },
+            "point_estimate": -4.4935779816513755,
+            "probability_above_threshold": 0.3677,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.03932537642201832,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.257702752293578,
+              "upper": 0.18262389908256882
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.28528993119266055,
+              "upper": 0.2375569036697248
+            },
+            "point_estimate": -0.03754403669724768,
+            "probability_above_threshold": 0.3695,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -508.251962,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2822.828,
+              "upper": 1847.5589999999997
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3163.7045,
+              "upper": 2359.4374999999986
+            },
+            "point_estimate": -489.79999999999995,
+            "probability_above_threshold": 0.3677,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.9428126603982341,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6498758838818463,
+              "upper": 1.285129639619606
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.6130571712228571,
+              "upper": 1.373052915038145
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.9326605807303123,
+            "probability_above_threshold": 0.3677,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3205073394495413,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.24770642201834864,
+              "upper": 0.3944954128440367
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.23853211009174313,
+              "upper": 0.41284403669724773
+            },
+            "point_estimate": 0.3211009174311927,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:ETHUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -4.4935779816513755,
+          "mean_r": -0.03754403669724768,
+          "median_r": -1.0003,
+          "net_pnl_account_currency": -489.79999999999995,
+          "payoff_ratio": 1.9719109421155177,
+          "profit_factor": 0.9326605807303123,
+          "profit_factor_status": "DEFINED",
+          "trades": 109,
+          "win_rate": 0.3211009174311927
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 109,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -29.024811926605505,
+      "ordinary_mean_r_ci95_lower": -0.28528993119266055,
+      "profit_factor": 0.9327,
+      "sell_net_pnl": -418.64,
+      "win_rate_percent": 32.11009174311927
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.1006,
+      "block_expectancy_ci95_lower": -34.010623655913975,
+      "block_mean_r_ci95_lower": -0.35870172043010756,
+      "buy_net_pnl": -758.3,
+      "canonical_symbol": "CADJPY",
+      "closed_trades": 93,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -10.18,
+      "maximum_drawdown_percent": 15.3431,
+      "maximum_realized_loss_percent": 1.009311,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -10.06193623655914,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -30.73184946236559,
+              "upper": 10.485849462365588
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -34.010623655913975,
+              "upper": 13.991916666666665
+            },
+            "point_estimate": -10.182688172043012,
+            "probability_above_threshold": 0.1978,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.09928050204301075,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.325378440860215,
+              "upper": 0.12480263440860213
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.35870172043010756,
+              "upper": 0.15813680107526878
+            },
+            "point_estimate": -0.1005731182795699,
+            "probability_above_threshold": 0.1971,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -935.7600699999999,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2858.062,
+              "upper": 975.1839999999997
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3162.988,
+              "upper": 1301.2482499999996
+            },
+            "point_estimate": -946.99,
+            "probability_above_threshold": 0.1978,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.857521456429301,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5756694970432683,
+              "upper": 1.1796514967431797
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5373744169625574,
+              "upper": 1.2450520474846365
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.8442184189400819,
+            "probability_above_threshold": 0.1978,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3015010752688172,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.22580645161290322,
+              "upper": 0.3763440860215054
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.21505376344086022,
+              "upper": 0.3870967741935484
+            },
+            "point_estimate": 0.3010752688172043,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:CADJPY:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -10.182688172043012,
+          "mean_r": -0.1005731182795699,
+          "median_r": -1.0028,
+          "net_pnl_account_currency": -946.99,
+          "payoff_ratio": 1.9597927582537615,
+          "profit_factor": 0.8442184189400819,
+          "profit_factor_status": "DEFINED",
+          "trades": 93,
+          "win_rate": 0.3010752688172043
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 93,
+        "seed": 9202001
+      },
+      "net_profit": -946.99,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -10.304224150537634,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -31.403602150537637,
+              "upper": 11.11756451612903
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -35.03326344086021,
+              "upper": 16.26271774193548
+            },
+            "point_estimate": -10.182688172043012,
+            "probability_above_threshold": 0.2158,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.10186003569892474,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3269910752688172,
+              "upper": 0.12639220430107526
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.3605124731182795,
+              "upper": 0.18896344086021502
+            },
+            "point_estimate": -0.1005731182795699,
+            "probability_above_threshold": 0.2154,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -958.2928459999999,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -2920.5350000000003,
+              "upper": 1033.9334999999999
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3258.0934999999995,
+              "upper": 1512.4327499999997
+            },
+            "point_estimate": -946.99,
+            "probability_above_threshold": 0.2158,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.8557553966013196,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5669008776376727,
+              "upper": 1.1914651940850889
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5262119293951978,
+              "upper": 1.2890224848703056
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.8442184189400819,
+            "probability_above_threshold": 0.2158,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3006451612903226,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.22580645161290322,
+              "upper": 0.3763440860215054
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.21505376344086022,
+              "upper": 0.3978494623655914
+            },
+            "point_estimate": 0.3010752688172043,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:CADJPY:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -10.182688172043012,
+          "mean_r": -0.1005731182795699,
+          "median_r": -1.0028,
+          "net_pnl_account_currency": -946.99,
+          "payoff_ratio": 1.9597927582537615,
+          "profit_factor": 0.8442184189400819,
+          "profit_factor_status": "DEFINED",
+          "trades": 93,
+          "win_rate": 0.3010752688172043
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 93,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -35.03326344086021,
+      "ordinary_mean_r_ci95_lower": -0.3605124731182795,
+      "profit_factor": 0.8442,
+      "sell_net_pnl": -188.69,
+      "win_rate_percent": 30.107526881720432
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.0947,
+      "block_expectancy_ci95_lower": -32.35265652173912,
+      "block_mean_r_ci95_lower": -0.3301566086956522,
+      "buy_net_pnl": -429.09,
+      "canonical_symbol": "NZDUSD",
+      "closed_trades": 115,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -9.67,
+      "maximum_drawdown_percent": 18.2152,
+      "maximum_realized_loss_percent": 1.027148,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -9.639839278260869,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -29.218917391304352,
+              "upper": 10.246882608695648
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -32.35265652173912,
+              "upper": 14.211043478260867
+            },
+            "point_estimate": -9.667043478260869,
+            "probability_above_threshold": 0.2166,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.09422876486956522,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3034975652173913,
+              "upper": 0.11447591304347826
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.3301566086956522,
+              "upper": 0.16563826086956518
+            },
+            "point_estimate": -0.09466173913043477,
+            "probability_above_threshold": 0.2368,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1108.581517,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3360.1755000000003,
+              "upper": 1178.3914999999995
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3720.5554999999995,
+              "upper": 1634.2699999999998
+            },
+            "point_estimate": -1111.7099999999998,
+            "probability_above_threshold": 0.2166,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.8664385513341731,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6026315571075512,
+              "upper": 1.1702090281361865
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5667727180867898,
+              "upper": 1.239596520104231
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.8556695008003864,
+            "probability_above_threshold": 0.2166,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3044886956521739,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.23478260869565218,
+              "upper": 0.3739130434782609
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.22608695652173913,
+              "upper": 0.391304347826087
+            },
+            "point_estimate": 0.30434782608695654,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:NZDUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -9.667043478260869,
+          "mean_r": -0.09466173913043477,
+          "median_r": -1.0048,
+          "net_pnl_account_currency": -1111.7099999999998,
+          "payoff_ratio": 1.9558160018294548,
+          "profit_factor": 0.8556695008003864,
+          "profit_factor_status": "DEFINED",
+          "trades": 115,
+          "win_rate": 0.30434782608695654
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 115,
+        "seed": 9202001
+      },
+      "net_profit": -1111.71,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -9.43832468695652,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -29.24465652173913,
+              "upper": 10.773934782608682
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -32.61505,
+              "upper": 14.931154347826087
+            },
+            "point_estimate": -9.667043478260869,
+            "probability_above_threshold": 0.2234,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.09229488739130434,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3032201304347826,
+              "upper": 0.11444821739130434
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.3300490434782608,
+              "upper": 0.1661306304347826
+            },
+            "point_estimate": -0.09466173913043477,
+            "probability_above_threshold": 0.2439,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1085.4073389999999,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3363.1355000000003,
+              "upper": 1239.0024999999982
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3750.7307499999997,
+              "upper": 1717.08275
+            },
+            "point_estimate": -1111.7099999999998,
+            "probability_above_threshold": 0.2234,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.8699295579952393,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.6031464558357478,
+              "upper": 1.179637445239063
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5638724891183428,
+              "upper": 1.2544478067317968
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.8556695008003864,
+            "probability_above_threshold": 0.2234,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.3051391304347826,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.23478260869565218,
+              "upper": 0.3739130434782609
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.22608695652173913,
+              "upper": 0.391304347826087
+            },
+            "point_estimate": 0.30434782608695654,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:NZDUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -9.667043478260869,
+          "mean_r": -0.09466173913043477,
+          "median_r": -1.0048,
+          "net_pnl_account_currency": -1111.7099999999998,
+          "payoff_ratio": 1.9558160018294548,
+          "profit_factor": 0.8556695008003864,
+          "profit_factor_status": "DEFINED",
+          "trades": 115,
+          "win_rate": 0.30434782608695654
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 115,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -32.61505,
+      "ordinary_mean_r_ci95_lower": -0.3300490434782608,
+      "profit_factor": 0.8557,
+      "sell_net_pnl": -682.62,
+      "win_rate_percent": 30.434782608695656
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.1409,
+      "block_expectancy_ci95_lower": -40.44554166666667,
+      "block_mean_r_ci95_lower": -0.4395478333333333,
+      "buy_net_pnl": -1000.67,
+      "canonical_symbol": "AUDCAD",
+      "closed_trades": 90,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -14.11,
+      "maximum_drawdown_percent": 15.3322,
+      "maximum_realized_loss_percent": 1.032852,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -14.292848388888888,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -35.57335555555555,
+              "upper": 7.234988888888889
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -40.44554166666667,
+              "upper": 10.69889722222222
+            },
+            "point_estimate": -14.109888888888888,
+            "probability_above_threshold": 0.1466,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.14290158788888888,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3747201111111111,
+              "upper": 0.09284916666666668
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.4395478333333333,
+              "upper": 0.12715094444444444
+            },
+            "point_estimate": -0.1409,
+            "probability_above_threshold": 0.1467,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1286.356355,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3201.602,
+              "upper": 651.149
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3640.09875,
+              "upper": 962.9007499999998
+            },
+            "point_estimate": -1269.8899999999999,
+            "probability_above_threshold": 0.1466,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7969170536214569,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5156411920977795,
+              "upper": 1.1229381222001158
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.4608539877918733,
+              "upper": 1.1850528381355703
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7866856818418515,
+            "probability_above_threshold": 0.1466,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2882211111111111,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2111111111111111,
+              "upper": 0.36666666666666664
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.18888888888888888,
+              "upper": 0.37777777777777777
+            },
+            "point_estimate": 0.28888888888888886,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:AUDCAD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -14.109888888888888,
+          "mean_r": -0.1409,
+          "median_r": -1.0044,
+          "net_pnl_account_currency": -1269.8899999999999,
+          "payoff_ratio": 1.9364570629953268,
+          "profit_factor": 0.7866856818418515,
+          "profit_factor_status": "DEFINED",
+          "trades": 90,
+          "win_rate": 0.28888888888888886
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 90,
+        "seed": 9202001
+      },
+      "net_profit": -1269.89,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -14.0619815,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -35.34075555555555,
+              "upper": 7.4858388888888845
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -38.739963888888894,
+              "upper": 11.08370277777773
+            },
+            "point_estimate": -14.109888888888888,
+            "probability_above_threshold": 0.1501,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.14038412966666666,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3739418888888889,
+              "upper": 0.09299922222222223
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.4078756944444444,
+              "upper": 0.12696744444444444
+            },
+            "point_estimate": -0.1409,
+            "probability_above_threshold": 0.1513,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1265.578335,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3180.668,
+              "upper": 673.7254999999997
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -3486.59675,
+              "upper": 997.5332499999957
+            },
+            "point_estimate": -1269.8899999999999,
+            "probability_above_threshold": 0.1501,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.8000015183856235,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5180721185763777,
+              "upper": 1.1270914397918113
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.4806641171539927,
+              "upper": 1.191606035410931
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7866856818418515,
+            "probability_above_threshold": 0.1501,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.28906444444444446,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2111111111111111,
+              "upper": 0.36666666666666664
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2,
+              "upper": 0.37777777777777777
+            },
+            "point_estimate": 0.28888888888888886,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:AUDCAD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -14.109888888888888,
+          "mean_r": -0.1409,
+          "median_r": -1.0044,
+          "net_pnl_account_currency": -1269.8899999999999,
+          "payoff_ratio": 1.9364570629953268,
+          "profit_factor": 0.7866856818418515,
+          "profit_factor_status": "DEFINED",
+          "trades": 90,
+          "win_rate": 0.28888888888888886
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 90,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -38.739963888888894,
+      "ordinary_mean_r_ci95_lower": -0.4078756944444444,
+      "profit_factor": 0.7867,
+      "sell_net_pnl": -269.22,
+      "win_rate_percent": 28.888888888888886
+    },
+    {
+      "asset_class": "INDEX",
+      "average_r": -0.1282,
+      "block_expectancy_ci95_lower": -31.569475746268655,
+      "block_mean_r_ci95_lower": -0.35202839552238807,
+      "buy_net_pnl": -740.22,
+      "canonical_symbol": "US30",
+      "closed_trades": 134,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -12.51,
+      "maximum_drawdown_percent": 20.1996,
+      "maximum_realized_loss_percent": 1.006792,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -12.540796813432838,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -28.464694029850747,
+              "upper": 3.6009029850746184
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -31.569475746268655,
+              "upper": 7.060236940298506
+            },
+            "point_estimate": -12.506044776119404,
+            "probability_above_threshold": 0.0947,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.12865682999999997,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3074119776119403,
+              "upper": 0.05104410447761197
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.35202839552238807,
+              "upper": 0.09572921641791048
+            },
+            "point_estimate": -0.12821268656716414,
+            "probability_above_threshold": 0.1302,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1680.466773,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3814.2690000000002,
+              "upper": 482.52099999999893
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4230.309749999999,
+              "upper": 946.0717499999998
+            },
+            "point_estimate": -1675.8100000000002,
+            "probability_above_threshold": 0.0947,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.8097885067029069,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5870253772753934,
+              "upper": 1.0623837999056434
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5490952382429464,
+              "upper": 1.1246248528804408
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.8025897134752509,
+            "probability_above_threshold": 0.0947,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.29089552238805966,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.23134328358208955,
+              "upper": 0.35074626865671643
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.21641791044776118,
+              "upper": 0.3656716417910448
+            },
+            "point_estimate": 0.291044776119403,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:US30:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -12.506044776119404,
+          "mean_r": -0.12821268656716414,
+          "median_r": -1.0006,
+          "net_pnl_account_currency": -1675.8100000000002,
+          "payoff_ratio": 1.9550262251320214,
+          "profit_factor": 0.8025897134752509,
+          "profit_factor_status": "DEFINED",
+          "trades": 134,
+          "win_rate": 0.291044776119403
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 134,
+        "seed": 9202001
+      },
+      "net_profit": -1675.81,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -12.57194654477612,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -29.489597014925376,
+              "upper": 4.808466417910442
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -32.605483208955214,
+              "upper": 7.958235074626864
+            },
+            "point_estimate": -12.506044776119404,
+            "probability_above_threshold": 0.1155,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.12893319194029848,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3295507462686567,
+              "upper": 0.07323742537313435
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.352169421641791,
+              "upper": 0.09581270522388063
+            },
+            "point_estimate": -0.12821268656716414,
+            "probability_above_threshold": 0.152,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1684.6408370000001,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3951.6060000000007,
+              "upper": 644.3344999999994
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4369.134749999999,
+              "upper": 1066.4034999999997
+            },
+            "point_estimate": -1675.8100000000002,
+            "probability_above_threshold": 0.1155,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.81038172096959,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5727823624060203,
+              "upper": 1.0836723597210505
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5349259045641304,
+              "upper": 1.1406504303988518
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.8025897134752509,
+            "probability_above_threshold": 0.1155,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2908044776119403,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.22388059701492538,
+              "upper": 0.3582089552238806
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.21641791044776118,
+              "upper": 0.3656716417910448
+            },
+            "point_estimate": 0.291044776119403,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:US30:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -12.506044776119404,
+          "mean_r": -0.12821268656716414,
+          "median_r": -1.0006,
+          "net_pnl_account_currency": -1675.8100000000002,
+          "payoff_ratio": 1.9550262251320214,
+          "profit_factor": 0.8025897134752509,
+          "profit_factor_status": "DEFINED",
+          "trades": 134,
+          "win_rate": 0.291044776119403
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 134,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -32.605483208955214,
+      "ordinary_mean_r_ci95_lower": -0.352169421641791,
+      "profit_factor": 0.8026,
+      "sell_net_pnl": -935.59,
+      "win_rate_percent": 29.1044776119403
+    },
+    {
+      "asset_class": "ENERGY",
+      "average_r": -0.159,
+      "block_expectancy_ci95_lower": -36.78345041322313,
+      "block_mean_r_ci95_lower": -0.40370704545454544,
+      "buy_net_pnl": -727.2,
+      "canonical_symbol": "WTI",
+      "closed_trades": 121,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -14.65,
+      "maximum_drawdown_percent": 20.6037,
+      "maximum_realized_loss_percent": 1.123667,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -14.68094487603306,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -33.04247933884297,
+              "upper": 4.429628099173544
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -36.78345041322313,
+              "upper": 8.087954545454542
+            },
+            "point_estimate": -14.64793388429752,
+            "probability_above_threshold": 0.0987,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.159342309338843,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3590142148760331,
+              "upper": 0.04361429752066109
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.40370704545454544,
+              "upper": 0.0891523553719008
+            },
+            "point_estimate": -0.1589702479338843,
+            "probability_above_threshold": 0.0967,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1776.39433,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3998.14,
+              "upper": 535.9849999999989
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4450.797499999999,
+              "upper": 978.6424999999994
+            },
+            "point_estimate": -1772.4,
+            "probability_above_threshold": 0.0987,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7898312033228252,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5478814195005689,
+              "upper": 1.0736129469575892
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5052658731838381,
+              "upper": 1.1363004056026698
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7809878038231988,
+            "probability_above_threshold": 0.0986,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2891537190082644,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2231404958677686,
+              "upper": 0.35537190082644626
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2066115702479339,
+              "upper": 0.371900826446281
+            },
+            "point_estimate": 0.2892561983471074,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:WTI:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -14.64793388429752,
+          "mean_r": -0.1589702479338843,
+          "median_r": -1.0125,
+          "net_pnl_account_currency": -1772.4,
+          "payoff_ratio": 1.9189986036798599,
+          "profit_factor": 0.7809878038231988,
+          "profit_factor_status": "DEFINED",
+          "trades": 121,
+          "win_rate": 0.2892561983471074
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 121,
+        "seed": 9202001
+      },
+      "net_profit": -1772.4,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -14.613272231404958,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -33.03173553719009,
+              "upper": 4.869917355371893
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -36.52254132231405,
+              "upper": 8.413285123966928
+            },
+            "point_estimate": -14.64793388429752,
+            "probability_above_threshold": 0.1009,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.1586134331404959,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.357311652892562,
+              "upper": 0.059151528925619576
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.40344469008264466,
+              "upper": 0.08938535123966938
+            },
+            "point_estimate": -0.1589702479338843,
+            "probability_above_threshold": 0.099,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -1768.2059399999998,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -3996.8400000000006,
+              "upper": 589.2599999999991
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4419.2275,
+              "upper": 1018.0074999999985
+            },
+            "point_estimate": -1772.4,
+            "probability_above_threshold": 0.1009,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7908892194974743,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.548711343181544,
+              "upper": 1.0806253040228637
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.5084202578410144,
+              "upper": 1.1428982334941789
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7809878038231988,
+            "probability_above_threshold": 0.1009,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2893719008264463,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2231404958677686,
+              "upper": 0.36363636363636365
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.2066115702479339,
+              "upper": 0.371900826446281
+            },
+            "point_estimate": 0.2892561983471074,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:WTI:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -14.64793388429752,
+          "mean_r": -0.1589702479338843,
+          "median_r": -1.0125,
+          "net_pnl_account_currency": -1772.4,
+          "payoff_ratio": 1.9189986036798599,
+          "profit_factor": 0.7809878038231988,
+          "profit_factor_status": "DEFINED",
+          "trades": 121,
+          "win_rate": 0.2892561983471074
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 121,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -36.52254132231405,
+      "ordinary_mean_r_ci95_lower": -0.40344469008264466,
+      "profit_factor": 0.781,
+      "sell_net_pnl": -1045.2,
+      "win_rate_percent": 28.92561983471074
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.1918,
+      "block_expectancy_ci95_lower": -33.65629391891892,
+      "block_mean_r_ci95_lower": -0.3945549831081081,
+      "buy_net_pnl": -2141.02,
+      "canonical_symbol": "GBPJPY",
+      "closed_trades": 148,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -17.08,
+      "maximum_drawdown_percent": 27.2539,
+      "maximum_realized_loss_percent": 1.015506,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -16.973411756756757,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -30.825800675675676,
+              "upper": -3.009668918918921
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -33.65629391891892,
+              "upper": -0.6056638513513507
+            },
+            "point_estimate": -17.077837837837837,
+            "probability_above_threshold": 0.0205,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.1904653966891892,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3546214864864865,
+              "upper": -0.011269425675675923
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.3945549831081081,
+              "upper": 0.010841942567567573
+            },
+            "point_estimate": -0.19182027027027027,
+            "probability_above_threshold": 0.032,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2512.0649399999998,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4562.2185,
+              "upper": -445.43100000000027
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4981.1314999999995,
+              "upper": -89.6382499999999
+            },
+            "point_estimate": -2527.52,
+            "probability_above_threshold": 0.0205,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7229575674427642,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5242358073570896,
+              "upper": 0.9453883773226537
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.48880389938499424,
+              "upper": 0.9888298995918456
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7150083157152926,
+            "probability_above_threshold": 0.0205,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.270725,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.21621621621621623,
+              "upper": 0.3310810810810811
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.20270270270270271,
+              "upper": 0.33783783783783783
+            },
+            "point_estimate": 0.2702702702702703,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:GBPJPY:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -17.077837837837837,
+          "mean_r": -0.19182027027027027,
+          "median_r": -1.0004499999999998,
+          "net_pnl_account_currency": -2527.52,
+          "payoff_ratio": 1.9305224524312898,
+          "profit_factor": 0.7150083157152926,
+          "profit_factor_status": "DEFINED",
+          "trades": 148,
+          "win_rate": 0.2702702702702703
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 148,
+        "seed": 9202001
+      },
+      "net_profit": -2527.52,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -17.169286229729728,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -31.17926351351351,
+              "upper": -2.34825337837839
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -34.05666891891892,
+              "upper": 0.5296402027027035
+            },
+            "point_estimate": -17.077837837837837,
+            "probability_above_threshold": 0.0293,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.1927917118918919,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.37351283783783784,
+              "upper": -0.009487837837837841
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.3951499155405405,
+              "upper": 0.03081966216216216
+            },
+            "point_estimate": -0.19182027027027027,
+            "probability_above_threshold": 0.0421,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2541.054362,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4614.531,
+              "upper": -347.5415000000017
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5040.387,
+              "upper": 78.3867500000001
+            },
+            "point_estimate": -2527.52,
+            "probability_above_threshold": 0.0293,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7203484603628428,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5187291894046181,
+              "upper": 0.95732496329852
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.48152893436472816,
+              "upper": 1.009846619115177
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7150083157152926,
+            "probability_above_threshold": 0.0293,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.26994256756756757,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.20945945945945946,
+              "upper": 0.3310810810810811
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.20270270270270271,
+              "upper": 0.34459459459459457
+            },
+            "point_estimate": 0.2702702702702703,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:GBPJPY:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -17.077837837837837,
+          "mean_r": -0.19182027027027027,
+          "median_r": -1.0004499999999998,
+          "net_pnl_account_currency": -2527.52,
+          "payoff_ratio": 1.9305224524312898,
+          "profit_factor": 0.7150083157152926,
+          "profit_factor_status": "DEFINED",
+          "trades": 148,
+          "win_rate": 0.2702702702702703
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 148,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -34.05666891891892,
+      "ordinary_mean_r_ci95_lower": -0.3951499155405405,
+      "profit_factor": 0.715,
+      "sell_net_pnl": -386.5,
+      "win_rate_percent": 27.027027027027028
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.2193,
+      "block_expectancy_ci95_lower": -37.7364598540146,
+      "block_mean_r_ci95_lower": -0.4187520620437956,
+      "buy_net_pnl": -1759.56,
+      "canonical_symbol": "EURCHF",
+      "closed_trades": 137,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -19.36,
+      "maximum_drawdown_percent": 29.314,
+      "maximum_realized_loss_percent": 1.033738,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -19.285424189781022,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -34.598306569343066,
+              "upper": -3.5970656934306677
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -37.7364598540146,
+              "upper": -0.7814598540146048
+            },
+            "point_estimate": -19.362700729927006,
+            "probability_above_threshold": 0.0211,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.21846050868613137,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.3945160948905109,
+              "upper": -0.04377456204379562
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.4187520620437956,
+              "upper": -0.0011576094890510874
+            },
+            "point_estimate": -0.21928905109489052,
+            "probability_above_threshold": 0.0211,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2642.103114,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4739.968,
+              "upper": -492.7980000000015
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5169.8949999999995,
+              "upper": -107.06000000000085
+            },
+            "point_estimate": -2652.69,
+            "probability_above_threshold": 0.0211,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7192728129480619,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5196023108279291,
+              "upper": 0.9422038581478152
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.4843462688564032,
+              "upper": 0.9873364571442508
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7125069226409103,
+            "probability_above_threshold": 0.021,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.26304817518248175,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.20437956204379562,
+              "upper": 0.32116788321167883
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.19708029197080293,
+              "upper": 0.3357664233576642
+            },
+            "point_estimate": 0.26277372262773724,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURCHF:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -19.362700729927006,
+          "mean_r": -0.21928905109489052,
+          "median_r": -1.0055,
+          "net_pnl_account_currency": -2652.69,
+          "payoff_ratio": 1.9989777551869985,
+          "profit_factor": 0.7125069226409103,
+          "profit_factor_status": "DEFINED",
+          "trades": 137,
+          "win_rate": 0.26277372262773724
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 137,
+        "seed": 9202001
+      },
+      "net_profit": -2652.69,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -19.283592364963503,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -35.93616423357664,
+              "upper": -1.8086240875912472
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -39.19995620437955,
+              "upper": 1.6517956204379507
+            },
+            "point_estimate": -19.362700729927006,
+            "probability_above_threshold": 0.0353,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.2185874399270073,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.39514616788321166,
+              "upper": -0.022691021897810217
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.43804408759124086,
+              "upper": 0.0010023175182481653
+            },
+            "point_estimate": -0.21928905109489052,
+            "probability_above_threshold": 0.0305,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2641.8521539999997,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4923.2545,
+              "upper": -247.78150000000085
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5370.393999999999,
+              "upper": 226.29599999999925
+            },
+            "point_estimate": -2652.69,
+            "probability_above_threshold": 0.0353,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7207686194263813,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.5081376205299156,
+              "upper": 0.9708593396567073
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.4701533316980785,
+              "upper": 1.027334883514779
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.7125069226409103,
+            "probability_above_threshold": 0.0353,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2630087591240876,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.20437956204379562,
+              "upper": 0.3284671532846715
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.1897810218978102,
+              "upper": 0.3357664233576642
+            },
+            "point_estimate": 0.26277372262773724,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:EURCHF:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -19.362700729927006,
+          "mean_r": -0.21928905109489052,
+          "median_r": -1.0055,
+          "net_pnl_account_currency": -2652.69,
+          "payoff_ratio": 1.9989777551869985,
+          "profit_factor": 0.7125069226409103,
+          "profit_factor_status": "DEFINED",
+          "trades": 137,
+          "win_rate": 0.26277372262773724
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 137,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -39.19995620437955,
+      "ordinary_mean_r_ci95_lower": -0.43804408759124086,
+      "profit_factor": 0.7125,
+      "sell_net_pnl": -893.13,
+      "win_rate_percent": 26.277372262773724
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.289,
+      "block_expectancy_ci95_lower": -42.4265871559633,
+      "block_mean_r_ci95_lower": -0.5084064220183486,
+      "buy_net_pnl": -720.12,
+      "canonical_symbol": "USDCAD",
+      "closed_trades": 109,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -25.25,
+      "maximum_drawdown_percent": 28.9208,
+      "maximum_realized_loss_percent": 1.015088,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -25.134424917431193,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -39.65434862385322,
+              "upper": -10.348665137614683
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -42.4265871559633,
+              "upper": -7.539325688073397
+            },
+            "point_estimate": -25.2502752293578,
+            "probability_above_threshold": 0.0028,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.28767717458715597,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.4547177064220184,
+              "upper": -0.09728651376146791
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.5084064220183486,
+              "upper": -0.06931009174311926
+            },
+            "point_estimate": -0.2890348623853211,
+            "probability_above_threshold": 0.0054,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2739.652316,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4322.3240000000005,
+              "upper": -1128.0045000000005
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4624.498,
+              "upper": -821.7865000000003
+            },
+            "point_estimate": -2752.28,
+            "probability_above_threshold": 0.0028,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.6123494364140738,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.4249706931005739,
+              "upper": 0.8236312287951673
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3943171689624303,
+              "upper": 0.8684828835971786
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.6045694023599864,
+            "probability_above_threshold": 0.0028,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.23898532110091747,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.1834862385321101,
+              "upper": 0.30275229357798167
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.1651376146788991,
+              "upper": 0.3119266055045872
+            },
+            "point_estimate": 0.23853211009174313,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:USDCAD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -25.2502752293578,
+          "mean_r": -0.2890348623853211,
+          "median_r": -1.0034,
+          "net_pnl_account_currency": -2752.28,
+          "payoff_ratio": 1.9299715536876487,
+          "profit_factor": 0.6045694023599864,
+          "profit_factor_status": "DEFINED",
+          "trades": 109,
+          "win_rate": 0.23853211009174313
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 109,
+        "seed": 9202001
+      },
+      "net_profit": -2752.28,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -25.055243568807338,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -41.26084403669725,
+              "upper": -7.929857798165139
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -44.07306651376147,
+              "upper": -4.666768348623853
+            },
+            "point_estimate": -25.2502752293578,
+            "probability_above_threshold": 0.0081,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.2866547909174312,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.48171766055045867,
+              "upper": -0.06980513761467891
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.5097847018348624,
+              "upper": -0.040961261467889906
+            },
+            "point_estimate": -0.2890348623853211,
+            "probability_above_threshold": 0.0119,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2731.021549,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4497.432000000001,
+              "upper": -864.3545000000001
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -4803.964249999999,
+              "upper": -508.67775
+            },
+            "point_estimate": -2752.28,
+            "probability_above_threshold": 0.0081,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.6146994599855324,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.40551874169354324,
+              "upper": 0.8631996787143171
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3729285143493518,
+              "upper": 0.9172543940259769
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.6045694023599864,
+            "probability_above_threshold": 0.0081,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.23932568807339452,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.1743119266055046,
+              "upper": 0.3119266055045872
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.1651376146788991,
+              "upper": 0.3211009174311927
+            },
+            "point_estimate": 0.23853211009174313,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:USDCAD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -25.2502752293578,
+          "mean_r": -0.2890348623853211,
+          "median_r": -1.0034,
+          "net_pnl_account_currency": -2752.28,
+          "payoff_ratio": 1.9299715536876487,
+          "profit_factor": 0.6045694023599864,
+          "profit_factor_status": "DEFINED",
+          "trades": 109,
+          "win_rate": 0.23853211009174313
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 109,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -44.07306651376147,
+      "ordinary_mean_r_ci95_lower": -0.5097847018348624,
+      "profit_factor": 0.6046,
+      "sell_net_pnl": -2032.16,
+      "win_rate_percent": 23.853211009174313
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.2318,
+      "block_expectancy_ci95_lower": -38.74633333333333,
+      "block_mean_r_ci95_lower": -0.44040649305555557,
+      "buy_net_pnl": -1615.68,
+      "canonical_symbol": "AUDJPY",
+      "closed_trades": 144,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -20.1,
+      "maximum_drawdown_percent": 39.6548,
+      "maximum_realized_loss_percent": 1.010341,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -20.199732069444444,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -35.894184027777776,
+              "upper": -3.6868958333333346
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -38.74633333333333,
+              "upper": -0.3932500000000018
+            },
+            "point_estimate": -20.104930555555555,
+            "probability_above_threshold": 0.0229,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.2331929272222222,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.399773125,
+              "upper": -0.04466111111111112
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.44040649305555557,
+              "upper": -0.021042065972222242
+            },
+            "point_estimate": -0.2318298611111111,
+            "probability_above_threshold": 0.016,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2908.761418,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -5168.762500000001,
+              "upper": -530.9130000000001
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5579.472,
+              "upper": -56.628000000000256
+            },
+            "point_estimate": -2895.11,
+            "probability_above_threshold": 0.0229,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.6996197152493017,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.49409522748861784,
+              "upper": 0.9393249457181492
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.4614071569646494,
+              "upper": 0.99343793878797
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.6947416368185592,
+            "probability_above_threshold": 0.0229,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2564902777777778,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2013888888888889,
+              "upper": 0.3194444444444444
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.1875,
+              "upper": 0.3263888888888889
+            },
+            "point_estimate": 0.2569444444444444,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:AUDJPY:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -20.104930555555555,
+          "mean_r": -0.2318298611111111,
+          "median_r": -1.0019,
+          "net_pnl_account_currency": -2895.11,
+          "payoff_ratio": 2.0091177064752923,
+          "profit_factor": 0.6947416368185592,
+          "profit_factor_status": "DEFINED",
+          "trades": 144,
+          "win_rate": 0.2569444444444444
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 144,
+        "seed": 9202001
+      },
+      "net_profit": -2895.11,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -19.942119583333334,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -36.10864583333333,
+              "upper": -3.3813194444444563
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -39.19426736111111,
+              "upper": -0.2547673611111348
+            },
+            "point_estimate": -20.104930555555555,
+            "probability_above_threshold": 0.0243,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.23000124312499998,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.39986000000000005,
+              "upper": -0.04452673611111112
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.44053411458333336,
+              "upper": -0.0030781770833333438
+            },
+            "point_estimate": -0.2318298611111111,
+            "probability_above_threshold": 0.0172,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -2871.66522,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -5199.6449999999995,
+              "upper": -486.9100000000017
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5643.974499999999,
+              "upper": -36.68650000000341
+            },
+            "point_estimate": -2895.11,
+            "probability_above_threshold": 0.0243,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.7037964951884693,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.49408879435210135,
+              "upper": 0.9437595970295741
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.45804496568930575,
+              "upper": 0.9957311612681697
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.6947416368185592,
+            "probability_above_threshold": 0.0243,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2575527777777778,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.2013888888888889,
+              "upper": 0.3194444444444444
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.1875,
+              "upper": 0.3333333333333333
+            },
+            "point_estimate": 0.2569444444444444,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:AUDJPY:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -20.104930555555555,
+          "mean_r": -0.2318298611111111,
+          "median_r": -1.0019,
+          "net_pnl_account_currency": -2895.11,
+          "payoff_ratio": 2.0091177064752923,
+          "profit_factor": 0.6947416368185592,
+          "profit_factor_status": "DEFINED",
+          "trades": 144,
+          "win_rate": 0.2569444444444444
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 144,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -39.19426736111111,
+      "ordinary_mean_r_ci95_lower": -0.44053411458333336,
+      "profit_factor": 0.6947,
+      "sell_net_pnl": -1279.43,
+      "win_rate_percent": 25.694444444444443
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.3435,
+      "block_expectancy_ci95_lower": -47.728823394495414,
+      "block_mean_r_ci95_lower": -0.5640866055045871,
+      "buy_net_pnl": -2004.7,
+      "canonical_symbol": "GBPCHF",
+      "closed_trades": 109,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -28.78,
+      "maximum_drawdown_percent": 35.2261,
+      "maximum_realized_loss_percent": 1.015015,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -28.77491176146789,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -44.78504587155963,
+              "upper": -11.771160550458728
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -47.728823394495414,
+              "upper": -8.16776605504588
+            },
+            "point_estimate": -28.778715596330276,
+            "probability_above_threshold": 0.0033,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.3432784462385321,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.5362909633027523,
+              "upper": -0.14965385321100919
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.5640866055045871,
+              "upper": -0.095702247706422
+            },
+            "point_estimate": -0.34348256880733946,
+            "probability_above_threshold": 0.0031,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -3136.465382,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4881.570000000001,
+              "upper": -1283.0565000000013
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5202.44175,
+              "upper": -890.2865000000008
+            },
+            "point_estimate": -3136.88,
+            "probability_above_threshold": 0.0033,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.5634074843964672,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.36382878398481344,
+              "upper": 0.7992675703026911
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3336641231668445,
+              "upper": 0.8576997842328224
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.5563274900781584,
+            "probability_above_threshold": 0.0033,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2202532110091743,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.1559633027522936,
+              "upper": 0.28440366972477066
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.14678899082568808,
+              "upper": 0.30275229357798167
+            },
+            "point_estimate": 0.22018348623853212,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:GBPCHF:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -28.778715596330276,
+          "mean_r": -0.34348256880733946,
+          "median_r": -1.0034,
+          "net_pnl_account_currency": -3136.88,
+          "payoff_ratio": 1.9703265273601445,
+          "profit_factor": 0.5563274900781584,
+          "profit_factor_status": "DEFINED",
+          "trades": 109,
+          "win_rate": 0.22018348623853212
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 109,
+        "seed": 9202001
+      },
+      "net_profit": -3136.88,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -28.95331311009174,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -44.681073394495414,
+              "upper": -12.379986238532116
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -47.38303440366972,
+              "upper": -8.984635321100921
+            },
+            "point_estimate": -28.778715596330276,
+            "probability_above_threshold": 0.0019,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.3457475705504587,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.5362084862385321,
+              "upper": -0.1503943577981651
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.564084747706422,
+              "upper": -0.09653000000000002
+            },
+            "point_estimate": -0.34348256880733946,
+            "probability_above_threshold": 0.0017,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -3155.911129,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -4870.236999999999,
+              "upper": -1349.4185000000007
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5164.750749999999,
+              "upper": -979.3252500000002
+            },
+            "point_estimate": -3136.88,
+            "probability_above_threshold": 0.0019,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.5606797107477204,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.36458082451967894,
+              "upper": 0.7909540044372092
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3330800977699878,
+              "upper": 0.8448107420899509
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.5563274900781584,
+            "probability_above_threshold": 0.0019,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.21942844036697248,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.1559633027522936,
+              "upper": 0.28440366972477066
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.14678899082568808,
+              "upper": 0.30275229357798167
+            },
+            "point_estimate": 0.22018348623853212,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:GBPCHF:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -28.778715596330276,
+          "mean_r": -0.34348256880733946,
+          "median_r": -1.0034,
+          "net_pnl_account_currency": -3136.88,
+          "payoff_ratio": 1.9703265273601445,
+          "profit_factor": 0.5563274900781584,
+          "profit_factor_status": "DEFINED",
+          "trades": 109,
+          "win_rate": 0.22018348623853212
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 109,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -47.38303440366972,
+      "ordinary_mean_r_ci95_lower": -0.564084747706422,
+      "profit_factor": 0.5563,
+      "sell_net_pnl": -1132.18,
+      "win_rate_percent": 22.018348623853214
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.3093,
+      "block_expectancy_ci95_lower": -45.798046,
+      "block_mean_r_ci95_lower": -0.54774722,
+      "buy_net_pnl": -2512.36,
+      "canonical_symbol": "NZDJPY",
+      "closed_trades": 125,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -26.07,
+      "maximum_drawdown_percent": 40.305,
+      "maximum_realized_loss_percent": 1.249767,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -25.997771536000002,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -42.573436,
+              "upper": -9.070656000000017
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -45.798046,
+              "upper": -5.784214
+            },
+            "point_estimate": -26.07232,
+            "probability_above_threshold": 0.0068,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.30852277416,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.5036142,
+              "upper": -0.09692392000000004
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.54774722,
+              "upper": -0.06718928000000002
+            },
+            "point_estimate": -0.3093272,
+            "probability_above_threshold": 0.0088,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -3249.721442,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -5321.6795,
+              "upper": -1133.8320000000022
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5724.75575,
+              "upper": -723.02675
+            },
+            "point_estimate": -3259.04,
+            "probability_above_threshold": 0.0068,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.5878117863309269,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.3723488657100594,
+              "upper": 0.8385664734788988
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.33824637165987953,
+              "upper": 0.8951766420411772
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.5789081982040184,
+            "probability_above_threshold": 0.0068,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.23227440000000002,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.168,
+              "upper": 0.304
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.152,
+              "upper": 0.312
+            },
+            "point_estimate": 0.232,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:NZDJPY:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -26.07232,
+          "mean_r": -0.3093272,
+          "median_r": -1.0027,
+          "net_pnl_account_currency": -3259.04,
+          "payoff_ratio": 1.916385759571923,
+          "profit_factor": 0.5789081982040184,
+          "profit_factor_status": "DEFINED",
+          "trades": 125,
+          "win_rate": 0.232
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 125,
+        "seed": 9202001
+      },
+      "net_profit": -3259.04,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -26.071897216,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -40.901344,
+              "upper": -11.005096000000004
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -43.420902,
+              "upper": -7.803938000000005
+            },
+            "point_estimate": -26.07232,
+            "probability_above_threshold": 0.0027,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.30896704528,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.49978068,
+              "upper": -0.11729524000000004
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.52587454,
+              "upper": -0.07147142000000008
+            },
+            "point_estimate": -0.3093272,
+            "probability_above_threshold": 0.0052,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -3258.987152,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -5112.668,
+              "upper": -1375.6370000000004
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5427.61275,
+              "upper": -975.4922500000007
+            },
+            "point_estimate": -3259.04,
+            "probability_above_threshold": 0.0027,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.5852406649624635,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.3896491697085288,
+              "upper": 0.8060993292603
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3604025872368548,
+              "upper": 0.8598262738824909
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.5789081982040184,
+            "probability_above_threshold": 0.0027,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.2321264,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.168,
+              "upper": 0.296
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.16,
+              "upper": 0.312
+            },
+            "point_estimate": 0.232,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:NZDJPY:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -26.07232,
+          "mean_r": -0.3093272,
+          "median_r": -1.0027,
+          "net_pnl_account_currency": -3259.04,
+          "payoff_ratio": 1.916385759571923,
+          "profit_factor": 0.5789081982040184,
+          "profit_factor_status": "DEFINED",
+          "trades": 125,
+          "win_rate": 0.232
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 125,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -43.420902,
+      "ordinary_mean_r_ci95_lower": -0.52587454,
+      "profit_factor": 0.5789,
+      "sell_net_pnl": -746.68,
+      "win_rate_percent": 23.200000000000003
+    },
+    {
+      "asset_class": "FOREX",
+      "average_r": -0.3458,
+      "block_expectancy_ci95_lower": -42.818,
+      "block_mean_r_ci95_lower": -0.5277426136363637,
+      "buy_net_pnl": -1943.63,
+      "canonical_symbol": "AUDUSD",
+      "closed_trades": 132,
+      "evidence_tier": "EXPLORATORY_NEGATIVE_OR_NULL",
+      "expectancy": -27.94,
+      "maximum_drawdown_percent": 39.1513,
+      "maximum_realized_loss_percent": 1.010754,
+      "moving_block_bootstrap": {
+        "available": true,
+        "block_length": 5,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -27.97722187121212,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -40.674083333333336,
+              "upper": -15.218253787878796
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -42.818,
+              "upper": -12.729619318181825
+            },
+            "point_estimate": -27.938939393939393,
+            "probability_above_threshold": 0.0002,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.34624472825757574,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.5048663636363636,
+              "upper": -0.18663704545454543
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.5277426136363637,
+              "upper": -0.16375829545454545
+            },
+            "point_estimate": -0.3457856060606061,
+            "probability_above_threshold": 0.0002,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -3692.993287,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -5368.979,
+              "upper": -2008.809500000001
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5651.976,
+              "upper": -1680.309750000001
+            },
+            "point_estimate": -3687.94,
+            "probability_above_threshold": 0.0002,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.5612656764346335,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.39764400357918006,
+              "upper": 0.7414416317376791
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.37326069573820136,
+              "upper": 0.7802499844337143
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.5575553334764983,
+            "probability_above_threshold": 0.0002,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.21954469696969695,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.16666666666666666,
+              "upper": 0.2727272727272727
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.1590909090909091,
+              "upper": 0.2803030303030303
+            },
+            "point_estimate": 0.2196969696969697,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:AUDUSD:block",
+        "method": "moving_block_circular",
+        "point_estimates": {
+          "expectancy_account_currency": -27.938939393939393,
+          "mean_r": -0.3457856060606061,
+          "median_r": -1.0036,
+          "net_pnl_account_currency": -3687.94,
+          "payoff_ratio": 1.9802827361406665,
+          "profit_factor": 0.5575553334764983,
+          "profit_factor_status": "DEFINED",
+          "trades": 132,
+          "win_rate": 0.2196969696969697
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 132,
+        "seed": 9202001
+      },
+      "net_profit": -3687.94,
+      "ordinary_bootstrap": {
+        "available": true,
+        "block_length": null,
+        "bootstrap_metrics": {
+          "expectancy": {
+            "bootstrap_mean": -27.947123833333332,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -42.192484848484845,
+              "upper": -13.396321969696984
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -44.59891477272727,
+              "upper": -10.314571969696976
+            },
+            "point_estimate": -27.938939393939393,
+            "probability_above_threshold": 0.0012,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "mean_r": {
+            "bootstrap_mean": -0.34559823863636363,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -0.527412537878788,
+              "upper": -0.16407799242424242
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -0.5503198484848485,
+              "upper": -0.11887164772727275
+            },
+            "point_estimate": -0.3457856060606061,
+            "probability_above_threshold": 0.0008,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "net_pnl": {
+            "bootstrap_mean": -3689.0203460000002,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": -5569.407999999999,
+              "upper": -1768.3145000000018
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": -5887.05675,
+              "upper": -1361.523500000001
+            },
+            "point_estimate": -3687.94,
+            "probability_above_threshold": 0.0012,
+            "threshold": 0.0,
+            "valid_samples": 10000
+          },
+          "profit_factor": {
+            "bootstrap_mean": 0.563088971123911,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.37970319360645977,
+              "upper": 0.7697709571882464
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.3512327465553747,
+              "upper": 0.8203692094248627
+            },
+            "invalid_zero_gross_loss_samples": 0,
+            "point_estimate": 0.5575553334764983,
+            "probability_above_threshold": 0.0012,
+            "probability_denominator": "VALID_PF_SAMPLES_ONLY",
+            "threshold": 1.0,
+            "valid_samples": 10000
+          },
+          "win_rate": {
+            "bootstrap_mean": 0.21976060606060605,
+            "ci_90": {
+              "level_percent": 90,
+              "lower": 0.1590909090909091,
+              "upper": 0.2803030303030303
+            },
+            "ci_95": {
+              "level_percent": 95,
+              "lower": 0.15151515151515152,
+              "upper": 0.29545454545454547
+            },
+            "point_estimate": 0.2196969696969697,
+            "probability_above_threshold": 0.0,
+            "threshold": 0.5,
+            "valid_samples": 10000
+          }
+        },
+        "derived_seed_label": "E5:AUDUSD:ordinary",
+        "method": "ordinary",
+        "point_estimates": {
+          "expectancy_account_currency": -27.938939393939393,
+          "mean_r": -0.3457856060606061,
+          "median_r": -1.0036,
+          "net_pnl_account_currency": -3687.94,
+          "payoff_ratio": 1.9802827361406665,
+          "profit_factor": 0.5575553334764983,
+          "profit_factor_status": "DEFINED",
+          "trades": 132,
+          "win_rate": 0.2196969696969697
+        },
+        "reason": null,
+        "resamples": 10000,
+        "sample_size": 132,
+        "seed": 9202001
+      },
+      "ordinary_expectancy_ci95_lower": -44.59891477272727,
+      "ordinary_mean_r_ci95_lower": -0.5503198484848485,
+      "profit_factor": 0.5576,
+      "sell_net_pnl": -1744.31,
+      "win_rate_percent": 21.96969696969697
+    }
+  ]
+}
