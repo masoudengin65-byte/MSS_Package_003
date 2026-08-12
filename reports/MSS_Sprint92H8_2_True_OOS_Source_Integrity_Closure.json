@@ -1,0 +1,89 @@
+{
+  "acceptance": {
+    "data_integrity_block_recorded": true,
+    "legacy_h7_experiment_closed": true,
+    "new_preregistration_required": true,
+    "no_outcome_inspection": true,
+    "no_replay": true,
+    "no_strategy_outcome_inference": true,
+    "production_change_justified": false
+  },
+  "audit": {
+    "deterministic_rebuild": true,
+    "mt5_accessed": false,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "pnl_computed": false,
+    "production_behavior_changed": false,
+    "signals_generated": false,
+    "strategy_replay_run": false,
+    "trades_generated": false
+  },
+  "baseline_commit": "a1a098b",
+  "closed_experiment": {
+    "execution_id": "MSS_92H7_USDJPY_TRUE_OOS_V1",
+    "primary_symbol": "USDJPY",
+    "production_status": "UNCHANGED",
+    "status": "DATA_INTEGRITY_BLOCKED",
+    "strategy_outcome_status": "NOT_EVALUATED"
+  },
+  "eligibility_state_at_failure": {
+    "available_completed_candles": 265,
+    "remaining_candles": 9735,
+    "required_completed_candles": 10000,
+    "snapshot_export_authorized": false,
+    "snapshot_exported": false
+  },
+  "integrity_failure": {
+    "actual_ohlcv_sha256": "92d5de63e192ffa8e63018e16f45aa4b2e88adf8a033a43cb8dd768a73b0dfb0",
+    "drift_localization_possible": false,
+    "drift_localization_reason": "C2 preserved the frozen prefix hash but did not commit the raw 227-candle payload; therefore the first changed candle and changed field cannot be scientifically reconstructed from the two hashes.",
+    "expected_ohlcv_sha256": "f65b4f41b2bedc4cc1fe4fed39e1c2f1e844098db95c904d38be2c8a30ad9d8e",
+    "failure_type": "FROZEN_PREFIX_CONTENT_DRIFT",
+    "ohlcv_sha256_match": false,
+    "prefix_candle_count": 227,
+    "structural_source_integrity_passed": true,
+    "timestamp_boundary_match": true
+  },
+  "mode": "RESEARCH_GOVERNANCE_CLOSURE_ONLY",
+  "next_experiment_requirements": {
+    "broker_corrections_must_not_overwrite_frozen_data": true,
+    "full_snapshot_sha256_required": true,
+    "future_broker_retrieval_may_be_used_only_for_drift_audit": true,
+    "new_execution_id_required": true,
+    "new_preregistration_required": true,
+    "new_true_oos_boundary_required": true,
+    "no_outcome_access_before_full_eligibility": true,
+    "per_candle_canonical_serialization_required": true,
+    "per_candle_or_chunk_hashing_required": true,
+    "raw_candle_immutability_required": true,
+    "strategy_execution_identity_must_be_re_frozen": true,
+    "write_once_snapshot_storage_required": true
+  },
+  "prohibited_actions": {
+    "continue_h7_snapshot_accrual_using_drifted_prefix": true,
+    "inspect_h7_true_oos_outcomes": true,
+    "production_change_from_h7": true,
+    "reinterpret_exposed_history_as_true_oos": true,
+    "replace_old_prefix_with_current_broker_history": true,
+    "rerun_h81_to_seek_a_matching_history_version": true,
+    "run_h7_strategy_replay": true
+  },
+  "schema_version": "MSS_SPRINT92H8_2_TRUE_OOS_SOURCE_INTEGRITY_CLOSURE_V1",
+  "scientific_interpretation": {
+    "failure_attributed_to_data_integrity_contract": true,
+    "failure_attributed_to_strategy": false,
+    "h7_confirmation_test_completed": false,
+    "strategy_failure_claimed": false,
+    "strategy_success_claimed": false,
+    "true_oos_performance_claimed": false
+  },
+  "source_file_sha256": {
+    "h7": "225b1b61f67c7cb401f68233aedfdfebbf33fa8612d47cc080ab524d9db4ace5",
+    "h81": "e0cf816d369f3ceca13fe9d537c50a69abb9c477d925745b9ef804d5eb4db96c"
+  },
+  "true_oos_boundary": {
+    "status": "LEGACY_EXPERIMENT_BOUNDARY_CLOSED",
+    "timestamp": "2026-08-07T17:00:00Z"
+  }
+}
