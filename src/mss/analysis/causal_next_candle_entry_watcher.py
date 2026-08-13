@@ -26,6 +26,9 @@ class NextCandleEntryWatchResult:
 
     next_candle_sequence_confirmed: bool = False
 
+    observation_broker_epoch: int = 0
+    observation_delay_seconds: int = 0
+
     signal_valid: bool = False
     entry: FrozenShadowEntry | None = None
 
@@ -55,9 +58,11 @@ class CausalNextCandleEntryWatcher:
     """
 
     VERSION = (
-        "MSS_SPRINT92H14_3_3_"
-        "CAUSAL_NEXT_CANDLE_WATCHER_V2"
+        "MSS_SPRINT92H14_3_3_1_"
+        "CAUSAL_NEXT_CANDLE_WATCHER_V3"
     )
+
+    MAX_ENTRY_OBSERVATION_DELAY_SECONDS = 2
 
     @classmethod
     def evaluate(
@@ -66,6 +71,7 @@ class CausalNextCandleEntryWatcher:
         signal: FrozenShadowSignal | None,
         previous_current_bar_epoch: int,
         current_bar_epoch: int,
+        observation_broker_epoch: int,
         next_candle_sequence_confirmed: bool,
         next_candle_open: float,
         spread_points: float,
@@ -133,6 +139,78 @@ class CausalNextCandleEntryWatcher:
                 ),
                 bar_transition_missed=True,
                 next_candle_sequence_confirmed=False,
+            )
+
+        observation_epoch = int(
+            observation_broker_epoch
+        )
+
+        if observation_epoch <= 0:
+            return NextCandleEntryWatchResult(
+                valid=False,
+                action="ENTRY_WINDOW_MISSED",
+                reason="INVALID_OBSERVATION_EPOCH",
+                previous_current_bar_epoch=(
+                    previous_epoch
+                ),
+                current_bar_epoch=(
+                    current_epoch
+                ),
+                next_candle_sequence_confirmed=True,
+            )
+
+        observation_delay = (
+            observation_epoch
+            - current_epoch
+        )
+
+        if observation_delay < 0:
+            return NextCandleEntryWatchResult(
+                valid=False,
+                action="ENTRY_WINDOW_MISSED",
+                reason=(
+                    "OBSERVATION_BEFORE_CURRENT_BAR"
+                ),
+                previous_current_bar_epoch=(
+                    previous_epoch
+                ),
+                current_bar_epoch=(
+                    current_epoch
+                ),
+                observation_broker_epoch=(
+                    observation_epoch
+                ),
+                observation_delay_seconds=(
+                    observation_delay
+                ),
+                next_candle_sequence_confirmed=True,
+            )
+
+        if (
+            observation_delay
+            > cls.MAX_ENTRY_OBSERVATION_DELAY_SECONDS
+        ):
+            return NextCandleEntryWatchResult(
+                valid=False,
+                action="ENTRY_WINDOW_MISSED",
+                reason=(
+                    "NEXT_CANDLE_OBSERVATION_TOO_LATE"
+                ),
+                previous_current_bar_epoch=(
+                    previous_epoch
+                ),
+                current_bar_epoch=(
+                    current_epoch
+                ),
+                observation_broker_epoch=(
+                    observation_epoch
+                ),
+                observation_delay_seconds=(
+                    observation_delay
+                ),
+                exact_bar_transition_observed=True,
+                bar_transition_missed=True,
+                next_candle_sequence_confirmed=True,
             )
 
         if signal is None:

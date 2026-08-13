@@ -66,6 +66,7 @@ def test_same_bar_waits():
             signal=None,
             previous_current_bar_epoch=9000,
             current_bar_epoch=9000,
+            observation_broker_epoch=9000,
             next_candle_sequence_confirmed=False,
             next_candle_open=159.0,
             spread_points=2.0,
@@ -93,6 +94,7 @@ def test_confirmed_next_sequence_without_signal():
             signal=None,
             previous_current_bar_epoch=9000,
             current_bar_epoch=9900,
+            observation_broker_epoch=9900,
             next_candle_sequence_confirmed=True,
             next_candle_open=159.0,
             spread_points=2.0,
@@ -116,6 +118,7 @@ def test_unconfirmed_sequence_blocks_entry():
             signal=bullish_signal(),
             previous_current_bar_epoch=9000,
             current_bar_epoch=10800,
+            observation_broker_epoch=10800,
             next_candle_sequence_confirmed=False,
             next_candle_open=159.0,
             spread_points=2.0,
@@ -148,6 +151,7 @@ def test_buy_confirmed_next_sequence_is_ready():
             signal=bullish_signal(),
             previous_current_bar_epoch=9000,
             current_bar_epoch=9900,
+            observation_broker_epoch=9900,
             next_candle_sequence_confirmed=True,
             next_candle_open=159.000,
             spread_points=2.0,
@@ -203,6 +207,7 @@ def test_sell_confirmed_next_sequence_is_ready():
             signal=bearish_signal(),
             previous_current_bar_epoch=9000,
             current_bar_epoch=9900,
+            observation_broker_epoch=9900,
             next_candle_sequence_confirmed=True,
             next_candle_open=159.000,
             spread_points=2.0,
@@ -242,6 +247,7 @@ def test_weekend_or_session_gap_can_be_next_candle():
             signal=bullish_signal(),
             previous_current_bar_epoch=9000,
             current_bar_epoch=181800,
+            observation_broker_epoch=181800,
             next_candle_sequence_confirmed=True,
             next_candle_open=159.000,
             spread_points=2.0,
@@ -273,6 +279,7 @@ def test_signal_bar_mismatch_blocks():
             signal=signal,
             previous_current_bar_epoch=9000,
             current_bar_epoch=9900,
+            observation_broker_epoch=9900,
             next_candle_sequence_confirmed=True,
             next_candle_open=159.0,
             spread_points=2.0,
@@ -298,6 +305,7 @@ def test_time_regression_blocks():
             signal=None,
             previous_current_bar_epoch=9900,
             current_bar_epoch=9000,
+            observation_broker_epoch=9000,
             next_candle_sequence_confirmed=False,
             next_candle_open=159.0,
             spread_points=2.0,
@@ -310,4 +318,65 @@ def test_time_regression_blocks():
     assert (
         result.reason
         == "BAR_TIME_REGRESSION"
+    )
+
+
+def test_transition_observed_two_seconds_late_is_allowed():
+    result = (
+        CausalNextCandleEntryWatcher
+        .evaluate(
+            signal=bullish_signal(),
+            previous_current_bar_epoch=9000,
+            current_bar_epoch=9900,
+            observation_broker_epoch=9902,
+            next_candle_sequence_confirmed=True,
+            next_candle_open=159.000,
+            spread_points=2.0,
+            point=0.001,
+        )
+    )
+
+    assert result.valid is True
+
+    assert (
+        result.action
+        == "SHADOW_ENTRY_READY"
+    )
+
+
+def test_transition_observed_too_late_is_blocked():
+    result = (
+        CausalNextCandleEntryWatcher
+        .evaluate(
+            signal=bullish_signal(),
+            previous_current_bar_epoch=9000,
+            current_bar_epoch=9900,
+            observation_broker_epoch=9903,
+            next_candle_sequence_confirmed=True,
+            next_candle_open=159.000,
+            spread_points=2.0,
+            point=0.001,
+        )
+    )
+
+    assert result.valid is False
+
+    assert (
+        result.action
+        == "ENTRY_WINDOW_MISSED"
+    )
+
+    assert (
+        result.reason
+        == "NEXT_CANDLE_OBSERVATION_TOO_LATE"
+    )
+
+    assert (
+        result.observation_delay_seconds
+        == 3
+    )
+
+    assert (
+        result.shadow_entry_allowed
+        is False
     )
