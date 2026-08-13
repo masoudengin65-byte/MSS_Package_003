@@ -1,0 +1,60 @@
+{
+  "audit": {
+    "mt5_read_only_recheck_performed": true,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "strategy_replay_run": false
+  },
+  "chunk_audit": {
+    "first_epoch": 1786562100,
+    "gap_count": 1,
+    "gaps": [
+      {
+        "current_epoch": 1786580100,
+        "delta_seconds": 1800,
+        "missing_m15_slots": 1,
+        "previous_epoch": 1786578300
+      }
+    ],
+    "last_epoch": 1786618800,
+    "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000003.jsonl",
+    "row_count": 63,
+    "sha256": "6f3dfd0313cbb170f5986d4071161e7d5fef399b7d170636b40eaf5784dea422"
+  },
+  "confirmed_source_gap": {
+    "actual_spacing_seconds": 1800,
+    "classification": "BROKER_SOURCE_HISTORY_GAP",
+    "expected_spacing_seconds": 900,
+    "missing_raw_mt5_epoch": 1786579200,
+    "mt5_recheck_target_present": false,
+    "mt5_recheck_window_timestamps": [
+      1786578300,
+      1786580100
+    ],
+    "next_epoch": 1786580100,
+    "previous_epoch": 1786578300
+  },
+  "governance": {
+    "existing_chunk_rewrite_allowed": false,
+    "existing_manifest_rewrite_allowed": false,
+    "fabrication_allowed": false,
+    "gap_must_remain_explicit": true,
+    "ingestion_bug_evidence": false,
+    "ledger_reinitialization_required": false,
+    "manual_backfill_allowed": false,
+    "synthetic_candle_allowed": false
+  },
+  "protected_artifacts": {
+    "chunk_000003_sha256": "6f3dfd0313cbb170f5986d4071161e7d5fef399b7d170636b40eaf5784dea422",
+    "manifest_000003_sha256": "0e627b49161824887d49e68f5bd3fd40b9137139af533a23c2c14f4ad7800203"
+  },
+  "schema_version": "MSS_SPRINT92H13_3_1_SOURCE_GAP_AUDIT_V1",
+  "sequence": 3,
+  "symbol": "USDJPY",
+  "time_authority": {
+    "execution_domain": "RAW_MT5_BROKER_EPOCH_DOMAIN",
+    "timestamp_authority": "RAW_MT5_TIME_FIELD",
+    "utc_labels_are_execution_authority": false
+  },
+  "timeframe": "M15"
+}
