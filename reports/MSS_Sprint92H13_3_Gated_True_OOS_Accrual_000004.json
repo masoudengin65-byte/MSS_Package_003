@@ -1,0 +1,302 @@
+{
+  "accrual": {
+    "eligibility_status": "ACCRUAL_IN_PROGRESS",
+    "first_new_epoch": 1786619700,
+    "last_new_epoch": 1786631400,
+    "new_total_row_count": 83,
+    "previous_last_epoch": 1786618800,
+    "previous_row_count": 69,
+    "remaining_rows": 9917,
+    "rows_appended": 14
+  },
+  "audit": {
+    "mt5_accessed": true,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "pnl_computed": false,
+    "signals_generated": false,
+    "strategy_replay_run": false,
+    "trades_generated": false
+  },
+  "broker_drift_audit": {
+    "drift_detected": false,
+    "drifted_timestamp_count": 0,
+    "evidence": [],
+    "frozen_rows_modified": false,
+    "overlap_timestamp_count": 69
+  },
+  "created_artifacts": {
+    "chunk": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000004.jsonl",
+    "chunk_sha256": "6c976a0879ec812f97005f26e22be3438f389ed5d7e4a0381ac7f913f4abc8b8",
+    "manifest": "research_data/sprint92h_true_oos_v2/USDJPY_M15/manifest_000004.json",
+    "manifest_sha256": "17e0229c4c7acc82e8179a1ea6c4536a438eaf2f6afaa29c3938f608daeed6ef"
+  },
+  "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+  "existing_ledger_audit": {
+    "aggregate_sha256": "e6f9da7f79d45ff684b647fa5f94edcbe8f98babeb9f8e8bbe5074cf45418cd2",
+    "chunk_count": 3,
+    "chunks": [
+      {
+        "file_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000001.jsonl",
+        "row_count": 5,
+        "sequence": 1,
+        "verified": true
+      },
+      {
+        "file_sha256": "f17447dfea1d8735a29877db222dc672de8c8202060dc2fed4151214e2932f56",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000002.jsonl",
+        "row_count": 1,
+        "sequence": 2,
+        "verified": true
+      },
+      {
+        "file_sha256": "6f3dfd0313cbb170f5986d4071161e7d5fef399b7d170636b40eaf5784dea422",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000003.jsonl",
+        "row_count": 63,
+        "sequence": 3,
+        "verified": true
+      }
+    ],
+    "row_count": 69,
+    "verified": true
+  },
+  "gated_accrual_governance": {
+    "existing_chunks_modified": false,
+    "existing_manifests_modified": false,
+    "ledger_write_without_confirmed_gate_allowed": false,
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "strategy_replay_run": false,
+    "time_authority_checked_before_ledger_write": true
+  },
+  "immutability": {
+    "broker_drift_overwrite_allowed": false,
+    "existing_chunks_modified": false,
+    "existing_manifest_modified": false,
+    "new_chunk_write_once": true,
+    "new_manifest_write_once": true
+  },
+  "mode": "INCREMENTAL_APPEND_ONLY_TRUE_OOS_ACCRUAL_NO_REPLAY_NO_OUTCOMES",
+  "new_chunk": {
+    "file_sha256": "6c976a0879ec812f97005f26e22be3438f389ed5d7e4a0381ac7f913f4abc8b8",
+    "first_epoch": 1786619700,
+    "first_open_broker_time_label": "2026-08-13T11:15:00Z",
+    "last_epoch": 1786631400,
+    "last_open_broker_time_label": "2026-08-13T14:30:00Z",
+    "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000004.jsonl",
+    "record_sha256": [
+      "2b1747e82fb0e941aa00015ab01f841c970235c84032ec5a4e78eace1cede851",
+      "45c9d59d2072b1f559b3fc5309a20ece8c4ecd713c7dd1b63e9891e5cc51e1c9",
+      "1a10b4695079840833d943856d1afa0695b66b2dcdc0bd507f0cad1b21755854",
+      "6741156aad4a8f7d9c0685db9ed3771e9cb403f46a7f39428174a1ac72b5438e",
+      "791ecbf08cca952c299476bad70915585b87eb283c1d1bbc27edc7b7c2b226cd",
+      "04ea499a234af6d55f8a5fe76dbfc485774551ababe9dc6be99fb97394f9f878",
+      "6146e0eb057986dccc5e3943530c73a74e985f3533b85f1348498413661a272c",
+      "739b427066befb44d80f1c5476bba62247bbe319b8ce0308842f6ea13240c91c",
+      "3225ef73c6fc88677a3e52ef512aadaed07cc5524f3a39444cf33473422a7e53",
+      "2c47137c003f8def5d6c2101f93fa55dc929fff384371b29be3a7198fba27889",
+      "5e322f9ea56374119ad6d782c295712a30b41c562a82d2b830ce2b237edb6448",
+      "535596078df9336a1aa27cf8f0e49af70f64f95e69d87da013d8d4565f560701",
+      "b2f97c339bf9a01bfb062238add554f66336a3592accc2fa037149c0c3f5a249",
+      "79294c5cf18bdf4825b65ab82fc77bee01c0b9cef84c78558f9ae34570423950"
+    ],
+    "row_count": 14,
+    "sequence": 4
+  },
+  "new_rows_integrity": {
+    "chronological_order": true,
+    "duplicate_timestamp_count": 0,
+    "future_candle_count": 0,
+    "gap_event_count": 0,
+    "gap_policy": "CALENDAR_AGNOSTIC; NO_IMPUTATION; GAPS_ARE_NOT_AUTOMATICALLY_BAD_DATA",
+    "implied_missing_interval_count": 0,
+    "invalid_ohlc_count": 0,
+    "largest_gap_seconds": 0,
+    "negative_spread_count": 0,
+    "negative_volume_count": 0,
+    "nonfinite_price_count": 0,
+    "pass": true,
+    "strictly_increasing_timestamps": true
+  },
+  "next_manifest": {
+    "aggregate_ledger_sha256": "b632fb7fffa8cb95a719d0c1cb1a1b8b61c545f2e0b3e44f33d98f6e27e7997e",
+    "chunk_count": 4,
+    "chunks": [
+      {
+        "file_sha256": "8d4f85675d0f5ef46b4e951515b3ca2cf01ad6268a93e7696715c126437bf8d1",
+        "first_epoch": 1786556700,
+        "first_open_broker_time_label": "2026-08-12T17:45:00Z",
+        "last_epoch": 1786560300,
+        "last_open_broker_time_label": "2026-08-12T18:45:00Z",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000001.jsonl",
+        "record_sha256": [
+          "246acfb035994242046c62f500028d138af618d0b31b4e550b79471874b9d82a",
+          "b0159572e699d45c5a1b2413da23b7e3f869f0cc3eecd7f5cb6d79270094f5f6",
+          "49377869a33a3d9a46d00789997e620a55db03920457dce4d1d30c3369704b8f",
+          "fe25fec979d5ebb8f2bf50b1f7027a6462c77e66c278e2d50dd31a35c89260b6",
+          "30e09ba2e1143a46f80edf67a2a42cda600f3049b3634dc9b8a52ad248a28ec9"
+        ],
+        "row_count": 5,
+        "sequence": 1
+      },
+      {
+        "file_sha256": "f17447dfea1d8735a29877db222dc672de8c8202060dc2fed4151214e2932f56",
+        "first_epoch": 1786561200,
+        "first_open_broker_time_label": "2026-08-12T19:00:00Z",
+        "last_epoch": 1786561200,
+        "last_open_broker_time_label": "2026-08-12T19:00:00Z",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000002.jsonl",
+        "record_sha256": [
+          "f17447dfea1d8735a29877db222dc672de8c8202060dc2fed4151214e2932f56"
+        ],
+        "row_count": 1,
+        "sequence": 2
+      },
+      {
+        "file_sha256": "6f3dfd0313cbb170f5986d4071161e7d5fef399b7d170636b40eaf5784dea422",
+        "first_epoch": 1786562100,
+        "first_open_broker_time_label": "2026-08-12T19:15:00Z",
+        "last_epoch": 1786618800,
+        "last_open_broker_time_label": "2026-08-13T11:00:00Z",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000003.jsonl",
+        "record_sha256": [
+          "3985b9e6bb76f31540f8880cda78b6aa9942082f0d01cbc0c76cfd7ba6ebce37",
+          "f3821991b6bede0a3e1868170b0a15a15e16397fab568782616d5b0485d28b7a",
+          "169685f6390079d2d4496abfda7abc02222f1b3cc6437477e2da30d5be79117a",
+          "54271e22397b66d4ea25781b56c48e906832ac23975b2519872af82b7a6fd378",
+          "48dd76d93bfde727f9fe0918836bcf65fc4eb7add318bc974841deff5c41d80f",
+          "3df02b453b3931a09dce1ec3ac1012e6dc80c9961d209c21435e6bc328730f68",
+          "0044df258ded86612af23e8dcb7941ab12a07f34e0bc98853a4b1e4966ca30b9",
+          "78f3c05a2921a2ca5454ad06ce529efec59d36f8053363fb45b6dbc70d91e64b",
+          "f3022c9b86297181684ce139f580fef0b24cc24eca187ca5d0d5c8dead3f2e79",
+          "2590da57d1ec29f4317cad8d357001acf206838c78e0bd81503076cce40ffc56",
+          "95bcbca709312de3be8abf49d75edd68d1333474a0b1b7c901182f3a481cb8be",
+          "2ee64969da4b85c98b9b493f593d5a9d558216967e73c94318419d9f6f5432c9",
+          "e8b4cf7852b5ad4693973ac5eb8420f81e3e14741e100d8f96fe9f5d30f813e3",
+          "e53ab83aa0b18fd6f6ab97315a46bf0966c1b922086c7ad63af12d4ee06b6420",
+          "5f8535dcca72045582601907838c526ec48c87f21f6abf7929604b7216dc6663",
+          "5fd41cec32dc2c8bc7639ec75b51877b1abf8bd0a9c428768f89648365f94666",
+          "87262e3a538e35ce839ed6272453da81cc322a5e1693d75474dc739321caf043",
+          "31bf975c132c35269ab50f615b3602cc1cc5e4e5ec46fa74e81d814e7a1dc8e9",
+          "294afe66ae55e0e79ea1c10d1c4178b725e14efbeee1288a7902e08801e186f8",
+          "60dd3082dc1b920bd5154cf5054976b9c6da2becb2c1f39bb82cc164047f3ecf",
+          "affab593cbd8a971f8b10a55bd1c04fe32fc2202c261cc35bcb3bd1e7bba0955",
+          "51a8dc2e303914f4a2f5b2ab2867f43598599efcf7affd426bd609e80f27004b",
+          "58aef7decb17b3a885d76a23c8c1beb6736428f144e49ba9896c892d3bbeb536",
+          "96c46a3faeebf68fb3c907af4e74eecd1634b06091437ac80496b02a044236d6",
+          "6502715e5face0344a3b79dfea318ff81db415c55e161604a50bb7935ba4aa9a",
+          "5ab7bbf9d1265c2fc15f4a173247edebc8e275a5bb589ad0d555d330a1eabda8",
+          "423b3217bd673104bb8182ea0a40741bc761a66e2394cf983f764b24c84e5a2a",
+          "9cb1c0b10db92bf6b0f0877de218dfbc974871ae53310b1455314c504a1b3af3",
+          "8197188188b5c04e393d334dea8fa66fee3b113c816255c63c2763e2e04bffe2",
+          "62eb5c15c53e08910ac3ff63a6cbffa8fd5f97df0fd002f3db24ce0511581e7b",
+          "325ba9dbc550cbfc391b21d26720cc2a9d2393f185b266a1711c99e95f6f431a",
+          "8d65936a09d7902e0691b95e84a418b7f9b6c9fbf450b4d2136278cfb10b4f08",
+          "65ab0071fc6ed8bca843dbec2354360016ea45ea17c487675fc7c4e0c886a8be",
+          "c1a7167f3d9970e4f9d226cf9e88b12d68d9a6aa4a9ef4922c348bb0611fc785",
+          "56d671c9b63eab91acb8640b99a3f2cadc30d613a8c747d5aab697ebae2ec850",
+          "77f81f00a4892d0499e3a9852c98668fed2a65fe67aabdcd86e85047c683ea6f",
+          "2de2ba36d7cbd985f2ead6f61526be48ae21b25971c713cb2fa0c1046f6464cf",
+          "6b2e70de7abd0ce789c207e725608e91358a60749c45bc9fad6cbf8ba408ec26",
+          "9a55c2f80da3bca5d7d124088549bdf159a6ab93831a5b065fd2a602110386df",
+          "dcf82b4b4a653221eb87c5d3022d8a39bab675652ec230bfff441283f91588f0",
+          "4585959a0bd08db235d8cc6a4481439cedfb414cb61004ee752b2e6f1e0e9e2b",
+          "12165623c90018958b899fe22c800306ab5cf3999577b90ee798188374542257",
+          "9e07710321fc71d968ee7dd014bdc1092fd5fc655e7f5381562b062c54d75b08",
+          "7ff9fd417e92d0e37c685f3272caa6e1a17377f2ca3ee6d416c5a60145b6e40d",
+          "98e437a6a167c7964101245dd2875ba86d6b650c75476a01b74f6e52569ccb5d",
+          "1dea131925d2e754f98de91e0ac50293813ec2c29e3928532295d55779241da9",
+          "dc628d004e539b1aa3cb9c1afde26ca4da3ffd19b2d4b897e2d291772dc815e6",
+          "1b9fe970579f294a9ca177b2c8819828a20b3e9b7c64eb357276e4c4d362fb2a",
+          "c5c264684fd6efbb441cc06d827e423795233108cb13bfcf88f1805b7fa6f57a",
+          "084b1fdf6a3432c3244574f53a1475e5354cc3873db61741775657087fe0cff7",
+          "831ae40c0526fc3acf40ec9f278240a0b08b711dcc12e37d624312e23a7a4017",
+          "7308f0fb2d7340b432977bacb4ce8123cdb86f32d9dcc83f3bc6f0a60f049a48",
+          "e0b8305da62b4459a6051ac89ef4b456909b151bc897f14b5e3045630845f263",
+          "379ba972d9e4cd8fc92ca90fac3deb830304d0d9c5de89a55357f63474140038",
+          "e948726b11a163c28d3d6cdc9cc24a159d5ce31da0de754fc972bb6ca8bc30e5",
+          "1c3594372dc312c5f2e4006f7deda45326eb7c2e05f96dfc92fdab0d5bc77688",
+          "cfcb34ad52629c6b1aa7dadcebc37e8b8ea6fce8dc111fd47817178bd5e69a98",
+          "1b96c2c85a94b09b289dcba63c96dcbaec97fb1ce768237a4e5d5d3b5f5f3854",
+          "371835d65df4591fdf76309f1a597a0f32a3ae11e6ed67f86a7da5b4532ef04e",
+          "7e1519d8cf1eaf01a091e7fdd43699cdd1ba1b9cd6f865c6b2cb335930705ac7",
+          "124dff0b6829d553a699e49714cd5b847b450bb3a8482bacab42335f6d28e7cd",
+          "c639b4fc37f93a7926d8210e4988d36edd87731cd7c9cb310e57b8f2ab01008a",
+          "267f26eb147a554981b26bf17c3e2ee26d9ba99063d23a545670b423835a4916"
+        ],
+        "row_count": 63,
+        "sequence": 3
+      },
+      {
+        "file_sha256": "6c976a0879ec812f97005f26e22be3438f389ed5d7e4a0381ac7f913f4abc8b8",
+        "first_epoch": 1786619700,
+        "first_open_broker_time_label": "2026-08-13T11:15:00Z",
+        "last_epoch": 1786631400,
+        "last_open_broker_time_label": "2026-08-13T14:30:00Z",
+        "path": "research_data/sprint92h_true_oos_v2/USDJPY_M15/chunks/chunk_000004.jsonl",
+        "record_sha256": [
+          "2b1747e82fb0e941aa00015ab01f841c970235c84032ec5a4e78eace1cede851",
+          "45c9d59d2072b1f559b3fc5309a20ece8c4ecd713c7dd1b63e9891e5cc51e1c9",
+          "1a10b4695079840833d943856d1afa0695b66b2dcdc0bd507f0cad1b21755854",
+          "6741156aad4a8f7d9c0685db9ed3771e9cb403f46a7f39428174a1ac72b5438e",
+          "791ecbf08cca952c299476bad70915585b87eb283c1d1bbc27edc7b7c2b226cd",
+          "04ea499a234af6d55f8a5fe76dbfc485774551ababe9dc6be99fb97394f9f878",
+          "6146e0eb057986dccc5e3943530c73a74e985f3533b85f1348498413661a272c",
+          "739b427066befb44d80f1c5476bba62247bbe319b8ce0308842f6ea13240c91c",
+          "3225ef73c6fc88677a3e52ef512aadaed07cc5524f3a39444cf33473422a7e53",
+          "2c47137c003f8def5d6c2101f93fa55dc929fff384371b29be3a7198fba27889",
+          "5e322f9ea56374119ad6d782c295712a30b41c562a82d2b830ce2b237edb6448",
+          "535596078df9336a1aa27cf8f0e49af70f64f95e69d87da013d8d4565f560701",
+          "b2f97c339bf9a01bfb062238add554f66336a3592accc2fa037149c0c3f5a249",
+          "79294c5cf18bdf4825b65ab82fc77bee01c0b9cef84c78558f9ae34570423950"
+        ],
+        "row_count": 14,
+        "sequence": 4
+      }
+    ],
+    "eligibility_status": "ACCRUAL_IN_PROGRESS",
+    "execution_id": "MSS_92H9_USDJPY_RAW_IMMUTABLE_TRUE_OOS_V2",
+    "first_candle_open_epoch": 1786556700,
+    "last_candle_open_epoch": 1786631400,
+    "manifest_sequence": 4,
+    "previous_manifest_sha256": "0e627b49161824887d49e68f5bd3fd40b9137139af533a23c2c14f4ad7800203",
+    "raw_true_oos_boundary_epoch": 1786556700,
+    "row_count": 83,
+    "schema_version": "MSS_TRUE_OOS_LEDGER_MANIFEST_V1",
+    "symbol": "USDJPY",
+    "time_authority": "RAW_MT5_TIME_FIELD",
+    "timeframe": "M15",
+    "true_oos_boundary": "2026-08-12T17:45:00Z"
+  },
+  "portability": {
+    "broker_agnostic": true,
+    "country_agnostic": true,
+    "hardcoded_broker_identity": false,
+    "hardcoded_broker_offset": false,
+    "hardcoded_system_timezone": false,
+    "hardcoded_terminal_path": false,
+    "terminal_auto_discovery": true
+  },
+  "protected_source_sha256": {
+    "global_time_authority_report": "02258355e43a43cfc63f0b61c52cdf9c608f46c5e94d445f517e31970473e775",
+    "previous_manifest": "0e627b49161824887d49e68f5bd3fd40b9137139af533a23c2c14f4ad7800203"
+  },
+  "schema_version": "MSS_SPRINT92H13_INCREMENTAL_APPEND_ONLY_ACCRUAL_ENGINE_V1",
+  "sequence": {
+    "new_chunk_sequence": 4,
+    "new_manifest_sequence": 4,
+    "previous_manifest_sequence": 3
+  },
+  "time_authority_gate": {
+    "authority_status": "BROKER_TIME_DOMAIN_CONFIRMED",
+    "broker_offset_label": "UTC+03:00",
+    "broker_offset_seconds": 10800,
+    "gate_confirmed": true,
+    "ledger_write_allowed": true,
+    "raw_mt5_time_preserved": true,
+    "schema_version": "MSS_SPRINT92H13_3_TRUE_OOS_TIME_AUTHORITY_GATE_V1",
+    "sync_attempts": 1,
+    "sync_status": "MT5_BAR_SYNCHRONIZED"
+  }
+}
