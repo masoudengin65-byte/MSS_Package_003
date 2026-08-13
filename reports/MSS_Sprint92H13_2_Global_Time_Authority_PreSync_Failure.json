@@ -1,0 +1,143 @@
+{
+  "audit": {
+    "orders_sent": false,
+    "outcomes_analyzed": false,
+    "pnl_computed": false,
+    "signals_generated": false,
+    "strategy_replay_run": false,
+    "trades_generated": false
+  },
+  "baseline_commit": "a4320fe",
+  "fail_safe": {
+    "nonstandard_offset_change_blocks_trading": true,
+    "trading_allowed_by_time_authority": false,
+    "unresolved_time_authority_blocks_trading": true
+  },
+  "governance": {
+    "existing_h10_anchor_modified": false,
+    "existing_true_oos_ledger_modified": false,
+    "local_system_time_used_for_eligibility": false,
+    "raw_mt5_time_preserved": true,
+    "time_authority_required_before_trading": true,
+    "utc_normalization_used_for_eligibility": false
+  },
+  "mode": "BROKER_AGNOSTIC_GLOBAL_TIME_AUTHORITY_NO_REPLAY_NO_OUTCOMES",
+  "mt5_environment": {
+    "hardcoded_broker_name": false,
+    "hardcoded_terminal_path": false,
+    "metadata": {
+      "account": {
+        "assets": 0.0,
+        "balance": 500.0,
+        "commission_blocked": 0.0,
+        "company": "Alpari",
+        "credit": 0.0,
+        "currency": "USD",
+        "currency_digits": 2,
+        "equity": 500.0,
+        "fifo_close": false,
+        "leverage": 100,
+        "liabilities": 0.0,
+        "limit_orders": 10000,
+        "login": 53064310,
+        "margin": 0.0,
+        "margin_free": 500.0,
+        "margin_initial": 0.0,
+        "margin_level": 0.0,
+        "margin_maintenance": 0.0,
+        "margin_mode": 2,
+        "margin_so_call": 80.0,
+        "margin_so_mode": 0,
+        "margin_so_so": 50.0,
+        "name": "Masoud Safari.samangani",
+        "profit": 0.0,
+        "server": "Alpari-MT5-Demo",
+        "trade_allowed": true,
+        "trade_expert": true,
+        "trade_mode": 0
+      },
+      "terminal": {
+        "build": 6090,
+        "codepage": 0,
+        "commondata_path": "C:\\Users\\mehregan\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common",
+        "community_account": false,
+        "community_balance": 0.0,
+        "community_connection": false,
+        "company": "Alpari",
+        "connected": true,
+        "data_path": "C:\\Users\\mehregan\\AppData\\Roaming\\MetaQuotes\\Terminal\\36A64B8C79A6163D85E6173B54096685",
+        "dlls_allowed": true,
+        "email_enabled": false,
+        "ftp_enabled": false,
+        "language": "English",
+        "maxbars": 100000,
+        "mqid": false,
+        "name": "Alpari MT5",
+        "notifications_enabled": false,
+        "path": "C:\\Program Files\\Alpari MT5",
+        "ping_last": 169054,
+        "retransmission": 5.911978924531225,
+        "trade_allowed": true,
+        "tradeapi_disabled": false
+      }
+    },
+    "terminal_auto_discovered": true
+  },
+  "observation": {
+    "bar_m15_aligned": true,
+    "bar_matches_broker_clock": false,
+    "detected_broker_offset_label": "UTC+03:00",
+    "detected_broker_offset_seconds": 10800,
+    "expected_current_bar_epoch": 1786617900,
+    "mt5_raw_current_m15_bar_epoch": 1786562100,
+    "mt5_raw_tick_epoch": 1786618495,
+    "normalized_tick_age_seconds": 4.009832382202148,
+    "normalized_tick_utc_epoch": 1786607695,
+    "offset_plausible": true,
+    "offset_residual_seconds": 4.009832382202148,
+    "offset_rounding_grid_seconds": 900,
+    "raw_tick_minus_true_utc_seconds": 10795.990167617798,
+    "tick_fresh_enough": true,
+    "utc_epoch_after_tick": 1786607699.0235593,
+    "utc_epoch_before_tick": 1786607698.9961057,
+    "utc_midpoint_epoch": 1786607699.0098324
+  },
+  "offset_change_monitor": {
+    "classification": "NO_PREVIOUS_AUTHORITY",
+    "current_broker_offset_seconds": 10800,
+    "offset_change_seconds": 0,
+    "offset_changed": false,
+    "previous_broker_offset_seconds": null
+  },
+  "portability": {
+    "broker_agnostic": true,
+    "broker_offset_change_detectable": true,
+    "country_agnostic": true,
+    "dst_change_detectable": true,
+    "system_timezone_agnostic": true
+  },
+  "previous_authority": null,
+  "schema_version": "MSS_SPRINT92H13_2_GLOBAL_TIME_AUTHORITY_V1",
+  "symbol": "USDJPY",
+  "system_context": {
+    "local_iso": "2026-08-13T11:24:58.986995+03:30",
+    "system_timezone_name": "Iran Standard Time",
+    "system_utc_offset_label": "UTC+03:30",
+    "system_utc_offset_seconds": 12600,
+    "utc_iso": "2026-08-13T07:54:58.988141+00:00"
+  },
+  "time_authority": {
+    "boundary_comparison_authority": "RAW_MT5_TIME_FIELD",
+    "broker_offset_detection": "AUTOMATIC_RUNTIME_DETECTION",
+    "candle_ordering_authority": "RAW_MT5_TIME_FIELD",
+    "confirmed": false,
+    "execution_time_domain": "RAW_MT5_BROKER_EPOCH_DOMAIN",
+    "hardcoded_broker_identity": false,
+    "hardcoded_broker_offset": false,
+    "hardcoded_system_timezone": false,
+    "raw_mt5_timestamp_must_not_be_shifted": true,
+    "status": "BROKER_BAR_TIME_DOMAIN_MISMATCH",
+    "system_local_time_for_display_only": true,
+    "utc_normalization_for_reporting_only": true
+  }
+}
