@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from mss.analysis.frozen_shadow_strategy_adapter import (
     FrozenShadowStrategyAdapter,
@@ -76,7 +76,7 @@ def test_bullish_bos_arms_buy():
 
     assert (
         signal.expected_entry_bar_epoch
-        == 9900
+        == 0
     )
 
     assert signal.risk_percent == 1.0
@@ -141,7 +141,7 @@ def test_confluence_is_not_a_gate():
     )
 
 
-def test_wrong_entry_bar_is_blocked():
+def test_entry_without_sequence_confirmation_blocks():
     signal = (
         FrozenShadowStrategyAdapter
         .arm_signal(
@@ -155,6 +155,7 @@ def test_wrong_entry_bar_is_blocked():
         .activate_entry(
             signal=signal,
             entry_bar_epoch=10800,
+            next_candle_sequence_confirmed=False,
             next_candle_open=159.0,
             spread_points=2.0,
             point=0.001,
@@ -165,7 +166,7 @@ def test_wrong_entry_bar_is_blocked():
 
     assert (
         entry.reason
-        == "ENTRY_BAR_NOT_EXACT_NEXT_CANDLE"
+        == "NEXT_CANDLE_SEQUENCE_NOT_CONFIRMED"
     )
 
 
@@ -186,6 +187,7 @@ def test_buy_entry_matches_frozen_formula():
         .activate_entry(
             signal=signal,
             entry_bar_epoch=9900,
+            next_candle_sequence_confirmed=True,
             next_candle_open=159.000,
             spread_points=2.0,
             point=0.001,
@@ -239,6 +241,7 @@ def test_sell_entry_matches_frozen_formula():
         .activate_entry(
             signal=signal,
             entry_bar_epoch=9900,
+            next_candle_sequence_confirmed=True,
             next_candle_open=159.000,
             spread_points=2.0,
             point=0.001,
@@ -282,6 +285,7 @@ def test_invalid_buy_stop_is_blocked():
         .activate_entry(
             signal=signal,
             entry_bar_epoch=9900,
+            next_candle_sequence_confirmed=True,
             next_candle_open=159.000,
             spread_points=2.0,
             point=0.001,

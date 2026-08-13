@@ -1,4 +1,4 @@
-﻿"""Frozen research-contract adapter for MSS Shadow Live."""
+"""Frozen research-contract adapter for MSS Shadow Live."""
 
 from __future__ import annotations
 
@@ -243,10 +243,7 @@ class FrozenShadowStrategyAdapter:
             signal_bar_epoch=int(
                 signal_bar_epoch
             ),
-            expected_entry_bar_epoch=(
-                int(signal_bar_epoch)
-                + cls.TIMEFRAME_SECONDS
-            ),
+            expected_entry_bar_epoch=0,
             stop_loss=stop_loss,
             risk_percent=cls.RISK_PERCENT,
             reward_risk_ratio=(
@@ -268,6 +265,7 @@ class FrozenShadowStrategyAdapter:
         *,
         signal: FrozenShadowSignal,
         entry_bar_epoch: int,
+        next_candle_sequence_confirmed: bool,
         next_candle_open: float,
         spread_points: float,
         point: float,
@@ -297,9 +295,25 @@ class FrozenShadowStrategyAdapter:
                 reason="SIGNAL_NOT_PENDING",
             )
 
+        if not next_candle_sequence_confirmed:
+            return FrozenShadowEntry(
+                symbol=signal.symbol,
+                timeframe=signal.timeframe,
+                direction=signal.direction,
+                signal_bar_epoch=(
+                    signal.signal_bar_epoch
+                ),
+                entry_bar_epoch=int(
+                    entry_bar_epoch
+                ),
+                reason=(
+                    "NEXT_CANDLE_SEQUENCE_NOT_CONFIRMED"
+                ),
+            )
+
         if (
             int(entry_bar_epoch)
-            != signal.expected_entry_bar_epoch
+            <= signal.signal_bar_epoch
         ):
             return FrozenShadowEntry(
                 symbol=signal.symbol,
@@ -311,7 +325,7 @@ class FrozenShadowStrategyAdapter:
                 entry_bar_epoch=int(
                     entry_bar_epoch
                 ),
-                reason="ENTRY_BAR_NOT_EXACT_NEXT_CANDLE",
+                reason="ENTRY_BAR_NOT_AFTER_SIGNAL",
             )
 
         if next_candle_open <= 0:

@@ -199,13 +199,13 @@ def test_real_bos_is_armed_but_not_opened():
     assert (
         decision.frozen_signal
         .expected_entry_bar_epoch
-        == current_epoch
+        == 0
     )
 
     assert (
         decision.entry_window_status
         == (
-            "CURRENT_ENTRY_BAR_ALREADY_OPEN_"
+            "CURRENT_NEXT_TRADING_BAR_ALREADY_OPEN_"
             "OBSERVATION_ONLY"
         )
     )
@@ -246,7 +246,7 @@ def test_insufficient_completed_history_blocks():
     )
 
 
-def test_non_adjacent_latest_bar_blocks():
+def test_current_bar_absent_blocks():
     rates = make_rates(501)
 
     current_epoch = (
@@ -270,7 +270,47 @@ def test_non_adjacent_latest_bar_blocks():
 
     assert (
         decision.reason
-        == "LATEST_COMPLETED_BAR_NOT_ADJACENT"
+        == "CURRENT_BAR_NOT_PRESENT"
+    )
+
+
+def test_market_session_gap_is_valid_next_sequence():
+    rates = make_rates(501)
+
+    previous_epoch = (
+        rates[-2]["time"]
+    )
+
+    rates[-1]["time"] = (
+        previous_epoch
+        + 172800
+    )
+
+    current_epoch = (
+        rates[-1]["time"]
+    )
+
+    decision = (
+        LiveCompletedCandleSignalEngine(
+            pipeline=FakePipeline(
+                PipelineResult(
+                    symbol="USDJPY",
+                    timeframe="M15",
+                    valid=True,
+                )
+            )
+        ).evaluate(
+            symbol="USDJPY",
+            rates=rates,
+            current_bar_epoch=current_epoch,
+        )
+    )
+
+    assert decision.valid is True
+
+    assert (
+        decision.signal_bar_epoch
+        == previous_epoch
     )
 
 

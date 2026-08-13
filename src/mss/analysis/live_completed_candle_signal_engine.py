@@ -1,4 +1,4 @@
-﻿"""Completed-candle causal MSS signal engine for Shadow Live."""
+"""Completed-candle causal MSS signal engine for Shadow Live."""
 
 from __future__ import annotations
 
@@ -278,20 +278,53 @@ class LiveCompletedCandleSignalEngine:
             )
         )
 
-        expected_signal_bar = (
-            int(current_bar_epoch)
-            - self.TIMEFRAME_SECONDS
+        raw_epochs = sorted(
+            {
+                int(
+                    self._rate_value(
+                        rate,
+                        "time",
+                    )
+                )
+                for rate in rates
+            }
+        )
+
+        current_epoch = int(
+            current_bar_epoch
+        )
+
+        if current_epoch not in raw_epochs:
+            return CompletedCandleDecision(
+                symbol=symbol,
+                current_bar_epoch=current_epoch,
+                signal_bar_epoch=(
+                    signal_bar_epoch
+                ),
+                completed_candle_count=(
+                    len(completed)
+                ),
+                forming_candle_excluded=True,
+                completed_candles_only=True,
+                reason="CURRENT_BAR_NOT_PRESENT",
+            )
+
+        current_index = (
+            raw_epochs.index(
+                current_epoch
+            )
         )
 
         if (
-            signal_bar_epoch
-            != expected_signal_bar
+            current_index == 0
+            or raw_epochs[
+                current_index - 1
+            ]
+            != signal_bar_epoch
         ):
             return CompletedCandleDecision(
                 symbol=symbol,
-                current_bar_epoch=int(
-                    current_bar_epoch
-                ),
+                current_bar_epoch=current_epoch,
                 signal_bar_epoch=(
                     signal_bar_epoch
                 ),
@@ -301,7 +334,8 @@ class LiveCompletedCandleSignalEngine:
                 forming_candle_excluded=True,
                 completed_candles_only=True,
                 reason=(
-                    "LATEST_COMPLETED_BAR_NOT_ADJACENT"
+                    "LATEST_COMPLETED_BAR_"
+                    "NOT_PREDECESSOR"
                 ),
             )
 
@@ -335,19 +369,10 @@ class LiveCompletedCandleSignalEngine:
                 "PENDING_NEXT_CANDLE_ENTRY"
             )
 
-            if (
-                frozen_signal
-                .expected_entry_bar_epoch
-                == int(current_bar_epoch)
-            ):
-                entry_window_status = (
-                    "CURRENT_ENTRY_BAR_ALREADY_OPEN_"
-                    "OBSERVATION_ONLY"
-                )
-            else:
-                entry_window_status = (
-                    "ENTRY_BAR_NOT_CURRENT"
-                )
+            entry_window_status = (
+                "CURRENT_NEXT_TRADING_BAR_ALREADY_OPEN_"
+                "OBSERVATION_ONLY"
+            )
 
             reason = frozen_signal.reason
 
