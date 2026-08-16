@@ -930,6 +930,20 @@ def main():
 
     runtime_test_disconnect_observed = False
 
+    runtime_test_crash_after_heartbeat = int(
+        os.environ.get(
+            "MSS_H14_6_TEST_CRASH_AFTER_HEARTBEAT",
+            "0",
+        )
+    )
+
+    if runtime_test_crash_after_heartbeat < 0:
+        raise ValueError(
+            "INVALID_H14_6_TEST_CRASH_AFTER_HEARTBEAT"
+        )
+
+    runtime_test_crash_triggered = False
+
     runtime_test_stall_seconds = float(
         os.environ.get(
             "MSS_H14_6_TEST_RUNTIME_STALL_SECONDS",
@@ -2248,6 +2262,29 @@ def main():
                 runtime_supervisor_last_detail = (
                     runtime_supervisor_decision.detail
                 )
+
+                if (
+                    runtime_test_crash_after_heartbeat > 0
+                    and
+                    not runtime_test_crash_triggered
+                    and
+                    runtime_supervisor_decision.valid
+                    and
+                    not runtime_supervisor_decision.hard_block
+                    and
+                    runtime_heartbeat_sequence
+                    >=
+                    runtime_test_crash_after_heartbeat
+                ):
+                    runtime_test_crash_triggered = True
+
+                    print(
+                        "H14_6_TEST_PROCESS_CRASH_TRIGGER",
+                        runtime_heartbeat_sequence,
+                        flush=True,
+                    )
+
+                    os._exit(86)
 
                 if (
                     runtime_test_stall_seconds > 0.0
@@ -4081,6 +4118,12 @@ def main():
                 ),
                 "test_disconnect_observed": (
                     runtime_test_disconnect_observed
+                ),
+                "test_crash_after_heartbeat": (
+                    runtime_test_crash_after_heartbeat
+                ),
+                "test_crash_triggered": (
+                    runtime_test_crash_triggered
                 ),
             },
             "per_symbol": {
