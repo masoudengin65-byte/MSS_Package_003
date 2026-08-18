@@ -13,6 +13,9 @@ class FakeMT5:
     ORDER_TYPE_BUY = 0
     ORDER_TYPE_SELL = 1
 
+    POSITION_TYPE_BUY = 0
+    POSITION_TYPE_SELL = 1
+
     ACCOUNT_TRADE_MODE_DEMO = 0
 
     TRADE_ACTION_DEAL = 1
@@ -45,6 +48,8 @@ class FakeMT5:
         self.info = SimpleNamespace(
             filling_mode=self.SYMBOL_FILLING_IOC,
             trade_exemode=0,
+            point=0.00001,
+            volume_step=0.01,
         )
 
         self.tick = SimpleNamespace(
@@ -53,11 +58,10 @@ class FakeMT5:
         )
 
         self.positions_before = ()
-        self.positions_after = (
-            SimpleNamespace(
-                magic=DemoBrokerExecutionAdapter.MAGIC
-            ),
-        )
+
+        self.positions_after = None
+
+        self.last_send_request = None
 
         self.orders = ()
 
@@ -98,7 +102,35 @@ class FakeMT5:
         if self._position_calls == 1:
             return self.positions_before
 
-        return self.positions_after
+        if self.positions_after is not None:
+            return self.positions_after
+
+        if self.last_send_request is None:
+            return ()
+
+        request = self.last_send_request
+
+        position_type = (
+            self.POSITION_TYPE_BUY
+            if request["type"] == self.ORDER_TYPE_BUY
+            else self.POSITION_TYPE_SELL
+        )
+
+        return (
+            SimpleNamespace(
+                magic=request["magic"],
+                type=position_type,
+                volume=float(
+                    request["volume"]
+                ),
+                sl=float(
+                    request["sl"]
+                ),
+                tp=float(
+                    request["tp"]
+                ),
+            ),
+        )
 
     def orders_get(self, *, symbol):
         self.calls.append(
@@ -122,6 +154,11 @@ class FakeMT5:
         self.calls.append(
             ("order_send", request)
         )
+
+        self.last_send_request = dict(
+            request
+        )
+
         return self.send_result
 
 
@@ -535,3 +572,62 @@ def test_market_execution_without_supported_fill_blocks(
         and call[0] == "order_send"
         for call in fake_mt5.calls
     )
+
+
+def test_post_send_confirmation_matches_direction():
+    import inspect
+    from mss.analysis.demo_broker_execution_adapter import (
+        DemoBrokerExecutionAdapter,
+    )
+
+    text = inspect.getsource(
+        DemoBrokerExecutionAdapter
+        .execute_market_order
+    )
+
+    assert "POSITION_TYPE_BUY" in text
+    assert "POSITION_TYPE_SELL" in text
+    assert "position_type != expected_position_type" in text
+
+
+def test_post_send_confirmation_matches_volume_sl_tp():
+    import inspect
+    from mss.analysis.demo_broker_execution_adapter import (
+        DemoBrokerExecutionAdapter,
+    )
+
+    text = inspect.getsource(
+        DemoBrokerExecutionAdapter
+        .execute_market_order
+    )
+
+    assert "position_volume" in text
+    assert "position_sl" in text
+    assert "position_tp" in text
+    assert "volume_tolerance" in text
+    assert "price_tolerance" in text
+
+
+def test_partial_fill_requires_reconciliation(
+    fake_mt5,
+):
+    fake_mt5.send_result = SimpleNamespace(
+        retcode=(
+            fake_mt5
+            .TRADE_RETCODE_DONE_PARTIAL
+        ),
+        order=12345,
+        deal=67890,
+        price=1.1002,
+    )
+
+    result = execute()
+
+    assert not result.valid
+    assert (
+        result.reason
+        ==
+        "DEMO_PARTIAL_FILL_REQUIRES_RECONCILIATION"
+    )
+    assert result.order_check_performed
+    assert result.order_send_performed

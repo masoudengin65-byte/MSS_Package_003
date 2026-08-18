@@ -195,6 +195,8 @@ class DemoBrokerExecutionAdapter:
         stop_loss: float,
         take_profit: float,
         deviation_points: int = 20,
+        order_check_callable=None,
+        order_send_callable=None,
     ) -> DemoExecutionResult:
 
         if not enabled:
@@ -366,7 +368,19 @@ class DemoBrokerExecutionAdapter:
             ),
         }
 
-        check = mt5.order_check(
+        check_fn = (
+            order_check_callable
+            if order_check_callable is not None
+            else mt5.order_check
+        )
+
+        send_fn = (
+            order_send_callable
+            if order_send_callable is not None
+            else mt5.order_send
+        )
+
+        check = check_fn(
             request
         )
 
@@ -405,7 +419,7 @@ class DemoBrokerExecutionAdapter:
                 order_check_performed=True,
             )
 
-        result = mt5.order_send(
+        result = send_fn(
             request
         )
 
@@ -430,24 +444,40 @@ class DemoBrokerExecutionAdapter:
             )
         )
 
-        done_codes = {
-            int(
-                getattr(
-                    mt5,
-                    "TRADE_RETCODE_DONE",
-                    10009,
-                )
-            ),
-            int(
-                getattr(
-                    mt5,
-                    "TRADE_RETCODE_DONE_PARTIAL",
-                    10010,
-                )
-            ),
-        }
+        done_code = int(
+            getattr(
+                mt5,
+                "TRADE_RETCODE_DONE",
+                10009,
+            )
+        )
 
-        if retcode not in done_codes:
+        partial_code = int(
+            getattr(
+                mt5,
+                "TRADE_RETCODE_DONE_PARTIAL",
+                10010,
+            )
+        )
+
+        if retcode == partial_code:
+            return DemoExecutionResult(
+                symbol=symbol,
+                direction=direction,
+                volume=volume,
+                requested_price=requested_price,
+                stop_loss=stop_loss,
+                take_profit=take_profit,
+                retcode=retcode,
+                reason=(
+                    "DEMO_PARTIAL_FILL_"
+                    "REQUIRES_RECONCILIATION"
+                ),
+                order_check_performed=True,
+                order_send_performed=True,
+            )
+
+        if retcode != done_code:
             return DemoExecutionResult(
                 symbol=symbol,
                 direction=direction,
@@ -513,10 +543,48 @@ class DemoBrokerExecutionAdapter:
                 order_send_performed=True,
             )
 
-        matching_positions = [
-            position
-            for position in confirmed_positions
-            if int(
+        expected_position_type = (
+            mt5.POSITION_TYPE_BUY
+            if direction.upper() == "BUY"
+            else mt5.POSITION_TYPE_SELL
+        )
+
+        confirm_info = mt5.symbol_info(
+            symbol
+        )
+
+        confirm_point = float(
+            getattr(
+                confirm_info,
+                "point",
+                0.0,
+            )
+            or 0.0
+        )
+
+        confirm_volume_step = float(
+            getattr(
+                confirm_info,
+                "volume_step",
+                0.0,
+            )
+            or 0.0
+        )
+
+        price_tolerance = max(
+            confirm_point * 2.0,
+            1e-9,
+        )
+
+        volume_tolerance = max(
+            confirm_volume_step / 2.0,
+            1e-9,
+        )
+
+        matching_positions = []
+
+        for position in confirmed_positions:
+            position_magic = int(
                 getattr(
                     position,
                     "magic",
@@ -524,8 +592,78 @@ class DemoBrokerExecutionAdapter:
                 )
                 or 0
             )
-            == cls.MAGIC
-        ]
+
+            position_type = int(
+                getattr(
+                    position,
+                    "type",
+                    -1,
+                )
+            )
+
+            position_volume = float(
+                getattr(
+                    position,
+                    "volume",
+                    0.0,
+                )
+                or 0.0
+            )
+
+            position_sl = float(
+                getattr(
+                    position,
+                    "sl",
+                    0.0,
+                )
+                or 0.0
+            )
+
+            position_tp = float(
+                getattr(
+                    position,
+                    "tp",
+                    0.0,
+                )
+                or 0.0
+            )
+
+            if position_magic != cls.MAGIC:
+                continue
+
+            if position_type != expected_position_type:
+                continue
+
+            if (
+                abs(
+                    position_volume
+                    - float(volume)
+                )
+                > volume_tolerance
+            ):
+                continue
+
+            if (
+                abs(
+                    position_sl
+                    - float(stop_loss)
+                )
+                > price_tolerance
+            ):
+                continue
+
+            if (
+                abs(
+                    position_tp
+                    - float(take_profit)
+                )
+                > price_tolerance
+            ):
+                continue
+
+            matching_positions.append(
+                position
+            )
 
         if not matching_positions:
             return DemoExecutionResult(

@@ -1,0 +1,318 @@
+﻿from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+RUNNER = (
+    ROOT
+    / "integration_tests"
+    / "run_sprint92h14_7_demo_forward_session.py"
+)
+
+ADAPTER = (
+    ROOT
+    / "src"
+    / "mss"
+    / "analysis"
+    / "demo_broker_execution_adapter.py"
+)
+
+
+def _runner_text():
+    return RUNNER.read_text(
+        encoding="utf-8"
+    )
+
+
+def _adapter_text():
+    return ADAPTER.read_text(
+        encoding="utf-8"
+    )
+
+
+def test_demo_forward_requires_explicit_flag():
+    text = _runner_text()
+
+    assert '"--demo-forward"' in text
+    assert "action=\"store_true\"" in text
+
+
+def test_default_demo_forward_state_is_no_send():
+    text = _runner_text()
+
+    assert (
+        "DEMO_FORWARD_EXECUTION_ENABLED"
+        in text
+    )
+
+    assert (
+        "if not args.demo_forward"
+        in text
+    )
+
+
+def test_runner_has_no_direct_mt5_order_send_call():
+    text = _runner_text()
+
+    assert "mt5.order_send(" not in text
+
+
+def test_runner_has_no_direct_mt5_order_check_call():
+    text = _runner_text()
+
+    assert "mt5.order_check(" not in text
+
+
+def test_runner_uses_demo_execution_adapter():
+    text = _runner_text()
+
+    assert (
+        "DemoBrokerExecutionAdapter"
+        in text
+    )
+
+    assert (
+        ".execute_market_order("
+        in text
+    )
+
+
+def test_runner_uses_broker_risk_calculator():
+    text = _runner_text()
+
+    assert "ShadowRiskCalculator" in text
+    assert ".calculate(" in text
+
+
+def test_original_order_send_is_injected_only():
+    text = _runner_text()
+
+    assert (
+        "order_send_callable=("
+        in text
+    )
+
+    assert "original_order_send" in text
+
+
+def test_original_order_check_is_injected_only():
+    text = _runner_text()
+
+    assert (
+        "order_check_callable=("
+        in text
+    )
+
+    assert "original_order_check" in text
+
+
+def test_h14_7_has_independent_journal_namespace():
+    text = _runner_text()
+
+    assert (
+        '"sprint92h14_7_shadow_observation"'
+        in text
+    )
+
+    assert (
+        '"sprint92h14_7_demo_broker_execution"'
+        in text
+    )
+
+    assert (
+        '"sprint92h14_7_demo_forward"'
+        not in text
+    )
+
+    assert '"sprint92h14_6"' not in text
+    assert '"sprint92h14_5c"' not in text
+
+
+
+def test_h14_7_report_has_demo_forward_telemetry():
+    text = _runner_text()
+
+    assert (
+        '"demo_forward_execution"'
+        in text
+    )
+
+    assert '"attempt_count"' in text
+    assert '"success_count"' in text
+    assert '"blocked_count"' in text
+    assert '"last_order_ticket"' in text
+    assert '"last_deal_ticket"' in text
+
+
+def test_adapter_supports_injected_check_callable():
+    text = _adapter_text()
+
+    assert (
+        "order_check_callable=None"
+        in text
+    )
+
+    assert (
+        "check_fn = ("
+        in text
+    )
+
+
+def test_adapter_supports_injected_send_callable():
+    text = _adapter_text()
+
+    assert (
+        "order_send_callable=None"
+        in text
+    )
+
+    assert (
+        "send_fn = ("
+        in text
+    )
+
+
+def test_adapter_still_blocks_non_demo_accounts():
+    text = _adapter_text()
+
+    assert (
+        "NON_DEMO_ACCOUNT_BLOCKED"
+        in text
+    )
+
+
+def test_adapter_checks_duplicate_positions():
+    text = _adapter_text()
+
+    assert (
+        "DUPLICATE_SYMBOL_POSITION_BLOCKED"
+        in text
+    )
+
+
+def test_adapter_checks_duplicate_orders():
+    text = _adapter_text()
+
+    assert (
+        "DUPLICATE_SYMBOL_ORDER_BLOCKED"
+        in text
+    )
+
+
+def test_adapter_checks_before_send():
+    text = _adapter_text()
+
+    check_pos = text.find(
+        "check = check_fn("
+    )
+
+    send_pos = text.find(
+        "result = send_fn("
+    )
+
+    assert check_pos >= 0
+    assert send_pos >= 0
+    assert check_pos < send_pos
+
+
+def test_true_oos_is_declared_unaccessed():
+    text = _runner_text()
+
+    assert (
+        '"true_oos_data_accessed": False'
+        in text
+    )
+
+    assert (
+        '"true_oos_artifacts_modified": False'
+        in text
+    )
+
+
+def test_demo_broker_execution_precedes_shadow_open():
+    text = _runner_text()
+
+    start = text.find(
+        '"GLOBAL_ENTRY_SAFETY_CONFIRMED"'
+    )
+
+    broker_pos = text.find(
+        ".execute_market_order(",
+        start,
+    )
+
+    shadow_pos = text.find(
+        ".open_trade(",
+        start,
+    )
+
+    assert start >= 0
+    assert broker_pos >= 0
+    assert shadow_pos >= 0
+    assert broker_pos < shadow_pos
+
+
+def test_broker_failure_cannot_open_shadow_position():
+    text = _runner_text()
+
+    assert (
+        "shadow_open_permitted = ("
+        in text
+    )
+
+    assert (
+        "shadow_open_permitted = True"
+        in text
+    )
+
+    assert (
+        "if shadow_open_permitted:"
+        in text
+    )
+
+
+def test_demo_mirror_failure_is_fatal_after_broker_confirmation():
+    text = _runner_text()
+
+    assert (
+        "DEMO_BROKER_POSITION_WITHOUT_SHADOW_MIRROR"
+        in text
+    )
+
+    assert (
+        "DEMO_BROKER_CONFIRMED_"
+        in text
+    )
+
+    assert (
+        "SHADOW_MIRROR_FAILED:"
+        in text
+    )
+
+
+def test_main_global_stats_contains_demo_execution_counters():
+    from pathlib import Path
+
+    text = Path(
+        "integration_tests/"
+        "run_sprint92h14_7_demo_forward_session.py"
+    ).read_text(
+        encoding="utf-8"
+    )
+
+    anchor = text.index(
+        "    global_stats = {"
+    )
+
+    end = text.index(
+        "    initialized = False",
+        anchor,
+    )
+
+    main_stats_block = text[
+        anchor:end
+    ]
+
+    assert '"demo_execution_attempts": 0' in main_stats_block
+    assert '"demo_execution_successes": 0' in main_stats_block
+    assert '"demo_execution_blocks": 0' in main_stats_block
