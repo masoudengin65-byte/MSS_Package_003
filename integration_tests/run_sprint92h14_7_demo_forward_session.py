@@ -4129,14 +4129,6 @@ def main():
 
                                     if args.demo_forward:
                                         demo_execution_runtime[
-                                            "attempt_count"
-                                        ] += 1
-
-                                        global_stats[
-                                            "demo_execution_attempts"
-                                        ] += 1
-
-                                        demo_execution_runtime[
                                             "last_symbol"
                                         ] = selected_symbol
 
@@ -4197,11 +4189,35 @@ def main():
                                             )
 
                                             print(
+                                                "DEMO_RISK_RESULT_REASON",
+                                                risk_result.reason,
+                                            )
+
+                                            print(
                                                 "REAL_ORDER_SENT",
                                                 False,
                                             )
 
                                         else:
+                                            demo_execution_runtime[
+                                                "attempt_count"
+                                            ] += 1
+
+                                            global_stats[
+                                                "demo_execution_attempts"
+                                            ] += 1
+
+                                            print(
+                                                "DEMO_RISK_RESULT_REASON",
+                                                risk_result.reason,
+                                            )
+
+                                            print(
+                                                "DEMO_RISK_NORMALIZED_VOLUME",
+                                                risk_result
+                                                .normalized_volume,
+                                            )
+
                                             execution_volume = float(
                                                 risk_result
                                                 .normalized_volume
