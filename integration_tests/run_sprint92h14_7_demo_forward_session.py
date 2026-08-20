@@ -1,4 +1,4 @@
-﻿"""Parallel causal multi-symbol Shadow Live session.
+"""Parallel causal multi-symbol Shadow Live session.
 
 Sprint 92H.14.7
 
@@ -113,6 +113,42 @@ DEFAULT_SYMBOLS = (
     "BITCOIN",
     "ETHEREUM",
 )
+
+EXPANDED_DEMO_PROBE_SYMBOLS = (
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "AUDUSD",
+    "USDCAD",
+    "USDCHF",
+    "NZDUSD",
+    "EURJPY",
+    "GBPJPY",
+    "EURGBP",
+    "AUDJPY",
+    "CADJPY",
+    "CHFJPY",
+    "EURAUD",
+    "EURNZD",
+    "EURCAD",
+    "EURCHF",
+    "GBPAUD",
+    "GBPCAD",
+    "GBPCHF",
+    "XAUUSD",
+    "XAGUSD",
+    "WTI",
+    "COPPER",
+    "NAS100",
+    "US30",
+    "NETH25",
+    "SPN35",
+    "BITCOIN",
+    "ETHEREUM",
+    "BITCOIN CASH",
+    "SOLANA",
+)
+
 
 MAX_OPEN_SHADOW_POSITIONS = 1
 MAX_ANALYSIS_WORKERS = 8
@@ -839,6 +875,16 @@ def main():
         ),
     )
 
+    parser.add_argument(
+        "--demo-probe-expanded-symbols",
+        action="store_true",
+        help=(
+            "Use the isolated 32-symbol Expanded Demo Probe "
+            "universe. Requires --demo-forward. "
+            "The default strategy universe is unchanged."
+        ),
+    )
+
     args = parser.parse_args()
 
     if args.max_demo_attempts < 0:
@@ -853,6 +899,15 @@ def main():
     ):
         raise RuntimeError(
             "DEMO_PROBE_MIN_VOLUME_REQUIRES_DEMO_FORWARD"
+        )
+
+    if (
+        args.demo_probe_expanded_symbols
+        and
+        not args.demo_forward
+    ):
+        raise RuntimeError(
+            "EXPANDED_DEMO_PROBE_REQUIRES_DEMO_FORWARD"
         )
 
     journal_namespace = (
@@ -874,6 +929,26 @@ def main():
         ).split(",")
         if item.strip()
     )
+
+    if args.demo_probe_expanded_symbols:
+        symbols = tuple(
+            EXPANDED_DEMO_PROBE_SYMBOLS
+        )
+
+        print(
+            "DEMO_PROBE_EXPANDED_SYMBOLS_ACTIVE",
+            True,
+        )
+
+        print(
+            "DEMO_PROBE_EXPANDED_SYMBOL_COUNT",
+            len(symbols),
+        )
+
+        print(
+            "DEMO_PROBE_EXPANDED_SYMBOLS",
+            ",".join(symbols),
+        )
 
     if not symbols:
         raise RuntimeError(
@@ -1199,6 +1274,110 @@ def main():
                 "DEMO_FORWARD_ACCOUNT_CONFIRMED",
                 True,
             )
+
+            # -------------------------------------------------
+            # H14.7 Demo broker exposure startup reconciliation
+            # gate.
+            #
+            # A broker-side MSS position/order may survive a
+            # Python crash before its Shadow mirror is journaled.
+            # Until explicit reconciliation exists, startup must
+            # fail safe before candidate discovery or execution.
+            # -------------------------------------------------
+
+            demo_broker_positions = mt5.positions_get()
+
+            if demo_broker_positions is None:
+                raise RuntimeError(
+                    "DEMO_BROKER_POSITION_INSPECTION_FAILED"
+                )
+
+            demo_mss_positions = tuple(
+                item
+                for item in demo_broker_positions
+                if int(
+                    getattr(
+                        item,
+                        "magic",
+                        0,
+                    )
+                )
+                == 920146
+            )
+
+            demo_broker_orders = mt5.orders_get()
+
+            if demo_broker_orders is None:
+                raise RuntimeError(
+                    "DEMO_BROKER_ORDER_INSPECTION_FAILED"
+                )
+
+            demo_mss_orders = tuple(
+                item
+                for item in demo_broker_orders
+                if int(
+                    getattr(
+                        item,
+                        "magic",
+                        0,
+                    )
+                )
+                == 920146
+            )
+
+            print(
+                "DEMO_BROKER_EXISTING_POSITION_COUNT",
+                len(demo_mss_positions),
+            )
+
+            print(
+                "DEMO_BROKER_EXISTING_PENDING_ORDER_COUNT",
+                len(demo_mss_orders),
+            )
+
+            if (
+                demo_mss_positions
+                or
+                demo_mss_orders
+            ):
+                for item in demo_mss_positions:
+                    print(
+                        "DEMO_BROKER_EXISTING_POSITION",
+                        getattr(item, "ticket", None),
+                        getattr(item, "symbol", None),
+                        getattr(item, "volume", None),
+                        getattr(item, "magic", None),
+                        getattr(item, "comment", None),
+                    )
+
+                for item in demo_mss_orders:
+                    print(
+                        "DEMO_BROKER_EXISTING_PENDING_ORDER",
+                        getattr(item, "ticket", None),
+                        getattr(item, "symbol", None),
+                        getattr(
+                            item,
+                            "volume_current",
+                            None,
+                        ),
+                        getattr(item, "magic", None),
+                        getattr(item, "comment", None),
+                    )
+
+                print(
+                    "DEMO_BROKER_EXPOSURE_REQUIRES_RECONCILIATION",
+                    True,
+                )
+
+                print(
+                    "REAL_ORDER_SENT",
+                    False,
+                )
+
+                raise RuntimeError(
+                    "DEMO_BROKER_EXPOSURE_"
+                    "REQUIRES_RECONCILIATION"
+                )
         else:
             print(
                 "DEMO_FORWARD_EXECUTION_ENABLED",
@@ -4429,34 +4608,40 @@ def main():
                                                 )
 
                                                 if (
-                                                    demo_result.reason
-                                                    ==
-                                                    "DEMO_PARTIAL_FILL_"
-                                                    "REQUIRES_RECONCILIATION"
+                                                    demo_result
+                                                    .order_send_performed
                                                 ):
                                                     print(
                                                         "REAL_ORDER_SENT",
                                                         True,
                                                     )
 
+                                                    if (
+                                                        demo_result.reason
+                                                        !=
+                                                        "ORDER_SEND_REJECTED"
+                                                    ):
+                                                        print(
+                                                            "DEMO_POST_SEND_FAIL_STOP",
+                                                            selected_symbol,
+                                                            demo_result.reason,
+                                                            demo_result.retcode,
+                                                        )
+
+                                                        raise RuntimeError(
+                                                            "DEMO_POST_SEND_"
+                                                            "REQUIRES_MANUAL_"
+                                                            "RECONCILIATION:"
+                                                            f"{selected_symbol}:"
+                                                            f"{demo_result.reason}"
+                                                        )
+
+                                                else:
                                                     print(
-                                                        "DEMO_PARTIAL_FILL_"
-                                                        "FAIL_STOP",
-                                                        selected_symbol,
-                                                        demo_result.retcode,
+                                                        "REAL_ORDER_SENT",
+                                                        False,
                                                     )
 
-                                                    raise RuntimeError(
-                                                        "DEMO_PARTIAL_FILL_"
-                                                        "REQUIRES_MANUAL_"
-                                                        "RECONCILIATION:"
-                                                        f"{selected_symbol}"
-                                                    )
-
-                                                print(
-                                                    "REAL_ORDER_SENT",
-                                                    False,
-                                                )
 
                                     # =====================================
                                     # Shadow state is now a post-broker
@@ -4510,6 +4695,15 @@ def main():
                                                 ),
                                                 broker_epoch=(
                                                     current_epoch
+                                                ),
+                                                volume_override=(
+                                                    float(demo_result.volume)
+                                                    if (
+                                                        args.demo_forward
+                                                        and demo_result is not None
+                                                        and demo_result.valid
+                                                    )
+                                                    else None
                                                 ),
                                             )
                                         )

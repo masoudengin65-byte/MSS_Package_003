@@ -1,8 +1,8 @@
-﻿"""Unified Shadow Live virtual trade engine for MSS."""
+"""Unified Shadow Live virtual trade engine for MSS."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +43,7 @@ class ShadowTradeEngineResult:
 
 class ShadowTradeEngine:
     """
+from dataclasses import replace
     Sprint 92H.14.2
 
     Unified virtual trading lifecycle.
@@ -102,6 +103,7 @@ class ShadowTradeEngine:
         stop_loss: float,
         take_profit: float,
         broker_epoch: int,
+        volume_override: float | None = None,
     ) -> ShadowTradeEngineResult:
 
         journal_path = (
@@ -129,12 +131,134 @@ class ShadowTradeEngine:
                 risk=risk,
             )
 
+        position_volume = float(
+            risk.normalized_volume
+        )
+
+        if volume_override is not None:
+            override = float(
+                volume_override
+            )
+
+            tolerance = max(
+                1e-12,
+                float(risk.volume_step) * 1e-9,
+            )
+
+            if override <= 0:
+                return ShadowTradeEngineResult(
+                    valid=False,
+                    action="OPEN_BLOCKED",
+                    reason="INVALID_VOLUME_OVERRIDE",
+                    risk=risk,
+                )
+
+            if (
+                override
+                >
+                float(risk.normalized_volume)
+                + tolerance
+            ):
+                return ShadowTradeEngineResult(
+                    valid=False,
+                    action="OPEN_BLOCKED",
+                    reason=(
+                        "VOLUME_OVERRIDE_EXCEEDS_"
+                        "RISK_NORMALIZED_VOLUME"
+                    ),
+                    risk=risk,
+                )
+
+            if (
+                override
+                <
+                float(risk.volume_min)
+                - tolerance
+                or
+                override
+                >
+                float(risk.volume_max)
+                + tolerance
+            ):
+                return ShadowTradeEngineResult(
+                    valid=False,
+                    action="OPEN_BLOCKED",
+                    reason=(
+                        "VOLUME_OVERRIDE_OUTSIDE_"
+                        "BROKER_LIMITS"
+                    ),
+                    risk=risk,
+                )
+
+            step = float(
+                risk.volume_step
+            )
+
+            if step <= 0:
+                return ShadowTradeEngineResult(
+                    valid=False,
+                    action="OPEN_BLOCKED",
+                    reason=(
+                        "INVALID_BROKER_"
+                        "VOLUME_STEP"
+                    ),
+                    risk=risk,
+                )
+
+            steps = round(
+                override / step
+            )
+
+            if (
+                abs(
+                    override
+                    - steps * step
+                )
+                >
+                tolerance
+            ):
+                return ShadowTradeEngineResult(
+                    valid=False,
+                    action="OPEN_BLOCKED",
+                    reason=(
+                        "VOLUME_OVERRIDE_"
+                        "NOT_ON_BROKER_STEP"
+                    ),
+                    risk=risk,
+                )
+
+            actual_risk_amount = (
+                float(
+                    risk.loss_per_one_lot
+                )
+                * override
+            )
+
+            actual_risk_percent = (
+                actual_risk_amount
+                / float(balance)
+                * 100.0
+            )
+
+            risk = replace(
+                risk,
+                risk_amount=(
+                    actual_risk_amount
+                ),
+                risk_percent=(
+                    actual_risk_percent
+                ),
+                normalized_volume=override,
+            )
+
+            position_volume = override
+
         position = (
             VirtualPositionEngine.open_position(
                 position_id=position_id,
                 symbol=symbol,
                 direction=direction,
-                volume=risk.normalized_volume,
+                volume=position_volume,
                 entry_price=entry_price,
                 stop_loss=stop_loss,
                 take_profit=take_profit,

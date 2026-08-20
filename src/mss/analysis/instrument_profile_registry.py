@@ -1,4 +1,4 @@
-﻿"""Instrument profiles for multi-asset shadow risk control.
+"""Instrument profiles for multi-asset shadow risk control.
 
 Sprint 92H.14.5
 
@@ -31,6 +31,7 @@ class DirectionalExposureProfile:
 
 class InstrumentProfileRegistry:
     _PROFILES = {
+        # Forex
         "EURUSD": InstrumentProfile(
             symbol="EURUSD",
             asset_class="FOREX",
@@ -49,6 +50,110 @@ class InstrumentProfileRegistry:
             base_asset="USD",
             quote_asset="JPY",
         ),
+        "AUDUSD": InstrumentProfile(
+            symbol="AUDUSD",
+            asset_class="FOREX",
+            base_asset="AUD",
+            quote_asset="USD",
+        ),
+        "USDCAD": InstrumentProfile(
+            symbol="USDCAD",
+            asset_class="FOREX",
+            base_asset="USD",
+            quote_asset="CAD",
+        ),
+        "USDCHF": InstrumentProfile(
+            symbol="USDCHF",
+            asset_class="FOREX",
+            base_asset="USD",
+            quote_asset="CHF",
+        ),
+        "NZDUSD": InstrumentProfile(
+            symbol="NZDUSD",
+            asset_class="FOREX",
+            base_asset="NZD",
+            quote_asset="USD",
+        ),
+        "EURJPY": InstrumentProfile(
+            symbol="EURJPY",
+            asset_class="FOREX",
+            base_asset="EUR",
+            quote_asset="JPY",
+        ),
+        "GBPJPY": InstrumentProfile(
+            symbol="GBPJPY",
+            asset_class="FOREX",
+            base_asset="GBP",
+            quote_asset="JPY",
+        ),
+        "EURGBP": InstrumentProfile(
+            symbol="EURGBP",
+            asset_class="FOREX",
+            base_asset="EUR",
+            quote_asset="GBP",
+        ),
+        "AUDJPY": InstrumentProfile(
+            symbol="AUDJPY",
+            asset_class="FOREX",
+            base_asset="AUD",
+            quote_asset="JPY",
+        ),
+        "CADJPY": InstrumentProfile(
+            symbol="CADJPY",
+            asset_class="FOREX",
+            base_asset="CAD",
+            quote_asset="JPY",
+        ),
+        "CHFJPY": InstrumentProfile(
+            symbol="CHFJPY",
+            asset_class="FOREX",
+            base_asset="CHF",
+            quote_asset="JPY",
+        ),
+        "EURAUD": InstrumentProfile(
+            symbol="EURAUD",
+            asset_class="FOREX",
+            base_asset="EUR",
+            quote_asset="AUD",
+        ),
+        "EURNZD": InstrumentProfile(
+            symbol="EURNZD",
+            asset_class="FOREX",
+            base_asset="EUR",
+            quote_asset="NZD",
+        ),
+        "EURCAD": InstrumentProfile(
+            symbol="EURCAD",
+            asset_class="FOREX",
+            base_asset="EUR",
+            quote_asset="CAD",
+        ),
+        "EURCHF": InstrumentProfile(
+            symbol="EURCHF",
+            asset_class="FOREX",
+            base_asset="EUR",
+            quote_asset="CHF",
+        ),
+        "GBPAUD": InstrumentProfile(
+            symbol="GBPAUD",
+            asset_class="FOREX",
+            base_asset="GBP",
+            quote_asset="AUD",
+        ),
+        "GBPCAD": InstrumentProfile(
+            symbol="GBPCAD",
+            asset_class="FOREX",
+            base_asset="GBP",
+            quote_asset="CAD",
+        ),
+        "GBPCHF": InstrumentProfile(
+            symbol="GBPCHF",
+            asset_class="FOREX",
+            base_asset="GBP",
+            quote_asset="CHF",
+        ),
+
+        # Metals / energy / commodity
         "XAUUSD": InstrumentProfile(
             symbol="XAUUSD",
             asset_class="METALS",
@@ -67,6 +172,40 @@ class InstrumentProfileRegistry:
             base_asset="WTI",
             quote_asset="USD",
         ),
+        "COPPER": InstrumentProfile(
+            symbol="COPPER",
+            asset_class="COMMODITY",
+            base_asset="COPPER",
+            quote_asset="USD",
+        ),
+
+        # Equity indices
+        "NAS100": InstrumentProfile(
+            symbol="NAS100",
+            asset_class="INDEX",
+            base_asset="NAS100",
+            quote_asset="USD",
+        ),
+        "US30": InstrumentProfile(
+            symbol="US30",
+            asset_class="INDEX",
+            base_asset="US30",
+            quote_asset="USD",
+        ),
+        "NETH25": InstrumentProfile(
+            symbol="NETH25",
+            asset_class="INDEX",
+            base_asset="NETH25",
+            quote_asset="EUR",
+        ),
+        "SPN35": InstrumentProfile(
+            symbol="SPN35",
+            asset_class="INDEX",
+            base_asset="SPN35",
+            quote_asset="EUR",
+        ),
+
+        # Crypto
         "BITCOIN": InstrumentProfile(
             symbol="BITCOIN",
             asset_class="CRYPTO",
@@ -77,6 +216,18 @@ class InstrumentProfileRegistry:
             symbol="ETHEREUM",
             asset_class="CRYPTO",
             base_asset="ETH",
+            quote_asset="USD",
+        ),
+        "BITCOIN CASH": InstrumentProfile(
+            symbol="BITCOIN CASH",
+            asset_class="CRYPTO",
+            base_asset="BCH",
+            quote_asset="USD",
+        ),
+        "SOLANA": InstrumentProfile(
+            symbol="SOLANA",
+            asset_class="CRYPTO",
+            base_asset="SOL",
             quote_asset="USD",
         ),
     }

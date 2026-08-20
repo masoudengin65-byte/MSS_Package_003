@@ -1,4 +1,4 @@
-﻿from types import SimpleNamespace
+from types import SimpleNamespace
 
 import MetaTrader5 as mt5
 
@@ -262,3 +262,170 @@ def test_engine_has_no_real_execution_methods():
         methods
         & prohibited
     )
+
+
+def test_volume_override_downsizes_position_and_recalculates_risk(
+    tmp_path,
+    monkeypatch,
+):
+    install_broker_stubs(
+        monkeypatch
+    )
+
+    journal = (
+        tmp_path
+        / "volume_override_events.jsonl"
+    )
+
+    opened = (
+        ShadowTradeEngine.open_trade(
+            journal_path=journal,
+            position_id=(
+                "SHADOW-VOLUME-OVERRIDE-1"
+            ),
+            symbol="USDJPY",
+            direction="BUY",
+            balance=10000.0,
+            risk_percent=1.0,
+            entry_price=159.000,
+            stop_loss=158.500,
+            take_profit=160.000,
+            broker_epoch=1000,
+            volume_override=0.01,
+        )
+    )
+
+    assert opened.valid is True
+    assert (
+        opened.action
+        == "POSITION_OPENED"
+    )
+
+    assert opened.position.valid is True
+    assert opened.position.volume == 0.01
+
+    assert (
+        opened.risk.normalized_volume
+        == 0.01
+    )
+
+    # Stub loss for one lot:
+    # abs(159.000 - 158.500) * 1000
+    # = 500 account-currency units.
+    #
+    # Therefore 0.01 lot carries actual risk:
+    # 500 * 0.01 = 5.00
+    #
+    # On a 10,000 balance:
+    # 5 / 10,000 * 100 = 0.05%
+    assert (
+        abs(
+            opened.risk.risk_amount
+            - 5.0
+        )
+        < 1e-12
+    )
+
+    assert (
+        abs(
+            opened.risk.risk_percent
+            - 0.05
+        )
+        < 1e-12
+    )
+
+    event = opened.journal_event
+
+    assert (
+        event["event_type"]
+        == "POSITION_OPENED"
+    )
+
+    payload = event["payload"]
+
+    assert payload["volume"] == 0.01
+
+    assert (
+        payload["normalized_volume"]
+        == 0.01
+    )
+
+    assert (
+        abs(
+            payload["risk_amount"]
+            - 5.0
+        )
+        < 1e-12
+    )
+
+    assert (
+        abs(
+            payload["risk_percent"]
+            - 0.05
+        )
+        < 1e-12
+    )
+
+    verification = (
+        ShadowTradeJournal.verify(
+            journal
+        )
+    )
+
+    assert verification["valid"] is True
+    assert (
+        verification["event_count"]
+        == 1
+    )
+
+
+def test_volume_override_above_risk_volume_is_blocked(
+    tmp_path,
+    monkeypatch,
+):
+    install_broker_stubs(
+        monkeypatch
+    )
+
+    journal = (
+        tmp_path
+        / "volume_override_blocked.jsonl"
+    )
+
+    blocked = (
+        ShadowTradeEngine.open_trade(
+            journal_path=journal,
+            position_id=(
+                "SHADOW-VOLUME-OVERRIDE-2"
+            ),
+            symbol="USDJPY",
+            direction="BUY",
+            balance=10000.0,
+            risk_percent=1.0,
+            entry_price=159.000,
+            stop_loss=158.500,
+            take_profit=160.000,
+            broker_epoch=1000,
+            volume_override=0.21,
+        )
+    )
+
+    # Normal calculated risk volume is 0.20.
+    # An override may downsize exposure, but it
+    # must never increase exposure above the
+    # risk-calculated normalized volume.
+    assert blocked.valid is False
+
+    assert (
+        blocked.action
+        == "OPEN_BLOCKED"
+    )
+
+    assert (
+        blocked.reason
+        ==
+        "VOLUME_OVERRIDE_EXCEEDS_"
+        "RISK_NORMALIZED_VOLUME"
+    )
+
+    assert journal.exists() is False

@@ -316,3 +316,110 @@ def test_main_global_stats_contains_demo_execution_counters():
     assert '"demo_execution_attempts": 0' in main_stats_block
     assert '"demo_execution_successes": 0' in main_stats_block
     assert '"demo_execution_blocks": 0' in main_stats_block
+
+
+def test_expanded_demo_probe_isolated_symbol_universe():
+    from pathlib import Path
+
+    text = Path(
+        "integration_tests/"
+        "run_sprint92h14_7_demo_forward_session.py"
+    ).read_text(
+        encoding="utf-8"
+    )
+
+    assert "EXPANDED_DEMO_PROBE_SYMBOLS" in text
+    assert "--demo-probe-expanded-symbols" in text
+    assert "EXPANDED_DEMO_PROBE_REQUIRES_DEMO_FORWARD" in text
+    assert "DEMO_PROBE_EXPANDED_SYMBOL_COUNT" in text
+
+    expected = [
+        "AUDUSD",
+        "USDCAD",
+        "USDCHF",
+        "NZDUSD",
+        "EURJPY",
+        "GBPJPY",
+        "EURGBP",
+        "AUDJPY",
+        "CADJPY",
+        "CHFJPY",
+        "EURAUD",
+        "EURNZD",
+        "EURCAD",
+        "EURCHF",
+        "GBPAUD",
+        "GBPCAD",
+        "GBPCHF",
+        "COPPER",
+        "NAS100",
+        "US30",
+        "NETH25",
+        "SPN35",
+        "BITCOIN CASH",
+        "SOLANA",
+    ]
+
+    for symbol in expected:
+        assert f'"{symbol}"' in text
+
+
+def test_expanded_demo_probe_contains_exactly_32_symbols():
+    import ast
+    from pathlib import Path
+
+    text = Path(
+        "integration_tests/"
+        "run_sprint92h14_7_demo_forward_session.py"
+    ).read_text(
+        encoding="utf-8-sig"
+    )
+
+    tree = ast.parse(text)
+
+    expanded = None
+
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if (
+                    isinstance(target, ast.Name)
+                    and
+                    target.id
+                    == "EXPANDED_DEMO_PROBE_SYMBOLS"
+                ):
+                    expanded = ast.literal_eval(
+                        node.value
+                    )
+
+    assert expanded is not None
+    assert len(expanded) == 32
+    assert len(set(expanded)) == 32
+
+
+def test_demo_shadow_mirror_uses_broker_confirmed_volume():
+    runner = Path(
+        "integration_tests/"
+        "run_sprint92h14_7_demo_forward_session.py"
+    ).read_text(
+        encoding="utf-8-sig"
+    )
+
+    assert "volume_override=(" in runner
+    assert "float(demo_result.volume)" in runner
+    assert "and demo_result.valid" in runner
+
+
+def test_demo_post_send_uncertain_exposure_fail_stops():
+    runner = Path(
+        "integration_tests/"
+        "run_sprint92h14_7_demo_forward_session.py"
+    ).read_text(
+        encoding="utf-8-sig"
+    )
+
+    assert "order_send_performed" in runner
+    assert "DEMO_POST_SEND_FAIL_STOP" in runner
+    assert '"DEMO_POST_SEND_"' in runner
+    assert '"REQUIRES_MANUAL_"' in runner
+    assert '"RECONCILIATION:"' in runner
