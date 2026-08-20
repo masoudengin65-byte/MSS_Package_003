@@ -2141,6 +2141,8 @@ def main():
             while True:
                 if (
                     args.max_seconds > 0
+                    and
+                    position is None
                     and (
                         time.monotonic()
                         - start_monotonic
@@ -2318,6 +2320,55 @@ def main():
                     )
 
                     continue
+
+                # =========================================
+                # H14.7 controlled Demo session limits.
+                #
+                # Limits inhibit NEW execution. They must
+                # never abandon lifecycle monitoring of an
+                # already-open position.
+                # =========================================
+
+                if position is None:
+                    if (
+                        args.demo_forward
+                        and
+                        args.max_demo_attempts > 0
+                        and
+                        demo_execution_runtime[
+                            "attempt_count"
+                        ]
+                        >=
+                        args.max_demo_attempts
+                    ):
+                        final_status = (
+                            "DEMO_MAX_EXECUTION_"
+                            "ATTEMPTS_REACHED"
+                        )
+
+                        print(
+                            "DEMO_EXECUTION_ATTEMPT_"
+                            "LIMIT_REACHED",
+                            demo_execution_runtime[
+                                "attempt_count"
+                            ],
+                        )
+
+                        break
+
+                    if (
+                        args.max_seconds > 0
+                        and (
+                            time.monotonic()
+                            - start_monotonic
+                        )
+                        >= args.max_seconds
+                    ):
+                        final_status = (
+                            "SESSION_MAX_SECONDS_REACHED"
+                        )
+
+                        break
 
                 # =========================================
                 # H14.5c GLOBAL RUNTIME HEALTH WATCHDOG.
@@ -4682,18 +4733,70 @@ def main():
                                                     .risk_percent
                                                 ),
                                                 entry_price=(
+                                                    float(
+                                                        demo_result
+                                                        .fill_price
+                                                    )
+                                                    if (
+                                                        args.demo_forward
+                                                        and
+                                                        demo_result
+                                                        is not None
+                                                        and
+                                                        demo_result.valid
+                                                    )
+                                                    else
                                                     final_entry
                                                     .entry_price
                                                 ),
                                                 stop_loss=(
+                                                    float(
+                                                        demo_result
+                                                        .stop_loss
+                                                    )
+                                                    if (
+                                                        args.demo_forward
+                                                        and
+                                                        demo_result
+                                                        is not None
+                                                        and
+                                                        demo_result.valid
+                                                    )
+                                                    else
                                                     final_entry
                                                     .stop_loss
                                                 ),
                                                 take_profit=(
+                                                    float(
+                                                        demo_result
+                                                        .take_profit
+                                                    )
+                                                    if (
+                                                        args.demo_forward
+                                                        and
+                                                        demo_result
+                                                        is not None
+                                                        and
+                                                        demo_result.valid
+                                                    )
+                                                    else
                                                     final_entry
                                                     .take_profit
                                                 ),
                                                 broker_epoch=(
+                                                    int(
+                                                        demo_result
+                                                        .position_open_broker_epoch
+                                                    )
+                                                    if (
+                                                        args.demo_forward
+                                                        and
+                                                        demo_result
+                                                        is not None
+                                                        and
+                                                        demo_result.valid
+                                                    )
+                                                    else
                                                     current_epoch
                                                 ),
                                                 volume_override=(
@@ -4857,30 +4960,6 @@ def main():
                                                     "REAL_ORDER_SENT",
                                                     False,
                                                 )
-
-                if (
-                    args.demo_forward
-                    and
-                    args.max_demo_attempts > 0
-                    and
-                    demo_execution_runtime[
-                        "attempt_count"
-                    ]
-                    >=
-                    args.max_demo_attempts
-                ):
-                    final_status = (
-                        "DEMO_MAX_EXECUTION_ATTEMPTS_REACHED"
-                    )
-
-                    print(
-                        "DEMO_EXECUTION_ATTEMPT_LIMIT_REACHED",
-                        demo_execution_runtime[
-                            "attempt_count"
-                        ],
-                    )
-
-                    break
 
                 # Ensure transitions whose futures were
                 # processed always advance their anchor.

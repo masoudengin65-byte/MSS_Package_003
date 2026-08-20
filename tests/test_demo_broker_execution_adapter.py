@@ -118,10 +118,20 @@ class FakeMT5:
 
         return (
             SimpleNamespace(
+                ticket=int(
+                    self.send_result.order
+                ),
+                identifier=int(
+                    self.send_result.order
+                ),
+                time=1700000000,
                 magic=request["magic"],
                 type=position_type,
                 volume=float(
                     request["volume"]
+                ),
+                price_open=float(
+                    self.send_result.price
                 ),
                 sl=float(
                     request["sl"]
@@ -423,6 +433,58 @@ def test_successful_demo_order_is_confirmed(
 
     assert result.fill_price == pytest.approx(
         1.1002
+    )
+
+
+def test_confirmed_position_metadata_is_authoritative(
+    fake_mt5,
+):
+    fake_mt5.positions_after = (
+        SimpleNamespace(
+            ticket=54321,
+            identifier=98765,
+            time=1700000123,
+            magic=(
+                DemoBrokerExecutionAdapter
+                .MAGIC
+            ),
+            type=(
+                fake_mt5
+                .POSITION_TYPE_BUY
+            ),
+            volume=0.10,
+            price_open=1.10025,
+            sl=1.0950,
+            tp=1.1100,
+        ),
+    )
+
+    result = execute()
+
+    assert result.valid is True
+
+    assert result.fill_price == pytest.approx(
+        1.10025
+    )
+
+    assert result.volume == pytest.approx(
+        0.10
+    )
+
+    assert result.stop_loss == pytest.approx(
+        1.0950
+    )
+
+    assert result.take_profit == pytest.approx(
+        1.1100
+    )
+
+    assert result.position_ticket == 54321
+    assert result.position_identifier == 98765
+
+    assert (
+        result.position_open_broker_epoch
+        == 1700000123
     )
 
 

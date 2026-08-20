@@ -20,6 +20,10 @@ class DemoExecutionResult:
     requested_price: float = 0.0
     fill_price: float = 0.0
 
+    position_ticket: int = 0
+    position_identifier: int = 0
+    position_open_broker_epoch: int = 0
+
     stop_loss: float = 0.0
     take_profit: float = 0.0
 
@@ -684,18 +688,138 @@ class DemoBrokerExecutionAdapter:
                 order_send_performed=True,
             )
 
+        if len(matching_positions) != 1:
+            return DemoExecutionResult(
+                symbol=symbol,
+                direction=direction,
+                volume=volume,
+                requested_price=requested_price,
+                fill_price=fill_price,
+                stop_loss=stop_loss,
+                take_profit=take_profit,
+                order_ticket=order_ticket,
+                deal_ticket=deal_ticket,
+                retcode=retcode,
+                reason=(
+                    "POST_SEND_POSITION_"
+                    "CONFIRMATION_AMBIGUOUS"
+                ),
+                order_check_performed=True,
+                order_send_performed=True,
+            )
+
+        confirmed_position = (
+            matching_positions[0]
+        )
+
+        confirmed_ticket = int(
+            getattr(
+                confirmed_position,
+                "ticket",
+                0,
+            )
+            or 0
+        )
+
+        confirmed_identifier = int(
+            getattr(
+                confirmed_position,
+                "identifier",
+                0,
+            )
+            or 0
+        )
+
+        confirmed_entry_price = float(
+            getattr(
+                confirmed_position,
+                "price_open",
+                0.0,
+            )
+            or 0.0
+        )
+
+        confirmed_broker_epoch = int(
+            getattr(
+                confirmed_position,
+                "time",
+                0,
+            )
+            or 0
+        )
+
+        confirmed_volume = float(
+            getattr(
+                confirmed_position,
+                "volume",
+                0.0,
+            )
+            or 0.0
+        )
+
+        confirmed_sl = float(
+            getattr(
+                confirmed_position,
+                "sl",
+                0.0,
+            )
+            or 0.0
+        )
+
+        confirmed_tp = float(
+            getattr(
+                confirmed_position,
+                "tp",
+                0.0,
+            )
+            or 0.0
+        )
+
+        if (
+            confirmed_ticket <= 0
+            or confirmed_identifier <= 0
+            or confirmed_entry_price <= 0
+            or confirmed_broker_epoch <= 0
+            or confirmed_volume <= 0
+            or confirmed_sl <= 0
+            or confirmed_tp <= 0
+        ):
+            return DemoExecutionResult(
+                symbol=symbol,
+                direction=direction,
+                volume=volume,
+                requested_price=requested_price,
+                fill_price=fill_price,
+                stop_loss=stop_loss,
+                take_profit=take_profit,
+                order_ticket=order_ticket,
+                deal_ticket=deal_ticket,
+                retcode=retcode,
+                reason=(
+                    "POST_SEND_POSITION_"
+                    "METADATA_INVALID"
+                ),
+                order_check_performed=True,
+                order_send_performed=True,
+            )
+
         return DemoExecutionResult(
             valid=True,
             reason="DEMO_ORDER_EXECUTED",
             symbol=symbol,
             direction=direction.upper(),
-            volume=float(volume),
+            volume=confirmed_volume,
             requested_price=requested_price,
-            fill_price=fill_price,
-            stop_loss=float(stop_loss),
-            take_profit=float(take_profit),
+            fill_price=confirmed_entry_price,
+            stop_loss=confirmed_sl,
+            take_profit=confirmed_tp,
             order_ticket=order_ticket,
             deal_ticket=deal_ticket,
+            position_ticket=confirmed_ticket,
+            position_identifier=confirmed_identifier,
+            position_open_broker_epoch=(
+                confirmed_broker_epoch
+            ),
             retcode=retcode,
             order_check_performed=True,
             order_send_performed=True,

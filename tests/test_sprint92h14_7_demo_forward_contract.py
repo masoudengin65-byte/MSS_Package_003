@@ -423,3 +423,55 @@ def test_demo_post_send_uncertain_exposure_fail_stops():
     assert '"DEMO_POST_SEND_"' in runner
     assert '"REQUIRES_MANUAL_"' in runner
     assert '"RECONCILIATION:"' in runner
+
+def test_demo_mirror_uses_broker_confirmed_entry_and_epoch():
+    text = _runner_text()
+
+    assert "demo_result" in text
+    assert ".fill_price" in text
+
+    assert (
+        ".position_open_broker_epoch"
+        in text
+    )
+
+
+def test_demo_attempt_limit_preserves_open_position_monitoring():
+    text = _runner_text()
+
+    assert (
+        text.count(
+            '"DEMO_EXECUTION_ATTEMPT_"'
+        )
+        >= 1
+    )
+
+    gate = text.index(
+        "# H14.7 controlled Demo session limits."
+    )
+
+    window = text[
+        gate:
+        gate + 1600
+    ]
+
+    assert "if position is None:" in window
+    assert "args.max_demo_attempts > 0" in window
+
+
+def test_session_deadline_does_not_abandon_open_position():
+    text = _runner_text()
+
+    first_status = text.index(
+        '"SESSION_MAX_SECONDS_REACHED"'
+    )
+
+    window = text[
+        max(
+            0,
+            first_status - 500,
+        ):
+        first_status
+    ]
+
+    assert "position is None" in window
