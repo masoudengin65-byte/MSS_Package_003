@@ -475,3 +475,42 @@ def test_session_deadline_does_not_abandon_open_position():
     ]
 
     assert "position is None" in window
+
+
+def test_existing_single_broker_position_reaches_shadow_recovery():
+    text = _runner_text()
+    snapshot = text.index("demo_mss_positions = tuple(")
+    recovery = text.index("ShadowPositionRecovery", snapshot)
+    reconciliation = text.index(
+        "DemoBrokerShadowRestartReconciler.reconcile", recovery
+    )
+    assert snapshot < recovery < reconciliation
+    assert "DEMO_BROKER_EXPOSURE_REQUIRES_RECONCILIATION" not in text
+
+
+def test_restart_reconciliation_precedes_candidate_execution():
+    text = _runner_text()
+    reconciliation = text.index(
+        "DemoBrokerShadowRestartReconciler.reconcile"
+    )
+    candidate = text.index("candidate_context = {}", reconciliation)
+    adapter = text.index(".execute_market_order(", reconciliation)
+    assert reconciliation < candidate < adapter
+
+
+def test_restart_resume_uses_existing_recovery_without_duplicate_open():
+    text = _runner_text()
+    reconciliation = text.index(
+        "DemoBrokerShadowRestartReconciler.reconcile"
+    )
+    restore = text.index(") = recovered[0]", reconciliation)
+    open_trade = text.index(".open_trade(", restore)
+    assert reconciliation < restore < open_trade
+    assert "DEMO_BROKER_SHADOW_RESTART_RESUME_ALLOWED" in text
+    assert 'print("REAL_ORDER_SENT", False)' in text
+
+
+def test_restart_reconciler_receives_global_pending_and_shadow_counts():
+    text = _runner_text()
+    assert "pending_order_count=len(demo_mss_orders)" in text
+    assert "shadow_positions=tuple(item[1] for item in recovered)" in text

@@ -80,6 +80,10 @@ from mss.analysis.portfolio_risk_governor import (
 from mss.analysis.demo_broker_execution_adapter import (
     DemoBrokerExecutionAdapter,
 )
+from mss.analysis.demo_broker_shadow_restart_reconciler import (
+    DemoBrokerPositionSnapshot,
+    DemoBrokerShadowRestartReconciler,
+)
 from mss.analysis.shadow_risk_calculator import (
     ShadowRiskCalculator,
 )
@@ -1067,6 +1071,8 @@ def main():
 
     position = None
     position_symbol = None
+    demo_mss_positions = ()
+    demo_mss_orders = ()
 
     portfolio_risk_recovery = None
     portfolio_governor_positions = ()
@@ -1279,10 +1285,9 @@ def main():
             # H14.7 Demo broker exposure startup reconciliation
             # gate.
             #
-            # A broker-side MSS position/order may survive a
-            # Python crash before its Shadow mirror is journaled.
-            # Until explicit reconciliation exists, startup must
-            # fail safe before candidate discovery or execution.
+            # Preserve a read-only broker snapshot before Shadow
+            # recovery. Exactly one position is reconciled later;
+            # it is not rejected merely because it exists.
             # -------------------------------------------------
 
             demo_broker_positions = mt5.positions_get()
@@ -1335,11 +1340,7 @@ def main():
                 len(demo_mss_orders),
             )
 
-            if (
-                demo_mss_positions
-                or
-                demo_mss_orders
-            ):
+            if demo_mss_positions or demo_mss_orders:
                 for item in demo_mss_positions:
                     print(
                         "DEMO_BROKER_EXISTING_POSITION",
@@ -1364,20 +1365,6 @@ def main():
                         getattr(item, "comment", None),
                     )
 
-                print(
-                    "DEMO_BROKER_EXPOSURE_REQUIRES_RECONCILIATION",
-                    True,
-                )
-
-                print(
-                    "REAL_ORDER_SENT",
-                    False,
-                )
-
-                raise RuntimeError(
-                    "DEMO_BROKER_EXPOSURE_"
-                    "REQUIRES_RECONCILIATION"
-                )
         else:
             print(
                 "DEMO_FORWARD_EXECUTION_ENABLED",
@@ -1731,6 +1718,97 @@ def main():
             "PORTFOLIO_LIFECYCLE_CROSSCHECK_OK",
             True,
         )
+
+        # =============================================
+        # H14.7 broker/Shadow restart reconciliation.
+        # The broker snapshot was captured before journal
+        # recovery. This phase is read-only and occurs before
+        # candidate discovery or broker execution.
+        # =============================================
+
+        if args.demo_forward:
+            broker_snapshots = []
+
+            for broker_position in demo_mss_positions:
+                broker_symbol = str(
+                    getattr(broker_position, "symbol", "")
+                )
+                broker_symbol_info = mt5.symbol_info(
+                    broker_symbol
+                )
+
+                if broker_symbol_info is None:
+                    broker_point = 0.0
+                    broker_volume_step = 0.0
+                else:
+                    broker_point = float(
+                        getattr(broker_symbol_info, "point", 0.0)
+                        or 0.0
+                    )
+                    broker_volume_step = float(
+                        getattr(broker_symbol_info, "volume_step", 0.0)
+                        or 0.0
+                    )
+
+                position_type = getattr(
+                    broker_position, "type", None
+                )
+                if position_type == mt5.POSITION_TYPE_BUY:
+                    broker_direction = "BUY"
+                elif position_type == mt5.POSITION_TYPE_SELL:
+                    broker_direction = "SELL"
+                else:
+                    broker_direction = ""
+
+                broker_snapshots.append(
+                    DemoBrokerPositionSnapshot(
+                        ticket=int(getattr(broker_position, "ticket", 0) or 0),
+                        identifier=int(getattr(broker_position, "identifier", 0) or 0),
+                        magic=int(getattr(broker_position, "magic", 0) or 0),
+                        symbol=broker_symbol,
+                        direction=broker_direction,
+                        volume=float(getattr(broker_position, "volume", 0.0) or 0.0),
+                        entry_price=float(getattr(broker_position, "price_open", 0.0) or 0.0),
+                        stop_loss=float(getattr(broker_position, "sl", 0.0) or 0.0),
+                        take_profit=float(getattr(broker_position, "tp", 0.0) or 0.0),
+                        open_broker_epoch=int(getattr(broker_position, "time", 0) or 0),
+                        point=broker_point,
+                        volume_step=broker_volume_step,
+                    )
+                )
+
+            restart_reconciliation = (
+                DemoBrokerShadowRestartReconciler.reconcile(
+                    broker_positions=tuple(broker_snapshots),
+                    pending_order_count=len(demo_mss_orders),
+                    shadow_positions=tuple(item[1] for item in recovered),
+                )
+            )
+
+            print(
+                "DEMO_BROKER_SHADOW_RESTART_RECONCILIATION",
+                restart_reconciliation.valid,
+            )
+            print(
+                "DEMO_BROKER_SHADOW_RESTART_REASON",
+                restart_reconciliation.reason,
+            )
+            print(
+                "DEMO_BROKER_SHADOW_RESTART_RESUME_ALLOWED",
+                restart_reconciliation.resume_allowed,
+            )
+            print(
+                "DEMO_BROKER_SHADOW_RESTART_SYMBOL",
+                restart_reconciliation.broker_symbol
+                or restart_reconciliation.shadow_symbol,
+            )
+            print("REAL_ORDER_SENT", False)
+
+            if not restart_reconciliation.valid:
+                raise RuntimeError(
+                    "DEMO_BROKER_SHADOW_RESTART_FAILED:"
+                    f"{restart_reconciliation.reason}"
+                )
 
         # =============================================
         # Read-only predecessor safety guard.
