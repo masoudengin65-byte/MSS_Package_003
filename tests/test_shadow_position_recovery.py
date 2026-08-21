@@ -112,6 +112,29 @@ def test_open_position_is_recovered(
         position.real_order_send_allowed
         is False
     )
+    assert position.broker_position_ticket == 0
+    assert position.broker_position_identifier == 0
+
+
+def test_broker_position_identity_is_recovered_when_present(tmp_path):
+    path = tmp_path / "events.jsonl"
+    event = append_open(path)
+    payload = event["payload"]
+    payload["broker_position_ticket"] = 123
+    payload["broker_position_identifier"] = 456
+
+    # Rebuild the synthetic journal normally so its hash remains valid.
+    path.unlink()
+    ShadowTradeJournal.append_event(
+        path=path,
+        event_type="POSITION_OPENED",
+        position_id="SHADOW-1",
+        broker_epoch=1000,
+        payload=payload,
+    )
+    position = ShadowPositionRecovery.recover(path).position
+    assert position.broker_position_ticket == 123
+    assert position.broker_position_identifier == 456
 
 
 def test_closed_position_is_not_recovered(

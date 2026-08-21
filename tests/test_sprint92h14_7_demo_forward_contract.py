@@ -514,3 +514,39 @@ def test_restart_reconciler_receives_global_pending_and_shadow_counts():
     text = _runner_text()
     assert "pending_order_count=len(demo_mss_orders)" in text
     assert "shadow_positions=tuple(item[1] for item in recovered)" in text
+
+
+def test_case_d_uses_position_scoped_deal_history_before_candidates():
+    text = _runner_text()
+    history = text.index("mt5.history_deals_get(")
+    reconcile = text.index(
+        "DemoBrokerOfflineClosureReconciler.reconcile", history
+    )
+    apply_close = text.index(
+        "DemoBrokerOfflineClosureJournalApplier.apply", reconcile
+    )
+    candidate = text.index("candidate_context = {}", apply_close)
+    assert history < reconcile < apply_close < candidate
+    assert "position=(" in text[history:reconcile]
+
+
+def test_offline_close_requires_post_recovery_and_broker_verification():
+    text = _runner_text()
+    start = text.index("DemoBrokerOfflineClosureJournalApplier.apply")
+    end = text.index("# Read-only predecessor safety guard", start)
+    block = text[start:end]
+    assert "ShadowPositionRecovery.recover(" in block
+    assert "ShadowPortfolioRiskAggregator.recover(" in block
+    assert "post_broker_positions = mt5.positions_get()" in block
+    assert "post_broker_orders = mt5.orders_get()" in block
+    assert "OFFLINE_CLOSURE_POST_BROKER_" in block
+    assert '"EXPOSURE_PRESENT"' in block
+    assert '"PENDING_ORDER_PRESENT"' in block
+
+
+def test_demo_mirror_persists_broker_position_identity():
+    text = _runner_text()
+    assert "broker_position_ticket=(" in text
+    assert "int(demo_result.position_ticket)" in text
+    assert "broker_position_identifier=(" in text
+    assert "int(demo_result.position_identifier)" in text
