@@ -78,11 +78,26 @@ class DemoBrokerOfflineClosureJournalApplier:
             return DemoBrokerOfflineClosureApplicationResult(
                 reason="OFFLINE_CLOSURE_NOT_CONFIRMED"
             )
-        if (
-            reconciliation.shadow_position_id != shadow_position.position_id
-            or reconciliation.broker_position_identifier
-            != shadow_position.broker_position_identifier
-        ):
+        identity_matches = (
+            reconciliation.shadow_position_id == shadow_position.position_id
+            and reconciliation.symbol == shadow_position.symbol
+            and reconciliation.broker_position_identifier
+            == shadow_position.broker_position_identifier
+        )
+        legacy_identity_matches = (
+            reconciliation.legacy_identity_recovered
+            and reconciliation.shadow_position_id
+            == shadow_position.position_id
+            and reconciliation.symbol == shadow_position.symbol
+            and reconciliation.broker_position_identifier > 0
+            and reconciliation.entry_deal_ticket > 0
+            and reconciliation.entry_price > 0
+            and reconciliation.entry_broker_epoch
+            >= shadow_position.open_broker_epoch
+            and shadow_position.broker_position_identifier == 0
+            and shadow_position.broker_position_ticket == 0
+        )
+        if not (identity_matches or legacy_identity_matches):
             return DemoBrokerOfflineClosureApplicationResult(
                 reason="RECONCILIATION_SHADOW_IDENTITY_MISMATCH"
             )
@@ -154,6 +169,12 @@ class DemoBrokerOfflineClosureJournalApplier:
                 "swap": reconciliation.swap,
                 "fee": reconciliation.fee,
                 "net_result": reconciliation.net_result,
+                "legacy_identity_recovered": (
+                    reconciliation.legacy_identity_recovered
+                ),
+                "entry_deal_ticket": reconciliation.entry_deal_ticket,
+                "broker_entry_price": reconciliation.entry_price,
+                "broker_entry_epoch": reconciliation.entry_broker_epoch,
             },
         )
         return DemoBrokerOfflineClosureApplicationResult(
@@ -184,6 +205,14 @@ class DemoBrokerOfflineClosureJournalApplier:
             and float(payload.get("fee", 0.0)) == reconciliation.fee
             and float(payload.get("net_result", 0.0))
             == reconciliation.net_result
+            and bool(payload.get("legacy_identity_recovered", False))
+            == reconciliation.legacy_identity_recovered
+            and int(payload.get("entry_deal_ticket", 0))
+            == reconciliation.entry_deal_ticket
+            and float(payload.get("broker_entry_price", 0.0))
+            == reconciliation.entry_price
+            and int(payload.get("broker_entry_epoch", 0))
+            == reconciliation.entry_broker_epoch
         )
 
     @staticmethod
