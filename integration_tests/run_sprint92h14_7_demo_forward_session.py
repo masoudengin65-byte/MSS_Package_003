@@ -24,6 +24,7 @@ from concurrent.futures import (
     ThreadPoolExecutor,
     as_completed,
 )
+from datetime import datetime, timezone
 from pathlib import Path
 
 import MetaTrader5 as mt5
@@ -887,6 +888,24 @@ def main():
     )
 
     parser.add_argument(
+        "--demo-reconcile-only",
+        action="store_true",
+        help=(
+            "Run Demo broker/Shadow startup reconciliation, then exit "
+            "before candidate discovery or any execution attempt."
+        ),
+    )
+
+    parser.add_argument(
+        "--allow-legacy-identity-recovery",
+        action="store_true",
+        help=(
+            "Explicitly allow unique broker-history identity recovery for "
+            "old Shadow opens. Requires --demo-reconcile-only."
+        ),
+    )
+
+    parser.add_argument(
         "--demo-probe-expanded-symbols",
         action="store_true",
         help=(
@@ -921,6 +940,29 @@ def main():
             "EXPANDED_DEMO_PROBE_REQUIRES_DEMO_FORWARD"
         )
 
+    if args.demo_reconcile_only and not args.demo_forward:
+        raise RuntimeError(
+            "DEMO_RECONCILE_ONLY_REQUIRES_DEMO_FORWARD"
+        )
+
+    if (
+        args.allow_legacy_identity_recovery
+        and not args.demo_reconcile_only
+    ):
+        raise RuntimeError(
+            "LEGACY_IDENTITY_RECOVERY_REQUIRES_"
+            "DEMO_RECONCILE_ONLY"
+        )
+
+    if args.demo_reconcile_only and (
+        args.demo_probe_min_volume
+        or args.demo_probe_expanded_symbols
+        or args.max_demo_attempts != 0
+    ):
+        raise RuntimeError(
+            "DEMO_RECONCILE_ONLY_REJECTS_EXECUTION_OPTIONS"
+        )
+
     journal_namespace = (
         "sprint92h14_7_demo_broker_execution"
         if args.demo_forward
@@ -932,6 +974,13 @@ def main():
         "H14_7_JOURNAL_NAMESPACE",
         journal_namespace,
     )
+
+    if args.demo_reconcile_only:
+        print("DEMO_RECONCILE_ONLY_ENABLED", True)
+        print(
+            "LEGACY_IDENTITY_RECOVERY_ALLOWED",
+            bool(args.allow_legacy_identity_recovery),
+        )
 
     symbols = tuple(
         item.strip()
@@ -1008,7 +1057,10 @@ def main():
     }
 
     demo_execution_runtime = {
-        "enabled": bool(args.demo_forward),
+        "enabled": bool(
+            args.demo_forward
+            and not args.demo_reconcile_only
+        ),
         "attempt_count": 0,
         "success_count": 0,
         "blocked_count": 0,
@@ -1022,6 +1074,22 @@ def main():
         "last_order_ticket": 0,
         "last_deal_ticket": 0,
         "last_retcode": 0,
+    }
+
+    demo_reconciliation_runtime = {
+        "reconcile_only": bool(args.demo_reconcile_only),
+        "legacy_identity_recovery_allowed": bool(
+            args.allow_legacy_identity_recovery
+        ),
+        "legacy_identity_recovery_attempted": False,
+        "legacy_identity_recovered": False,
+        "recovered_broker_position_identifier": 0,
+        "offline_closure_applied": False,
+        "offline_closure_reason": None,
+        "restart_reconciliation_valid": None,
+        "restart_reconciliation_reason": None,
+        "restart_resume_allowed": False,
+        "restart_symbol": None,
     }
 
     states = {}
@@ -1191,6 +1259,13 @@ def main():
             }
 
             states[symbol] = state
+
+            if args.demo_reconcile_only:
+                print(
+                    "DEMO_RECONCILE_ONLY_LIVE_OBSERVATION_SKIPPED",
+                    symbol,
+                )
+                continue
 
             try:
                 observation = (
@@ -1508,6 +1583,22 @@ def main():
                     exist_ok=True,
                 )
 
+                if args.demo_reconcile_only:
+                    state[
+                        "enabled"
+                    ] = True
+
+                    global_stats[
+                        "symbols_enabled"
+                    ] += 1
+
+                    print(
+                        "DEMO_RECONCILE_ONLY_SYMBOL_READY",
+                        symbol,
+                    )
+
+                    continue
+
                 rates = load_rates(
                     symbol
                 )
@@ -1787,6 +1878,7 @@ def main():
             if not broker_snapshots and len(recovered) == 1:
                 offline_shadow = recovered[0][1]
                 offline_deals = ()
+                raw_offline_deals = None
 
                 if offline_shadow.broker_position_identifier > 0:
                     raw_offline_deals = mt5.history_deals_get(
@@ -1801,6 +1893,26 @@ def main():
                             "INSPECTION_FAILED"
                         )
 
+                elif args.allow_legacy_identity_recovery:
+                    demo_reconciliation_runtime[
+                        "legacy_identity_recovery_attempted"
+                    ] = True
+                    legacy_history_from = datetime.fromtimestamp(
+                        offline_shadow.open_broker_epoch - 60,
+                        tz=timezone.utc,
+                    )
+                    raw_offline_deals = mt5.history_deals_get(
+                        legacy_history_from,
+                        datetime.now(timezone.utc),
+                        group=offline_shadow.symbol,
+                    )
+                    if raw_offline_deals is None:
+                        raise RuntimeError(
+                            "DEMO_BROKER_LEGACY_DEAL_HISTORY_"
+                            "INSPECTION_FAILED"
+                        )
+
+                if raw_offline_deals is not None:
                     normalized_deals = []
                     for deal in raw_offline_deals:
                         deal_type = getattr(deal, "type", None)
@@ -1867,8 +1979,11 @@ def main():
                     if (
                         int(getattr(item, "magic", 0) or 0)
                         == DemoBrokerOfflineClosureReconciler.MAGIC
-                        or int(getattr(item, "identifier", 0) or 0)
-                        == offline_shadow.broker_position_identifier
+                        or (
+                            offline_shadow.broker_position_identifier > 0
+                            and int(getattr(item, "identifier", 0) or 0)
+                            == offline_shadow.broker_position_identifier
+                        )
                     )
                 )
 
@@ -1883,8 +1998,11 @@ def main():
                     if (
                         int(getattr(item, "magic", 0) or 0)
                         == DemoBrokerOfflineClosureReconciler.MAGIC
-                        or int(getattr(item, "position_id", 0) or 0)
-                        == offline_shadow.broker_position_identifier
+                        or (
+                            offline_shadow.broker_position_identifier > 0
+                            and int(getattr(item, "position_id", 0) or 0)
+                            == offline_shadow.broker_position_identifier
+                        )
                     )
                 )
                 print(
@@ -1896,18 +2014,48 @@ def main():
                     len(pre_apply_mss_orders),
                 )
 
-                offline_reconciliation = (
-                    DemoBrokerOfflineClosureReconciler.reconcile(
-                        shadow_position=offline_shadow,
-                        current_mss_position_count=len(
-                            pre_apply_relevant_positions
-                        ),
-                        pending_mss_order_count=len(
-                            pre_apply_mss_orders
-                        ),
-                        deals=offline_deals,
+                if offline_shadow.broker_position_identifier > 0:
+                    offline_reconciliation = (
+                        DemoBrokerOfflineClosureReconciler.reconcile(
+                            shadow_position=offline_shadow,
+                            current_mss_position_count=len(
+                                pre_apply_relevant_positions
+                            ),
+                            pending_mss_order_count=len(
+                                pre_apply_mss_orders
+                            ),
+                            deals=offline_deals,
+                        )
                     )
-                )
+                elif args.allow_legacy_identity_recovery:
+                    offline_reconciliation = (
+                        DemoBrokerOfflineClosureReconciler.reconcile_legacy(
+                            shadow_position=offline_shadow,
+                            current_mss_position_count=len(
+                                pre_apply_relevant_positions
+                            ),
+                            pending_mss_order_count=len(
+                                pre_apply_mss_orders
+                            ),
+                            deals=offline_deals,
+                            symbol_point=float(
+                                states[offline_shadow.symbol]["point"]
+                            ),
+                        )
+                    )
+                else:
+                    offline_reconciliation = (
+                        DemoBrokerOfflineClosureReconciler.reconcile(
+                            shadow_position=offline_shadow,
+                            current_mss_position_count=len(
+                                pre_apply_relevant_positions
+                            ),
+                            pending_mss_order_count=len(
+                                pre_apply_mss_orders
+                            ),
+                            deals=offline_deals,
+                        )
+                    )
                 print(
                     "DEMO_BROKER_OFFLINE_CLOSURE_RECONCILIATION",
                     offline_reconciliation.valid,
@@ -1920,12 +2068,101 @@ def main():
                     "DEMO_BROKER_OFFLINE_CLOSURE_CONFIRMED",
                     offline_reconciliation.closure_confirmed,
                 )
+                demo_reconciliation_runtime[
+                    "offline_closure_reason"
+                ] = offline_reconciliation.reason
                 print("REAL_ORDER_SENT", False)
 
                 if not offline_reconciliation.valid:
                     raise RuntimeError(
                         "DEMO_BROKER_OFFLINE_CLOSURE_FAILED:"
                         f"{offline_reconciliation.reason}"
+                    )
+
+                reconciled_broker_position_identifier = int(
+                    offline_reconciliation.broker_position_identifier
+                )
+                if offline_reconciliation.legacy_identity_recovered:
+                    resolved_identity_broker_positions = (
+                        mt5.positions_get()
+                    )
+                    if resolved_identity_broker_positions is None:
+                        raise RuntimeError(
+                            "LEGACY_IDENTITY_PRE_APPLY_BROKER_"
+                            "INSPECTION_FAILED"
+                        )
+                    resolved_identity_relevant_positions = tuple(
+                        item for item in resolved_identity_broker_positions
+                        if (
+                            int(getattr(item, "magic", 0) or 0)
+                            == DemoBrokerOfflineClosureReconciler.MAGIC
+                            or int(getattr(item, "identifier", 0) or 0)
+                            == reconciled_broker_position_identifier
+                        )
+                    )
+
+                    resolved_identity_broker_orders = mt5.orders_get()
+                    if resolved_identity_broker_orders is None:
+                        raise RuntimeError(
+                            "LEGACY_IDENTITY_PRE_APPLY_BROKER_ORDER_"
+                            "INSPECTION_FAILED"
+                        )
+                    resolved_identity_relevant_orders = tuple(
+                        item for item in resolved_identity_broker_orders
+                        if (
+                            int(getattr(item, "magic", 0) or 0)
+                            == DemoBrokerOfflineClosureReconciler.MAGIC
+                            or int(getattr(item, "position_id", 0) or 0)
+                            == reconciled_broker_position_identifier
+                        )
+                    )
+                    print(
+                        "LEGACY_IDENTITY_PRE_APPLY_POSITION_COUNT",
+                        len(resolved_identity_relevant_positions),
+                    )
+                    print(
+                        "LEGACY_IDENTITY_PRE_APPLY_ORDER_COUNT",
+                        len(resolved_identity_relevant_orders),
+                    )
+
+                    resolved_identity_reconciliation = (
+                        DemoBrokerOfflineClosureReconciler.reconcile_legacy(
+                            shadow_position=offline_shadow,
+                            current_mss_position_count=len(
+                                resolved_identity_relevant_positions
+                            ),
+                            pending_mss_order_count=len(
+                                resolved_identity_relevant_orders
+                            ),
+                            deals=offline_deals,
+                            symbol_point=float(
+                                states[offline_shadow.symbol]["point"]
+                            ),
+                        )
+                    )
+                    if (
+                        not resolved_identity_reconciliation.valid
+                        or resolved_identity_reconciliation
+                        .broker_position_identifier
+                        != reconciled_broker_position_identifier
+                    ):
+                        raise RuntimeError(
+                            "DEMO_BROKER_LEGACY_RESOLVED_IDENTITY_"
+                            "RECHECK_FAILED:"
+                            f"{resolved_identity_reconciliation.reason}"
+                        )
+                    offline_reconciliation = (
+                        resolved_identity_reconciliation
+                    )
+                    demo_reconciliation_runtime[
+                        "legacy_identity_recovered"
+                    ] = True
+                    demo_reconciliation_runtime[
+                        "recovered_broker_position_identifier"
+                    ] = reconciled_broker_position_identifier
+                    print(
+                        "DEMO_BROKER_LEGACY_IDENTITY_RECOVERED",
+                        reconciled_broker_position_identifier,
                     )
 
                 offline_application = (
@@ -1987,8 +2224,11 @@ def main():
                     if (
                         int(getattr(item, "magic", 0) or 0)
                         == DemoBrokerOfflineClosureReconciler.MAGIC
-                        or int(getattr(item, "identifier", 0) or 0)
-                        == offline_shadow.broker_position_identifier
+                        or (
+                            reconciled_broker_position_identifier > 0
+                            and int(getattr(item, "identifier", 0) or 0)
+                            == reconciled_broker_position_identifier
+                        )
                     )
                 )
                 if post_relevant_positions:
@@ -2008,8 +2248,11 @@ def main():
                     if (
                         int(getattr(item, "magic", 0) or 0)
                         == DemoBrokerOfflineClosureReconciler.MAGIC
-                        or int(getattr(item, "position_id", 0) or 0)
-                        == offline_shadow.broker_position_identifier
+                        or (
+                            reconciled_broker_position_identifier > 0
+                            and int(getattr(item, "position_id", 0) or 0)
+                            == reconciled_broker_position_identifier
+                        )
                     )
                 )
                 if post_mss_orders:
@@ -2019,6 +2262,9 @@ def main():
                     )
 
                 restart_reconciliation = None
+                demo_reconciliation_runtime[
+                    "offline_closure_applied"
+                ] = True
                 print("DEMO_BROKER_OFFLINE_CLOSURE_APPLIED", True)
             else:
                 restart_reconciliation = (
@@ -2030,6 +2276,21 @@ def main():
                 )
 
             if restart_reconciliation is not None:
+                demo_reconciliation_runtime[
+                    "restart_reconciliation_valid"
+                ] = restart_reconciliation.valid
+                demo_reconciliation_runtime[
+                    "restart_reconciliation_reason"
+                ] = restart_reconciliation.reason
+                demo_reconciliation_runtime[
+                    "restart_resume_allowed"
+                ] = restart_reconciliation.resume_allowed
+                demo_reconciliation_runtime[
+                    "restart_symbol"
+                ] = (
+                    restart_reconciliation.broker_symbol
+                    or restart_reconciliation.shadow_symbol
+                )
                 print(
                     "DEMO_BROKER_SHADOW_RESTART_RECONCILIATION",
                     restart_reconciliation.valid,
@@ -2054,6 +2315,12 @@ def main():
                         "DEMO_BROKER_SHADOW_RESTART_FAILED:"
                         f"{restart_reconciliation.reason}"
                     )
+
+            if args.demo_reconcile_only:
+                final_status = "DEMO_RECONCILE_ONLY_COMPLETE"
+                print("DEMO_RECONCILE_ONLY_COMPLETE", True)
+                print("REAL_ORDER_SENT", False)
+                return
 
         # =============================================
         # Read-only predecessor safety guard.
@@ -5387,8 +5654,13 @@ def main():
         report = {
             "sprint": "92H.14.6",
             "mode": (
-                "LIVE_POLICY_MULTI_SYMBOL_"
-                "LONG_RUNNING_SUPERVISED_SINGLE_POSITION_SHADOW_SESSION"
+                "DEMO_STARTUP_RECONCILE_ONLY"
+                if args.demo_reconcile_only
+                else (
+                    "LIVE_POLICY_MULTI_SYMBOL_"
+                    "LONG_RUNNING_SUPERVISED_SINGLE_POSITION_"
+                    "SHADOW_SESSION"
+                )
             ),
             "symbols": list(
                 symbols
@@ -5746,6 +6018,9 @@ def main():
                     ]
                 ),
             },
+            "demo_startup_reconciliation": (
+                demo_reconciliation_runtime
+            ),
             "research_segregation": {
                 "true_oos_data_accessed": False,
                 "true_oos_artifacts_modified": False,

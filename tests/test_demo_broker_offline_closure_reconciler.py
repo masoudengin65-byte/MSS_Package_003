@@ -415,6 +415,211 @@ def test_legacy_eurgbp_mismatch_and_missing_identity_fail_without_write(tmp_path
     assert path.read_bytes() == before
 
 
+def observed_legacy_eurgbp():
+    legacy = VirtualPositionEngine.open_position(
+        position_id="SHADOW-EURGBP-1787240700",
+        symbol="EURGBP",
+        direction="SELL",
+        volume=0.01,
+        entry_price=0.8569100000000001,
+        stop_loss=0.85760,
+        take_profit=0.85553,
+        broker_epoch=1787240700,
+    )
+    history = (
+        DemoBrokerDealSnapshot(
+            ticket=325368229,
+            position_identifier=367746308,
+            order_ticket=367746308,
+            magic=920146,
+            symbol="EURGBP",
+            direction="SELL",
+            entry_kind="IN",
+            reason="OTHER",
+            volume=0.01,
+            price=0.85698,
+            broker_epoch=1787240705,
+            commission=-0.03,
+        ),
+        DemoBrokerDealSnapshot(
+            ticket=325846636,
+            position_identifier=367746308,
+            order_ticket=368271874,
+            magic=920146,
+            symbol="EURGBP",
+            direction="BUY",
+            entry_kind="OUT",
+            reason="SL",
+            volume=0.01,
+            price=0.85761,
+            broker_epoch=1787320651,
+            profit=-0.86,
+            commission=-0.03,
+            swap=-0.05,
+        ),
+    )
+    return legacy, history
+
+
+def legacy_reconcile(shadow, deals, *, point=0.00001, positions=0, orders=0):
+    return DemoBrokerOfflineClosureReconciler.reconcile_legacy(
+        shadow_position=shadow,
+        current_mss_position_count=positions,
+        pending_mss_order_count=orders,
+        deals=deals,
+        symbol_point=point,
+    )
+
+
+def test_observed_legacy_eurgbp_is_uniquely_recovered_and_applied(tmp_path):
+    legacy, history = observed_legacy_eurgbp()
+    path = tmp_path / "legacy-eurgbp.jsonl"
+    write_open(path, legacy, include_identity=False)
+
+    result = legacy_reconcile(legacy, history)
+    assert result.valid and result.closure_confirmed
+    assert result.reason == "BROKER_LEGACY_OFFLINE_CLOSURE_CONFIRMED"
+    assert result.legacy_identity_recovered is True
+    assert result.broker_position_identifier == 367746308
+    assert result.entry_deal_ticket == 325368229
+    assert result.entry_broker_epoch == 1787240705
+    assert result.entry_price == pytest.approx(0.85698)
+    assert result.exit_deal_ticket == 325846636
+    assert result.exit_reason == "STOP_LOSS"
+    assert result.net_result == pytest.approx(-0.97)
+    assert result.real_order_send_allowed is False
+
+    first = DemoBrokerOfflineClosureJournalApplier.apply(
+        journal_path=path,
+        shadow_position=legacy,
+        reconciliation=result,
+    )
+    content = path.read_bytes()
+    second = DemoBrokerOfflineClosureJournalApplier.apply(
+        journal_path=path,
+        shadow_position=legacy,
+        reconciliation=result,
+    )
+
+    assert first.valid and first.applied
+    assert second.valid and second.already_reconciled
+    assert path.read_bytes() == content
+    assert ShadowTradeJournal.verify(path)["valid"]
+    assert ShadowPositionRecovery.recover(path).open_position_count == 0
+    close_payload = (
+        DemoBrokerOfflineClosureJournalApplier._events(path)[-1]["payload"]
+    )
+    assert close_payload["legacy_identity_recovered"] is True
+    assert close_payload["broker_position_identifier"] == 367746308
+    assert close_payload["entry_deal_ticket"] == 325368229
+    assert close_payload["broker_entry_epoch"] == 1787240705
+
+
+@pytest.mark.parametrize(("mutation", "reason"), [
+    (
+        lambda history: (
+            replace(
+                history[0],
+                ticket=325368230,
+                position_identifier=367746309,
+                broker_epoch=1787240706,
+            ),
+        ) + history,
+        "AMBIGUOUS_LEGACY_BROKER_ENTRY_CANDIDATE",
+    ),
+    (
+        lambda history: (
+            replace(history[0], broker_epoch=1787240716), history[1]
+        ),
+        "LEGACY_BROKER_ENTRY_CANDIDATE_MISSING",
+    ),
+    (
+        lambda history: (
+            replace(history[0], price=0.85702), history[1]
+        ),
+        "LEGACY_BROKER_ENTRY_CANDIDATE_MISSING",
+    ),
+    (
+        lambda history: (
+            replace(history[0], magic=0), history[1]
+        ),
+        "LEGACY_BROKER_ENTRY_CANDIDATE_MISSING",
+    ),
+    (
+        lambda history: (
+            history[0], replace(history[1], volume=0.005)
+        ),
+        "LEGACY_PARTIAL_OR_INCONSISTENT_CLOSE",
+    ),
+])
+def test_legacy_recovery_ambiguity_or_tolerance_failure_never_writes(
+    tmp_path, mutation, reason
+):
+    legacy, history = observed_legacy_eurgbp()
+    path = tmp_path / "legacy-eurgbp.jsonl"
+    write_open(path, legacy, include_identity=False)
+    before = path.read_bytes()
+
+    result = legacy_reconcile(legacy, mutation(history))
+    application = DemoBrokerOfflineClosureJournalApplier.apply(
+        journal_path=path,
+        shadow_position=legacy,
+        reconciliation=result,
+    )
+
+    assert not result.valid
+    assert result.reason == reason
+    assert not application.valid
+    assert path.read_bytes() == before
+
+
+def test_legacy_recovery_blocks_exposure_pending_and_nonlegacy_identity():
+    legacy, history = observed_legacy_eurgbp()
+    assert legacy_reconcile(legacy, history, positions=1).reason == (
+        "BROKER_EXPOSURE_STILL_PRESENT"
+    )
+    assert legacy_reconcile(legacy, history, orders=1).reason == (
+        "MSS_PENDING_ORDER_PRESENT"
+    )
+    identified = replace(legacy, broker_position_identifier=367746308)
+    assert legacy_reconcile(identified, history).reason == (
+        "INVALID_LEGACY_OPEN_SHADOW_POSITION"
+    )
+    assert legacy_reconcile(legacy, (), point=0.00001).reason == (
+        "LEGACY_BROKER_DEAL_HISTORY_MISSING"
+    )
+    assert legacy_reconcile(legacy, history, point=0.0).reason == (
+        "INVALID_LEGACY_OPEN_SHADOW_POSITION"
+    )
+    nonfinite = (
+        history[0], replace(history[1], commission=float("nan"))
+    )
+    assert legacy_reconcile(legacy, nonfinite).reason == (
+        "INVALID_LEGACY_BROKER_DEAL_METADATA"
+    )
+
+
+def test_legacy_application_rejects_forged_symbol_without_write(tmp_path):
+    legacy, history = observed_legacy_eurgbp()
+    path = tmp_path / "legacy-eurgbp.jsonl"
+    write_open(path, legacy, include_identity=False)
+    before = path.read_bytes()
+    forged = replace(
+        legacy_reconcile(legacy, history),
+        symbol="GBPUSD",
+    )
+
+    application = DemoBrokerOfflineClosureJournalApplier.apply(
+        journal_path=path,
+        shadow_position=legacy,
+        reconciliation=forged,
+    )
+
+    assert not application.valid
+    assert application.reason == "RECONCILIATION_SHADOW_IDENTITY_MISMATCH"
+    assert path.read_bytes() == before
+
+
 def test_nonfinite_broker_accounting_fails_without_journal_mutation(
     tmp_path, shadow, deals
 ):

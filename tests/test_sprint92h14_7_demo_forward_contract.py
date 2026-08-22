@@ -530,6 +530,158 @@ def test_case_d_uses_position_scoped_deal_history_before_candidates():
     assert "position=(" in text[history:reconcile]
 
 
+def test_legacy_case_is_double_gated_and_uses_scoped_read_only_history():
+    text = _runner_text()
+    permission_gate = text.index(
+        "elif args.allow_legacy_identity_recovery:"
+    )
+    legacy_query = text.index(
+        "legacy_history_from = datetime.fromtimestamp(",
+        permission_gate,
+    )
+    fresh_positions = text.index(
+        "pre_apply_broker_positions = mt5.positions_get()",
+        legacy_query,
+    )
+    fresh_orders = text.index(
+        "pre_apply_broker_orders = mt5.orders_get()",
+        fresh_positions,
+    )
+    legacy_reconcile = text.index(
+        "DemoBrokerOfflineClosureReconciler.reconcile_legacy(",
+        fresh_orders,
+    )
+    apply_close = text.index(
+        "DemoBrokerOfflineClosureJournalApplier.apply",
+        legacy_reconcile,
+    )
+    block = text[permission_gate:legacy_reconcile]
+
+    assert permission_gate < legacy_query < fresh_positions
+    assert fresh_positions < fresh_orders < legacy_reconcile < apply_close
+    assert "mt5.history_deals_get(" in block
+    assert "group=offline_shadow.symbol" in block
+    assert "order_send(" not in block
+    assert "current_mss_position_count=len(" in block
+    assert "pending_mss_order_count=len(" in block
+    assert "current_mss_position_count=0" not in block
+
+
+def test_legacy_identity_recovery_requires_reconcile_only_and_demo_forward():
+    text = _runner_text()
+    assert '"--demo-reconcile-only"' in text
+    assert '"--allow-legacy-identity-recovery"' in text
+    assert "DEMO_RECONCILE_ONLY_REQUIRES_DEMO_FORWARD" in text
+    assert (
+        "LEGACY_IDENTITY_RECOVERY_REQUIRES_"
+        in text
+    )
+    assert '"DEMO_RECONCILE_ONLY"' in text
+    assert "DEMO_RECONCILE_ONLY_REJECTS_EXECUTION_OPTIONS" in text
+
+
+def test_reconcile_only_exits_before_predecessor_and_candidate_execution():
+    text = _runner_text()
+    reconciliation = text.index(
+        "DemoBrokerShadowRestartReconciler.reconcile"
+    )
+    gate = text.index("if args.demo_reconcile_only:", reconciliation)
+    predecessor = text.index("# Read-only predecessor safety guard", gate)
+    candidate = text.index("candidate_context = {}", predecessor)
+    block = text[gate:predecessor]
+
+    assert gate < predecessor < candidate
+    assert 'final_status = "DEMO_RECONCILE_ONLY_COMPLETE"' in block
+    assert 'print("REAL_ORDER_SENT", False)' in block
+    assert "return" in block
+    assert ".execute_market_order(" not in block
+
+
+def test_reconcile_only_skips_live_observation_and_candle_readiness():
+    text = _runner_text()
+    observation_skip = text.index(
+        "if args.demo_reconcile_only:",
+        text.index("states[symbol] = state"),
+    )
+    live_observation = text.index(
+        "LiveMarketObserver.observe(", observation_skip
+    )
+    recovery = text.index("ShadowPositionRecovery", live_observation)
+    symbol_ready = text.index(
+        '"DEMO_RECONCILE_ONLY_SYMBOL_READY"', recovery
+    )
+    rates = text.index("rates = load_rates(", symbol_ready)
+
+    assert observation_skip < live_observation < recovery
+    assert symbol_ready < rates
+    assert "continue" in text[observation_skip:live_observation]
+    assert "continue" in text[symbol_ready:rates]
+
+
+def test_legacy_post_check_uses_recovered_positive_identifier():
+    text = _runner_text()
+    assignment = text.index(
+        "reconciled_broker_position_identifier = int("
+    )
+    post_positions = text.index(
+        "post_broker_positions = mt5.positions_get()", assignment
+    )
+    post_orders = text.index(
+        "post_broker_orders = mt5.orders_get()", post_positions
+    )
+    end = text.index("restart_reconciliation = None", post_orders)
+    block = text[assignment:end]
+
+    assert "reconciled_broker_position_identifier > 0" in block
+    assert 'getattr(item, "identifier", 0)' in block
+    assert 'getattr(item, "position_id", 0)' in block
+    assert "offline_shadow.broker_position_identifier" not in text[
+        post_positions:end
+    ]
+
+
+def test_legacy_identity_is_rechecked_immediately_before_journal_write():
+    text = _runner_text()
+    first_reconcile = text.index(
+        "DemoBrokerOfflineClosureReconciler.reconcile_legacy("
+    )
+    resolved_positions = text.index(
+        "resolved_identity_broker_positions = (", first_reconcile
+    )
+    resolved_orders = text.index(
+        "resolved_identity_broker_orders = mt5.orders_get()",
+        resolved_positions,
+    )
+    second_reconcile = text.index(
+        "DemoBrokerOfflineClosureReconciler.reconcile_legacy(",
+        resolved_orders,
+    )
+    apply_close = text.index(
+        "DemoBrokerOfflineClosureJournalApplier.apply",
+        second_reconcile,
+    )
+    block = text[resolved_positions:apply_close]
+
+    assert first_reconcile < resolved_positions < resolved_orders
+    assert resolved_orders < second_reconcile < apply_close
+    assert "reconciled_broker_position_identifier" in block
+    assert "current_mss_position_count=len(" in block
+    assert "pending_mss_order_count=len(" in block
+    assert "current_mss_position_count=0" not in block
+
+
+def test_reconcile_only_has_explicit_report_telemetry():
+    text = _runner_text()
+    assert '"demo_startup_reconciliation"' in text
+    assert '"reconcile_only": bool(args.demo_reconcile_only)' in text
+    assert '"legacy_identity_recovery_allowed"' in text
+    assert '"legacy_identity_recovery_attempted"' in text
+    assert '"legacy_identity_recovered"' in text
+    assert '"offline_closure_applied"' in text
+    assert '"restart_reconciliation_valid"' in text
+    assert '"restart_resume_allowed"' in text
+
+
 def test_offline_close_refreshes_broker_state_before_journal_mutation():
     text = _runner_text()
     history = text.index("mt5.history_deals_get(")
