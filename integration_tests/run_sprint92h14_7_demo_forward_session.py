@@ -1853,11 +1853,58 @@ def main():
                         )
                     offline_deals = tuple(normalized_deals)
 
+                # Re-read broker state immediately before the
+                # durable journal mutation. The startup snapshot
+                # may be stale after recovery/history inspection.
+                pre_apply_broker_positions = mt5.positions_get()
+                if pre_apply_broker_positions is None:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_PRE_APPLY_BROKER_"
+                        "INSPECTION_FAILED"
+                    )
+                pre_apply_relevant_positions = tuple(
+                    item for item in pre_apply_broker_positions
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "identifier", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
+                )
+
+                pre_apply_broker_orders = mt5.orders_get()
+                if pre_apply_broker_orders is None:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_PRE_APPLY_BROKER_ORDER_"
+                        "INSPECTION_FAILED"
+                    )
+                pre_apply_mss_orders = tuple(
+                    item for item in pre_apply_broker_orders
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "position_id", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
+                )
+                print(
+                    "OFFLINE_CLOSURE_PRE_APPLY_POSITION_COUNT",
+                    len(pre_apply_relevant_positions),
+                )
+                print(
+                    "OFFLINE_CLOSURE_PRE_APPLY_ORDER_COUNT",
+                    len(pre_apply_mss_orders),
+                )
+
                 offline_reconciliation = (
                     DemoBrokerOfflineClosureReconciler.reconcile(
                         shadow_position=offline_shadow,
-                        current_mss_position_count=0,
-                        pending_mss_order_count=len(demo_mss_orders),
+                        current_mss_position_count=len(
+                            pre_apply_relevant_positions
+                        ),
+                        pending_mss_order_count=len(
+                            pre_apply_mss_orders
+                        ),
                         deals=offline_deals,
                     )
                 )
@@ -1935,11 +1982,16 @@ def main():
                         "OFFLINE_CLOSURE_POST_BROKER_"
                         "INSPECTION_FAILED"
                     )
-                post_mss_positions = tuple(
+                post_relevant_positions = tuple(
                     item for item in post_broker_positions
-                    if int(getattr(item, "magic", 0) or 0) == 920146
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "identifier", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
                 )
-                if post_mss_positions:
+                if post_relevant_positions:
                     raise RuntimeError(
                         "OFFLINE_CLOSURE_POST_BROKER_"
                         "EXPOSURE_PRESENT"
@@ -1953,7 +2005,12 @@ def main():
                     )
                 post_mss_orders = tuple(
                     item for item in post_broker_orders
-                    if int(getattr(item, "magic", 0) or 0) == 920146
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "position_id", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
                 )
                 if post_mss_orders:
                     raise RuntimeError(

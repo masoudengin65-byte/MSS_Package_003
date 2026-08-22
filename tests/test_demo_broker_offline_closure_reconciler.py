@@ -1,4 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
+from threading import Event, Lock
 
 import pytest
 
@@ -230,6 +232,58 @@ def test_application_is_hash_valid_idempotent_and_recovers_closed(
     recovered = ShadowPositionRecovery.recover(path)
     assert recovered.valid
     assert recovered.open_position_count == 0
+
+
+def test_concurrent_application_fails_safe_without_duplicate_close(
+    tmp_path, shadow, deals, monkeypatch
+):
+    path = tmp_path / "concurrent-shadow.jsonl"
+    write_open(path, shadow)
+    reconciliation = reconcile(shadow, deals)
+    first_reader_entered = Event()
+    release_first_reader = Event()
+    reader_guard = Lock()
+    reader_count = 0
+    original_events = DemoBrokerOfflineClosureJournalApplier._events
+
+    def blocking_first_reader(journal_path):
+        nonlocal reader_count
+        with reader_guard:
+            reader_count += 1
+            is_first_reader = reader_count == 1
+        if is_first_reader:
+            first_reader_entered.set()
+            assert release_first_reader.wait(timeout=2.0)
+        return original_events(journal_path)
+
+    monkeypatch.setattr(
+        DemoBrokerOfflineClosureJournalApplier,
+        "_events",
+        staticmethod(blocking_first_reader),
+    )
+
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        first = executor.submit(
+            DemoBrokerOfflineClosureJournalApplier.apply,
+            journal_path=path,
+            shadow_position=shadow,
+            reconciliation=reconciliation,
+        )
+        assert first_reader_entered.wait(timeout=2.0)
+        blocked = DemoBrokerOfflineClosureJournalApplier.apply(
+            journal_path=path,
+            shadow_position=shadow,
+            reconciliation=reconciliation,
+        )
+        release_first_reader.set()
+        applied = first.result(timeout=2.0)
+
+    assert not blocked.valid
+    assert blocked.reason == "SHADOW_JOURNAL_TRANSACTION_BUSY"
+    assert applied.valid and applied.applied
+    verification = ShadowTradeJournal.verify(path)
+    assert verification["valid"]
+    assert verification["event_count"] == 2
 
 
 def test_unconfirmed_closure_cannot_mutate_journal(tmp_path, shadow, deals):

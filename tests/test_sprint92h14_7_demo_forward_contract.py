@@ -530,6 +530,33 @@ def test_case_d_uses_position_scoped_deal_history_before_candidates():
     assert "position=(" in text[history:reconcile]
 
 
+def test_offline_close_refreshes_broker_state_before_journal_mutation():
+    text = _runner_text()
+    history = text.index("mt5.history_deals_get(")
+    positions = text.index(
+        "pre_apply_broker_positions = mt5.positions_get()", history
+    )
+    orders = text.index(
+        "pre_apply_broker_orders = mt5.orders_get()", positions
+    )
+    reconcile = text.index(
+        "DemoBrokerOfflineClosureReconciler.reconcile", orders
+    )
+    apply_close = text.index(
+        "DemoBrokerOfflineClosureJournalApplier.apply", reconcile
+    )
+    block = text[history:apply_close]
+
+    assert history < positions < orders < reconcile < apply_close
+    assert "current_mss_position_count=len(" in block
+    assert "pre_apply_relevant_positions" in block
+    assert 'getattr(item, "identifier", 0)' in block
+    assert "pending_mss_order_count=len(" in block
+    assert "pre_apply_mss_orders" in block
+    assert 'getattr(item, "position_id", 0)' in block
+    assert "current_mss_position_count=0" not in block
+
+
 def test_offline_close_requires_post_recovery_and_broker_verification():
     text = _runner_text()
     start = text.index("DemoBrokerOfflineClosureJournalApplier.apply")

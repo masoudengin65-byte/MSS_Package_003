@@ -9,7 +9,10 @@ from pathlib import Path
 from mss.analysis.demo_broker_offline_closure_reconciler import (
     DemoBrokerOfflineClosureResult,
 )
-from mss.analysis.shadow_trade_journal import ShadowTradeJournal
+from mss.analysis.shadow_trade_journal import (
+    ShadowTradeJournal,
+    ShadowTradeJournalBusyError,
+)
 from mss.analysis.virtual_position_engine import (
     VirtualPosition,
     VirtualPositionEngine,
@@ -45,6 +48,27 @@ class DemoBrokerOfflineClosureJournalApplier:
         reconciliation: DemoBrokerOfflineClosureResult,
     ) -> DemoBrokerOfflineClosureApplicationResult:
         path = Path(journal_path)
+
+        try:
+            with ShadowTradeJournal.exclusive_transaction(path):
+                return cls._apply_locked(
+                    path=path,
+                    shadow_position=shadow_position,
+                    reconciliation=reconciliation,
+                )
+        except ShadowTradeJournalBusyError:
+            return DemoBrokerOfflineClosureApplicationResult(
+                reason="SHADOW_JOURNAL_TRANSACTION_BUSY"
+            )
+
+    @classmethod
+    def _apply_locked(
+        cls,
+        *,
+        path: Path,
+        shadow_position: VirtualPosition,
+        reconciliation: DemoBrokerOfflineClosureResult,
+    ) -> DemoBrokerOfflineClosureApplicationResult:
         verification = ShadowTradeJournal.verify(path)
         if not verification["valid"]:
             return DemoBrokerOfflineClosureApplicationResult(
@@ -106,7 +130,7 @@ class DemoBrokerOfflineClosureJournalApplier:
             return DemoBrokerOfflineClosureApplicationResult(
                 reason="VIRTUAL_CLOSE_APPLICATION_FAILED"
             )
-        event = ShadowTradeJournal.append_event(
+        event = ShadowTradeJournal._append_event_unlocked(
             path=path,
             event_type="POSITION_CLOSED",
             position_id=closed.position_id,

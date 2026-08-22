@@ -1,8 +1,19 @@
 ﻿import json
+from multiprocessing import get_context
+
+import pytest
 
 from mss.analysis.shadow_trade_journal import (
     ShadowTradeJournal,
+    ShadowTradeJournalBusyError,
 )
+
+
+def _hold_journal_lock(path, ready, release):
+    with ShadowTradeJournal.exclusive_transaction(path):
+        ready.set()
+        if not release.wait(timeout=5.0):
+            raise RuntimeError("LOCK_TEST_RELEASE_TIMEOUT")
 
 
 def test_empty_journal_is_valid(tmp_path):
@@ -82,6 +93,43 @@ def test_append_builds_valid_hash_chain(
         ]
         == second["event_sha256"]
     )
+
+
+def test_transaction_lock_is_released_after_exception(tmp_path):
+    path = tmp_path / "exception-events.jsonl"
+
+    with pytest.raises(RuntimeError, match="TEST_FAILURE"):
+        with ShadowTradeJournal.exclusive_transaction(path):
+            raise RuntimeError("TEST_FAILURE")
+
+    with ShadowTradeJournal.exclusive_transaction(path):
+        pass
+
+
+def test_transaction_lock_blocks_a_second_process(tmp_path):
+    path = tmp_path / "cross-process-events.jsonl"
+    context = get_context("spawn")
+    ready = context.Event()
+    release = context.Event()
+    process = context.Process(
+        target=_hold_journal_lock,
+        args=(path, ready, release),
+    )
+    process.start()
+
+    try:
+        assert ready.wait(timeout=5.0)
+        with pytest.raises(ShadowTradeJournalBusyError):
+            with ShadowTradeJournal.exclusive_transaction(path):
+                pass
+    finally:
+        release.set()
+        process.join(timeout=5.0)
+        if process.is_alive():
+            process.terminate()
+            process.join(timeout=5.0)
+
+    assert process.exitcode == 0
 
 
 def test_tampering_is_detected(

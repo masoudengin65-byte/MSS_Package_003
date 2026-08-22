@@ -2,11 +2,22 @@
 
 from __future__ import annotations
 
+import errno
 import hashlib
 import json
 import os
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
+
+if os.name == "nt":
+    import msvcrt
+else:
+    import fcntl
+
+
+class ShadowTradeJournalBusyError(RuntimeError):
+    """Raised when another process owns the journal transaction lock."""
 
 
 class ShadowTradeJournal:
@@ -24,6 +35,73 @@ class ShadowTradeJournal:
     )
 
     GENESIS_SHA256 = "0" * 64
+
+    @classmethod
+    @contextmanager
+    def exclusive_transaction(
+        cls,
+        path,
+    ):
+        """Hold a fail-safe cross-process lock for one journal transaction."""
+
+        path = Path(path)
+        path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+        lock_path = path.with_name(
+            f".{path.name}.mss.lock"
+        )
+        lock_handle = lock_path.open("a+b")
+
+        try:
+            lock_handle.seek(0, os.SEEK_END)
+            if lock_handle.tell() == 0:
+                lock_handle.write(b"\0")
+                lock_handle.flush()
+                os.fsync(lock_handle.fileno())
+            lock_handle.seek(0)
+
+            try:
+                if os.name == "nt":
+                    msvcrt.locking(
+                        lock_handle.fileno(),
+                        msvcrt.LK_NBLCK,
+                        1,
+                    )
+                else:
+                    fcntl.flock(
+                        lock_handle.fileno(),
+                        fcntl.LOCK_EX | fcntl.LOCK_NB,
+                    )
+            except OSError as exc:
+                if exc.errno not in (
+                    errno.EACCES,
+                    errno.EAGAIN,
+                ):
+                    raise
+                raise ShadowTradeJournalBusyError(
+                    "SHADOW_JOURNAL_TRANSACTION_BUSY: "
+                    f"{path}"
+                ) from exc
+
+            try:
+                yield
+            finally:
+                lock_handle.seek(0)
+                if os.name == "nt":
+                    msvcrt.locking(
+                        lock_handle.fileno(),
+                        msvcrt.LK_UNLCK,
+                        1,
+                    )
+                else:
+                    fcntl.flock(
+                        lock_handle.fileno(),
+                        fcntl.LOCK_UN,
+                    )
+        finally:
+            lock_handle.close()
 
     @staticmethod
     def _canonical_json(
@@ -175,6 +253,28 @@ class ShadowTradeJournal:
 
     @classmethod
     def append_event(
+        cls,
+        *,
+        path,
+        event_type: str,
+        position_id: str,
+        broker_epoch: int,
+        payload: dict[str, Any],
+    ) -> dict[str, Any]:
+
+        with cls.exclusive_transaction(
+            path
+        ):
+            return cls._append_event_unlocked(
+                path=path,
+                event_type=event_type,
+                position_id=position_id,
+                broker_epoch=broker_epoch,
+                payload=payload,
+            )
+
+    @classmethod
+    def _append_event_unlocked(
         cls,
         *,
         path,
