@@ -103,6 +103,8 @@ class ShadowTradeEngine:
         take_profit: float,
         broker_epoch: int,
         volume_override: float | None = None,
+        broker_position_ticket: int = 0,
+        broker_position_identifier: int = 0,
     ) -> ShadowTradeEngineResult:
 
         journal_path = (
@@ -262,6 +264,12 @@ class ShadowTradeEngine:
                 stop_loss=stop_loss,
                 take_profit=take_profit,
                 broker_epoch=broker_epoch,
+                broker_position_ticket=(
+                    broker_position_ticket
+                ),
+                broker_position_identifier=(
+                    broker_position_identifier
+                ),
             )
         )
 
@@ -313,6 +321,12 @@ class ShadowTradeEngine:
                     ),
                     "broker_volume_step": (
                         risk.volume_step
+                    ),
+                    "broker_position_ticket": (
+                        position.broker_position_ticket
+                    ),
+                    "broker_position_identifier": (
+                        position.broker_position_identifier
                     ),
                 },
             )

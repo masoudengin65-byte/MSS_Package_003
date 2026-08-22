@@ -8,6 +8,9 @@ from mss.analysis.shadow_trade_engine import (
 from mss.analysis.shadow_trade_journal import (
     ShadowTradeJournal,
 )
+from mss.analysis.shadow_position_recovery import (
+    ShadowPositionRecovery,
+)
 
 
 def install_broker_stubs(
@@ -49,6 +52,36 @@ def install_broker_stubs(
         "order_calc_profit",
         fake_calc,
     )
+
+
+def test_broker_identity_persists_from_open_through_recovery(
+    tmp_path, monkeypatch
+):
+    install_broker_stubs(monkeypatch)
+    journal = tmp_path / "identity.jsonl"
+    opened = ShadowTradeEngine.open_trade(
+        journal_path=journal,
+        position_id="SHADOW-ID-1",
+        symbol="USDJPY",
+        direction="BUY",
+        balance=10000.0,
+        risk_percent=1.0,
+        entry_price=159.0,
+        stop_loss=158.5,
+        take_profit=160.0,
+        broker_epoch=1000,
+        broker_position_ticket=12345,
+        broker_position_identifier=67890,
+    )
+    assert opened.valid
+    assert opened.journal_event["payload"]["broker_position_ticket"] == 12345
+    assert (
+        opened.journal_event["payload"]["broker_position_identifier"]
+        == 67890
+    )
+    recovered = ShadowPositionRecovery.recover(journal).position
+    assert recovered.broker_position_ticket == 12345
+    assert recovered.broker_position_identifier == 67890
 
 
 def test_full_buy_lifecycle(

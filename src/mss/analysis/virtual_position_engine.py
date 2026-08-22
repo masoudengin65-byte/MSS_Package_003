@@ -24,6 +24,9 @@ class VirtualPosition:
     open_broker_epoch: int = 0
     close_broker_epoch: int = 0
 
+    broker_position_ticket: int = 0
+    broker_position_identifier: int = 0
+
     status: str = "NEW"
     exit_reason: str = ""
 
@@ -72,6 +75,8 @@ class VirtualPositionEngine:
         stop_loss: float,
         take_profit: float,
         broker_epoch: int,
+        broker_position_ticket: int = 0,
+        broker_position_identifier: int = 0,
     ) -> VirtualPosition:
 
         direction = str(direction).upper()
@@ -135,6 +140,12 @@ class VirtualPositionEngine:
             ),
             open_broker_epoch=int(
                 broker_epoch
+            ),
+            broker_position_ticket=int(
+                broker_position_ticket
+            ),
+            broker_position_identifier=int(
+                broker_position_identifier
             ),
             status="OPEN",
             valid=True,

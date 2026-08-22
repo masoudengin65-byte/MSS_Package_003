@@ -157,6 +157,20 @@ class ShadowPositionRecovery:
                                 "broker_epoch"
                             ]
                         ),
+                        broker_position_ticket=int(
+                            payload.get(
+                                "broker_position_ticket",
+                                0,
+                            )
+                            or 0
+                        ),
+                        broker_position_identifier=int(
+                            payload.get(
+                                "broker_position_identifier",
+                                0,
+                            )
+                            or 0
+                        ),
                         status="OPEN",
                         valid=True,
                         real_order_send_allowed=False,

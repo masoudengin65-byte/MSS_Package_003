@@ -84,6 +84,13 @@ from mss.analysis.demo_broker_shadow_restart_reconciler import (
     DemoBrokerPositionSnapshot,
     DemoBrokerShadowRestartReconciler,
 )
+from mss.analysis.demo_broker_offline_closure_reconciler import (
+    DemoBrokerDealSnapshot,
+    DemoBrokerOfflineClosureReconciler,
+)
+from mss.analysis.demo_broker_offline_closure_journal_applier import (
+    DemoBrokerOfflineClosureJournalApplier,
+)
 from mss.analysis.shadow_risk_calculator import (
     ShadowRiskCalculator,
 )
@@ -1777,38 +1784,276 @@ def main():
                     )
                 )
 
-            restart_reconciliation = (
-                DemoBrokerShadowRestartReconciler.reconcile(
-                    broker_positions=tuple(broker_snapshots),
-                    pending_order_count=len(demo_mss_orders),
-                    shadow_positions=tuple(item[1] for item in recovered),
-                )
-            )
+            if not broker_snapshots and len(recovered) == 1:
+                offline_shadow = recovered[0][1]
+                offline_deals = ()
 
-            print(
-                "DEMO_BROKER_SHADOW_RESTART_RECONCILIATION",
-                restart_reconciliation.valid,
-            )
-            print(
-                "DEMO_BROKER_SHADOW_RESTART_REASON",
-                restart_reconciliation.reason,
-            )
-            print(
-                "DEMO_BROKER_SHADOW_RESTART_RESUME_ALLOWED",
-                restart_reconciliation.resume_allowed,
-            )
-            print(
-                "DEMO_BROKER_SHADOW_RESTART_SYMBOL",
-                restart_reconciliation.broker_symbol
-                or restart_reconciliation.shadow_symbol,
-            )
-            print("REAL_ORDER_SENT", False)
+                if offline_shadow.broker_position_identifier > 0:
+                    raw_offline_deals = mt5.history_deals_get(
+                        position=(
+                            offline_shadow
+                            .broker_position_identifier
+                        )
+                    )
+                    if raw_offline_deals is None:
+                        raise RuntimeError(
+                            "DEMO_BROKER_DEAL_HISTORY_"
+                            "INSPECTION_FAILED"
+                        )
 
-            if not restart_reconciliation.valid:
-                raise RuntimeError(
-                    "DEMO_BROKER_SHADOW_RESTART_FAILED:"
-                    f"{restart_reconciliation.reason}"
+                    normalized_deals = []
+                    for deal in raw_offline_deals:
+                        deal_type = getattr(deal, "type", None)
+                        if deal_type == mt5.DEAL_TYPE_BUY:
+                            deal_direction = "BUY"
+                        elif deal_type == mt5.DEAL_TYPE_SELL:
+                            deal_direction = "SELL"
+                        else:
+                            deal_direction = ""
+
+                        deal_entry = getattr(deal, "entry", None)
+                        if deal_entry == mt5.DEAL_ENTRY_IN:
+                            entry_kind = "IN"
+                        elif deal_entry == mt5.DEAL_ENTRY_OUT:
+                            entry_kind = "OUT"
+                        elif deal_entry == mt5.DEAL_ENTRY_OUT_BY:
+                            entry_kind = "OUT_BY"
+                        else:
+                            entry_kind = "AMBIGUOUS"
+
+                        deal_reason = getattr(deal, "reason", None)
+                        if deal_reason == mt5.DEAL_REASON_SL:
+                            normalized_reason = "SL"
+                        elif deal_reason == mt5.DEAL_REASON_TP:
+                            normalized_reason = "TP"
+                        elif deal_reason is None:
+                            normalized_reason = ""
+                        else:
+                            normalized_reason = "OTHER"
+
+                        normalized_deals.append(
+                            DemoBrokerDealSnapshot(
+                                ticket=int(getattr(deal, "ticket", 0) or 0),
+                                position_identifier=int(getattr(deal, "position_id", 0) or 0),
+                                order_ticket=int(getattr(deal, "order", 0) or 0),
+                                magic=int(getattr(deal, "magic", 0) or 0),
+                                comment=str(getattr(deal, "comment", "") or ""),
+                                symbol=str(getattr(deal, "symbol", "") or ""),
+                                direction=deal_direction,
+                                entry_kind=entry_kind,
+                                reason=normalized_reason,
+                                volume=float(getattr(deal, "volume", 0.0) or 0.0),
+                                price=float(getattr(deal, "price", 0.0) or 0.0),
+                                broker_epoch=int(getattr(deal, "time", 0) or 0),
+                                profit=float(getattr(deal, "profit", 0.0) or 0.0),
+                                commission=float(getattr(deal, "commission", 0.0) or 0.0),
+                                swap=float(getattr(deal, "swap", 0.0) or 0.0),
+                                fee=float(getattr(deal, "fee", 0.0) or 0.0),
+                            )
+                        )
+                    offline_deals = tuple(normalized_deals)
+
+                # Re-read broker state immediately before the
+                # durable journal mutation. The startup snapshot
+                # may be stale after recovery/history inspection.
+                pre_apply_broker_positions = mt5.positions_get()
+                if pre_apply_broker_positions is None:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_PRE_APPLY_BROKER_"
+                        "INSPECTION_FAILED"
+                    )
+                pre_apply_relevant_positions = tuple(
+                    item for item in pre_apply_broker_positions
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "identifier", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
                 )
+
+                pre_apply_broker_orders = mt5.orders_get()
+                if pre_apply_broker_orders is None:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_PRE_APPLY_BROKER_ORDER_"
+                        "INSPECTION_FAILED"
+                    )
+                pre_apply_mss_orders = tuple(
+                    item for item in pre_apply_broker_orders
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "position_id", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
+                )
+                print(
+                    "OFFLINE_CLOSURE_PRE_APPLY_POSITION_COUNT",
+                    len(pre_apply_relevant_positions),
+                )
+                print(
+                    "OFFLINE_CLOSURE_PRE_APPLY_ORDER_COUNT",
+                    len(pre_apply_mss_orders),
+                )
+
+                offline_reconciliation = (
+                    DemoBrokerOfflineClosureReconciler.reconcile(
+                        shadow_position=offline_shadow,
+                        current_mss_position_count=len(
+                            pre_apply_relevant_positions
+                        ),
+                        pending_mss_order_count=len(
+                            pre_apply_mss_orders
+                        ),
+                        deals=offline_deals,
+                    )
+                )
+                print(
+                    "DEMO_BROKER_OFFLINE_CLOSURE_RECONCILIATION",
+                    offline_reconciliation.valid,
+                )
+                print(
+                    "DEMO_BROKER_OFFLINE_CLOSURE_REASON",
+                    offline_reconciliation.reason,
+                )
+                print(
+                    "DEMO_BROKER_OFFLINE_CLOSURE_CONFIRMED",
+                    offline_reconciliation.closure_confirmed,
+                )
+                print("REAL_ORDER_SENT", False)
+
+                if not offline_reconciliation.valid:
+                    raise RuntimeError(
+                        "DEMO_BROKER_OFFLINE_CLOSURE_FAILED:"
+                        f"{offline_reconciliation.reason}"
+                    )
+
+                offline_application = (
+                    DemoBrokerOfflineClosureJournalApplier.apply(
+                        journal_path=states[offline_shadow.symbol]["journal_path"],
+                        shadow_position=offline_shadow,
+                        reconciliation=offline_reconciliation,
+                    )
+                )
+                if not offline_application.valid:
+                    raise RuntimeError(
+                        "DEMO_BROKER_OFFLINE_CLOSURE_"
+                        "APPLICATION_FAILED:"
+                        f"{offline_application.reason}"
+                    )
+
+                post_lifecycle = ShadowPositionRecovery.recover(
+                    states[offline_shadow.symbol]["journal_path"]
+                )
+                if (
+                    not post_lifecycle.valid
+                    or post_lifecycle.open_position_count != 0
+                ):
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_POST_LIFECYCLE_"
+                        "RECOVERY_FAILED"
+                    )
+
+                portfolio_risk_recovery = (
+                    ShadowPortfolioRiskAggregator.recover(
+                        sources=current_portfolio_sources
+                    )
+                )
+                if (
+                    not portfolio_risk_recovery.valid
+                    or portfolio_risk_recovery.snapshot is None
+                    or portfolio_risk_recovery.open_position_count != 0
+                ):
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_POST_PORTFOLIO_"
+                        "RECOVERY_FAILED"
+                    )
+                current_risk_snapshot = portfolio_risk_recovery.snapshot
+                portfolio_governor_positions = (
+                    ShadowPortfolioRiskState.governor_positions(
+                        current_risk_snapshot
+                    )
+                )
+                recovered = []
+
+                post_broker_positions = mt5.positions_get()
+                if post_broker_positions is None:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_POST_BROKER_"
+                        "INSPECTION_FAILED"
+                    )
+                post_relevant_positions = tuple(
+                    item for item in post_broker_positions
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "identifier", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
+                )
+                if post_relevant_positions:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_POST_BROKER_"
+                        "EXPOSURE_PRESENT"
+                    )
+
+                post_broker_orders = mt5.orders_get()
+                if post_broker_orders is None:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_POST_BROKER_ORDER_"
+                        "INSPECTION_FAILED"
+                    )
+                post_mss_orders = tuple(
+                    item for item in post_broker_orders
+                    if (
+                        int(getattr(item, "magic", 0) or 0)
+                        == DemoBrokerOfflineClosureReconciler.MAGIC
+                        or int(getattr(item, "position_id", 0) or 0)
+                        == offline_shadow.broker_position_identifier
+                    )
+                )
+                if post_mss_orders:
+                    raise RuntimeError(
+                        "OFFLINE_CLOSURE_POST_BROKER_"
+                        "PENDING_ORDER_PRESENT"
+                    )
+
+                restart_reconciliation = None
+                print("DEMO_BROKER_OFFLINE_CLOSURE_APPLIED", True)
+            else:
+                restart_reconciliation = (
+                    DemoBrokerShadowRestartReconciler.reconcile(
+                        broker_positions=tuple(broker_snapshots),
+                        pending_order_count=len(demo_mss_orders),
+                        shadow_positions=tuple(item[1] for item in recovered),
+                    )
+                )
+
+            if restart_reconciliation is not None:
+                print(
+                    "DEMO_BROKER_SHADOW_RESTART_RECONCILIATION",
+                    restart_reconciliation.valid,
+                )
+                print(
+                    "DEMO_BROKER_SHADOW_RESTART_REASON",
+                    restart_reconciliation.reason,
+                )
+                print(
+                    "DEMO_BROKER_SHADOW_RESTART_RESUME_ALLOWED",
+                    restart_reconciliation.resume_allowed,
+                )
+                print(
+                    "DEMO_BROKER_SHADOW_RESTART_SYMBOL",
+                    restart_reconciliation.broker_symbol
+                    or restart_reconciliation.shadow_symbol,
+                )
+                print("REAL_ORDER_SENT", False)
+
+                if not restart_reconciliation.valid:
+                    raise RuntimeError(
+                        "DEMO_BROKER_SHADOW_RESTART_FAILED:"
+                        f"{restart_reconciliation.reason}"
+                    )
 
         # =============================================
         # Read-only predecessor safety guard.
@@ -4885,6 +5130,24 @@ def main():
                                                         and demo_result.valid
                                                     )
                                                     else None
+                                                ),
+                                                broker_position_ticket=(
+                                                    int(demo_result.position_ticket)
+                                                    if (
+                                                        args.demo_forward
+                                                        and demo_result is not None
+                                                        and demo_result.valid
+                                                    )
+                                                    else 0
+                                                ),
+                                                broker_position_identifier=(
+                                                    int(demo_result.position_identifier)
+                                                    if (
+                                                        args.demo_forward
+                                                        and demo_result is not None
+                                                        and demo_result.valid
+                                                    )
+                                                    else 0
                                                 ),
                                             )
                                         )
