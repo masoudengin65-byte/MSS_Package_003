@@ -1,0 +1,188 @@
+{
+  "acceptance": {
+    "consumed_data_excluded": true,
+    "execution_hashes_locked": true,
+    "forward_boundary_locked": true,
+    "g3_failure_preserved": true,
+    "new_version_and_execution_id": true,
+    "production_change_justified": false,
+    "single_change_locked": true,
+    "timebox_and_stop_rules_locked": true
+  },
+  "audit": {
+    "deterministic_rebuild": true,
+    "development_accessed": false,
+    "mt5_accessed": false,
+    "order_check_called": false,
+    "order_send_called": false,
+    "outcomes_analyzed": false,
+    "pre_protocol_true_oos_used": false,
+    "production_behavior_changed": false,
+    "strategy_code_changed": false,
+    "strategy_replay_run": false,
+    "validation_accessed": false
+  },
+  "baseline_commit": "0e643da",
+  "candidate_contract": {
+    "baseline": "UNCHANGED_SMART_MONEY_PIPELINE",
+    "candidate": "CONFLUENCE_GATED_SMART_MONEY_PIPELINE",
+    "no_direction_filter": true,
+    "no_score_threshold": true,
+    "no_symbol_specific_rule": true,
+    "parameter_optimization": false,
+    "production_pipeline_replacement": false,
+    "single_change": "ENTRY_ELIGIBLE_ONLY_WHEN_EXISTING_CONFLUENCE_ENGINE_RETURNS_VALID_DIRECTION_MATCHING_BOS",
+    "unchanged": [
+      "swing detection",
+      "structure detection",
+      "BOS detection",
+      "next-candle entry",
+      "stop placement",
+      "risk 1%",
+      "reward-risk 2.0",
+      "valuation",
+      "STOP_LOSS_FIRST ambiguous-exit policy",
+      "one-position policy"
+    ]
+  },
+  "execution_id": "MSS_93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_V1",
+  "execution_identity": {
+    "any_hash_change_before_first_forward_candle_requires_new_version": true,
+    "baseline_commit": "0e643da",
+    "execution_file_sha256": {
+      "src/mss/analysis/confluence_engine.py": "ca075db045bd991073532ee1868b2cadbec4fde086d4674423ae5456d03b9609",
+      "src/mss/analysis/confluence_gated_smart_money_pipeline.py": "f984643cfb63b2859c58b38aaf7a4a0fbdfffa80612cf393a14a3553504ef4df",
+      "src/mss/analysis/frozen_shadow_strategy_adapter.py": "0cc57ad0e1b81eec6c58108ce4a97395b7885226159f4354a9359943f6ae319f",
+      "src/mss/analysis/risk_engine.py": "270557b72b004441f439dde4b009cb303a15f9f8491b6d9b5f5588c9fedf87d4",
+      "src/mss/analysis/shadow_trade_engine.py": "b96a9bb797d1d4ab9ce9ae5cd68e81a1eca510c342cf290bb6060785f0b98a3c",
+      "src/mss/analysis/smart_money_pipeline.py": "704ecd5bd41073821e4697142af649a21016a7e9dfdfd0072c18d80173bab4c0",
+      "src/mss/analysis/virtual_position_engine.py": "445681972752a57d92a3c3d1670e5b7ca53f708444b839f8beeb77b03ba0e26b",
+      "src/mss/domain/pipeline_result.py": "e1b3c4d324dec5887d984d9d25ef13d51eeb7cf2e49734aa5e8ba897e74fcb23"
+    },
+    "identity_type": "HASH_FROZEN_RESEARCH_EXECUTION"
+  },
+  "experiment_identity": {
+    "distinct_execution_id": true,
+    "distinct_hypothesis_version": true,
+    "experiment_id": "SPRINT93_2A_CONFLUENCE_GATE_V2",
+    "g3_rerun": false,
+    "prior_g1_hypothesis_id": "G1_FALSE_BREAKOUT_CONFLUENCE_GATE",
+    "prior_g1_status": "ARCHIVED_UNEVALUATED_SOURCE_INTEGRITY_FAILURE",
+    "research_only": true
+  },
+  "future_release_gate_not_authorized_here": {
+    "demo_order_lifecycle_evidence_required": true,
+    "maximum_drawdown_rate": 0.15,
+    "minimum_closed_trades": 100,
+    "minimum_profit_factor": 1.2,
+    "positive_expectancy_95_percent_lower_bound": true,
+    "real_money_authorized": false,
+    "separate_preregistration_required": true
+  },
+  "mode": "PREREGISTRATION_ONLY_NO_MT5_NO_REPLAY_NO_OUTCOME_INSPECTION_NO_PRODUCTION_CHANGE",
+  "paired_forward_shadow_contract": {
+    "baseline_can_open_virtual_positions": true,
+    "candidate_can_open_virtual_positions": true,
+    "extension_after_timebox": false,
+    "independent_baseline_and_candidate_journals": true,
+    "maximum_m15_candles_per_symbol": 4320,
+    "order_check_allowed": false,
+    "order_send_allowed": false,
+    "real_order_allowed": false,
+    "same_completed_candles": true,
+    "same_cost_and_valuation_model": true,
+    "same_decision_timestamps": true,
+    "symbols": [
+      {
+        "broker_symbol": "BITCOIN",
+        "canonical_symbol": "BTCUSD",
+        "timeframe": "M15"
+      },
+      {
+        "broker_symbol": "ETHEREUM",
+        "canonical_symbol": "ETHUSD",
+        "timeframe": "M15"
+      }
+    ],
+    "timebox_calendar_days": 45
+  },
+  "prohibited_actions": [
+    "RUN_G3_AGAIN",
+    "REUSE_H4_DEVELOPMENT_FOR_CONFIRMATION",
+    "REUSE_C4_VALIDATION_FOR_CONFIRMATION",
+    "BACKFILL_PRE_PROTOCOL_CANDLES",
+    "TUNE_SCORE_OR_CONFLUENCE_COMPONENTS_DURING_EXPERIMENT",
+    "DROP_BUY_OR_SELL_AFTER_INTERIM_RESULTS",
+    "EXTEND_THE_45_DAY_TIMEBOX_AFTER_OUTCOME_INSPECTION",
+    "SEND_OR_CHECK_REAL_BROKER_ORDERS",
+    "CHANGE_PRODUCTION_STRATEGY"
+  ],
+  "research_evaluation_gate": {
+    "decision_if_all_pass": "RESEARCH_GATE_PASSED_REQUIRES_SEPARATE_LARGER_CONFIRMATION_AND_PRODUCTION_GOVERNANCE",
+    "decision_if_performance_fails": "CLOSE_CANDIDATE_NO_RETUNING_NO_PRODUCTION_CHANGE",
+    "decision_if_sample_insufficient_at_timebox": "CLOSE_INCONCLUSIVE_NO_EXTENSION_NO_PRODUCTION_CHANGE",
+    "minimum_candidate_closed_trades_per_symbol": 15,
+    "minimum_candidate_closed_trades_pooled": 50,
+    "primary_metric": "PAIRED_MEAN_R_DIFFERENCE_CANDIDATE_MINUS_BASELINE",
+    "requirements": [
+      "paired candidate-minus-baseline mean R > 0",
+      "candidate pooled mean R > 0",
+      "candidate pooled expectancy > 0",
+      "candidate pooled profit factor >= 1.10",
+      "candidate pooled win rate >= 0.36",
+      "candidate maximum drawdown <= baseline maximum drawdown",
+      "ordinary and moving-block bootstrap probability mean R > 0 >= 0.80",
+      "minimum pooled and per-symbol sample gates pass",
+      "zero integrity lookahead valuation or risk failures"
+    ],
+    "target_candidate_profit_factor": 1.1,
+    "target_candidate_win_rate": 0.36
+  },
+  "research_hypothesis": {
+    "claim": "REQUIRING_THE_EXISTING_DIRECTION_ALIGNED_CONFLUENCE_SIGNAL_ON_A_BOS_REDUCES_FALSE_BOS_ENTRIES_AND_IMPROVES_PAIRED_FORWARD_SHADOW_MEAN_R_PROFIT_FACTOR_AND_WIN_RATE",
+    "falsifiable": true,
+    "mechanism": "DISPLACEMENT_ORDER_BLOCK_AND_FAIR_VALUE_GAP_MUST_CONFIRM_THE_BOS_DIRECTION_BEFORE_ENTRY_ELIGIBILITY",
+    "no_new_numeric_strategy_threshold": true,
+    "not_selected_from_sprint93_forward_outcomes": true
+  },
+  "schema_version": "MSS_SPRINT93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_PREREGISTRATION_V1",
+  "source_file_sha256": {
+    "c2": "803678dfb2959616c03c5d2688ab16627ab9f3cb5adbb4edbd2a943063159d35",
+    "g5": "988c3b6b27959eab8556b90dbb3a6caf28d1ca446649af38c554dd70c493e96b",
+    "h6": "ce67778431af1cb33dd7e1d882a82a3e75d0c1f3e41c173b3e7550187d14a3c6"
+  },
+  "source_governance": {
+    "append_only_journal_required": true,
+    "broker_history_redownload": false,
+    "development_reuse": false,
+    "first_eligible_candle_open_utc": "2026-08-23T20:15:00Z",
+    "historical_backfill": false,
+    "interim_parameter_change": false,
+    "partial_outcome_analysis": false,
+    "pre_protocol_true_oos_prefix_reuse": false,
+    "prior_unanalyzed_prefixes_excluded": [
+      {
+        "broker_symbol": "BITCOIN",
+        "candle_count": 406,
+        "canonical_symbol": "BTCUSD",
+        "eligible_for_sprint93_outcomes": false,
+        "last_candle_close_timestamp": "2026-08-12T02:45:00Z",
+        "ohlcv_sha256": "2651cf7745fc921a3595c1d2bf9133d86fcc233e764cec5ba8de10540ad6efb2",
+        "status": "FROZEN_NO_ANALYSIS"
+      },
+      {
+        "broker_symbol": "ETHEREUM",
+        "candle_count": 406,
+        "canonical_symbol": "ETHUSD",
+        "eligible_for_sprint93_outcomes": false,
+        "last_candle_close_timestamp": "2026-08-12T02:45:00Z",
+        "ohlcv_sha256": "2c27fdb7df9c1a360dfe177da47433e4df519356a4a949b6c78a6fa977b3442f",
+        "status": "FROZEN_NO_ANALYSIS"
+      }
+    ],
+    "research_quarantine_reuse": false,
+    "selection_rule": "COMPLETED_M15_CANDLES_WITH_OPEN_TIMESTAMP_AT_OR_AFTER_2026_08_23T20_15_00Z_OBSERVED_FORWARD_ONLY",
+    "validation_reuse": false,
+    "write_once_session_manifests_required": true
+  }
+}
