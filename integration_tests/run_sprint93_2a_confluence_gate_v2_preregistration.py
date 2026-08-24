@@ -1,92 +1,42 @@
-"""Write the Sprint 93.2A outcome-blind forward-shadow preregistration."""
-
-from __future__ import annotations
-
-import hashlib
-import json
+"""Write or verify canonical Sprint 93.2A V2 preregistration."""
+import argparse,ast,hashlib,json,subprocess
 from pathlib import Path
-
-from mss.analysis.sprint93_confluence_gate_v2_preregistration import (
-    Sprint93ConfluenceGateV2Preregistration,
-)
-
-
-ROOT = Path(__file__).resolve().parents[1]
-G5 = ROOT / "reports/MSS_Sprint92G5_Confluence_Gate_Research_Closure.json"
-H6 = ROOT / "reports/MSS_Sprint92H6_Immutable_Development_Research_Closure.json"
-C2 = ROOT / "reports/MSS_Sprint92C2_Extended_Dataset_Manifest.json"
-OUTPUT = ROOT / "reports/MSS_Sprint93_2A_Confluence_Gate_V2_Preregistration.json"
-
-
-def load(path):
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def main():
-    if OUTPUT.exists():
-        raise RuntimeError(f"Sprint 93.2A output already exists: {OUTPUT}")
-
-    builder = Sprint93ConfluenceGateV2Preregistration()
-    execution_hashes = {
-        relative: sha(ROOT / relative)
-        for relative in builder.REQUIRED_EXECUTION_FILES
-    }
-    protected = {"g5": sha(G5), "h6": sha(H6), "c2": sha(C2)}
-
-    first = builder.build(
-        load(G5), load(H6), load(C2), execution_hashes
-    )
-    second = builder.build(
-        load(G5), load(H6), load(C2), execution_hashes
-    )
-    if first != second:
-        raise RuntimeError("Sprint 93.2A deterministic rebuild failed")
-
-    first["audit"]["deterministic_rebuild"] = True
-    first["source_file_sha256"] = protected
-
-    text = json.dumps(
-        first,
-        indent=2,
-        sort_keys=True,
-        allow_nan=False,
-    ) + "\n"
-    OUTPUT.write_text(text, encoding="utf-8", newline="\n")
-
-    if protected != {"g5": sha(G5), "h6": sha(H6), "c2": sha(C2)}:
-        raise RuntimeError("protected source artifact changed")
-
-    print("MODE", first["mode"])
-    print("EXECUTION_ID", first["execution_id"])
-    print(
-        "FIRST_ELIGIBLE_CANDLE_OPEN_UTC",
-        first["source_governance"]["first_eligible_candle_open_utc"],
-    )
-    print(
-        "SYMBOLS",
-        ",".join(
-            item["broker_symbol"]
-            for item in first["paired_forward_shadow_contract"]["symbols"]
-        ),
-    )
-    print(
-        "TIMEBOX_DAYS",
-        first["paired_forward_shadow_contract"]["timebox_calendar_days"],
-    )
-    print("MT5_ACCESSED False")
-    print("REPLAY_RUN False")
-    print("OUTCOMES_ANALYZED False")
-    print("ORDER_CHECK_CALLED False")
-    print("ORDER_SEND_CALLED False")
-    print(
-        "JSON_SHA256",
-        hashlib.sha256(text.encode("utf-8")).hexdigest(),
-    )
-
-
-if __name__ == "__main__":
-    main()
+from mss.analysis.sprint93_confluence_gate_v2_preregistration import Sprint93ConfluenceGateV2Preregistration as C
+ROOT=Path(__file__).resolve().parents[1]
+SOURCES={"g5":"reports/MSS_Sprint92G5_Confluence_Gate_Research_Closure.json","h6":"reports/MSS_Sprint92H6_Immutable_Development_Research_Closure.json","c2":"reports/MSS_Sprint92C2_Extended_Dataset_Manifest.json"}
+OUTPUT=ROOT/"reports/MSS_Sprint93_2A_Confluence_Gate_V2_Preregistration.json"
+def git_bytes(spec): return subprocess.run(["git","cat-file","blob",spec],cwd=ROOT,check=True,stdout=subprocess.PIPE).stdout
+def sha(path): return hashlib.sha256(git_bytes(f"{C.BASELINE_COMMIT}:{path}")).hexdigest()
+def closure():
+    pending=list(C.STRATEGY_COMPONENT_ROOTS); found=set()
+    while pending:
+        path=pending.pop()
+        if path in found: continue
+        found.add(path); tree=ast.parse(git_bytes(f"{C.BASELINE_COMMIT}:{path}").decode("utf-8-sig"))
+        modules=[]
+        for node in ast.walk(tree):
+            if isinstance(node,ast.ImportFrom) and node.module: modules.append(node.module)
+            elif isinstance(node,ast.Import): modules.extend(a.name for a in node.names)
+        for module in modules:
+            candidate="src/"+module.replace(".","/")+".py"
+            if module.startswith("mss.") and subprocess.run(["git","cat-file","-e",f"{C.BASELINE_COMMIT}:{candidate}"],cwd=ROOT).returncode==0 and candidate not in found: pending.append(candidate)
+    return tuple(sorted(found))
+def canonical(payload): return (json.dumps(payload,indent=2,sort_keys=True,allow_nan=False)+"\n").encode()
+def rebuild():
+    paths=closure()
+    if paths!=C.REQUIRED_STRATEGY_COMPONENT_FILES: raise RuntimeError("transitive internal mss closure differs from frozen universe")
+    hashes={p:sha(p) for p in paths}; inputs={k:json.loads(git_bytes(f"{C.BASELINE_COMMIT}:{p}")) for k,p in SOURCES.items()}
+    artifact=C().build(inputs["g5"],inputs["h6"],inputs["c2"],hashes); artifact["audit"]["deterministic_rebuild"]=True; artifact["source_git_blob_sha256"]={k:sha(p) for k,p in SOURCES.items()}
+    return artifact,{p:sha(p) for p in (*paths,*SOURCES.values())}
+def main(argv=None):
+    parser=argparse.ArgumentParser(); modes=parser.add_mutually_exclusive_group(required=True); modes.add_argument("--write",action="store_true"); modes.add_argument("--verify",action="store_true"); args=parser.parse_args(argv)
+    protected=(*C.REQUIRED_STRATEGY_COMPONENT_FILES,*SOURCES.values())
+    if subprocess.run(["git","diff","--quiet",C.BASELINE_COMMIT,"--",*protected],cwd=ROOT).returncode: raise RuntimeError("execution/source content differs from baseline commit")
+    artifact,before=rebuild(); rendered=canonical(artifact)
+    if args.write:
+        if OUTPUT.exists(): raise RuntimeError(f"refusing to overwrite existing report: {OUTPUT}")
+        OUTPUT.write_bytes(rendered)
+    elif OUTPUT.read_bytes()!=rendered: raise RuntimeError("committed report is not complete canonical rebuild")
+    if before!={p:sha(p) for p in protected}: raise RuntimeError("protected Git blob changed during execution")
+    if args.verify: print("PREREGISTRATION_VERIFY_PASS")
+if __name__=="__main__": main()
