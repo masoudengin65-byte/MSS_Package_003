@@ -1,43 +1,73 @@
 {
   "activation": {
     "activation_manifest": null,
-    "boundary_rule": "PUBLIC_GITHUB_MERGED_AT_UTC_PLUS_24_HOURS_ROUNDED_UP_TO_NEXT_M15_BOUNDARY",
-    "end_rule": "FIRST_ELIGIBLE_M15_CANDLE_OPEN_PLUS_EXACTLY_45_TIMES_24_HOURS_EXCLUSIVE",
+    "activation_rules": {
+      "activation_pr_must_be_merged_before_manifest_creation": true,
+      "all_pre_start_data_permanently_ineligible": true,
+      "commit_or_push_at_or_after_start_requires_new_activation_pr_and_boundary": true,
+      "hash_mismatch_keeps_activation_blocked": true,
+      "manifest_commit_and_public_push_must_be_strictly_before_start": true,
+      "manifest_write_once": true,
+      "retroactive_activation_allowed": false
+    },
+    "boundary_rule": "CEIL_TO_M15(ACTIVATION_PR_PUBLIC_MERGED_AT_UTC_PLUS_EXACTLY_24_HOURS)",
+    "end_rule": "COMPUTED_FIRST_ELIGIBLE_M15_OPEN_PLUS_EXACTLY_45_TIMES_24_HOURS_EXCLUSIVE",
     "exclusive_experiment_end_utc": null,
     "first_eligible_candle_open_utc": null,
     "forward_data_eligible": false,
-    "freeze_required_before_activation": [
-      "paired executor",
-      "journal schema",
-      "valuation logic",
-      "risk logic",
-      "evaluation implementation"
+    "manifest_validation_context_required": [
+      "public merged activation PR metadata",
+      "public manifest commit and push timestamps",
+      "observed Git-blob SHA256 identity at full merge commit",
+      "exact Python and NumPy versions",
+      "external proof of no pre-activation forward-outcome access",
+      "absence of any existing activation manifest"
     ],
     "public_merge_metadata_required": true,
-    "required_precondition": "SEPARATE_PAIRED_EXECUTION_FREEZE_PR_MERGED",
-    "unverifiable_merge_metadata_result": "BLOCKED_PENDING_PAIRED_EXECUTION_FREEZE",
-    "write_once_manifest_fields": [
-      "paired_freeze_merge_commit",
-      "paired_freeze_pr_url",
-      "paired_freeze_merged_at_utc",
-      "first_eligible_candle_open_utc",
-      "exclusive_experiment_end_utc"
+    "required_precondition": "SEPARATE_PAIRED_EXECUTION_FREEZE_PR_ALREADY_MERGED",
+    "unverifiable_or_invalid_manifest_result": "BLOCKED_PENDING_PAIRED_EXECUTION_FREEZE",
+    "write_once_manifest_required_fields": [
+      "activation_pr_url",
+      "activation_pr_number",
+      "activation_pr_public_merged_at_utc",
+      "activation_merge_commit_sha",
+      "manifest_created_at_utc",
+      "python_version",
+      "numpy_version",
+      "paired_executor_identity",
+      "baseline_strategy_identity",
+      "candidate_strategy_identity",
+      "journal_implementation_identity",
+      "journal_schema_identity",
+      "risk_implementation_identity",
+      "valuation_implementation_identity",
+      "evaluation_implementation_identity",
+      "complete_transitive_execution_file_identity",
+      "transitive_execution_file_universe_complete",
+      "computed_first_eligible_m15_open_utc",
+      "computed_exclusive_45_day_end_utc",
+      "no_forward_outcome_access_before_activation",
+      "all_data_before_computed_start_permanently_ineligible",
+      "write_once"
     ]
   },
   "audit": {
     "deterministic_rebuild": true,
     "development_accessed": false,
+    "market_data_accessed": false,
     "mt5_accessed": false,
     "order_check_called": false,
     "order_send_called": false,
     "outcomes_analyzed": false,
     "production_behavior_changed": false,
     "quarantine_accessed": false,
+    "real_order_called": false,
+    "replay_data_accessed": false,
     "strategy_replay_run": false,
     "true_oos_accessed": false,
     "validation_accessed": false
   },
-  "baseline_commit": "0e643da",
+  "baseline_commit": "0e643dad70f94abbd0cad13af0291af2c1631004",
   "candidate_contract": {
     "baseline": "UNCHANGED_SMART_MONEY_PIPELINE",
     "candidate": "CONFLUENCE_GATED_SMART_MONEY_PIPELINE",
@@ -46,9 +76,10 @@
     "single_change": "ENTRY_ELIGIBLE_ONLY_WHEN_EXISTING_CONFLUENCE_ENGINE_RETURNS_VALID_DIRECTION_MATCHING_BOS"
   },
   "execution_id": "MSS_93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_V2",
-  "mode": "PREREGISTRATION_ONLY_NO_MT5_NO_REPLAY_NO_OUTCOME_INSPECTION_NO_PRODUCTION_CHANGE",
+  "mode": "PREREGISTRATION_ONLY_NO_MT5_NO_MARKET_DATA_NO_REPLAY_NO_OUTCOME_INSPECTION_NO_PRODUCTION_CHANGE",
   "paired_forward_shadow_contract": {
     "extension_after_timebox": false,
+    "final_eligible_completed_candle_timeframe": "M15",
     "no_new_entries_at_or_after_exclusive_end": true,
     "order_check_allowed": false,
     "order_send_allowed": false,
@@ -67,72 +98,222 @@
     ],
     "timebox_calendar_days": 45
   },
+  "protected_source_artifacts": [
+    {
+      "expected_sha256": "988c3b6b27959eab8556b90dbb3a6caf28d1ca446649af38c554dd70c493e96b",
+      "path": "reports/MSS_Sprint92G5_Confluence_Gate_Research_Closure.json",
+      "schema_identifier": "MSS_SPRINT92G5_CONFLUENCE_GATE_RESEARCH_CLOSURE_V1"
+    },
+    {
+      "expected_sha256": "ce67778431af1cb33dd7e1d882a82a3e75d0c1f3e41c173b3e7550187d14a3c6",
+      "path": "reports/MSS_Sprint92H6_Immutable_Development_Research_Closure.json",
+      "schema_identifier": "MSS_SPRINT92H6_IMMUTABLE_DEVELOPMENT_RESEARCH_CLOSURE_V1"
+    },
+    {
+      "expected_sha256": "803678dfb2959616c03c5d2688ab16627ab9f3cb5adbb4edbd2a943063159d35",
+      "path": "reports/MSS_Sprint92C2_Extended_Dataset_Manifest.json",
+      "schema_identifier": "MSS_SPRINT92C2_EXTENDED_DATASET_MANIFEST_V1"
+    }
+  ],
   "protocol_state": "BLOCKED_PENDING_PAIRED_EXECUTION_FREEZE",
   "research_evaluation_gate": {
-    "bootstrap_pass_probability": 0.8,
-    "bootstrap_probability": "FRACTION_OF_RESAMPLED_POOLED_MEANS_STRICTLY_GREATER_THAN_ZERO",
-    "candidate_maximum_drawdown_must_be_lte_baseline": true,
-    "candidate_trade_metrics_population": "ACTUAL_CANDIDATE_POSITIONS_ONLY_EXCLUDING_ZERO_R_NO_TRADE_PAIR_MEMBERS",
-    "drawdown_order": [
-      "pair_settlement_utc",
-      "canonical_symbol",
-      "decision_candle_open_utc"
-    ],
-    "minimum_candidate_closed_trades_per_symbol": 15,
-    "minimum_candidate_closed_trades_pooled": 50,
-    "moving_block_bootstrap": {
-      "block_length_pair_rows": 8,
-      "circular_blocks": true,
-      "per_symbol_sample_size": "ORIGINAL_PAIR_COUNT_BEFORE_POOLING",
+    "bootstrap": {
+      "empty_incomplete_or_structurally_invalid_population_result": "INCONCLUSIVE",
+      "inconclusive_can_pass": false,
+      "input": "PAIRED_CANDIDATE_R_MINUS_BASELINE_R",
+      "moving_block": {
+        "block_length_pair_rows": 8,
+        "block_start_indices": "UNIFORM_WITH_REPLACEMENT",
+        "blocks_per_symbol": "CEIL(SYMBOL_PAIR_COUNT / 8)",
+        "circular_wrapping": true,
+        "concatenate_blocks": true,
+        "pool_completed_symbol_samples": true,
+        "truncate_to_original_symbol_pair_count": true
+      },
+      "ordinary": {
+        "per_symbol_sample_count": "ORIGINAL_SYMBOL_PAIR_COUNT",
+        "pool_completed_symbol_samples": true,
+        "sampling": "WITH_REPLACEMENT",
+        "symbols_sampled_independently": true
+      },
+      "probability": "EXACT_FRACTION_OF_10000_RESAMPLED_POOLED_MEANS_STRICTLY_GREATER_THAN_ZERO",
       "resamples": 10000,
-      "seed": 9320260825,
-      "statistic": "PAIRED_CANDIDATE_MINUS_BASELINE_R_DIFFERENCES",
-      "stratified_by": "canonical_symbol"
+      "rng": {
+        "api": "numpy.random.Generator",
+        "bit_generator": "numpy.random.PCG64",
+        "construction": "numpy.random.Generator(numpy.random.PCG64(seed))",
+        "seed": 9320260825
+      },
+      "runtime_versions_must_be_frozen_in_activation_manifest": [
+        "python_version",
+        "numpy_version"
+      ],
+      "symbol_strata_preserved": true,
+      "within_symbol_order": [
+        "decision_candle_open_utc",
+        "pair_key"
+      ]
     },
-    "no_position_branch_net_r": 0.0,
-    "open_at_exclusive_end": "MARK_TO_MARKET_AT_FINAL_ELIGIBLE_M15_CLOSE_USING_FROZEN_COST_AND_VALUATION_MODEL",
-    "ordinary_bootstrap": {
-      "per_symbol_sample_size": "ORIGINAL_PAIR_COUNT",
-      "resamples": 10000,
-      "seed": 9320260825,
-      "statistic": "PAIRED_CANDIDATE_MINUS_BASELINE_R_DIFFERENCES",
-      "stratified_by": "canonical_symbol"
+    "gates": [
+      {
+        "name": "paired_pooled_candidate_minus_baseline_mean_r",
+        "operator": ">",
+        "threshold": 0.0
+      },
+      {
+        "name": "candidate_actual_trade_pooled_mean_r",
+        "operator": ">",
+        "threshold": 0.0
+      },
+      {
+        "name": "candidate_actual_trade_pooled_expectancy",
+        "operator": ">",
+        "threshold": 0.0
+      },
+      {
+        "name": "candidate_pooled_profit_factor",
+        "operator": ">=",
+        "threshold": 1.1
+      },
+      {
+        "name": "candidate_pooled_win_rate",
+        "operator": ">=",
+        "threshold": 0.36
+      },
+      {
+        "name": "candidate_maximum_drawdown_r",
+        "operator": "<=",
+        "threshold": "BASELINE_MAXIMUM_DRAWDOWN_R"
+      },
+      {
+        "name": "candidate_terminal_settled_actual_trades_pooled",
+        "operator": ">=",
+        "threshold": 50
+      },
+      {
+        "name": "candidate_terminal_settled_actual_trades_per_symbol",
+        "operator": ">=",
+        "threshold": 15
+      },
+      {
+        "name": "ordinary_bootstrap_probability_paired_mean_difference_gt_zero",
+        "operator": ">=",
+        "threshold": 0.8
+      },
+      {
+        "name": "moving_block_bootstrap_probability_paired_mean_difference_gt_zero",
+        "operator": ">=",
+        "threshold": 0.8
+      },
+      {
+        "categories": [
+          "lookahead",
+          "valuation",
+          "risk",
+          "journal",
+          "pairing",
+          "integrity"
+        ],
+        "name": "failure_counts",
+        "operator": "==",
+        "threshold": 0
+      }
+    ],
+    "metric_definitions": {
+      "actual_trade_mean_r": "SUM(ACTUAL_TRADE_NET_R) / ACTUAL_TERMINAL_SETTLED_TRADE_COUNT",
+      "expectancy": "WIN_RATE * MEAN_POSITIVE_R - NON_WIN_RATE * MEAN_ABSOLUTE_NON_POSITIVE_R",
+      "expectancy_zero_r_rule": "ZERO_R_ACTUAL_TRADES_ARE_INCLUDED_AMONG_NON_WINS",
+      "maximum_drawdown": "MAXIMUM_PEAK_TO_TROUGH_DECLINE_OF_CUMULATIVE_TERMINAL_SETTLED_NET_R_BEGINNING_AT_0.0_R",
+      "mean_absolute_non_positive_r": "SUM(ABS(NON_POSITIVE_ACTUAL_TRADE_NET_R)) / COUNT(ACTUAL_TRADE_NET_R <= 0)",
+      "mean_positive_r": "SUM(POSITIVE_ACTUAL_TRADE_NET_R) / COUNT(ACTUAL_TRADE_NET_R > 0)",
+      "pooled_order": [
+        "pair_settlement_utc",
+        "canonical_symbol",
+        "decision_candle_open_utc"
+      ],
+      "profit_factor": "SUM(POSITIVE_ACTUAL_TRADE_NET_R) / ABS(SUM(NEGATIVE_ACTUAL_TRADE_NET_R))",
+      "profit_factor_zero_loss_behavior": {
+        "positive_and_negative_sums_both_zero": 0.0,
+        "positive_infinity_passes_threshold": true,
+        "positive_sum_greater_than_zero": "POSITIVE_INFINITY"
+      },
+      "win_rate": "COUNT(ACTUAL_TRADE_NET_R > 0) / ACTUAL_TERMINAL_SETTLED_TRADE_COUNT"
+    },
+    "no_trade_semantics": {
+      "contributes_zero_only_to_paired_difference": true,
+      "excluded_from": [
+        "actual_trade_count",
+        "actual_trade_mean_r",
+        "expectancy",
+        "profit_factor",
+        "win_rate",
+        "maximum_drawdown",
+        "minimum_sample_gates"
+      ]
     },
     "pair_key": [
       "canonical_symbol",
       "decision_candle_open_utc"
     ],
-    "pair_population": "UNION_OF_TIMESTAMPS_WHERE_EITHER_BRANCH_OPENS_A_VIRTUAL_POSITION",
-    "pair_settlement_utc": "LATER_EXIT_TIMESTAMP_OF_NON_ZERO_TRADE_MEMBERS",
-    "pooled_maximum_drawdown": "MAX_PEAK_TO_TROUGH_DECLINE_OF_CUMULATIVE_NET_R_STARTING_AT_ZERO",
-    "profit_factor": "SUM_POSITIVE_NET_R_DIVIDED_BY_ABS_SUM_NEGATIVE_NET_R",
-    "profit_factor_zero_loss_behavior": {
-      "no_positive_gains": 0.0,
-      "positive_gains": "POSITIVE_INFINITY"
+    "pair_population": "UNION_OF_DECISION_TIMESTAMPS_WHERE_EITHER_BRANCH_OPENS_AN_ACTUAL_VIRTUAL_POSITION",
+    "pair_record_schema": {
+      "actual_zero_r_included_in": [
+        "actual_trade_count",
+        "actual_trade_mean_r",
+        "expectancy",
+        "profit_factor",
+        "win_rate",
+        "maximum_drawdown",
+        "minimum_sample_gates"
+      ],
+      "actual_zero_r_is_non_win": true,
+      "actual_zero_r_profit_factor_contribution": {
+        "negative_sum_r": 0.0,
+        "positive_sum_r": 0.0
+      },
+      "actual_zero_r_remains_actual_trade": true,
+      "baseline_member_types": [
+        "BASELINE_ACTUAL_TRADE",
+        "BASELINE_NO_TRADE",
+        "TIMEBOX_MTM_CLOSE"
+      ],
+      "candidate_member_types": [
+        "CANDIDATE_ACTUAL_TRADE",
+        "CANDIDATE_NO_TRADE",
+        "TIMEBOX_MTM_CLOSE"
+      ],
+      "no_trade_actual_trade_net_r": null,
+      "no_trade_paired_difference_projection_r": 0.0,
+      "pair_requires_at_least_one_actual_trade_member": true,
+      "record_types": [
+        "BASELINE_ACTUAL_TRADE",
+        "CANDIDATE_ACTUAL_TRADE",
+        "BASELINE_NO_TRADE",
+        "CANDIDATE_NO_TRADE",
+        "TIMEBOX_MTM_CLOSE"
+      ],
+      "timebox_mtm_branch_is_given_by_member_slot": true
     },
-    "retained_pair_labels": [
-      "BASELINE_ONLY",
-      "CANDIDATE_REJECTED",
-      "STATE_DIVERGENCE_CANDIDATE_ONLY"
-    ],
-    "target_candidate_profit_factor": 1.1,
-    "target_candidate_win_rate": 0.36,
-    "tuning_or_inference_when_unavailable": false,
-    "unavailable_conditions": [
-      "required population",
-      "ordering",
-      "valuation",
-      "sample integrity"
-    ],
-    "unavailable_integrity_result": "INCONCLUSIVE",
-    "win_rate": "COUNT_NET_R_STRICTLY_GREATER_THAN_ZERO_DIVIDED_BY_ACTUAL_CANDIDATE_CLOSED_TRADE_COUNT_ZERO_R_IS_NON_WIN"
+    "pair_settlement_utc": "LATEST_TERMINAL_SETTLEMENT_UTC_OF_ACTUAL_TRADE_MEMBERS_INCLUDING_ZERO_R",
+    "timebox_mtm_close": {
+      "applies_to_every_position_still_open_at_exclusive_end": true,
+      "deterministic": true,
+      "included_in": [
+        "actual_trade_count",
+        "actual_trade_mean_r",
+        "expectancy",
+        "profit_factor",
+        "win_rate",
+        "maximum_drawdown",
+        "minimum_sample_gates"
+      ],
+      "is_terminal_settled_actual_trade": true,
+      "record_type": "TIMEBOX_MTM_CLOSE",
+      "uses_frozen_cost_and_valuation_model": true,
+      "valuation_candle": "FINAL_ELIGIBLE_COMPLETED_M15_CANDLE_BEFORE_EXCLUSIVE_END"
+    }
   },
   "schema_version": "MSS_SPRINT93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_PREREGISTRATION_V2",
-  "source_git_blob_sha256": {
-    "c2": "803678dfb2959616c03c5d2688ab16627ab9f3cb5adbb4edbd2a943063159d35",
-    "g5": "988c3b6b27959eab8556b90dbb3a6caf28d1ca446649af38c554dd70c493e96b",
-    "h6": "ce67778431af1cb33dd7e1d882a82a3e75d0c1f3e41c173b3e7550187d14a3c6"
-  },
   "source_governance": {
     "development_reuse": false,
     "historical_backfill": false,
@@ -141,9 +322,180 @@
     "validation_reuse": false
   },
   "strategy_component_identity": {
-    "baseline_commit": "0e643da",
-    "identity_type": "FROZEN_STRATEGY_COMPONENT_IDENTITY_NOT_COMPLETE_PAIRED_EXECUTION_IDENTITY",
+    "baseline_commit": "0e643dad70f94abbd0cad13af0291af2c1631004",
+    "identity_type": "FROZEN_ORDERED_BASELINE_GIT_BLOB_SHA256_IDENTITY",
     "must_be_extended_by_write_once_activation_manifest": true,
+    "ordered_path_sha256": [
+      {
+        "path": "src/mss/__init__.py",
+        "sha256": "b3a65c460b1862136f011b1f5d8299b915af4c0bca3149cb3a8252f0b34d53bd"
+      },
+      {
+        "path": "src/mss/analysis/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "src/mss/analysis/bos_detector.py",
+        "sha256": "72f01833b1f5bff21984c9d4bba10cbcd94db395681db3fe43cb8a3617162676"
+      },
+      {
+        "path": "src/mss/analysis/choch_detector.py",
+        "sha256": "02a71e36ba507e9b70971022e80cb037ce5a3ff9fec4c569ddb93eb2a6e76eb9"
+      },
+      {
+        "path": "src/mss/analysis/confluence_engine.py",
+        "sha256": "ca075db045bd991073532ee1868b2cadbec4fde086d4674423ae5456d03b9609"
+      },
+      {
+        "path": "src/mss/analysis/confluence_gated_smart_money_pipeline.py",
+        "sha256": "f984643cfb63b2859c58b38aaf7a4a0fbdfffa80612cf393a14a3553504ef4df"
+      },
+      {
+        "path": "src/mss/analysis/displacement_detector.py",
+        "sha256": "c0384c5a548f4716e3314a16c0876ae5e2bba48af79225a89d6bfca5f98e0a71"
+      },
+      {
+        "path": "src/mss/analysis/frozen_shadow_strategy_adapter.py",
+        "sha256": "0cc57ad0e1b81eec6c58108ce4a97395b7885226159f4354a9359943f6ae319f"
+      },
+      {
+        "path": "src/mss/analysis/fvg_detector.py",
+        "sha256": "d75608efdaa82c75a6b6b9b0f517818e2358fc00524a099da9b84a8b880a2b38"
+      },
+      {
+        "path": "src/mss/analysis/fvg_validator.py",
+        "sha256": "ac039778cd297dd7385717ec809c12017e259b67b458cf16b1dbb13666c08c1d"
+      },
+      {
+        "path": "src/mss/analysis/liquidity_detector.py",
+        "sha256": "541825930858d532fb5f0b515b7f2d69067ef9373d4ad5d5a1399d7275629e9b"
+      },
+      {
+        "path": "src/mss/analysis/order_block_detector.py",
+        "sha256": "2c690199cffdc8e55c97ebf825b903d569d6283c2f3115ee33d99e6148f39c82"
+      },
+      {
+        "path": "src/mss/analysis/premium_discount_engine.py",
+        "sha256": "e39c8eab4c58b41bead0ad462ce5ff610710af2c5c84365862848a638d65cd23"
+      },
+      {
+        "path": "src/mss/analysis/real_swing_engine.py",
+        "sha256": "4439a6b264196cb790f26767ab7af934a5a96008d700f74662a8eb2b2ea5b8c6"
+      },
+      {
+        "path": "src/mss/analysis/risk_engine.py",
+        "sha256": "270557b72b004441f439dde4b009cb303a15f9f8491b6d9b5f5588c9fedf87d4"
+      },
+      {
+        "path": "src/mss/analysis/setup_scoring_engine.py",
+        "sha256": "0fcbc17e68f0c4d1ea4c72ae494a0b3ab6553f45f62ad72a1457fe8066a3f69a"
+      },
+      {
+        "path": "src/mss/analysis/shadow_risk_calculator.py",
+        "sha256": "7b684367217f3cab31c138287b6c79a1727d7e5dfe10f56b6b644137fe025b79"
+      },
+      {
+        "path": "src/mss/analysis/shadow_trade_engine.py",
+        "sha256": "b96a9bb797d1d4ab9ce9ae5cd68e81a1eca510c342cf290bb6060785f0b98a3c"
+      },
+      {
+        "path": "src/mss/analysis/shadow_trade_journal.py",
+        "sha256": "f366f8744981f8ecaa339fee70f4dfeae36fc70a592e223c37db0a6f8cf39b08"
+      },
+      {
+        "path": "src/mss/analysis/shadow_trade_valuation.py",
+        "sha256": "a8d3359e051c32a5eb515fa75468c823237813349935eebfe410fbf214f100d3"
+      },
+      {
+        "path": "src/mss/analysis/smart_money_pipeline.py",
+        "sha256": "704ecd5bd41073821e4697142af649a21016a7e9dfdfd0072c18d80173bab4c0"
+      },
+      {
+        "path": "src/mss/analysis/structure_engine.py",
+        "sha256": "ba854bc379dd63060aee7fb7f8a67e7034f57b7413074a9233527ba5a5ccc272"
+      },
+      {
+        "path": "src/mss/analysis/structure_state.py",
+        "sha256": "166424b9f013678bbf8f4bd8a162b508de543e07b9a17afd19b3862e1610557d"
+      },
+      {
+        "path": "src/mss/analysis/swing_detector.py",
+        "sha256": "6a68f9c89b8a5dbf6102c71538cc8d30757b59034762c94b03f3f4e0ce0d1d9f"
+      },
+      {
+        "path": "src/mss/analysis/swing_filter.py",
+        "sha256": "c06d828d9ddbb6b8f5efb717408876eaca1f394477ef5223624f5ddd4c265e41"
+      },
+      {
+        "path": "src/mss/analysis/swing_validator.py",
+        "sha256": "03b365e86b5c7062933178cb31b1db102f093ad1fed1dab02a6fc7bf8ce57133"
+      },
+      {
+        "path": "src/mss/analysis/virtual_position_engine.py",
+        "sha256": "445681972752a57d92a3c3d1670e5b7ca53f708444b839f8beeb77b03ba0e26b"
+      },
+      {
+        "path": "src/mss/config/settings.py",
+        "sha256": "e3e81da35a97d94c8174bc4c0922d0ccc46edfb334faecf409994d9d930f26b1"
+      },
+      {
+        "path": "src/mss/domain/analysis_result.py",
+        "sha256": "d07028f6fdea9d05aa89f18ec1df72edab277549bb0f1ab5954ee2d902c619c2"
+      },
+      {
+        "path": "src/mss/domain/candle.py",
+        "sha256": "3d20c425c5638a54e680a69dd9504e736c675ce9e4cd54b2656e239481893f12"
+      },
+      {
+        "path": "src/mss/domain/displacement.py",
+        "sha256": "8c2c0ef84b79e66d643deda8848f495049d3764f3d6c5893a2897c4ef06e8ba3"
+      },
+      {
+        "path": "src/mss/domain/fair_value_gap.py",
+        "sha256": "c4eef0bcdf0f961bd677a17abf6cecee9769d404d9b4eaa73643a54154b234b5"
+      },
+      {
+        "path": "src/mss/domain/liquidity.py",
+        "sha256": "0f36e936b435cd5af3c352efd50e8e760d63561f095f2a83fec0037a3b3822c4"
+      },
+      {
+        "path": "src/mss/domain/market_context.py",
+        "sha256": "1235c434e7fe3fc29b0c4d084a201c0052182f09a5d681477be0c0e4191bbe34"
+      },
+      {
+        "path": "src/mss/domain/order_block.py",
+        "sha256": "be0c4ba835d544a0e76345d0e0a2f31d3743dcb507e55f8406c22aca4ea889e5"
+      },
+      {
+        "path": "src/mss/domain/pipeline_result.py",
+        "sha256": "e1b3c4d324dec5887d984d9d25ef13d51eeb7cf2e49734aa5e8ba897e74fcb23"
+      },
+      {
+        "path": "src/mss/domain/premium_discount.py",
+        "sha256": "43d6e7daa8e6a377a061c37c1c8c69b797904d9ce6b556f02c9e1a6bdb71348e"
+      },
+      {
+        "path": "src/mss/domain/risk_profile.py",
+        "sha256": "89b97dec6cec6dbf78b94720723acc08edcf6daf6c03877ba26153a56bee8bb9"
+      },
+      {
+        "path": "src/mss/domain/setup_score.py",
+        "sha256": "5d9587e45aad7ce4a80f27e0f9c99ad76961b3c3848020ae55c980e703038104"
+      },
+      {
+        "path": "src/mss/domain/swing_point.py",
+        "sha256": "fa28955a2c1d06fef5e4f842f625ecaee62ff2c825f20a406bf17ede6aca2f96"
+      },
+      {
+        "path": "src/mss/domain/trade_setup.py",
+        "sha256": "06f345c7a15b8b44b2cd6b8b93538b061c0004c2b0d7dfe8e23ed70746c2bd84"
+      },
+      {
+        "path": "src/mss/domain/trade_signal.py",
+        "sha256": "faf2901f4a738e053fd58a56ba9ae8419af48b7fb154372ced5e16dba985782f"
+      }
+    ],
+    "package_initializer_file_count": 2,
     "paired_executor_present": false,
     "roots": [
       "src/mss/analysis/confluence_engine.py",
@@ -160,48 +512,7 @@
       "src/mss/domain/risk_profile.py",
       "src/mss/domain/trade_signal.py"
     ],
-    "transitive_internal_mss_path_sha256": {
-      "src/mss/analysis/bos_detector.py": "72f01833b1f5bff21984c9d4bba10cbcd94db395681db3fe43cb8a3617162676",
-      "src/mss/analysis/choch_detector.py": "02a71e36ba507e9b70971022e80cb037ce5a3ff9fec4c569ddb93eb2a6e76eb9",
-      "src/mss/analysis/confluence_engine.py": "ca075db045bd991073532ee1868b2cadbec4fde086d4674423ae5456d03b9609",
-      "src/mss/analysis/confluence_gated_smart_money_pipeline.py": "f984643cfb63b2859c58b38aaf7a4a0fbdfffa80612cf393a14a3553504ef4df",
-      "src/mss/analysis/displacement_detector.py": "c0384c5a548f4716e3314a16c0876ae5e2bba48af79225a89d6bfca5f98e0a71",
-      "src/mss/analysis/frozen_shadow_strategy_adapter.py": "0cc57ad0e1b81eec6c58108ce4a97395b7885226159f4354a9359943f6ae319f",
-      "src/mss/analysis/fvg_detector.py": "d75608efdaa82c75a6b6b9b0f517818e2358fc00524a099da9b84a8b880a2b38",
-      "src/mss/analysis/fvg_validator.py": "ac039778cd297dd7385717ec809c12017e259b67b458cf16b1dbb13666c08c1d",
-      "src/mss/analysis/liquidity_detector.py": "541825930858d532fb5f0b515b7f2d69067ef9373d4ad5d5a1399d7275629e9b",
-      "src/mss/analysis/order_block_detector.py": "2c690199cffdc8e55c97ebf825b903d569d6283c2f3115ee33d99e6148f39c82",
-      "src/mss/analysis/premium_discount_engine.py": "e39c8eab4c58b41bead0ad462ce5ff610710af2c5c84365862848a638d65cd23",
-      "src/mss/analysis/real_swing_engine.py": "4439a6b264196cb790f26767ab7af934a5a96008d700f74662a8eb2b2ea5b8c6",
-      "src/mss/analysis/risk_engine.py": "270557b72b004441f439dde4b009cb303a15f9f8491b6d9b5f5588c9fedf87d4",
-      "src/mss/analysis/setup_scoring_engine.py": "0fcbc17e68f0c4d1ea4c72ae494a0b3ab6553f45f62ad72a1457fe8066a3f69a",
-      "src/mss/analysis/shadow_risk_calculator.py": "7b684367217f3cab31c138287b6c79a1727d7e5dfe10f56b6b644137fe025b79",
-      "src/mss/analysis/shadow_trade_engine.py": "b96a9bb797d1d4ab9ce9ae5cd68e81a1eca510c342cf290bb6060785f0b98a3c",
-      "src/mss/analysis/shadow_trade_journal.py": "f366f8744981f8ecaa339fee70f4dfeae36fc70a592e223c37db0a6f8cf39b08",
-      "src/mss/analysis/shadow_trade_valuation.py": "a8d3359e051c32a5eb515fa75468c823237813349935eebfe410fbf214f100d3",
-      "src/mss/analysis/smart_money_pipeline.py": "704ecd5bd41073821e4697142af649a21016a7e9dfdfd0072c18d80173bab4c0",
-      "src/mss/analysis/structure_engine.py": "ba854bc379dd63060aee7fb7f8a67e7034f57b7413074a9233527ba5a5ccc272",
-      "src/mss/analysis/structure_state.py": "166424b9f013678bbf8f4bd8a162b508de543e07b9a17afd19b3862e1610557d",
-      "src/mss/analysis/swing_detector.py": "6a68f9c89b8a5dbf6102c71538cc8d30757b59034762c94b03f3f4e0ce0d1d9f",
-      "src/mss/analysis/swing_filter.py": "c06d828d9ddbb6b8f5efb717408876eaca1f394477ef5223624f5ddd4c265e41",
-      "src/mss/analysis/swing_validator.py": "03b365e86b5c7062933178cb31b1db102f093ad1fed1dab02a6fc7bf8ce57133",
-      "src/mss/analysis/virtual_position_engine.py": "445681972752a57d92a3c3d1670e5b7ca53f708444b839f8beeb77b03ba0e26b",
-      "src/mss/config/settings.py": "e3e81da35a97d94c8174bc4c0922d0ccc46edfb334faecf409994d9d930f26b1",
-      "src/mss/domain/analysis_result.py": "d07028f6fdea9d05aa89f18ec1df72edab277549bb0f1ab5954ee2d902c619c2",
-      "src/mss/domain/candle.py": "3d20c425c5638a54e680a69dd9504e736c675ce9e4cd54b2656e239481893f12",
-      "src/mss/domain/displacement.py": "8c2c0ef84b79e66d643deda8848f495049d3764f3d6c5893a2897c4ef06e8ba3",
-      "src/mss/domain/fair_value_gap.py": "c4eef0bcdf0f961bd677a17abf6cecee9769d404d9b4eaa73643a54154b234b5",
-      "src/mss/domain/liquidity.py": "0f36e936b435cd5af3c352efd50e8e760d63561f095f2a83fec0037a3b3822c4",
-      "src/mss/domain/market_context.py": "1235c434e7fe3fc29b0c4d084a201c0052182f09a5d681477be0c0e4191bbe34",
-      "src/mss/domain/order_block.py": "be0c4ba835d544a0e76345d0e0a2f31d3743dcb507e55f8406c22aca4ea889e5",
-      "src/mss/domain/pipeline_result.py": "e1b3c4d324dec5887d984d9d25ef13d51eeb7cf2e49734aa5e8ba897e74fcb23",
-      "src/mss/domain/premium_discount.py": "43d6e7daa8e6a377a061c37c1c8c69b797904d9ce6b556f02c9e1a6bdb71348e",
-      "src/mss/domain/risk_profile.py": "89b97dec6cec6dbf78b94720723acc08edcf6daf6c03877ba26153a56bee8bb9",
-      "src/mss/domain/setup_score.py": "5d9587e45aad7ce4a80f27e0f9c99ad76961b3c3848020ae55c980e703038104",
-      "src/mss/domain/swing_point.py": "fa28955a2c1d06fef5e4f842f625ecaee62ff2c825f20a406bf17ede6aca2f96",
-      "src/mss/domain/trade_setup.py": "06f345c7a15b8b44b2cd6b8b93538b061c0004c2b0d7dfe8e23ed70746c2bd84",
-      "src/mss/domain/trade_signal.py": "faf2901f4a738e053fd58a56ba9ae8419af48b7fb154372ced5e16dba985782f"
-    }
+    "transitive_closure_file_count": 40
   },
   "v1_supersession": {
     "candles_at_or_before_invalid_v1_boundary_eligible": false,
