@@ -738,6 +738,27 @@ def test_time_authority_is_rebuilt_from_raw_observations(tmp_path):
     assert baseline.calls == candidate.calls == 0
 
 
+def test_late_live_observation_is_rejected_before_strategy_or_journal(tmp_path):
+    value, baseline, candidate = collector(tmp_path)
+    signal_epoch = utc_epoch(START_UTC)
+    current_bar_epoch = signal_epoch + A.TIMEFRAME_SECONDS
+    authority = time_authority(
+        current_bar_epoch=current_bar_epoch,
+        tick_epoch=(
+            current_bar_epoch + A.MAX_ENTRY_OBSERVATION_DELAY_SECONDS + 1
+        ),
+    )
+    with pytest.raises(RuntimeError, match="next-candle entry window"):
+        value.collect_decision(
+            snapshot=live_snapshot(
+                signal_epoch=signal_epoch,
+                authority=authority,
+            )
+        )
+    assert baseline.calls == candidate.calls == 0
+    assert not (tmp_path / "paired.jsonl").exists()
+
+
 def test_frozen_symbol_and_event_mappings_reject_runtime_mutation():
     with pytest.raises(TypeError):
         A.SYMBOL_MAP["BTCUSD"] = "FORGED"
@@ -831,6 +852,118 @@ def test_timebox_accepts_first_tick_after_boundary(monkeypatch, tmp_path):
     assert result.closed_position.close_broker_epoch == utc_epoch(END_UTC)
 
 
+def test_timebox_accepts_authority_from_a_later_post_boundary_bar(
+    monkeypatch, tmp_path
+):
+    value, _baseline, _candidate = collector(tmp_path)
+    position = VirtualPositionEngine.open_position(
+        position_id="base-later-bar",
+        symbol="BITCOIN",
+        direction="BUY",
+        volume=0.01,
+        entry_price=100.0,
+        stop_loss=90.0,
+        take_profit=120.0,
+        broker_epoch=utc_epoch(START_UTC) + 900,
+    )
+    monkeypatch.setattr(
+        A.ShadowTradeValuation,
+        "calculate",
+        lambda **_kwargs: SimpleNamespace(
+            valid=True,
+            reason="VALUED",
+            pnl_account_currency=1.0,
+            real_order_send_allowed=False,
+            order_send_called=False,
+            order_check_called=False,
+        ),
+    )
+    final_open = (
+        datetime.fromisoformat(END_UTC[:-1] + "+00:00")
+        - timedelta(minutes=15)
+    ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    result = value.timebox_close(
+        position=position,
+        final_completed_candle_open_utc=final_open,
+        close_broker_epoch=utc_epoch(END_UTC),
+        bid=105.0,
+        ask=105.5,
+        time_authority=time_authority(
+            current_bar_epoch=utc_epoch(END_UTC) + A.TIMEFRAME_SECONDS,
+            tick_epoch=utc_epoch(END_UTC) + A.TIMEFRAME_SECONDS + 1,
+        ),
+    )
+    assert result.closed_position.close_broker_epoch == utc_epoch(END_UTC)
+
+
+def test_journaled_timebox_accepts_later_bar_but_closes_at_exact_boundary(
+    monkeypatch, tmp_path
+):
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    value.record_entry_outcome(
+        pair_key=decision.pair_key,
+        baseline=A.BranchEntryOutcome(
+            True, "OPEN", decision.baseline_position_id
+        ),
+        candidate=A.BranchEntryOutcome(False, "REJECTED_CANDIDATE"),
+        entry_broker_epoch=utc_epoch(START_UTC) + A.TIMEFRAME_SECONDS,
+        time_authority=time_authority(),
+    )
+    A.ShadowTradeJournal.append_event(
+        path=value.trade_journal_path(decision.pair_key, "baseline"),
+        event_type="POSITION_OPENED",
+        position_id=decision.baseline_position_id,
+        broker_epoch=utc_epoch(START_UTC) + A.TIMEFRAME_SECONDS,
+        payload={
+            "symbol": "BITCOIN",
+            "direction": "BUY",
+            "volume": 0.01,
+            "entry_price": 100.0,
+            "stop_loss": 90.0,
+            "take_profit": 120.0,
+            "initial_risk_price": 10.0,
+        },
+    )
+    monkeypatch.setattr(
+        A.ShadowTradeValuation,
+        "calculate",
+        lambda **_kwargs: SimpleNamespace(
+            valid=True,
+            reason="VALUED",
+            pnl_account_currency=1.0,
+            real_order_send_allowed=False,
+            order_send_called=False,
+            order_check_called=False,
+        ),
+    )
+    close_epoch = utc_epoch(END_UTC)
+    result = value.timebox_close_virtual_trade(
+        pair_key=decision.pair_key,
+        branch="baseline",
+        final_completed_candle={
+            "time": close_epoch - A.TIMEFRAME_SECONDS,
+            "open": 104.0,
+            "high": 106.0,
+            "low": 103.0,
+            "close": 105.0,
+            "tick_volume": 10,
+            "spread": 2,
+            "real_volume": 0,
+        },
+        point=0.01,
+        time_authority=time_authority(
+            current_bar_epoch=close_epoch + A.TIMEFRAME_SECONDS,
+            tick_epoch=close_epoch + A.TIMEFRAME_SECONDS + 1,
+        ),
+    )
+    assert result.closed_position.close_broker_epoch == close_epoch
+    terminal_input = value._event_for(
+        decision.pair_key, "terminal_input_baseline"
+    )
+    assert terminal_input["broker_epoch"] == close_epoch
+
+
 def test_ordinary_virtual_update_is_blocked_at_exclusive_end(tmp_path):
     value, _baseline, _candidate = collector(tmp_path)
     decision = collect_start(value)
@@ -899,6 +1032,32 @@ def test_runner_has_no_file_or_backdated_forward_inputs():
             "collect-decision"
         ]._actions
     }.isdisjoint({"rates_snapshot", "time_authority", "current_bar_epoch"})
+
+
+def test_runner_resumes_frozen_pending_entry_before_live_recapture(
+    monkeypatch, tmp_path, capsys
+):
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    assert value.recover().pending_entry_pair_keys == (decision.pair_key,)
+    monkeypatch.setattr(R, "verified_context", lambda _args: value.activation)
+    monkeypatch.setattr(
+        R,
+        "PairedForwardEvidenceCollector",
+        lambda **_kwargs: value,
+    )
+
+    def forbidden_capture(*_args, **_kwargs):
+        raise AssertionError("live MT5 was recaptured before pending recovery")
+
+    monkeypatch.setattr(R, "_capture_for_collector", forbidden_capture)
+    R.collect_decision(SimpleNamespace(canonical_symbol="BTCUSD"))
+    output = json.loads(capsys.readouterr().out)
+    assert output["result"] == "SPRINT93_2B_PENDING_ENTRY_RECOVERED"
+    assert output["pair_key"] == list(decision.pair_key)
+    assert output["entry_source"] == "FROZEN_DECISION_EVIDENCE"
+    assert output["live_mt5_recaptured"] is False
+    assert value.recover().pending_entry_pair_keys == ()
 
 
 def test_runner_normalizes_authoritative_github_pr_metadata(monkeypatch):

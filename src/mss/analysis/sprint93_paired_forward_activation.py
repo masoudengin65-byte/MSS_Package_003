@@ -21,6 +21,9 @@ import subprocess
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from mss.analysis.causal_next_candle_entry_watcher import (
+    CausalNextCandleEntryWatcher,
+)
 from mss.analysis.confluence_gated_smart_money_pipeline import (
     ConfluenceGatedSmartMoneyPipeline,
 )
@@ -50,6 +53,9 @@ VERSION = "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V1"
 LIVE_ACQUISITION_VERSION = "MSS_SPRINT93_2B_LIVE_MT5_ACQUISITION_V1"
 TIMEFRAME = "M15"
 TIMEFRAME_SECONDS = 15 * 60
+MAX_ENTRY_OBSERVATION_DELAY_SECONDS = (
+    CausalNextCandleEntryWatcher.MAX_ENTRY_OBSERVATION_DELAY_SECONDS
+)
 LIVE_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
 DEFAULT_MANIFEST_RELATIVE_PATH = (
     "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest.json"
@@ -816,6 +822,7 @@ def _time_authority_offset(
     time_authority: Mapping[str, object],
     *,
     expected_current_bar_epoch: int | None = None,
+    minimum_current_bar_epoch: int | None = None,
     expected_tick_epoch: int | None = None,
     minimum_tick_epoch: int | None = None,
     require_current: bool = True,
@@ -901,6 +908,11 @@ def _time_authority_offset(
         and current_bar_epoch != int(expected_current_bar_epoch)
     ):
         raise RuntimeError("time authority is not bound to the supplied current bar")
+    if (
+        minimum_current_bar_epoch is not None
+        and current_bar_epoch < int(minimum_current_bar_epoch)
+    ):
+        raise RuntimeError("time authority current bar precedes the required boundary")
     if expected_tick_epoch is not None and tick_epoch != int(expected_tick_epoch):
         raise RuntimeError("time authority is not bound to the supplied settlement tick")
     if minimum_tick_epoch is not None and tick_epoch < int(minimum_tick_epoch):
@@ -1331,6 +1343,40 @@ class PairedForwardEvidenceCollector:
             settled_pair_keys=tuple(sorted(settlements)),
         )
 
+    def resume_pending_entry(
+        self, *, canonical_symbol: str
+    ) -> PairedEntryResult | None:
+        """Resume the oldest frozen decision without acquiring new market data."""
+
+        if canonical_symbol not in SYMBOL_MAP:
+            raise RuntimeError("canonical symbol is outside the frozen pair universe")
+        pending = tuple(
+            pair_key
+            for pair_key in self.recover().pending_entry_pair_keys
+            if pair_key[0] == canonical_symbol
+        )
+        if not pending:
+            return None
+        pair_key = min(pending, key=lambda item: item[1])
+        decision_payload = self._event_for(pair_key, "decision")["payload"]
+        entry_context = decision_payload.get("frozen_entry_context")
+        if not isinstance(entry_context, Mapping):
+            raise RuntimeError("pending decision lacks frozen entry context")
+        try:
+            balance = float(entry_context["balance"])
+            point = float(entry_context["point"])
+            time_authority = decision_payload["global_time_authority"]
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RuntimeError("pending decision entry context is malformed") from exc
+        if not isinstance(time_authority, Mapping):
+            raise RuntimeError("pending decision time authority is malformed")
+        return self.open_virtual_entries(
+            pair_key=pair_key,
+            balance=balance,
+            point=point,
+            time_authority=time_authority,
+        )
+
     def _event_for(self, pair_key: tuple[str, str], phase: str) -> dict[str, Any]:
         event = self._phase_events().get((pair_key, phase))
         if event is None:
@@ -1454,6 +1500,16 @@ class PairedForwardEvidenceCollector:
             expected_current_bar_epoch=snapshot.current_bar_epoch,
             expected_tick_epoch=snapshot.tick_epoch,
         )
+        entry_observation_delay = snapshot.tick_epoch - snapshot.current_bar_epoch
+        if not (
+            0
+            <= entry_observation_delay
+            <= MAX_ENTRY_OBSERVATION_DELAY_SECONDS
+        ):
+            raise RuntimeError(
+                "live decision observation is outside the frozen next-candle "
+                "entry window"
+            )
         decision_epoch = (
             snapshot.current_bar_epoch - TIMEFRAME_SECONDS - offset
         )
@@ -1467,6 +1523,8 @@ class PairedForwardEvidenceCollector:
             rates=snapshot.rates,
             time_authority=time_authority,
             live_mt5_acquisition=provenance,
+            balance=snapshot.balance,
+            point=snapshot.point,
         )
 
     def _collect_decision_from_verified_live_data(
@@ -1478,6 +1536,8 @@ class PairedForwardEvidenceCollector:
         rates: object,
         time_authority: Mapping[str, object],
         live_mt5_acquisition: Mapping[str, object],
+        balance: float,
+        point: float,
     ) -> PairedDecisionResult:
         if canonical_symbol not in SYMBOL_MAP:
             raise RuntimeError("canonical symbol is outside the frozen pair universe")
@@ -1498,6 +1558,11 @@ class PairedForwardEvidenceCollector:
         )
         if current_utc_epoch >= exclusive_end_epoch:
             raise RuntimeError("new entries are prohibited at or after the exclusive end")
+        if not all(
+            math.isfinite(float(value)) and float(value) > 0
+            for value in (balance, point)
+        ):
+            raise RuntimeError("positive finite balance and point are required")
 
         frozen_rates = _freeze_rates(
             rates, current_bar_epoch=int(current_bar_epoch)
@@ -1604,6 +1669,10 @@ class PairedForwardEvidenceCollector:
             "input_snapshot": snapshot_records,
             "global_time_authority": dict(time_authority),
             "live_mt5_acquisition": dict(live_mt5_acquisition),
+            "frozen_entry_context": {
+                "balance": float(balance),
+                "point": float(point),
+            },
             "collected_at_utc": _render_utc_z(
                 datetime.fromtimestamp(
                     float(time_authority["observation"]["utc_midpoint_epoch"]),
@@ -2138,11 +2207,20 @@ class PairedForwardEvidenceCollector:
         broker_epoch = int(close_event["broker_epoch"])
         terminal_input = terminal_input_event["payload"]
         authority = terminal_input["global_time_authority"]
-        offset = _time_authority_offset(
-            authority,
-            expected_tick_epoch=broker_epoch,
-            require_current=False,
-        )
+        timebox = close_payload.get("exit_reason") == "TIMEBOX_MTM_CLOSE"
+        if timebox:
+            offset = _time_authority_offset(
+                authority,
+                minimum_current_bar_epoch=broker_epoch,
+                minimum_tick_epoch=broker_epoch,
+                require_current=False,
+            )
+        else:
+            offset = _time_authority_offset(
+                authority,
+                expected_tick_epoch=broker_epoch,
+                require_current=False,
+            )
         settlement_utc = _render_utc_z(
             datetime.fromtimestamp(broker_epoch - offset, timezone.utc)
         )
@@ -2151,7 +2229,6 @@ class PairedForwardEvidenceCollector:
             raise RuntimeError(f"{branch} terminal net R is non-finite")
         if net_r == 0.0:
             net_r = 0.0
-        timebox = close_payload.get("exit_reason") == "TIMEBOX_MTM_CLOSE"
         valuation_snapshot_sha256 = terminal_input.get(
             "valuation_snapshot_sha256"
         )
@@ -2563,7 +2640,7 @@ class PairedForwardEvidenceCollector:
 
         offset = _time_authority_offset(
             time_authority,
-            expected_current_bar_epoch=int(close_broker_epoch),
+            minimum_current_bar_epoch=int(close_broker_epoch),
             minimum_tick_epoch=int(close_broker_epoch),
         )
         if int(close_broker_epoch) - offset != int(end.timestamp()):
@@ -2711,7 +2788,7 @@ class PairedForwardEvidenceCollector:
                 time_authority = frozen_input["global_time_authority"]
                 _time_authority_offset(
                     time_authority,
-                    expected_current_bar_epoch=close_broker_epoch,
+                    minimum_current_bar_epoch=close_broker_epoch,
                     minimum_tick_epoch=close_broker_epoch,
                     require_current=False,
                 )
@@ -2730,7 +2807,7 @@ class PairedForwardEvidenceCollector:
                 close_broker_epoch = int(end.timestamp()) + offset
                 _time_authority_offset(
                     time_authority,
-                    expected_current_bar_epoch=close_broker_epoch,
+                    minimum_current_bar_epoch=close_broker_epoch,
                     minimum_tick_epoch=close_broker_epoch,
                 )
                 expected_final_broker_epoch = (

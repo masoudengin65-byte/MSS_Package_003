@@ -329,6 +329,31 @@ def collect_decision(args: argparse.Namespace) -> None:
         activation=context,
         journal_path=DEFAULT_EVIDENCE_JOURNAL,
     )
+    resumed = collector.resume_pending_entry(
+        canonical_symbol=args.canonical_symbol
+    )
+    if resumed is not None:
+        print(
+            json.dumps(
+                {
+                    "result": "SPRINT93_2B_PENDING_ENTRY_RECOVERED",
+                    "pair_key": list(resumed.pair_key),
+                    "entry_appended": resumed.write.appended,
+                    "baseline_virtual_position_open": (
+                        resumed.baseline_position is not None
+                    ),
+                    "candidate_virtual_position_open": (
+                        resumed.candidate_position is not None
+                    ),
+                    "entry_source": "FROZEN_DECISION_EVIDENCE",
+                    "live_mt5_recaptured": False,
+                    "real_order_send_allowed": False,
+                    "production_execution_enabled": False,
+                },
+                sort_keys=True,
+            )
+        )
+        return
     snapshot = _capture_for_collector(collector, args.canonical_symbol)
     result = collector.collect_decision(snapshot=snapshot)
     entry = collector.open_virtual_entries(
