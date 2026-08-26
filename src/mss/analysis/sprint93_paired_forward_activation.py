@@ -18,6 +18,7 @@ from pathlib import Path
 import platform
 import re
 import subprocess
+from types import MappingProxyType
 from typing import Any, Mapping
 
 from mss.analysis.confluence_gated_smart_money_pipeline import (
@@ -46,8 +47,10 @@ from mss.analysis.virtual_position_engine import (
 
 
 VERSION = "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V1"
+LIVE_ACQUISITION_VERSION = "MSS_SPRINT93_2B_LIVE_MT5_ACQUISITION_V1"
 TIMEFRAME = "M15"
 TIMEFRAME_SECONDS = 15 * 60
+LIVE_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
 DEFAULT_MANIFEST_RELATIVE_PATH = (
     "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest.json"
 )
@@ -86,9 +89,9 @@ EXECUTION_ROOT_PATHS = tuple(
     )
 )
 
-SYMBOL_MAP = dict(Preregistration.SYMBOLS)
+SYMBOL_MAP = MappingProxyType(dict(Preregistration.SYMBOLS))
 FULL_GIT_SHA_RE = re.compile(r"[0-9a-f]{40}")
-EVIDENCE_EVENT_TYPES = {
+EVIDENCE_EVENT_TYPES = MappingProxyType({
     "decision": "SPRINT93_2B_PAIRED_DECISION",
     "entry_input": "SPRINT93_2B_PAIRED_ENTRY_INPUT",
     "entry": "SPRINT93_2B_PAIRED_ENTRY_OUTCOME",
@@ -97,8 +100,13 @@ EVIDENCE_EVENT_TYPES = {
     "terminal_candidate": "SPRINT93_2B_CANDIDATE_TERMINAL",
     "terminal_input_baseline": "SPRINT93_2B_BASELINE_TERMINAL_INPUT",
     "terminal_input_candidate": "SPRINT93_2B_CANDIDATE_TERMINAL_INPUT",
-}
+})
 _VERIFIED_ACTIVATION_MARKER = object()
+_LIVE_MT5_SNAPSHOT_MARKER = object()
+
+
+class _StaleTimeAuthority(RuntimeError):
+    """A structurally valid authority observation that is no longer current."""
 
 
 def _canonical_json_bytes(value: object) -> bytes:
@@ -323,11 +331,35 @@ def build_activation_manifest_after_merge(
 
     if no_forward_outcome_access_verified is not True:
         raise RuntimeError("external no-forward-outcome-access proof is required")
-    required_public = {"url", "number", "state", "mergedAt", "merge_commit_sha"}
+    required_public = {
+        "url",
+        "number",
+        "state",
+        "mergedAt",
+        "merge_commit_sha",
+        "repository_full_name",
+        "base_ref_name",
+        "head_sha",
+        "metadata_source",
+    }
     if not required_public.issubset(public_pr_metadata):
         raise RuntimeError("complete public activation PR metadata is required")
     if public_pr_metadata["state"] != "MERGED":
         raise RuntimeError("activation PR must already be merged")
+    repository_full_name = str(public_pr_metadata["repository_full_name"])
+    pr_number = public_pr_metadata["number"]
+    if (
+        public_pr_metadata["metadata_source"] != "GITHUB_AUTHORITATIVE"
+        or not repository_full_name
+        or public_pr_metadata["base_ref_name"] != "main"
+        or isinstance(pr_number, bool)
+        or not isinstance(pr_number, int)
+        or pr_number <= 0
+        or public_pr_metadata["url"]
+        != f"https://github.com/{repository_full_name}/pull/{pr_number}"
+    ):
+        raise RuntimeError("authoritative GitHub activation PR metadata is required")
+    _require_full_git_sha(public_pr_metadata["head_sha"], "activation PR head")
 
     merge_sha = _require_full_git_sha(
         public_pr_metadata["merge_commit_sha"], "activation merge commit"
@@ -605,6 +637,40 @@ class _FrozenRate:
 
 
 @dataclass(frozen=True)
+class LiveMt5Snapshot:
+    """One immutable, directly acquired, read-only MT5 observation."""
+
+    canonical_symbol: str
+    broker_symbol: str
+    current_bar_epoch: int
+    tick_epoch: int
+    bid: float
+    ask: float
+    balance: float
+    point: float
+    rates: tuple[_FrozenRate, ...]
+    time_authority_json: str
+    provenance_json: str
+    _verification_marker: object = None
+
+    def require_verified(self) -> None:
+        if self._verification_marker is not _LIVE_MT5_SNAPSHOT_MARKER:
+            raise RuntimeError("a directly verified live MT5 snapshot is required")
+
+    def time_authority(self) -> dict[str, object]:
+        value = json.loads(self.time_authority_json)
+        if not isinstance(value, dict):
+            raise RuntimeError("live MT5 time-authority snapshot is invalid")
+        return value
+
+    def provenance(self) -> dict[str, object]:
+        value = json.loads(self.provenance_json)
+        if not isinstance(value, dict):
+            raise RuntimeError("live MT5 acquisition provenance is invalid")
+        return value
+
+
+@dataclass(frozen=True)
 class EvidenceWriteResult:
     appended: bool
     event_id: str
@@ -751,6 +817,7 @@ def _time_authority_offset(
     *,
     expected_current_bar_epoch: int | None = None,
     expected_tick_epoch: int | None = None,
+    minimum_tick_epoch: int | None = None,
     require_current: bool = True,
 ) -> int:
     try:
@@ -770,6 +837,8 @@ def _time_authority_offset(
         bar_matches = observation["bar_matches_broker_clock"]
         bar_aligned = observation["bar_m15_aligned"]
         trading_allowed = fail_safe["trading_allowed_by_time_authority"]
+        offset_monitor = time_authority["offset_change_monitor"]
+        previous_offset = offset_monitor["previous_broker_offset_seconds"]
     except (KeyError, TypeError) as exc:
         raise RuntimeError("complete GlobalTimeAuthority evidence is required") from exc
     if time_authority.get("schema_version") != GlobalTimeAuthority.VERSION:
@@ -805,10 +874,24 @@ def _time_authority_offset(
         <= float(utc_after_tick)
     ):
         raise RuntimeError("time authority UTC observation order is invalid")
+
+    rebuilt = GlobalTimeAuthority().build(
+        utc_epoch_before_tick=float(utc_before_tick),
+        utc_epoch_after_tick=float(utc_after_tick),
+        tick_epoch=int(tick_epoch),
+        current_bar_epoch=int(current_bar_epoch),
+        previous_broker_offset_seconds=(
+            None if previous_offset is None else int(previous_offset)
+        ),
+    )
+    if _canonical_json_bytes(dict(time_authority)) != _canonical_json_bytes(rebuilt):
+        raise RuntimeError(
+            "GlobalTimeAuthority derived claims differ from the raw observations"
+        )
     if require_current and abs(_utc_now_epoch() - float(utc_midpoint)) > (
         GlobalTimeAuthority.MAX_TICK_RESIDUAL_SECONDS
     ):
-        raise RuntimeError("time authority evidence is stale")
+        raise _StaleTimeAuthority("time authority evidence is stale")
     if current_bar_epoch % TIMEFRAME_SECONDS:
         raise RuntimeError("time authority current bar is not M15 aligned")
     if current_bar_epoch != (tick_epoch // TIMEFRAME_SECONDS) * TIMEFRAME_SECONDS:
@@ -820,7 +903,189 @@ def _time_authority_offset(
         raise RuntimeError("time authority is not bound to the supplied current bar")
     if expected_tick_epoch is not None and tick_epoch != int(expected_tick_epoch):
         raise RuntimeError("time authority is not bound to the supplied settlement tick")
+    if minimum_tick_epoch is not None and tick_epoch < int(minimum_tick_epoch):
+        raise RuntimeError("time authority tick precedes the required boundary")
     return offset
+
+
+def _mt5_attribute(value: object, name: str, default: object = None) -> object:
+    if value is None:
+        return default
+    return getattr(value, name, default)
+
+
+def capture_live_mt5_snapshot(
+    canonical_symbol: str,
+    *,
+    previous_broker_offset_seconds: int | None = None,
+) -> LiveMt5Snapshot:
+    """Acquire rates, tick, account context, and time authority from live MT5.
+
+    Only read/selection APIs are used.  The returned marker cannot be produced by
+    the JSON CLI path that this replaces.
+    """
+
+    if canonical_symbol not in SYMBOL_MAP:
+        raise RuntimeError("canonical symbol is outside the frozen pair universe")
+    import MetaTrader5 as mt5
+
+    initialized = False
+    try:
+        initialized = bool(mt5.initialize(timeout=120_000))
+        if not initialized:
+            raise RuntimeError(f"MT5 initialization failed: {mt5.last_error()}")
+        terminal = mt5.terminal_info()
+        account = mt5.account_info()
+        if terminal is None or not bool(_mt5_attribute(terminal, "connected", False)):
+            raise RuntimeError("connected MT5 terminal evidence is required")
+        if account is None:
+            raise RuntimeError("MT5 account evidence is required")
+        account_server = _mt5_attribute(account, "server")
+        if not isinstance(account_server, str) or not account_server.strip():
+            raise RuntimeError("MT5 account server identity is required")
+
+        broker_symbol = SYMBOL_MAP[canonical_symbol]
+        if not bool(mt5.symbol_select(broker_symbol, True)):
+            raise RuntimeError(f"MT5 symbol selection failed: {broker_symbol}")
+        symbol_info = mt5.symbol_info(broker_symbol)
+        if symbol_info is None:
+            raise RuntimeError(f"MT5 symbol metadata unavailable: {broker_symbol}")
+
+        utc_before = _utc_now_epoch()
+        tick = mt5.symbol_info_tick(broker_symbol)
+        raw_rates = mt5.copy_rates_from_pos(
+            broker_symbol,
+            mt5.TIMEFRAME_M15,
+            0,
+            LIVE_RATE_COUNT,
+        )
+        utc_after = _utc_now_epoch()
+        if tick is None:
+            raise RuntimeError(f"MT5 live tick unavailable: {broker_symbol}")
+        if raw_rates is None or len(raw_rates) < LIVE_RATE_COUNT:
+            raise RuntimeError(
+                f"MT5 requires {LIVE_RATE_COUNT} live M15 rates for {broker_symbol}"
+            )
+
+        tick_epoch = int(_mt5_attribute(tick, "time", 0))
+        returned_epochs = tuple(int(_rate_value(row, "time")) for row in raw_rates)
+        current_bar_epoch = max(returned_epochs)
+        frozen_rates = _freeze_rates(
+            raw_rates,
+            current_bar_epoch=current_bar_epoch,
+        )
+        authority = GlobalTimeAuthority().build(
+            utc_epoch_before_tick=utc_before,
+            utc_epoch_after_tick=utc_after,
+            tick_epoch=tick_epoch,
+            current_bar_epoch=current_bar_epoch,
+            previous_broker_offset_seconds=previous_broker_offset_seconds,
+        )
+        _time_authority_offset(
+            authority,
+            expected_current_bar_epoch=current_bar_epoch,
+            expected_tick_epoch=tick_epoch,
+        )
+
+        bid = float(_mt5_attribute(tick, "bid", 0.0))
+        ask = float(_mt5_attribute(tick, "ask", 0.0))
+        point = float(_mt5_attribute(symbol_info, "point", 0.0))
+        balance = float(_mt5_attribute(account, "balance", 0.0))
+        if not all(
+            math.isfinite(value) and value > 0.0
+            for value in (bid, ask, point, balance)
+        ):
+            raise RuntimeError("MT5 live price, point, and balance must be positive")
+        if ask < bid:
+            raise RuntimeError("MT5 live ask cannot be below bid")
+
+        rate_records = [asdict(rate) for rate in frozen_rates]
+        provenance = {
+            "schema_version": LIVE_ACQUISITION_VERSION,
+            "source": "DIRECT_LIVE_MT5_READ_ONLY",
+            "canonical_symbol": canonical_symbol,
+            "broker_symbol": broker_symbol,
+            "timeframe": TIMEFRAME,
+            "tick_epoch": tick_epoch,
+            "tick_time_msc": _mt5_attribute(tick, "time_msc"),
+            "current_bar_epoch": current_bar_epoch,
+            "rate_record_count": len(rate_records),
+            "rates_sha256": _canonical_sha256(rate_records),
+            "time_authority_sha256": _canonical_sha256(authority),
+            "utc_epoch_before_acquisition": float(utc_before),
+            "utc_epoch_after_acquisition": float(utc_after),
+            "terminal_company": str(_mt5_attribute(terminal, "company", "")),
+            "terminal_name": str(_mt5_attribute(terminal, "name", "")),
+            "terminal_build": _mt5_attribute(terminal, "build"),
+            "account_server": account_server,
+            "account_company": str(_mt5_attribute(account, "company", "")),
+            "account_currency": str(_mt5_attribute(account, "currency", "")),
+            "acquisition_apis": ["symbol_info_tick", "copy_rates_from_pos"],
+            "read_only": True,
+            "real_order_send_allowed": False,
+            "order_send_called": False,
+            "order_check_called": False,
+        }
+        return LiveMt5Snapshot(
+            canonical_symbol=canonical_symbol,
+            broker_symbol=broker_symbol,
+            current_bar_epoch=current_bar_epoch,
+            tick_epoch=tick_epoch,
+            bid=bid,
+            ask=ask,
+            balance=balance,
+            point=point,
+            rates=frozen_rates,
+            time_authority_json=_canonical_json_bytes(authority).decode("utf-8"),
+            provenance_json=_canonical_json_bytes(provenance).decode("utf-8"),
+            _verification_marker=_LIVE_MT5_SNAPSHOT_MARKER,
+        )
+    finally:
+        if initialized:
+            mt5.shutdown()
+
+
+def _validate_live_mt5_snapshot(snapshot: LiveMt5Snapshot) -> tuple[
+    dict[str, object], dict[str, object]
+]:
+    if not isinstance(snapshot, LiveMt5Snapshot):
+        raise RuntimeError("a live MT5 snapshot is required")
+    snapshot.require_verified()
+    if snapshot.canonical_symbol not in SYMBOL_MAP:
+        raise RuntimeError("live snapshot canonical symbol is outside the universe")
+    if snapshot.broker_symbol != SYMBOL_MAP[snapshot.canonical_symbol]:
+        raise RuntimeError("live snapshot broker symbol differs from the frozen map")
+    authority = snapshot.time_authority()
+    provenance = snapshot.provenance()
+    _time_authority_offset(
+        authority,
+        expected_current_bar_epoch=snapshot.current_bar_epoch,
+        expected_tick_epoch=snapshot.tick_epoch,
+    )
+    rate_records = [asdict(rate) for rate in snapshot.rates]
+    expected = {
+        "schema_version": LIVE_ACQUISITION_VERSION,
+        "source": "DIRECT_LIVE_MT5_READ_ONLY",
+        "canonical_symbol": snapshot.canonical_symbol,
+        "broker_symbol": snapshot.broker_symbol,
+        "timeframe": TIMEFRAME,
+        "tick_epoch": snapshot.tick_epoch,
+        "current_bar_epoch": snapshot.current_bar_epoch,
+        "rate_record_count": len(rate_records),
+        "rates_sha256": _canonical_sha256(rate_records),
+        "time_authority_sha256": _canonical_sha256(authority),
+        "read_only": True,
+        "real_order_send_allowed": False,
+        "order_send_called": False,
+        "order_check_called": False,
+    }
+    if any(provenance.get(key) != value for key, value in expected.items()):
+        raise RuntimeError("live MT5 acquisition provenance is inconsistent")
+    if len(snapshot.rates) < LIVE_RATE_COUNT:
+        raise RuntimeError("live MT5 snapshot lacks the frozen completed-candle depth")
+    if snapshot.rates[-1].time != snapshot.current_bar_epoch:
+        raise RuntimeError("live MT5 snapshot does not end at its current bar")
+    return authority, provenance
 
 
 def _event_id(
@@ -872,6 +1137,14 @@ def _idempotency_material(event: Mapping[str, object]) -> dict[str, object]:
                 "utc_midpoint_epoch",
             ):
                 observation.pop(name, None)
+    acquisition = payload.get("live_mt5_acquisition")
+    if isinstance(acquisition, dict):
+        for name in (
+            "utc_epoch_before_acquisition",
+            "utc_epoch_after_acquisition",
+            "time_authority_sha256",
+        ):
+            acquisition.pop(name, None)
     return material
 
 
@@ -1171,11 +1444,40 @@ class PairedForwardEvidenceCollector:
     def collect_decision(
         self,
         *,
+        snapshot: LiveMt5Snapshot,
+    ) -> PairedDecisionResult:
+        """Collect one decision only from a directly verified live MT5 snapshot."""
+
+        time_authority, provenance = _validate_live_mt5_snapshot(snapshot)
+        offset = _time_authority_offset(
+            time_authority,
+            expected_current_bar_epoch=snapshot.current_bar_epoch,
+            expected_tick_epoch=snapshot.tick_epoch,
+        )
+        decision_epoch = (
+            snapshot.current_bar_epoch - TIMEFRAME_SECONDS - offset
+        )
+        decision_candle_open_utc = _render_utc_z(
+            datetime.fromtimestamp(decision_epoch, timezone.utc)
+        )
+        return self._collect_decision_from_verified_live_data(
+            canonical_symbol=snapshot.canonical_symbol,
+            decision_candle_open_utc=decision_candle_open_utc,
+            current_bar_epoch=snapshot.current_bar_epoch,
+            rates=snapshot.rates,
+            time_authority=time_authority,
+            live_mt5_acquisition=provenance,
+        )
+
+    def _collect_decision_from_verified_live_data(
+        self,
+        *,
         canonical_symbol: str,
         decision_candle_open_utc: str,
         current_bar_epoch: int,
         rates: object,
         time_authority: Mapping[str, object],
+        live_mt5_acquisition: Mapping[str, object],
     ) -> PairedDecisionResult:
         if canonical_symbol not in SYMBOL_MAP:
             raise RuntimeError("canonical symbol is outside the frozen pair universe")
@@ -1301,6 +1603,7 @@ class PairedForwardEvidenceCollector:
             "current_bar_broker_epoch": int(current_bar_epoch),
             "input_snapshot": snapshot_records,
             "global_time_authority": dict(time_authority),
+            "live_mt5_acquisition": dict(live_mt5_acquisition),
             "collected_at_utc": _render_utc_z(
                 datetime.fromtimestamp(
                     float(time_authority["observation"]["utc_midpoint_epoch"]),
@@ -1402,7 +1705,7 @@ class PairedForwardEvidenceCollector:
                         time_authority,
                         expected_current_bar_epoch=entry_broker_epoch,
                     )
-                except RuntimeError:
+                except _StaleTimeAuthority:
                     _time_authority_offset(
                         time_authority,
                         expected_current_bar_epoch=entry_broker_epoch,
@@ -1410,19 +1713,24 @@ class PairedForwardEvidenceCollector:
                     )
                     authority_current = False
             else:
+                _time_authority_offset(
+                    time_authority,
+                    expected_current_bar_epoch=entry_broker_epoch,
+                    require_current=False,
+                )
+                if _canonical_json_bytes(time_authority) != _canonical_json_bytes(
+                    decision_payload["global_time_authority"]
+                ):
+                    raise RuntimeError(
+                        "entry must use the same frozen time-authority snapshot as decision"
+                    )
                 try:
                     _time_authority_offset(
                         time_authority,
                         expected_current_bar_epoch=entry_broker_epoch,
                     )
-                    if _canonical_json_bytes(time_authority) != _canonical_json_bytes(
-                        decision_payload["global_time_authority"]
-                    ):
-                        raise RuntimeError(
-                            "entry must use the same frozen time-authority snapshot as decision"
-                        )
                     authority_current = True
-                except RuntimeError:
+                except _StaleTimeAuthority:
                     # The timely decision remains auditable, but no virtual entry may
                     # be reconstructed after its next-bar window has passed.
                     baseline_outcome = BranchEntryOutcome(
@@ -1937,15 +2245,23 @@ class PairedForwardEvidenceCollector:
                 bid = float(frozen["bid"])
                 ask = float(frozen["ask"])
                 time_authority = frozen["global_time_authority"]
-                _time_authority_offset(
+                offset = _time_authority_offset(
                     time_authority,
                     expected_tick_epoch=broker_epoch,
                     require_current=False,
                 )
             else:
-                _time_authority_offset(
+                offset = _time_authority_offset(
                     time_authority,
                     expected_tick_epoch=int(broker_epoch),
+                )
+            exclusive_end_epoch = _epoch_from_utc_z(
+                self.activation.exclusive_45_day_end_utc, "exclusive end"
+            )
+            if int(broker_epoch) - offset >= exclusive_end_epoch:
+                raise RuntimeError(
+                    "ordinary virtual updates are prohibited at or after the "
+                    "exclusive experiment end; use the frozen timebox close"
                 )
             position = self._recover_position(pair_key, branch)
             if closed_event is not None:
@@ -2248,7 +2564,7 @@ class PairedForwardEvidenceCollector:
         offset = _time_authority_offset(
             time_authority,
             expected_current_bar_epoch=int(close_broker_epoch),
-            expected_tick_epoch=int(close_broker_epoch),
+            minimum_tick_epoch=int(close_broker_epoch),
         )
         if int(close_broker_epoch) - offset != int(end.timestamp()):
             raise RuntimeError("timebox close must bind the exclusive UTC end")
@@ -2396,7 +2712,7 @@ class PairedForwardEvidenceCollector:
                 _time_authority_offset(
                     time_authority,
                     expected_current_bar_epoch=close_broker_epoch,
-                    expected_tick_epoch=close_broker_epoch,
+                    minimum_tick_epoch=close_broker_epoch,
                     require_current=False,
                 )
                 final_snapshot = dict(frozen_input["final_completed_candle"])
@@ -2415,7 +2731,7 @@ class PairedForwardEvidenceCollector:
                 _time_authority_offset(
                     time_authority,
                     expected_current_bar_epoch=close_broker_epoch,
-                    expected_tick_epoch=close_broker_epoch,
+                    minimum_tick_epoch=close_broker_epoch,
                 )
                 expected_final_broker_epoch = (
                     close_broker_epoch - TIMEFRAME_SECONDS

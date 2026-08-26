@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import FrozenInstanceError, dataclass
+from dataclasses import FrozenInstanceError, asdict, dataclass
 from datetime import datetime, timedelta, timezone
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -16,6 +17,14 @@ from mss.analysis.sprint93_confluence_gate_v2_preregistration import (
 from mss.analysis.virtual_position_engine import VirtualPositionEngine
 
 
+ROOT = Path(__file__).resolve().parents[1]
+RUNNER = ROOT / "integration_tests/run_sprint93_2b_paired_forward_activation.py"
+RUNNER_SPEC = importlib.util.spec_from_file_location("sprint93_2b_runner", RUNNER)
+assert RUNNER_SPEC is not None and RUNNER_SPEC.loader is not None
+R = importlib.util.module_from_spec(RUNNER_SPEC)
+RUNNER_SPEC.loader.exec_module(R)
+
+
 MERGE_SHA = "a" * 40
 MANIFEST_COMMIT_SHA = "b" * 40
 MERGED_AT = "2026-08-25T10:00:01Z"
@@ -23,15 +32,20 @@ START_UTC, END_UTC = C.activation_window(MERGED_AT)
 CREATED_AT = "2026-08-25T10:01:00Z"
 COMMITTED_AT = "2026-08-25T10:02:00Z"
 PUSHED_AT = "2026-08-25T10:03:00Z"
+TEST_NOW_EPOCH = 0.0
 
 
 def public_metadata(state: str = "MERGED") -> dict[str, object]:
     return {
-        "url": "https://github.com/example/mss/pull/5",
+        "url": "https://github.com/masoudengin65-byte/MSS_Package_003/pull/5",
         "number": 5,
         "state": state,
         "mergedAt": MERGED_AT,
         "merge_commit_sha": MERGE_SHA,
+        "repository_full_name": "masoudengin65-byte/MSS_Package_003",
+        "base_ref_name": "main",
+        "head_sha": "d" * 40,
+        "metadata_source": "GITHUB_AUTHORITATIVE",
     }
 
 
@@ -96,66 +110,102 @@ def utc_epoch(value: str) -> int:
     return int(datetime.fromisoformat(value[:-1] + "+00:00").timestamp())
 
 
+TEST_NOW_EPOCH = utc_epoch(START_UTC) + 901
+
+
+@pytest.fixture(autouse=True)
+def stable_authority_clock(monkeypatch):
+    monkeypatch.setattr(A, "_utc_now_epoch", lambda: TEST_NOW_EPOCH)
+
+
 def time_authority(
     offset: int = 0,
     *,
     current_bar_epoch: int | None = None,
     tick_epoch: int | None = None,
 ) -> dict[str, object]:
+    global TEST_NOW_EPOCH
     current_bar_epoch = (
         utc_epoch(START_UTC) + offset + 900
         if current_bar_epoch is None
         else int(current_bar_epoch)
     )
     tick_epoch = current_bar_epoch + 1 if tick_epoch is None else int(tick_epoch)
-    midpoint = A._utc_now_epoch()
-    return {
-        "schema_version": A.GlobalTimeAuthority.VERSION,
-        "time_authority": {
-            "confirmed": True,
-            "status": "BROKER_TIME_DOMAIN_CONFIRMED",
-        },
-        "observation": {
-            "detected_broker_offset_seconds": offset,
-            "mt5_raw_current_m15_bar_epoch": current_bar_epoch,
-            "mt5_raw_tick_epoch": tick_epoch,
-            "utc_epoch_before_tick": midpoint - 0.05,
-            "utc_epoch_after_tick": midpoint + 0.05,
-            "utc_midpoint_epoch": midpoint,
-            "offset_plausible": True,
-            "tick_fresh_enough": True,
-            "bar_matches_broker_clock": True,
-            "bar_m15_aligned": True,
-        },
-        "fail_safe": {
-            "trading_allowed_by_time_authority": True,
-        },
-    }
+    midpoint = float(tick_epoch - offset)
+    TEST_NOW_EPOCH = midpoint
+    return A.GlobalTimeAuthority().build(
+        utc_epoch_before_tick=midpoint - 0.05,
+        utc_epoch_after_tick=midpoint + 0.05,
+        tick_epoch=tick_epoch,
+        current_bar_epoch=current_bar_epoch,
+    )
 
 
 def rates(signal_epoch: int, *, close: float = 100.5) -> list[dict[str, object]]:
-    return [
-        {
-            "time": signal_epoch,
-            "open": 100.0,
-            "high": 101.0,
-            "low": 99.0,
-            "close": close,
-            "tick_volume": 10,
-            "spread": 2,
-            "real_volume": 0,
-        },
-        {
-            "time": signal_epoch + 900,
-            "open": 100.5,
-            "high": 101.5,
-            "low": 100.0,
-            "close": 101.0,
-            "tick_volume": 3,
-            "spread": 2,
-            "real_volume": 0,
-        },
-    ]
+    first_epoch = signal_epoch - (A.LIVE_RATE_COUNT - 2) * 900
+    result = []
+    for index in range(A.LIVE_RATE_COUNT):
+        epoch = first_epoch + index * 900
+        is_signal = epoch == signal_epoch
+        result.append(
+            {
+                "time": epoch,
+                "open": 100.0,
+                "high": 101.5,
+                "low": 99.0,
+                "close": close if is_signal else 101.0,
+                "tick_volume": 10,
+                "spread": 2,
+                "real_volume": 0,
+            }
+        )
+    return result
+
+
+def live_snapshot(
+    *,
+    signal_epoch: int,
+    snapshot: list[dict[str, object]] | None = None,
+    authority: dict[str, object] | None = None,
+) -> A.LiveMt5Snapshot:
+    current_bar_epoch = signal_epoch + 900
+    raw_rates = snapshot or rates(signal_epoch)
+    frozen = A._freeze_rates(raw_rates, current_bar_epoch=current_bar_epoch)
+    authority = authority or time_authority(
+        current_bar_epoch=current_bar_epoch,
+        tick_epoch=current_bar_epoch + 1,
+    )
+    records = [asdict(rate) for rate in frozen]
+    provenance = {
+        "schema_version": A.LIVE_ACQUISITION_VERSION,
+        "source": "DIRECT_LIVE_MT5_READ_ONLY",
+        "canonical_symbol": "BTCUSD",
+        "broker_symbol": A.SYMBOL_MAP["BTCUSD"],
+        "timeframe": A.TIMEFRAME,
+        "tick_epoch": authority["observation"]["mt5_raw_tick_epoch"],
+        "current_bar_epoch": current_bar_epoch,
+        "rate_record_count": len(records),
+        "rates_sha256": A._canonical_sha256(records),
+        "time_authority_sha256": A._canonical_sha256(authority),
+        "read_only": True,
+        "real_order_send_allowed": False,
+        "order_send_called": False,
+        "order_check_called": False,
+    }
+    return A.LiveMt5Snapshot(
+        canonical_symbol="BTCUSD",
+        broker_symbol=A.SYMBOL_MAP["BTCUSD"],
+        current_bar_epoch=current_bar_epoch,
+        tick_epoch=int(authority["observation"]["mt5_raw_tick_epoch"]),
+        bid=100.0,
+        ask=100.5,
+        balance=10_000.0,
+        point=0.01,
+        rates=frozen,
+        time_authority_json=A._canonical_json_bytes(authority).decode("utf-8"),
+        provenance_json=A._canonical_json_bytes(provenance).decode("utf-8"),
+        _verification_marker=A._LIVE_MT5_SNAPSHOT_MARKER,
+    )
 
 
 @dataclass(frozen=True)
@@ -220,11 +270,10 @@ def collect_start(
 ) -> A.PairedDecisionResult:
     signal_epoch = utc_epoch(START_UTC)
     return value.collect_decision(
-        canonical_symbol="BTCUSD",
-        decision_candle_open_utc=START_UTC,
-        current_bar_epoch=signal_epoch + 900,
-        rates=snapshot or rates(signal_epoch),
-        time_authority=time_authority(),
+        snapshot=live_snapshot(
+            signal_epoch=signal_epoch,
+            snapshot=snapshot,
+        )
     )
 
 
@@ -394,19 +443,11 @@ def test_boundary_accepts_exact_start_and_rejects_before_and_end(tmp_path):
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
     with pytest.raises(RuntimeError, match="pre-activation"):
         value.collect_decision(
-            canonical_symbol="BTCUSD",
-            decision_candle_open_utc=before,
-            current_bar_epoch=utc_epoch(before) + 900,
-            rates=rates(utc_epoch(before)),
-            time_authority=time_authority(),
+            snapshot=live_snapshot(signal_epoch=utc_epoch(before)),
         )
     with pytest.raises(RuntimeError, match="exclusive experiment end"):
         value.collect_decision(
-            canonical_symbol="BTCUSD",
-            decision_candle_open_utc=END_UTC,
-            current_bar_epoch=utc_epoch(END_UTC) + 900,
-            rates=rates(utc_epoch(END_UTC)),
-            time_authority=time_authority(),
+            snapshot=live_snapshot(signal_epoch=utc_epoch(END_UTC)),
         )
     result = collect_start(value)
     assert result.write.appended is True
@@ -421,13 +462,12 @@ def test_final_signal_cannot_create_entry_at_exclusive_end(tmp_path):
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
     with pytest.raises(RuntimeError, match="new entries are prohibited"):
         value.collect_decision(
-            canonical_symbol="BTCUSD",
-            decision_candle_open_utc=final_signal,
-            current_bar_epoch=utc_epoch(END_UTC),
-            rates=rates(utc_epoch(final_signal)),
-            time_authority=time_authority(
+            snapshot=live_snapshot(
+                signal_epoch=utc_epoch(final_signal),
+                authority=time_authority(
                 current_bar_epoch=utc_epoch(END_UTC),
-            ),
+                ),
+            )
         )
     assert baseline.calls == candidate.calls == 0
 
@@ -676,10 +716,370 @@ def test_unconfirmed_or_invalid_time_authority_fails_before_strategy(tmp_path):
     authority["time_authority"]["confirmed"] = False
     with pytest.raises(RuntimeError, match="must be confirmed"):
         value.collect_decision(
-            canonical_symbol="BTCUSD",
-            decision_candle_open_utc=START_UTC,
-            current_bar_epoch=utc_epoch(START_UTC) + 900,
-            rates=rates(utc_epoch(START_UTC)),
-            time_authority=authority,
+            snapshot=live_snapshot(
+                signal_epoch=utc_epoch(START_UTC),
+                authority=authority,
+            )
         )
+    assert baseline.calls == candidate.calls == 0
+
+
+def test_time_authority_is_rebuilt_from_raw_observations(tmp_path):
+    value, baseline, candidate = collector(tmp_path)
+    authority = time_authority()
+    authority["observation"]["detected_broker_offset_seconds"] = 900
+    with pytest.raises(RuntimeError, match="derived claims differ"):
+        value.collect_decision(
+            snapshot=live_snapshot(
+                signal_epoch=utc_epoch(START_UTC),
+                authority=authority,
+            )
+        )
+    assert baseline.calls == candidate.calls == 0
+
+
+def test_frozen_symbol_and_event_mappings_reject_runtime_mutation():
+    with pytest.raises(TypeError):
+        A.SYMBOL_MAP["BTCUSD"] = "FORGED"
+    with pytest.raises(TypeError):
+        A.EVIDENCE_EVENT_TYPES["decision"] = "FORGED"
+
+
+def test_entry_authority_mismatch_propagates_instead_of_recording_no_trade(tmp_path):
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    frozen = time_authority()
+    observation = frozen["observation"]
+    different = A.GlobalTimeAuthority().build(
+        utc_epoch_before_tick=observation["utc_epoch_before_tick"],
+        utc_epoch_after_tick=observation["utc_epoch_after_tick"],
+        tick_epoch=observation["mt5_raw_tick_epoch"],
+        current_bar_epoch=observation["mt5_raw_current_m15_bar_epoch"],
+        previous_broker_offset_seconds=0,
+    )
+    with pytest.raises(RuntimeError, match="same frozen time-authority snapshot"):
+        value.open_virtual_entries(
+            pair_key=decision.pair_key,
+            balance=10_000.0,
+            point=0.01,
+            time_authority=different,
+        )
+    assert value.recover().pending_entry_pair_keys == (decision.pair_key,)
+
+
+def test_stale_matching_entry_authority_records_restart_no_trade(tmp_path):
+    global TEST_NOW_EPOCH
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    frozen = value._event_for(decision.pair_key, "decision")["payload"][
+        "global_time_authority"
+    ]
+    TEST_NOW_EPOCH += A.GlobalTimeAuthority.MAX_TICK_RESIDUAL_SECONDS + 1
+    result = value.open_virtual_entries(
+        pair_key=decision.pair_key,
+        balance=10_000.0,
+        point=0.01,
+        time_authority=frozen,
+    )
+    assert result.baseline_position is None
+    assert result.candidate_position is None
+    event = value._event_for(decision.pair_key, "entry")
+    assert event["payload"]["branches"]["baseline"]["reason"] == (
+        "RESTART_AFTER_ENTRY_WINDOW"
+    )
+
+
+def test_timebox_accepts_first_tick_after_boundary(monkeypatch, tmp_path):
+    value, _baseline, _candidate = collector(tmp_path)
+    position = VirtualPositionEngine.open_position(
+        position_id="base-late-tick",
+        symbol="BITCOIN",
+        direction="BUY",
+        volume=0.01,
+        entry_price=100.0,
+        stop_loss=90.0,
+        take_profit=120.0,
+        broker_epoch=utc_epoch(START_UTC) + 900,
+    )
+    monkeypatch.setattr(
+        A.ShadowTradeValuation,
+        "calculate",
+        lambda **_kwargs: SimpleNamespace(
+            valid=True,
+            reason="VALUED",
+            pnl_account_currency=1.0,
+            real_order_send_allowed=False,
+            order_send_called=False,
+            order_check_called=False,
+        ),
+    )
+    final_open = (
+        datetime.fromisoformat(END_UTC[:-1] + "+00:00")
+        - timedelta(minutes=15)
+    ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    result = value.timebox_close(
+        position=position,
+        final_completed_candle_open_utc=final_open,
+        close_broker_epoch=utc_epoch(END_UTC),
+        bid=105.0,
+        ask=105.5,
+        time_authority=time_authority(
+            current_bar_epoch=utc_epoch(END_UTC),
+            tick_epoch=utc_epoch(END_UTC) + 1,
+        ),
+    )
+    assert result.closed_position.close_broker_epoch == utc_epoch(END_UTC)
+
+
+def test_ordinary_virtual_update_is_blocked_at_exclusive_end(tmp_path):
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    value.record_entry_outcome(
+        pair_key=decision.pair_key,
+        baseline=A.BranchEntryOutcome(
+            True, "OPEN", decision.baseline_position_id
+        ),
+        candidate=A.BranchEntryOutcome(False, "REJECTED_CANDIDATE"),
+        entry_broker_epoch=utc_epoch(START_UTC) + 900,
+        time_authority=time_authority(),
+    )
+    A.ShadowTradeJournal.append_event(
+        path=value.trade_journal_path(decision.pair_key, "baseline"),
+        event_type="POSITION_OPENED",
+        position_id=decision.baseline_position_id,
+        broker_epoch=utc_epoch(START_UTC) + 900,
+        payload={
+            "symbol": "BITCOIN",
+            "direction": "BUY",
+            "volume": 0.01,
+            "entry_price": 100.0,
+            "stop_loss": 90.0,
+            "take_profit": 120.0,
+            "initial_risk_price": 10.0,
+        },
+    )
+    with pytest.raises(RuntimeError, match="use the frozen timebox close"):
+        value.update_virtual_trade(
+            pair_key=decision.pair_key,
+            branch="baseline",
+            bid=89.0,
+            ask=89.5,
+            broker_epoch=utc_epoch(END_UTC),
+            time_authority=time_authority(
+                current_bar_epoch=utc_epoch(END_UTC),
+                tick_epoch=utc_epoch(END_UTC),
+            ),
+        )
+
+
+def test_runner_has_no_file_or_backdated_forward_inputs():
+    parsed = R.parser().parse_args(
+        [
+            "collect-decision",
+            "--manifest-commit-sha",
+            MANIFEST_COMMIT_SHA,
+            "--no-forward-outcome-access-verified",
+            "--canonical-symbol",
+            "BTCUSD",
+        ]
+    )
+    for removed in (
+        "rates_snapshot",
+        "time_authority",
+        "current_bar_epoch",
+        "decision_candle_open_utc",
+        "public_pr_metadata",
+        "publication_metadata",
+        "created_at_utc",
+    ):
+        assert not hasattr(parsed, removed)
+    assert {
+        action.dest
+        for action in R.parser()._subparsers._group_actions[0].choices[
+            "collect-decision"
+        ]._actions
+    }.isdisjoint({"rates_snapshot", "time_authority", "current_bar_epoch"})
+
+
+def test_runner_normalizes_authoritative_github_pr_metadata(monkeypatch):
+    monkeypatch.setattr(
+        R,
+        "_repository_full_name",
+        lambda: "masoudengin65-byte/MSS_Package_003",
+    )
+    monkeypatch.setattr(
+        R,
+        "_command_json",
+        lambda _arguments, _label: {
+            "url": "https://github.com/masoudengin65-byte/MSS_Package_003/pull/5",
+            "number": 5,
+            "state": "MERGED",
+            "mergedAt": MERGED_AT,
+            "mergeCommit": {"oid": MERGE_SHA},
+            "headRefOid": "d" * 40,
+            "baseRefName": "main",
+        },
+    )
+    result = R._authoritative_pr_metadata(5)
+    assert result["metadata_source"] == "GITHUB_AUTHORITATIVE"
+    assert result["repository_full_name"] == (
+        "masoudengin65-byte/MSS_Package_003"
+    )
+    assert result["merge_commit_sha"] == MERGE_SHA
+
+
+def test_publication_time_comes_from_authoritative_github_push_event(monkeypatch):
+    monkeypatch.setattr(
+        R,
+        "_github_api_array",
+        lambda _path, _label: [
+            {
+                "type": "PushEvent",
+                "created_at": PUSHED_AT,
+                "payload": {
+                    "head": MANIFEST_COMMIT_SHA,
+                    "commits": [{"sha": MANIFEST_COMMIT_SHA}],
+                },
+            }
+        ],
+    )
+    assert R._public_push_timestamp(
+        "masoudengin65-byte/MSS_Package_003", MANIFEST_COMMIT_SHA
+    ) == PUSHED_AT
+
+
+def test_missing_public_push_event_fails_closed(monkeypatch):
+    monkeypatch.setattr(R, "_github_api_array", lambda _path, _label: [])
+    with pytest.raises(RuntimeError, match="no authoritative GitHub PushEvent"):
+        R._public_push_timestamp(
+            "masoudengin65-byte/MSS_Package_003", MANIFEST_COMMIT_SHA
+        )
+
+
+def test_manifest_rejects_self_asserted_or_wrong_repository_metadata(monkeypatch):
+    patch_identity(monkeypatch)
+    forged = public_metadata()
+    forged["url"] = "https://example.invalid/pull/5"
+    with pytest.raises(RuntimeError, match="authoritative GitHub"):
+        A.build_activation_manifest_after_merge(
+            repository_root=Path.cwd(),
+            public_pr_metadata=forged,
+            manifest_created_at_utc=CREATED_AT,
+            no_forward_outcome_access_verified=True,
+        )
+
+
+def test_live_capture_uses_only_direct_read_only_mt5_calls(monkeypatch, tmp_path):
+    import MetaTrader5 as mt5
+
+    signal_epoch = utc_epoch(START_UTC)
+    current_bar_epoch = signal_epoch + 900
+    calls: list[str] = []
+
+    def called(name, value):
+        def invoke(*_args, **_kwargs):
+            calls.append(name)
+            return value
+
+        return invoke
+
+    raw_rates = rates(signal_epoch)
+    monkeypatch.setattr(A, "_utc_now_epoch", lambda: float(current_bar_epoch + 1))
+    monkeypatch.setattr(mt5, "TIMEFRAME_M15", 15, raising=False)
+    monkeypatch.setattr(mt5, "initialize", called("initialize", True))
+    monkeypatch.setattr(
+        mt5,
+        "terminal_info",
+        called(
+            "terminal_info",
+            SimpleNamespace(
+                connected=True,
+                company="MetaQuotes",
+                name="MT5",
+                build=5000,
+            ),
+        ),
+    )
+    monkeypatch.setattr(
+        mt5,
+        "account_info",
+        called(
+            "account_info",
+            SimpleNamespace(
+                balance=10_000.0,
+                server="Broker-Demo",
+                company="Broker",
+                currency="USD",
+            ),
+        ),
+    )
+    monkeypatch.setattr(mt5, "symbol_select", called("symbol_select", True))
+    monkeypatch.setattr(
+        mt5,
+        "symbol_info",
+        called("symbol_info", SimpleNamespace(point=0.01)),
+    )
+    monkeypatch.setattr(
+        mt5,
+        "symbol_info_tick",
+        called(
+            "symbol_info_tick",
+            SimpleNamespace(
+                time=current_bar_epoch + 1,
+                time_msc=(current_bar_epoch + 1) * 1000,
+                bid=100.0,
+                ask=100.5,
+            ),
+        ),
+    )
+    monkeypatch.setattr(
+        mt5,
+        "copy_rates_from_pos",
+        called("copy_rates_from_pos", raw_rates),
+    )
+    monkeypatch.setattr(mt5, "shutdown", called("shutdown", None))
+    monkeypatch.setattr(
+        mt5,
+        "order_send",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("order_send called")
+        ),
+    )
+    monkeypatch.setattr(
+        mt5,
+        "order_check",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("order_check called")
+        ),
+    )
+
+    snapshot = A.capture_live_mt5_snapshot("BTCUSD")
+    provenance = snapshot.provenance()
+    assert provenance["source"] == "DIRECT_LIVE_MT5_READ_ONLY"
+    assert provenance["account_server"] == "Broker-Demo"
+    assert provenance["rate_record_count"] == A.LIVE_RATE_COUNT
+    assert "order_send" not in calls and "order_check" not in calls
+    value, _baseline, _candidate = collector(tmp_path)
+    result = value.collect_decision(snapshot=snapshot)
+    assert result.pair_key == ("BTCUSD", START_UTC)
+
+
+def test_unmarked_live_snapshot_is_rejected_before_strategy(tmp_path):
+    value, baseline, candidate = collector(tmp_path)
+    valid = live_snapshot(signal_epoch=utc_epoch(START_UTC))
+    forged = A.LiveMt5Snapshot(
+        canonical_symbol=valid.canonical_symbol,
+        broker_symbol=valid.broker_symbol,
+        current_bar_epoch=valid.current_bar_epoch,
+        tick_epoch=valid.tick_epoch,
+        bid=valid.bid,
+        ask=valid.ask,
+        balance=valid.balance,
+        point=valid.point,
+        rates=valid.rates,
+        time_authority_json=valid.time_authority_json,
+        provenance_json=valid.provenance_json,
+    )
+    with pytest.raises(RuntimeError, match="directly verified live MT5 snapshot"):
+        value.collect_decision(snapshot=forged)
     assert baseline.calls == candidate.calls == 0
