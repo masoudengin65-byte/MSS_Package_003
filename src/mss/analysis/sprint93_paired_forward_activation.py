@@ -2173,6 +2173,101 @@ class PairedForwardEvidenceCollector:
                 _lock_held=True,
             )
 
+    def timebox_close(
+        self,
+        *,
+        position: VirtualPosition,
+        final_completed_candle_open_utc: str,
+        close_broker_epoch: int,
+        bid: float,
+        ask: float,
+        time_authority: Mapping[str, object],
+    ) -> TimeboxCloseResult:
+        """Compute a fail-closed virtual MTM close at the frozen timebox boundary.
+
+        This calculation helper never sends or checks an order.  The journaled,
+        restart-safe workflow remains :meth:`timebox_close_virtual_trade`.
+        """
+
+        if not isinstance(position, VirtualPosition) or position.status != "OPEN":
+            raise RuntimeError("an open virtual position is required")
+        if not all(
+            math.isfinite(float(value)) and float(value) > 0
+            for value in (bid, ask)
+        ):
+            raise RuntimeError("positive finite bid and ask are required")
+        if float(ask) < float(bid):
+            raise RuntimeError("timebox ask cannot be below bid")
+
+        end = _parse_utc_z(
+            self.activation.exclusive_45_day_end_utc, "exclusive end"
+        )
+        final_open = _parse_utc_z(
+            final_completed_candle_open_utc,
+            "final completed candle open",
+        )
+        if final_open != end - timedelta(seconds=TIMEFRAME_SECONDS):
+            raise RuntimeError(
+                "timebox valuation must use the final eligible completed M15 candle"
+            )
+
+        offset = _time_authority_offset(
+            time_authority,
+            expected_current_bar_epoch=int(close_broker_epoch),
+            expected_tick_epoch=int(close_broker_epoch),
+        )
+        if int(close_broker_epoch) - offset != int(end.timestamp()):
+            raise RuntimeError("timebox close must bind the exclusive UTC end")
+
+        close_price = VirtualPositionEngine.market_close_price(
+            direction=position.direction,
+            bid=float(bid),
+            ask=float(ask),
+        )
+        valuation = ShadowTradeValuation.calculate(
+            symbol=position.symbol,
+            direction=position.direction,
+            volume=position.volume,
+            entry_price=position.entry_price,
+            close_price=close_price,
+        )
+        if not valuation.valid:
+            raise RuntimeError(f"timebox MTM valuation blocked: {valuation.reason}")
+        if (
+            valuation.real_order_send_allowed
+            or valuation.order_send_called
+            or valuation.order_check_called
+        ):
+            raise RuntimeError("timebox valuation violated execution safety")
+
+        snapshot = {
+            "final_completed_candle_open_utc": final_completed_candle_open_utc,
+            "close_broker_epoch": int(close_broker_epoch),
+            "bid": float(bid),
+            "ask": float(ask),
+            "close_price": float(close_price),
+        }
+        snapshot_sha = _canonical_sha256(snapshot)
+        closed = VirtualPositionEngine.close_position(
+            position=position,
+            close_price=close_price,
+            broker_epoch=int(close_broker_epoch),
+            reason="TIMEBOX_MTM_CLOSE",
+            pnl_account_currency=valuation.pnl_account_currency,
+        )
+        if closed.status != "CLOSED":
+            raise RuntimeError("timebox MTM virtual close failed")
+        return TimeboxCloseResult(
+            closed_position=closed,
+            settlement=BranchSettlement(
+                actual_trade=True,
+                net_r=closed.r_multiple,
+                settlement_utc=self.activation.exclusive_45_day_end_utc,
+                timebox_mtm=True,
+                valuation_snapshot_sha256=snapshot_sha,
+            ),
+        )
+
     def timebox_close_virtual_trade(
         self,
         *,
