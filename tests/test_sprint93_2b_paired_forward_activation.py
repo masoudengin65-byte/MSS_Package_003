@@ -62,6 +62,13 @@ def patch_identity(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
 
+def patch_verification_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(A, "_git_is_ancestor", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(
+        A, "_execution_worktree_clean", lambda *_args, **_kwargs: True
+    )
+
+
 def manifest(monkeypatch: pytest.MonkeyPatch) -> dict[str, object]:
     patch_identity(monkeypatch)
     return A.build_activation_manifest_after_merge(
@@ -89,10 +96,40 @@ def utc_epoch(value: str) -> int:
     return int(datetime.fromisoformat(value[:-1] + "+00:00").timestamp())
 
 
-def time_authority(offset: int = 0) -> dict[str, object]:
+def time_authority(
+    offset: int = 0,
+    *,
+    current_bar_epoch: int | None = None,
+    tick_epoch: int | None = None,
+) -> dict[str, object]:
+    current_bar_epoch = (
+        utc_epoch(START_UTC) + offset + 900
+        if current_bar_epoch is None
+        else int(current_bar_epoch)
+    )
+    tick_epoch = current_bar_epoch + 1 if tick_epoch is None else int(tick_epoch)
+    midpoint = A._utc_now_epoch()
     return {
-        "time_authority": {"confirmed": True},
-        "observation": {"detected_broker_offset_seconds": offset},
+        "schema_version": A.GlobalTimeAuthority.VERSION,
+        "time_authority": {
+            "confirmed": True,
+            "status": "BROKER_TIME_DOMAIN_CONFIRMED",
+        },
+        "observation": {
+            "detected_broker_offset_seconds": offset,
+            "mt5_raw_current_m15_bar_epoch": current_bar_epoch,
+            "mt5_raw_tick_epoch": tick_epoch,
+            "utc_epoch_before_tick": midpoint - 0.05,
+            "utc_epoch_after_tick": midpoint + 0.05,
+            "utc_midpoint_epoch": midpoint,
+            "offset_plausible": True,
+            "tick_fresh_enough": True,
+            "bar_matches_broker_clock": True,
+            "bar_m15_aligned": True,
+        },
+        "fail_safe": {
+            "trading_allowed_by_time_authority": True,
+        },
     }
 
 
@@ -277,6 +314,7 @@ def test_verified_activation_binds_published_manifest_runtime_and_source(
     path = A.activation_manifest_path(tmp_path)
     A.create_activation_manifest_once(repository_root=tmp_path, manifest=value)
     canonical = path.read_bytes()
+    patch_verification_environment(monkeypatch)
     monkeypatch.setattr(
         A,
         "_resolve_commit",
@@ -308,13 +346,20 @@ def test_verified_activation_rejects_runtime_or_source_mutation(monkeypatch, tmp
     path = A.activation_manifest_path(tmp_path)
     A.create_activation_manifest_once(repository_root=tmp_path, manifest=value)
     canonical = path.read_bytes()
+    patch_verification_environment(monkeypatch)
     monkeypatch.setattr(
         A,
         "_resolve_commit",
         lambda _root, revision: MANIFEST_COMMIT_SHA if revision == "HEAD" else revision,
     )
     monkeypatch.setattr(A, "_git_blob", lambda *_args, **_kwargs: canonical)
-    identities = iter((fake_identity(), (("different.py", "f" * 64),)))
+    identities = iter(
+        (
+            fake_identity(),
+            fake_identity(),
+            (("different.py", "f" * 64),),
+        )
+    )
     monkeypatch.setattr(A, "execution_identity", lambda **_kwargs: next(identities))
     with pytest.raises(RuntimeError, match="running execution source differs"):
         A.verify_published_activation_manifest(
@@ -380,7 +425,9 @@ def test_final_signal_cannot_create_entry_at_exclusive_end(tmp_path):
             decision_candle_open_utc=final_signal,
             current_bar_epoch=utc_epoch(END_UTC),
             rates=rates(utc_epoch(final_signal)),
-            time_authority=time_authority(),
+            time_authority=time_authority(
+                current_bar_epoch=utc_epoch(END_UTC),
+            ),
         )
     assert baseline.calls == candidate.calls == 0
 
@@ -550,7 +597,12 @@ def test_timebox_uses_frozen_final_candle_and_virtual_valuation(monkeypatch, tmp
         A.ShadowTradeValuation,
         "calculate",
         lambda **_kwargs: SimpleNamespace(
-            valid=True, reason="VALUED", pnl_account_currency=1.0
+            valid=True,
+            reason="VALUED",
+            pnl_account_currency=1.0,
+            real_order_send_allowed=False,
+            order_send_called=False,
+            order_check_called=False,
         ),
     )
     final_open = (
@@ -563,7 +615,10 @@ def test_timebox_uses_frozen_final_candle_and_virtual_valuation(monkeypatch, tmp
         close_broker_epoch=utc_epoch(END_UTC),
         bid=105.0,
         ask=105.5,
-        time_authority=time_authority(),
+        time_authority=time_authority(
+            current_bar_epoch=utc_epoch(END_UTC),
+            tick_epoch=utc_epoch(END_UTC),
+        ),
     )
     assert result.closed_position.status == "CLOSED"
     assert result.closed_position.exit_reason == "TIMEBOX_MTM_CLOSE"
