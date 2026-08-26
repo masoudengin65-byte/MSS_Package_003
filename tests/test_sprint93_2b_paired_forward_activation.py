@@ -491,16 +491,21 @@ def test_entry_and_settlement_keep_rejection_and_actual_zero_r_distinct(tmp_path
     decision = collect_start(value)
     entry = value.record_entry_outcome(
         pair_key=decision.pair_key,
-        baseline=A.BranchEntryOutcome(True, "VIRTUAL_POSITION_OPENED", "base-1"),
+        baseline=A.BranchEntryOutcome(
+            True, "VIRTUAL_POSITION_OPENED", decision.baseline_position_id
+        ),
         candidate=A.BranchEntryOutcome(False, "REJECTED_CANDIDATE"),
         entry_broker_epoch=utc_epoch(START_UTC) + 900,
         time_authority=time_authority(),
     )
     assert entry.appended is True
-    settlement = value.record_settlement(
+    settlement = value._record_settlement(
         pair_key=decision.pair_key,
         baseline=A.BranchSettlement(True, 0.0, "2026-08-26T11:00:00Z"),
         candidate=A.BranchSettlement(False, None, None),
+        settlement_broker_epoch=utc_epoch("2026-08-26T11:00:00Z"),
+        terminal_event_sha256={"baseline": "b" * 64, "candidate": "c" * 64},
+        _lock_held=False,
     )
     assert settlement.appended is True
     events = [
@@ -536,12 +541,8 @@ def test_both_no_trade_observation_is_not_an_evaluation_pair(tmp_path):
         entry_broker_epoch=utc_epoch(START_UTC) + 900,
         time_authority=time_authority(),
     )
-    with pytest.raises(RuntimeError, match="actual virtual position"):
-        value.record_settlement(
-            pair_key=decision.pair_key,
-            baseline=A.BranchSettlement(False, None, None),
-            candidate=A.BranchSettlement(False, None, None),
-        )
+    with pytest.raises(RuntimeError, match="both-no-trade observations"):
+        value.finalize_settlement(pair_key=decision.pair_key)
 
 
 def test_candidate_rejection_can_never_open_position(tmp_path):
@@ -550,8 +551,12 @@ def test_candidate_rejection_can_never_open_position(tmp_path):
     with pytest.raises(RuntimeError, match="no-trade decision cannot open"):
         value.record_entry_outcome(
             pair_key=decision.pair_key,
-            baseline=A.BranchEntryOutcome(True, "OPEN", "base-1"),
-            candidate=A.BranchEntryOutcome(True, "OPEN", "candidate-1"),
+            baseline=A.BranchEntryOutcome(
+                True, "OPEN", decision.baseline_position_id
+            ),
+            candidate=A.BranchEntryOutcome(
+                True, "OPEN", decision.candidate_position_id
+            ),
             entry_broker_epoch=utc_epoch(START_UTC) + 900,
             time_authority=time_authority(),
         )
@@ -562,7 +567,9 @@ def test_entry_and_settlement_are_duplicate_safe_across_restart(tmp_path):
     decision = collect_start(value)
     arguments = {
         "pair_key": decision.pair_key,
-        "baseline": A.BranchEntryOutcome(True, "OPEN", "base-1"),
+        "baseline": A.BranchEntryOutcome(
+            True, "OPEN", decision.baseline_position_id
+        ),
         "candidate": A.BranchEntryOutcome(False, "REJECTED_CANDIDATE"),
         "entry_broker_epoch": utc_epoch(START_UTC) + 900,
         "time_authority": time_authority(),
@@ -574,10 +581,13 @@ def test_entry_and_settlement_are_duplicate_safe_across_restart(tmp_path):
         "pair_key": decision.pair_key,
         "baseline": A.BranchSettlement(True, -0.5, "2026-08-26T12:00:00Z"),
         "candidate": A.BranchSettlement(False, None, None),
+        "settlement_broker_epoch": utc_epoch("2026-08-26T12:00:00Z"),
+        "terminal_event_sha256": {"baseline": "b" * 64, "candidate": "c" * 64},
+        "_lock_held": False,
     }
-    assert restarted.record_settlement(**settlement_arguments).appended is True
+    assert restarted._record_settlement(**settlement_arguments).appended is True
     final, _baseline3, _candidate3 = collector(tmp_path)
-    assert final.record_settlement(**settlement_arguments).appended is False
+    assert final._record_settlement(**settlement_arguments).appended is False
     assert final.recover().settled_pair_keys == (("BTCUSD", START_UTC),)
 
 
