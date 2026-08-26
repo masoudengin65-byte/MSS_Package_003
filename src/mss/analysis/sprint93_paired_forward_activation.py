@@ -518,6 +518,12 @@ def verify_published_activation_manifest(
         raise RuntimeError("activation manifest must be inside the repository") from exc
 
     manifest, canonical = _load_canonical_manifest(manifest_path)
+    runtime = observed_runtime_versions()
+    if (
+        manifest.get("python_version") != runtime.get("python_version")
+        or manifest.get("numpy_version") != runtime.get("numpy_version")
+    ):
+        raise RuntimeError("running runtime versions differ from the activation manifest")
     merge_sha = _require_full_git_sha(
         manifest["activation_merge_commit_sha"], "activation merge commit"
     )
@@ -561,7 +567,6 @@ def verify_published_activation_manifest(
     ):
         raise RuntimeError("running execution source has uncommitted changes")
 
-    runtime = observed_runtime_versions()
     Preregistration.validate_activation_manifest(
         manifest,
         public_pr_metadata=public_pr_metadata,
@@ -843,6 +848,33 @@ def _write_result(event: Mapping[str, object], appended: bool) -> EvidenceWriteR
     )
 
 
+def _idempotency_material(event: Mapping[str, object]) -> dict[str, object]:
+    """Exclude only observation wall-clock noise from duplicate comparison.
+
+    The first accepted authority record remains immutable in the journal.  A
+    retry may have a new local observation midpoint, but its broker bar, tick,
+    offset, flags, frozen market snapshot, and decisions must still match.
+    """
+
+    material = json.loads(_canonical_json_bytes(event))
+    payload = material.get("payload")
+    if not isinstance(payload, dict):
+        return material
+    payload.pop("collected_at_utc", None)
+    payload.pop("observed_at_utc", None)
+    authority = payload.get("global_time_authority")
+    if isinstance(authority, dict):
+        observation = authority.get("observation")
+        if isinstance(observation, dict):
+            for name in (
+                "utc_epoch_before_tick",
+                "utc_epoch_after_tick",
+                "utc_midpoint_epoch",
+            ):
+                observation.pop(name, None)
+    return material
+
+
 def _append_evidence_once_unlocked(
     *,
     journal_path: Path,
@@ -880,7 +912,9 @@ def _append_evidence_once_unlocked(
             "broker_epoch": existing.get("broker_epoch"),
             "payload": existing.get("payload"),
         }
-        if _canonical_json_bytes(existing_material) != _canonical_json_bytes(desired):
+        if _canonical_json_bytes(_idempotency_material(existing_material)) != (
+            _canonical_json_bytes(_idempotency_material(desired))
+        ):
             raise RuntimeError("conflicting duplicate paired evidence identity")
         return _write_result(existing, appended=False)
     event = ShadowTradeJournal._append_event_unlocked(
