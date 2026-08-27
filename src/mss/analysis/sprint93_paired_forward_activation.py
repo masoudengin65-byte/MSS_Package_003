@@ -1381,6 +1381,11 @@ class PairedForwardEvidenceCollector:
         final_bar_utc_epoch = end_epoch - TIMEFRAME_SECONDS
         if current_bar_epoch - offset != final_bar_utc_epoch:
             return None
+        if float(observation["utc_epoch_after_tick"]) >= float(end_epoch):
+            # The evidence must have finished acquisition inside the final
+            # eligible bar; a quiet-market snapshot captured after the
+            # boundary cannot retroactively satisfy final-bar polling.
+            return None
         phase = "boundary_authority"
         event_id = _event_id(
             manifest_sha256=self.activation.manifest_sha256,
@@ -2027,6 +2032,40 @@ class PairedForwardEvidenceCollector:
                         "production_execution_enabled": False,
                     },
                 }
+                append_delay = _utc_now_epoch() + offset - entry_broker_epoch
+                if not (
+                    0.0
+                    <= append_delay
+                    <= float(MAX_ENTRY_OBSERVATION_DELAY_SECONDS)
+                ):
+                    baseline_outcome = BranchEntryOutcome(
+                        False, "RESTART_AFTER_ENTRY_WINDOW"
+                    )
+                    candidate_outcome = BranchEntryOutcome(
+                        False, "RESTART_AFTER_ENTRY_WINDOW"
+                    )
+                    write = self.record_entry_outcome(
+                        pair_key=pair_key,
+                        baseline=baseline_outcome,
+                        candidate=candidate_outcome,
+                        entry_broker_epoch=entry_broker_epoch,
+                        time_authority=decision_payload["global_time_authority"],
+                        entry_evidence={
+                            "entry_input_event_sha256": None,
+                            "reason": "RESTART_AFTER_ENTRY_WINDOW",
+                            "input_snapshot_sha256": decision_payload[
+                                "input_snapshot_sha256"
+                            ],
+                        },
+                        _require_current_authority=False,
+                        _lock_held=True,
+                    )
+                    return PairedEntryResult(
+                        write=write,
+                        pair_key=pair_key,
+                        baseline_position=None,
+                        candidate_position=None,
+                    )
                 _append_evidence_once_unlocked(
                     journal_path=self.journal_path,
                     event_type=EVIDENCE_EVENT_TYPES[phase],

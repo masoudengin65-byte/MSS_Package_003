@@ -880,6 +880,44 @@ def test_three_second_restart_without_frozen_intent_records_no_trade(tmp_path):
     assert branches["candidate"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
 
 
+def test_entry_deadline_is_rechecked_immediately_before_freezing_intent(
+    monkeypatch, tmp_path
+):
+    global TEST_NOW_EPOCH
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    frozen = value._event_for(decision.pair_key, "decision")["payload"][
+        "global_time_authority"
+    ]
+    entry_broker_epoch = utc_epoch(START_UTC) + A.TIMEFRAME_SECONDS
+    TEST_NOW_EPOCH = float(entry_broker_epoch + 1)
+    original_activate = A.FrozenShadowStrategyAdapter.activate_entry
+
+    def delayed_activate(**kwargs):
+        global TEST_NOW_EPOCH
+        result = original_activate(**kwargs)
+        TEST_NOW_EPOCH = float(entry_broker_epoch + 3)
+        return result
+
+    monkeypatch.setattr(
+        A.FrozenShadowStrategyAdapter,
+        "activate_entry",
+        delayed_activate,
+    )
+    result = value.open_virtual_entries(
+        pair_key=decision.pair_key,
+        balance=10_000.0,
+        point=0.01,
+        time_authority=frozen,
+    )
+    assert result.baseline_position is None
+    assert result.candidate_position is None
+    assert value._phase_events().get((decision.pair_key, "entry_input")) is None
+    branches = value._event_for(decision.pair_key, "entry")["payload"]["branches"]
+    assert branches["baseline"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
+    assert branches["candidate"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
+
+
 def test_stale_restart_completes_both_branches_from_frozen_entry_intent(
     monkeypatch, tmp_path
 ):
@@ -1084,6 +1122,35 @@ def test_timebox_accepts_authority_from_a_later_post_boundary_bar(
         ),
     )
     assert result.closed_position.close_broker_epoch == utc_epoch(END_UTC)
+
+
+def test_boundary_authority_rejects_acquisition_completed_after_boundary(tmp_path):
+    global TEST_NOW_EPOCH
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    value.record_entry_outcome(
+        pair_key=decision.pair_key,
+        baseline=A.BranchEntryOutcome(False, "WAIT"),
+        candidate=A.BranchEntryOutcome(False, "WAIT"),
+        entry_broker_epoch=utc_epoch(START_UTC) + A.TIMEFRAME_SECONDS,
+        time_authority=time_authority(),
+    )
+    close_epoch = utc_epoch(END_UTC)
+    TEST_NOW_EPOCH = float(close_epoch + 31)
+    late_authority = A.GlobalTimeAuthority().build(
+        utc_epoch_before_tick=float(close_epoch + 29),
+        utc_epoch_after_tick=float(close_epoch + 31),
+        tick_epoch=close_epoch - 1,
+        current_bar_epoch=close_epoch - A.TIMEFRAME_SECONDS,
+    )
+    result = value.record_timebox_boundary_authority_if_due(
+        pair_key=decision.pair_key,
+        time_authority=late_authority,
+    )
+    assert result is None
+    assert value._phase_events().get(
+        (decision.pair_key, "boundary_authority")
+    ) is None
 
 
 def test_journaled_timebox_accepts_later_bar_but_closes_at_exact_boundary(
