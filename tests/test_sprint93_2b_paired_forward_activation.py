@@ -880,7 +880,7 @@ def test_three_second_restart_without_frozen_intent_records_no_trade(tmp_path):
     assert branches["candidate"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
 
 
-def test_entry_deadline_is_rechecked_immediately_before_freezing_intent(
+def test_entry_deadline_is_rechecked_inside_durable_append_path(
     monkeypatch, tmp_path
 ):
     global TEST_NOW_EPOCH
@@ -891,18 +891,24 @@ def test_entry_deadline_is_rechecked_immediately_before_freezing_intent(
     ]
     entry_broker_epoch = utc_epoch(START_UTC) + A.TIMEFRAME_SECONDS
     TEST_NOW_EPOCH = float(entry_broker_epoch + 1)
-    original_activate = A.FrozenShadowStrategyAdapter.activate_entry
+    original_canonical_json = A.ShadowTradeJournal._canonical_json
+    canonical_calls = 0
 
-    def delayed_activate(**kwargs):
+    def delayed_journal_serialization(payload):
         global TEST_NOW_EPOCH
-        result = original_activate(**kwargs)
-        TEST_NOW_EPOCH = float(entry_broker_epoch + 3)
+        nonlocal canonical_calls
+        canonical_calls += 1
+        result = original_canonical_json(payload)
+        # The fourth call serializes the new event line after both outer and
+        # inner journal verification passes, immediately before file append.
+        if canonical_calls == 4:
+            TEST_NOW_EPOCH = float(entry_broker_epoch + 3)
         return result
 
     monkeypatch.setattr(
-        A.FrozenShadowStrategyAdapter,
-        "activate_entry",
-        delayed_activate,
+        A.ShadowTradeJournal,
+        "_canonical_json",
+        staticmethod(delayed_journal_serialization),
     )
     result = value.open_virtual_entries(
         pair_key=decision.pair_key,
@@ -912,6 +918,7 @@ def test_entry_deadline_is_rechecked_immediately_before_freezing_intent(
     )
     assert result.baseline_position is None
     assert result.candidate_position is None
+    assert canonical_calls >= 4
     assert value._phase_events().get((decision.pair_key, "entry_input")) is None
     branches = value._event_for(decision.pair_key, "entry")["payload"]["branches"]
     assert branches["baseline"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"

@@ -19,7 +19,7 @@ import platform
 import re
 import subprocess
 from types import MappingProxyType
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from mss.analysis.causal_next_candle_entry_watcher import (
     CausalNextCandleEntryWatcher,
@@ -114,6 +114,10 @@ _LIVE_MT5_SNAPSHOT_MARKER = object()
 
 class _StaleTimeAuthority(RuntimeError):
     """A structurally valid authority observation that is no longer current."""
+
+
+class _EntryWindowExpiredAtAppend(RuntimeError):
+    """The durable entry-intent write crossed its frozen deadline."""
 
 
 def _canonical_json_bytes(value: object) -> bytes:
@@ -1185,6 +1189,7 @@ def _append_evidence_once_unlocked(
     event_id: str,
     broker_epoch: int,
     payload: dict[str, object],
+    pre_write_check: Callable[[], None] | None = None,
 ) -> EvidenceWriteResult:
     desired = {
         "event_type": event_type,
@@ -1226,6 +1231,7 @@ def _append_evidence_once_unlocked(
         position_id=event_id,
         broker_epoch=int(broker_epoch),
         payload=payload,
+        pre_write_check=pre_write_check,
     )
     return _write_result(event, appended=True)
 
@@ -2032,12 +2038,27 @@ class PairedForwardEvidenceCollector:
                         "production_execution_enabled": False,
                     },
                 }
-                append_delay = _utc_now_epoch() + offset - entry_broker_epoch
-                if not (
-                    0.0
-                    <= append_delay
-                    <= float(MAX_ENTRY_OBSERVATION_DELAY_SECONDS)
-                ):
+                def require_entry_window_at_durable_write() -> None:
+                    append_delay = _utc_now_epoch() + offset - entry_broker_epoch
+                    if not (
+                        0.0
+                        <= append_delay
+                        <= float(MAX_ENTRY_OBSERVATION_DELAY_SECONDS)
+                    ):
+                        raise _EntryWindowExpiredAtAppend(
+                            "entry window expired before durable intent write"
+                        )
+
+                try:
+                    _append_evidence_once_unlocked(
+                        journal_path=self.journal_path,
+                        event_type=EVIDENCE_EVENT_TYPES[phase],
+                        event_id=input_event_id,
+                        broker_epoch=entry_broker_epoch,
+                        payload=input_payload,
+                        pre_write_check=require_entry_window_at_durable_write,
+                    )
+                except _EntryWindowExpiredAtAppend:
                     baseline_outcome = BranchEntryOutcome(
                         False, "RESTART_AFTER_ENTRY_WINDOW"
                     )
@@ -2066,13 +2087,6 @@ class PairedForwardEvidenceCollector:
                         baseline_position=None,
                         candidate_position=None,
                     )
-                _append_evidence_once_unlocked(
-                    journal_path=self.journal_path,
-                    event_type=EVIDENCE_EVENT_TYPES[phase],
-                    event_id=input_event_id,
-                    broker_epoch=entry_broker_epoch,
-                    payload=input_payload,
-                )
                 entry_input_event = self._event_for(pair_key, phase)
             else:
                 if _canonical_json_bytes(activated_entries) != _canonical_json_bytes(
