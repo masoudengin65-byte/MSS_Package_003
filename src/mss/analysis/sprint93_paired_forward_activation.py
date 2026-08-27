@@ -279,7 +279,9 @@ def execution_file_paths(
 
     repository_root = Path(repository_root).resolve()
     commit_sha = _resolve_commit(repository_root, commit_sha)
-    pending = list(EXECUTION_ROOT_PATHS)
+    pending = list(
+        set(EXECUTION_ROOT_PATHS).union(Preregistration.STRATEGY_COMPONENT_ROOTS)
+    )
     found: set[str] = set()
     while pending:
         path = pending.pop()

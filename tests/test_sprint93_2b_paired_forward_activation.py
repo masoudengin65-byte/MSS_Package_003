@@ -307,6 +307,16 @@ def test_builds_exact_frozen_manifest_after_merged_pr(monkeypatch):
     assert result["write_once"] is True
 
 
+def test_real_execution_closure_contains_every_frozen_strategy_component():
+    paths = set(
+        A.execution_file_paths(repository_root=ROOT, commit_sha="HEAD")
+    )
+    assert set(C.STRATEGY_COMPONENT_ROOTS).issubset(paths)
+    assert set(C.REQUIRED_STRATEGY_COMPONENT_FILES).issubset(paths)
+    assert "src/mss/analysis/risk_engine.py" in paths
+    assert "src/mss/domain/risk_profile.py" in paths
+
+
 @pytest.mark.parametrize(
     ("state", "created", "message"),
     [
