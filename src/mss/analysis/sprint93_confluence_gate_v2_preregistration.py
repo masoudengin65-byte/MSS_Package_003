@@ -9,9 +9,9 @@ import re
 
 
 class Sprint93ConfluenceGateV2Preregistration:
-    VERSION = "MSS_SPRINT93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_PREREGISTRATION_V2"
-    EXECUTION_ID = "MSS_93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_V2"
-    BASELINE_COMMIT = "0e643dad70f94abbd0cad13af0291af2c1631004"
+    VERSION = "MSS_SPRINT93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_PREREGISTRATION_V3"
+    EXECUTION_ID = "MSS_93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_V3"
+    BASELINE_COMMIT = "fcad91029799a4cd5fdee1fe130f58334cf63452"
     PROTOCOL_STATE = "BLOCKED_PENDING_PAIRED_EXECUTION_FREEZE"
     INVALID_V1_BOUNDARY = "2026-08-23T20:15:00Z"
     BOOTSTRAP_SEED = 9320260825
@@ -105,7 +105,7 @@ class Sprint93ConfluenceGateV2Preregistration:
         ("src/mss/analysis/setup_scoring_engine.py", "0fcbc17e68f0c4d1ea4c72ae494a0b3ab6553f45f62ad72a1457fe8066a3f69a"),
         ("src/mss/analysis/shadow_risk_calculator.py", "7b684367217f3cab31c138287b6c79a1727d7e5dfe10f56b6b644137fe025b79"),
         ("src/mss/analysis/shadow_trade_engine.py", "b96a9bb797d1d4ab9ce9ae5cd68e81a1eca510c342cf290bb6060785f0b98a3c"),
-        ("src/mss/analysis/shadow_trade_journal.py", "f366f8744981f8ecaa339fee70f4dfeae36fc70a592e223c37db0a6f8cf39b08"),
+        ("src/mss/analysis/shadow_trade_journal.py", "0d62760918b75c1f11391fc4cf28c64f08e1ea14c810f8759105c952503b8171"),
         ("src/mss/analysis/shadow_trade_valuation.py", "a8d3359e051c32a5eb515fa75468c823237813349935eebfe410fbf214f100d3"),
         ("src/mss/analysis/smart_money_pipeline.py", "704ecd5bd41073821e4697142af649a21016a7e9dfdfd0072c18d80173bab4c0"),
         ("src/mss/analysis/structure_engine.py", "ba854bc379dd63060aee7fb7f8a67e7034f57b7413074a9233527ba5a5ccc272"),
@@ -468,6 +468,14 @@ class Sprint93ConfluenceGateV2Preregistration:
                 "v1_authorizes_eligible_forward_data": False,
                 "candles_at_or_before_invalid_v1_boundary_eligible": False,
                 "candles_collected_before_activation_manifest_eligible": False,
+            },
+            "v2_supersession": {
+                "superseded_schema_version": "MSS_SPRINT93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_PREREGISTRATION_V2",
+                "superseded_execution_id": "MSS_93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_V2",
+                "supersession_reason": "OUTCOME_BLIND_SHARED_JOURNAL_SAFETY_HARDENING_BEFORE_ACTIVATION",
+                "v2_authorizes_eligible_forward_data": False,
+                "forward_outcomes_observed_before_v3_freeze": False,
+                "candles_collected_before_v3_activation_manifest_eligible": False,
             },
             "activation": {
                 "forward_data_eligible": False,

@@ -19,7 +19,7 @@ from mss.analysis.sprint93_confluence_gate_v2_preregistration import (
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER = ROOT / "integration_tests/run_sprint93_2a_confluence_gate_v2_preregistration.py"
-REPORT = ROOT / "reports/MSS_Sprint93_2A_Confluence_Gate_V2_Preregistration.json"
+REPORT = ROOT / "reports/MSS_Sprint93_2A_Confluence_Gate_V2_Preregistration_V3.json"
 SPEC = importlib.util.spec_from_file_location("sprint93_2a_preregistration_runner", RUNNER)
 assert SPEC is not None and SPEC.loader is not None
 R = importlib.util.module_from_spec(SPEC)
@@ -148,13 +148,21 @@ def validate_activation(
     return C.validate_activation_manifest(manifest, **arguments)
 
 
-def test_v1_is_superseded_and_inert():
+def test_prior_versions_are_superseded_and_inert():
     report = build()
     supersession = report["v1_supersession"]
-    assert report["schema_version"].endswith("_V2")
-    assert report["execution_id"].endswith("_V2")
+    assert report["schema_version"].endswith("_V3")
+    assert report["execution_id"].endswith("_V3")
     assert supersession["v1_authorizes_eligible_forward_data"] is False
     assert supersession["candles_at_or_before_invalid_v1_boundary_eligible"] is False
+    assert report["v2_supersession"] == {
+        "superseded_schema_version": "MSS_SPRINT93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_PREREGISTRATION_V2",
+        "superseded_execution_id": "MSS_93_2A_CONFLUENCE_GATE_V2_FORWARD_SHADOW_V2",
+        "supersession_reason": "OUTCOME_BLIND_SHARED_JOURNAL_SAFETY_HARDENING_BEFORE_ACTIVATION",
+        "v2_authorizes_eligible_forward_data": False,
+        "forward_outcomes_observed_before_v3_freeze": False,
+        "candles_collected_before_v3_activation_manifest_eligible": False,
+    }
 
 
 def test_current_activation_remains_blocked_false_and_null():
@@ -170,13 +178,13 @@ def test_current_activation_remains_blocked_false_and_null():
 
 def test_full_baseline_commit_is_exactly_resolved_and_bound():
     resolved = subprocess.run(
-        ["git", "rev-parse", "0e643da^{commit}"],
+        ["git", "rev-parse", "fcad910^{commit}"],
         cwd=ROOT,
         check=True,
         text=True,
         stdout=subprocess.PIPE,
     ).stdout.strip()
-    assert C.BASELINE_COMMIT == resolved == "0e643dad70f94abbd0cad13af0291af2c1631004"
+    assert C.BASELINE_COMMIT == resolved == "fcad91029799a4cd5fdee1fe130f58334cf63452"
     assert len(C.BASELINE_COMMIT) == 40
     with pytest.raises(RuntimeError):
         C().build(baseline_commit="0e643da", component_identity=baseline_identity())

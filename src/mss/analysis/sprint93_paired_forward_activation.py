@@ -279,7 +279,9 @@ def execution_file_paths(
 
     repository_root = Path(repository_root).resolve()
     commit_sha = _resolve_commit(repository_root, commit_sha)
-    pending = list(EXECUTION_ROOT_PATHS)
+    pending = sorted(
+        set(EXECUTION_ROOT_PATHS).union(Preregistration.STRATEGY_COMPONENT_ROOTS)
+    )
     found: set[str] = set()
     while pending:
         path = pending.pop()
@@ -301,6 +303,17 @@ def execution_file_paths(
     if not frozen_strategy_paths.issubset(found):
         missing = tuple(sorted(frozen_strategy_paths - found))
         raise RuntimeError(f"activation closure omitted frozen strategy files: {missing}")
+    observed_strategy_identity = tuple(
+        (
+            path,
+            hashlib.sha256(_git_blob(repository_root, commit_sha, path)).hexdigest(),
+        )
+        for path in Preregistration.REQUIRED_STRATEGY_COMPONENT_FILES
+    )
+    if observed_strategy_identity != Preregistration.EXPECTED_STRATEGY_COMPONENT_IDENTITY:
+        raise RuntimeError(
+            "activation strategy-component identity differs from the frozen contract"
+        )
     return tuple(sorted(found))
 
 
