@@ -439,6 +439,11 @@ def update_virtual_trades(args: argparse.Namespace) -> None:
     collector = _collector(args)
     pair_key = _pair_key(args)
     snapshot = _capture_for_collector(collector, args.canonical_symbol)
+    authority = snapshot.time_authority()
+    boundary_authority = collector.record_timebox_boundary_authority_if_due(
+        pair_key=pair_key,
+        time_authority=authority,
+    )
     entry = collector._event_for(pair_key, "entry")["payload"]["branches"]
     results: dict[str, object] = {}
     for branch in ("baseline", "candidate"):
@@ -451,7 +456,7 @@ def update_virtual_trades(args: argparse.Namespace) -> None:
             bid=snapshot.bid,
             ask=snapshot.ask,
             broker_epoch=snapshot.tick_epoch,
-            time_authority=snapshot.time_authority(),
+            time_authority=authority,
         )
         results[branch] = {
             "action": update.action,
@@ -467,6 +472,11 @@ def update_virtual_trades(args: argparse.Namespace) -> None:
                 "result": "SPRINT93_2B_VIRTUAL_TRADES_UPDATED",
                 "pair_key": list(pair_key),
                 "branches": results,
+                "boundary_authority_appended": (
+                    boundary_authority.appended
+                    if boundary_authority is not None
+                    else None
+                ),
                 "real_order_send_allowed": False,
                 "production_execution_enabled": False,
             },
@@ -481,7 +491,7 @@ def timebox_close(args: argparse.Namespace) -> None:
     snapshot = _capture_for_collector(collector, args.canonical_symbol)
     authority = snapshot.time_authority()
     boundary_offset, _boundary_event_sha256 = (
-        collector.timebox_boundary_evidence()
+        collector.timebox_boundary_evidence(pair_key=pair_key)
     )
     end_epoch = int(
         datetime.fromisoformat(

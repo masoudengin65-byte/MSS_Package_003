@@ -101,6 +101,7 @@ EVIDENCE_EVENT_TYPES = MappingProxyType({
     "decision": "SPRINT93_2B_PAIRED_DECISION",
     "entry_input": "SPRINT93_2B_PAIRED_ENTRY_INPUT",
     "entry": "SPRINT93_2B_PAIRED_ENTRY_OUTCOME",
+    "boundary_authority": "SPRINT93_2B_TIMEBOX_BOUNDARY_AUTHORITY",
     "settlement": "SPRINT93_2B_PAIRED_SETTLEMENT",
     "terminal_baseline": "SPRINT93_2B_BASELINE_TERMINAL",
     "terminal_candidate": "SPRINT93_2B_CANDIDATE_TERMINAL",
@@ -1360,42 +1361,103 @@ class PairedForwardEvidenceCollector:
             settled_pair_keys=tuple(sorted(settlements)),
         )
 
-    def timebox_boundary_evidence(self) -> tuple[int, str]:
-        """Return the broker offset proven inside the final eligible M15 bar."""
+    def record_timebox_boundary_authority_if_due(
+        self,
+        *,
+        pair_key: tuple[str, str],
+        time_authority: Mapping[str, object],
+    ) -> EvidenceWriteResult | None:
+        """Persist one authoritative observation while polling the final M15 bar."""
 
+        self._event_for(pair_key, "entry")
+        offset = _time_authority_offset(time_authority)
+        observation = time_authority["observation"]
+        current_bar_epoch = int(
+            observation["mt5_raw_current_m15_bar_epoch"]
+        )
         end_epoch = _epoch_from_utc_z(
             self.activation.exclusive_45_day_end_utc, "exclusive end"
         )
         final_bar_utc_epoch = end_epoch - TIMEFRAME_SECONDS
-        candidates: list[tuple[int, int, str]] = []
-        for event in self._events():
-            payload = event.get("payload")
-            authority = (
-                payload.get("global_time_authority")
-                if isinstance(payload, Mapping)
-                else None
+        if current_bar_epoch - offset != final_bar_utc_epoch:
+            return None
+        phase = "boundary_authority"
+        event_id = _event_id(
+            manifest_sha256=self.activation.manifest_sha256,
+            pair_key=pair_key,
+            phase=phase,
+        )
+        with ShadowTradeJournal.exclusive_transaction(self.journal_path):
+            existing = self._phase_events().get((pair_key, phase))
+            if existing is not None:
+                return _write_result(existing, appended=False)
+            payload = {
+                "schema_version": VERSION,
+                "phase": phase,
+                "sprint93_2b_event_id": event_id,
+                "activation_manifest_sha256": self.activation.manifest_sha256,
+                "activation_merge_commit_sha": (
+                    self.activation.activation_merge_commit_sha
+                ),
+                "pair_key": list(pair_key),
+                "boundary_utc": self.activation.exclusive_45_day_end_utc,
+                "final_bar_utc_epoch": final_bar_utc_epoch,
+                "boundary_broker_offset_seconds": offset,
+                "global_time_authority": dict(time_authority),
+                "observed_at_utc": _render_utc_z(
+                    datetime.fromtimestamp(
+                        float(observation["utc_epoch_after_tick"]),
+                        timezone.utc,
+                    )
+                ),
+                "safety": {
+                    "shadow_only": True,
+                    "real_order_send_allowed": False,
+                    "order_check_allowed": False,
+                    "production_execution_enabled": False,
+                },
+            }
+            return _append_evidence_once_unlocked(
+                journal_path=self.journal_path,
+                event_type=EVIDENCE_EVENT_TYPES[phase],
+                event_id=event_id,
+                broker_epoch=current_bar_epoch,
+                payload=payload,
             )
-            if not isinstance(authority, Mapping):
-                continue
-            offset = _time_authority_offset(authority, require_current=False)
-            observation = authority["observation"]
-            current_bar_epoch = int(
-                observation["mt5_raw_current_m15_bar_epoch"]
-            )
-            if current_bar_epoch - offset != final_bar_utc_epoch:
-                continue
-            candidates.append(
-                (
-                    int(event["event_sequence"]),
-                    offset,
-                    str(event["event_sha256"]),
-                )
-            )
-        if not candidates:
+
+    def timebox_boundary_evidence(
+        self, *, pair_key: tuple[str, str]
+    ) -> tuple[int, str]:
+        """Return the pair-bound offset frozen during final-bar polling."""
+
+        event = self._phase_events().get((pair_key, "boundary_authority"))
+        if event is None:
             raise RuntimeError(
-                "timebox requires broker-time evidence from the final eligible M15 bar"
+                "timebox requires final-bar boundary authority from live polling"
             )
-        _sequence, offset, event_sha256 = max(candidates)
+        payload = event["payload"]
+        authority = payload.get("global_time_authority")
+        if not isinstance(authority, Mapping):
+            raise RuntimeError("timebox boundary authority evidence is malformed")
+        offset = _time_authority_offset(authority, require_current=False)
+        end_epoch = _epoch_from_utc_z(
+            self.activation.exclusive_45_day_end_utc, "exclusive end"
+        )
+        final_bar_utc_epoch = end_epoch - TIMEFRAME_SECONDS
+        observation = authority["observation"]
+        current_bar_epoch = int(
+            observation["mt5_raw_current_m15_bar_epoch"]
+        )
+        if (
+            current_bar_epoch - offset != final_bar_utc_epoch
+            or int(event["broker_epoch"]) != current_bar_epoch
+            or payload.get("final_bar_utc_epoch") != final_bar_utc_epoch
+            or payload.get("boundary_broker_offset_seconds") != offset
+            or payload.get("boundary_utc")
+            != self.activation.exclusive_45_day_end_utc
+        ):
+            raise RuntimeError("timebox boundary authority binding mismatch")
+        event_sha256 = str(event["event_sha256"])
         Preregistration._require_sha256(
             event_sha256, "timebox boundary authority event"
         )
@@ -1559,11 +1621,11 @@ class PairedForwardEvidenceCollector:
             expected_tick_epoch=snapshot.tick_epoch,
         )
         entry_observation_delay = snapshot.tick_epoch - snapshot.current_bar_epoch
-        acquisition_midpoint = float(
-            time_authority["observation"]["utc_midpoint_epoch"]
+        acquisition_completed_at = float(
+            time_authority["observation"]["utc_epoch_after_tick"]
         )
         acquisition_observation_delay = (
-            acquisition_midpoint + offset - snapshot.current_bar_epoch
+            acquisition_completed_at + offset - snapshot.current_bar_epoch
         )
         if not (
             0
@@ -1850,7 +1912,7 @@ class PairedForwardEvidenceCollector:
                     )
                     authority_current = False
             else:
-                _time_authority_offset(
+                offset = _time_authority_offset(
                     time_authority,
                     expected_current_bar_epoch=entry_broker_epoch,
                     require_current=False,
@@ -1861,13 +1923,14 @@ class PairedForwardEvidenceCollector:
                     raise RuntimeError(
                         "entry must use the same frozen time-authority snapshot as decision"
                     )
-                try:
-                    _time_authority_offset(
-                        time_authority,
-                        expected_current_bar_epoch=entry_broker_epoch,
-                    )
-                    authority_current = True
-                except _StaleTimeAuthority:
+                restart_delay = (
+                    _utc_now_epoch() + offset - entry_broker_epoch
+                )
+                if not (
+                    0.0
+                    <= restart_delay
+                    <= float(MAX_ENTRY_OBSERVATION_DELAY_SECONDS)
+                ):
                     # The timely decision remains auditable, but no virtual entry may
                     # be reconstructed after its next-bar window has passed.
                     baseline_outcome = BranchEntryOutcome(
@@ -1898,6 +1961,11 @@ class PairedForwardEvidenceCollector:
                         baseline_position=None,
                         candidate_position=None,
                     )
+                _time_authority_offset(
+                    time_authority,
+                    expected_current_bar_epoch=entry_broker_epoch,
+                )
+                authority_current = True
 
             def activate_branch(branch: str) -> dict[str, object]:
                 branch_payload = branches[branch]
@@ -2873,7 +2941,7 @@ class PairedForwardEvidenceCollector:
                 close_broker_epoch = int(terminal_input["broker_epoch"])
                 time_authority = frozen_input["global_time_authority"]
                 boundary_offset, boundary_event_sha256 = (
-                    self.timebox_boundary_evidence()
+                    self.timebox_boundary_evidence(pair_key=pair_key)
                 )
                 if (
                     frozen_input.get("boundary_broker_offset_seconds")
@@ -2903,7 +2971,7 @@ class PairedForwardEvidenceCollector:
             else:
                 _time_authority_offset(time_authority)
                 boundary_offset, boundary_event_sha256 = (
-                    self.timebox_boundary_evidence()
+                    self.timebox_boundary_evidence(pair_key=pair_key)
                 )
                 close_broker_epoch = int(end.timestamp()) + boundary_offset
                 _time_authority_offset(

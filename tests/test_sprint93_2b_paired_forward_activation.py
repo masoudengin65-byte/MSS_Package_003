@@ -783,6 +783,29 @@ def test_quiet_market_cannot_hide_late_acquisition_behind_early_tick(tmp_path):
     assert not (tmp_path / "paired.jsonl").exists()
 
 
+def test_acquisition_must_finish_before_the_two_second_entry_deadline(tmp_path):
+    global TEST_NOW_EPOCH
+    value, baseline, candidate = collector(tmp_path)
+    signal_epoch = utc_epoch(START_UTC)
+    current_bar_epoch = signal_epoch + A.TIMEFRAME_SECONDS
+    authority = A.GlobalTimeAuthority().build(
+        utc_epoch_before_tick=float(current_bar_epoch),
+        utc_epoch_after_tick=float(current_bar_epoch + 4),
+        tick_epoch=current_bar_epoch + 1,
+        current_bar_epoch=current_bar_epoch,
+    )
+    TEST_NOW_EPOCH = float(current_bar_epoch + 4)
+    with pytest.raises(RuntimeError, match="next-candle entry window"):
+        value.collect_decision(
+            snapshot=live_snapshot(
+                signal_epoch=signal_epoch,
+                authority=authority,
+            )
+        )
+    assert baseline.calls == candidate.calls == 0
+    assert not (tmp_path / "paired.jsonl").exists()
+
+
 def test_frozen_symbol_and_event_mappings_reject_runtime_mutation():
     with pytest.raises(TypeError):
         A.SYMBOL_MAP["BTCUSD"] = "FORGED"
@@ -832,6 +855,29 @@ def test_stale_matching_entry_authority_records_restart_no_trade(tmp_path):
     assert event["payload"]["branches"]["baseline"]["reason"] == (
         "RESTART_AFTER_ENTRY_WINDOW"
     )
+
+
+def test_three_second_restart_without_frozen_intent_records_no_trade(tmp_path):
+    global TEST_NOW_EPOCH
+    value, _baseline, _candidate = collector(tmp_path)
+    decision = collect_start(value)
+    frozen = value._event_for(decision.pair_key, "decision")["payload"][
+        "global_time_authority"
+    ]
+    entry_broker_epoch = utc_epoch(START_UTC) + A.TIMEFRAME_SECONDS
+    TEST_NOW_EPOCH = float(entry_broker_epoch + 3)
+    result = value.open_virtual_entries(
+        pair_key=decision.pair_key,
+        balance=10_000.0,
+        point=0.01,
+        time_authority=frozen,
+    )
+    assert result.baseline_position is None
+    assert result.candidate_position is None
+    assert value._phase_events().get((decision.pair_key, "entry_input")) is None
+    branches = value._event_for(decision.pair_key, "entry")["payload"]["branches"]
+    assert branches["baseline"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
+    assert branches["candidate"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
 
 
 def test_stale_restart_completes_both_branches_from_frozen_entry_intent(
@@ -1082,15 +1128,20 @@ def test_journaled_timebox_accepts_later_bar_but_closes_at_exact_boundary(
         ),
     )
     close_epoch = utc_epoch(END_UTC)
-    value.collect_decision(
-        snapshot=live_snapshot(
-            signal_epoch=close_epoch - 2 * A.TIMEFRAME_SECONDS,
-            authority=time_authority(
-                current_bar_epoch=close_epoch - A.TIMEFRAME_SECONDS,
-                tick_epoch=close_epoch - A.TIMEFRAME_SECONDS + 1,
-            ),
-        )
+    boundary_authority = time_authority(
+        current_bar_epoch=close_epoch - A.TIMEFRAME_SECONDS,
+        tick_epoch=close_epoch - A.TIMEFRAME_SECONDS + 1,
     )
+    boundary_write = value.record_timebox_boundary_authority_if_due(
+        pair_key=decision.pair_key,
+        time_authority=boundary_authority,
+    )
+    assert boundary_write is not None and boundary_write.appended is True
+    repeated_boundary = value.record_timebox_boundary_authority_if_due(
+        pair_key=decision.pair_key,
+        time_authority=boundary_authority,
+    )
+    assert repeated_boundary is not None and repeated_boundary.appended is False
     result = value.timebox_close_virtual_trade(
         pair_key=decision.pair_key,
         branch="baseline",
@@ -1227,7 +1278,8 @@ def test_runner_selects_final_candle_with_boundary_not_delayed_dst_offset(
     class FakeCollector:
         activation = SimpleNamespace(exclusive_45_day_end_utc=END_UTC)
 
-        def timebox_boundary_evidence(self):
+        def timebox_boundary_evidence(self, *, pair_key):
+            assert pair_key == ("BTCUSD", START_UTC)
             return 0, "d" * 64
 
         def _event_for(self, _pair_key, phase):
@@ -1293,6 +1345,48 @@ def test_runner_selects_final_candle_with_boundary_not_delayed_dst_offset(
     assert observed["final_time"] == close_epoch - A.TIMEFRAME_SECONDS
     output = json.loads(capsys.readouterr().out)
     assert output["result"] == "SPRINT93_2B_TIMEBOX_CLOSE_COMPLETE"
+
+
+def test_update_runner_persists_boundary_authority_before_branch_polling(
+    monkeypatch, capsys
+):
+    order: list[str] = []
+    authority = time_authority()
+
+    class FakeCollector:
+        def record_timebox_boundary_authority_if_due(self, **_kwargs):
+            order.append("boundary")
+            return SimpleNamespace(appended=True)
+
+        def _event_for(self, _pair_key, phase):
+            order.append(phase)
+            return {
+                "payload": {
+                    "branches": {
+                        "baseline": {"is_actual_trade": False},
+                        "candidate": {"is_actual_trade": False},
+                    }
+                }
+            }
+
+    snapshot = SimpleNamespace(
+        time_authority=lambda: authority,
+        bid=100.0,
+        ask=100.5,
+        tick_epoch=int(authority["observation"]["mt5_raw_tick_epoch"]),
+    )
+    fake = FakeCollector()
+    monkeypatch.setattr(R, "_collector", lambda _args: fake)
+    monkeypatch.setattr(R, "_capture_for_collector", lambda *_args: snapshot)
+    R.update_virtual_trades(
+        SimpleNamespace(
+            canonical_symbol="BTCUSD",
+            decision_candle_open_utc=START_UTC,
+        )
+    )
+    assert order[:2] == ["boundary", "entry"]
+    output = json.loads(capsys.readouterr().out)
+    assert output["boundary_authority_appended"] is True
 
 
 def test_runner_normalizes_authoritative_github_pr_metadata(monkeypatch):
