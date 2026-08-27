@@ -1,4 +1,4 @@
-"""Write or verify canonical Sprint 93.2A V2 preregistration."""
+"""Write or verify canonical Sprint 93.2A V3 preregistration."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from mss.analysis.sprint93_confluence_gate_v2_preregistration import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "reports/MSS_Sprint93_2A_Confluence_Gate_V2_Preregistration.json"
+OUTPUT = ROOT / "reports/MSS_Sprint93_2A_Confluence_Gate_V2_Preregistration_V3.json"
 
 
 def git_bytes(path: str, *, commit: str) -> bytes:
