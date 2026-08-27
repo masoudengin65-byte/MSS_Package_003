@@ -8,7 +8,7 @@ import json
 import os
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 if os.name == "nt":
     import msvcrt
@@ -282,6 +282,7 @@ class ShadowTradeJournal:
         position_id: str,
         broker_epoch: int,
         payload: dict[str, Any],
+        pre_write_check: Callable[[], None] | None = None,
     ) -> dict[str, Any]:
 
         path = Path(path)
@@ -386,6 +387,8 @@ class ShadowTradeJournal:
             encoding="utf-8",
             newline="\n",
         ) as handle:
+            if pre_write_check is not None:
+                pre_write_check()
             handle.write(
                 line
             )
