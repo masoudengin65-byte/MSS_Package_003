@@ -823,8 +823,10 @@ def _time_authority_offset(
     *,
     expected_current_bar_epoch: int | None = None,
     minimum_current_bar_epoch: int | None = None,
+    minimum_normalized_current_bar_utc_epoch: int | None = None,
     expected_tick_epoch: int | None = None,
     minimum_tick_epoch: int | None = None,
+    minimum_normalized_tick_utc_epoch: int | None = None,
     require_current: bool = True,
 ) -> int:
     try:
@@ -913,10 +915,25 @@ def _time_authority_offset(
         and current_bar_epoch < int(minimum_current_bar_epoch)
     ):
         raise RuntimeError("time authority current bar precedes the required boundary")
+    if (
+        minimum_normalized_current_bar_utc_epoch is not None
+        and current_bar_epoch - offset
+        < int(minimum_normalized_current_bar_utc_epoch)
+    ):
+        raise RuntimeError(
+            "time authority normalized current bar precedes the required UTC boundary"
+        )
     if expected_tick_epoch is not None and tick_epoch != int(expected_tick_epoch):
         raise RuntimeError("time authority is not bound to the supplied settlement tick")
     if minimum_tick_epoch is not None and tick_epoch < int(minimum_tick_epoch):
         raise RuntimeError("time authority tick precedes the required boundary")
+    if (
+        minimum_normalized_tick_utc_epoch is not None
+        and tick_epoch - offset < int(minimum_normalized_tick_utc_epoch)
+    ):
+        raise RuntimeError(
+            "time authority normalized tick precedes the required UTC boundary"
+        )
     return offset
 
 
@@ -1343,6 +1360,47 @@ class PairedForwardEvidenceCollector:
             settled_pair_keys=tuple(sorted(settlements)),
         )
 
+    def timebox_boundary_evidence(self) -> tuple[int, str]:
+        """Return the broker offset proven inside the final eligible M15 bar."""
+
+        end_epoch = _epoch_from_utc_z(
+            self.activation.exclusive_45_day_end_utc, "exclusive end"
+        )
+        final_bar_utc_epoch = end_epoch - TIMEFRAME_SECONDS
+        candidates: list[tuple[int, int, str]] = []
+        for event in self._events():
+            payload = event.get("payload")
+            authority = (
+                payload.get("global_time_authority")
+                if isinstance(payload, Mapping)
+                else None
+            )
+            if not isinstance(authority, Mapping):
+                continue
+            offset = _time_authority_offset(authority, require_current=False)
+            observation = authority["observation"]
+            current_bar_epoch = int(
+                observation["mt5_raw_current_m15_bar_epoch"]
+            )
+            if current_bar_epoch - offset != final_bar_utc_epoch:
+                continue
+            candidates.append(
+                (
+                    int(event["event_sequence"]),
+                    offset,
+                    str(event["event_sha256"]),
+                )
+            )
+        if not candidates:
+            raise RuntimeError(
+                "timebox requires broker-time evidence from the final eligible M15 bar"
+            )
+        _sequence, offset, event_sha256 = max(candidates)
+        Preregistration._require_sha256(
+            event_sha256, "timebox boundary authority event"
+        )
+        return offset, event_sha256
+
     def resume_pending_entry(
         self, *, canonical_symbol: str
     ) -> PairedEntryResult | None:
@@ -1501,10 +1559,19 @@ class PairedForwardEvidenceCollector:
             expected_tick_epoch=snapshot.tick_epoch,
         )
         entry_observation_delay = snapshot.tick_epoch - snapshot.current_bar_epoch
+        acquisition_midpoint = float(
+            time_authority["observation"]["utc_midpoint_epoch"]
+        )
+        acquisition_observation_delay = (
+            acquisition_midpoint + offset - snapshot.current_bar_epoch
+        )
         if not (
             0
             <= entry_observation_delay
             <= MAX_ENTRY_OBSERVATION_DELAY_SECONDS
+            and 0.0
+            <= acquisition_observation_delay
+            <= float(MAX_ENTRY_OBSERVATION_DELAY_SECONDS)
         ):
             raise RuntimeError(
                 "live decision observation is outside the frozen next-candle "
@@ -1761,6 +1828,7 @@ class PairedForwardEvidenceCollector:
             branches = decision_payload["branches"]
 
             entry_input_event = self._phase_events().get((pair_key, "entry_input"))
+            frozen_entry_intent_exists = entry_input_event is not None
             if entry_input_event is not None:
                 frozen_input = entry_input_event["payload"]
                 balance = float(frozen_input["balance"])
@@ -1971,7 +2039,7 @@ class PairedForwardEvidenceCollector:
                         position,
                         entry_identity,
                     )
-                if not authority_current:
+                if not authority_current and not frozen_entry_intent_exists:
                     return (
                         BranchEntryOutcome(False, "RESTART_AFTER_ENTRY_WINDOW"),
                         None,
@@ -2209,12 +2277,26 @@ class PairedForwardEvidenceCollector:
         authority = terminal_input["global_time_authority"]
         timebox = close_payload.get("exit_reason") == "TIMEBOX_MTM_CLOSE"
         if timebox:
-            offset = _time_authority_offset(
+            end_epoch = _epoch_from_utc_z(
+                self.activation.exclusive_45_day_end_utc,
+                "exclusive end",
+            )
+            _time_authority_offset(
                 authority,
-                minimum_current_bar_epoch=broker_epoch,
-                minimum_tick_epoch=broker_epoch,
+                minimum_normalized_current_bar_utc_epoch=end_epoch,
+                minimum_normalized_tick_utc_epoch=end_epoch,
                 require_current=False,
             )
+            boundary_offset = terminal_input.get(
+                "boundary_broker_offset_seconds"
+            )
+            if isinstance(boundary_offset, bool) or not isinstance(
+                boundary_offset, int
+            ):
+                raise RuntimeError("timebox boundary broker offset is invalid")
+            if broker_epoch - boundary_offset != end_epoch:
+                raise RuntimeError("timebox close is not bound to the UTC boundary")
+            offset = boundary_offset
         else:
             offset = _time_authority_offset(
                 authority,
@@ -2638,13 +2720,17 @@ class PairedForwardEvidenceCollector:
                 "timebox valuation must use the final eligible completed M15 candle"
             )
 
-        offset = _time_authority_offset(
+        _time_authority_offset(
             time_authority,
-            minimum_current_bar_epoch=int(close_broker_epoch),
-            minimum_tick_epoch=int(close_broker_epoch),
+            minimum_normalized_current_bar_utc_epoch=int(end.timestamp()),
+            minimum_normalized_tick_utc_epoch=int(end.timestamp()),
         )
-        if int(close_broker_epoch) - offset != int(end.timestamp()):
-            raise RuntimeError("timebox close must bind the exclusive UTC end")
+        boundary_offset = int(close_broker_epoch) - int(end.timestamp())
+        if (
+            boundary_offset % GlobalTimeAuthority.OFFSET_GRID_SECONDS
+            or abs(boundary_offset) > GlobalTimeAuthority.MAX_ABS_OFFSET_SECONDS
+        ):
+            raise RuntimeError("timebox close has an invalid boundary broker offset")
 
         close_price = VirtualPositionEngine.market_close_price(
             direction=position.direction,
@@ -2786,10 +2872,22 @@ class PairedForwardEvidenceCollector:
                     raise RuntimeError(f"{branch} has a non-timebox terminal input")
                 close_broker_epoch = int(terminal_input["broker_epoch"])
                 time_authority = frozen_input["global_time_authority"]
+                boundary_offset, boundary_event_sha256 = (
+                    self.timebox_boundary_evidence()
+                )
+                if (
+                    frozen_input.get("boundary_broker_offset_seconds")
+                    != boundary_offset
+                    or frozen_input.get("boundary_time_authority_event_sha256")
+                    != boundary_event_sha256
+                    or close_broker_epoch
+                    != int(end.timestamp()) + boundary_offset
+                ):
+                    raise RuntimeError("frozen timebox boundary evidence mismatch")
                 _time_authority_offset(
                     time_authority,
-                    minimum_current_bar_epoch=close_broker_epoch,
-                    minimum_tick_epoch=close_broker_epoch,
+                    minimum_normalized_current_bar_utc_epoch=int(end.timestamp()),
+                    minimum_normalized_tick_utc_epoch=int(end.timestamp()),
                     require_current=False,
                 )
                 final_snapshot = dict(frozen_input["final_completed_candle"])
@@ -2803,12 +2901,15 @@ class PairedForwardEvidenceCollector:
                 ask = float(frozen_input["ask"])
                 point = float(frozen_input["point"])
             else:
-                offset = _time_authority_offset(time_authority)
-                close_broker_epoch = int(end.timestamp()) + offset
+                _time_authority_offset(time_authority)
+                boundary_offset, boundary_event_sha256 = (
+                    self.timebox_boundary_evidence()
+                )
+                close_broker_epoch = int(end.timestamp()) + boundary_offset
                 _time_authority_offset(
                     time_authority,
-                    minimum_current_bar_epoch=close_broker_epoch,
-                    minimum_tick_epoch=close_broker_epoch,
+                    minimum_normalized_current_bar_utc_epoch=int(end.timestamp()),
+                    minimum_normalized_tick_utc_epoch=int(end.timestamp()),
                 )
                 expected_final_broker_epoch = (
                     close_broker_epoch - TIMEFRAME_SECONDS
@@ -2846,6 +2947,10 @@ class PairedForwardEvidenceCollector:
                         "point": float(point),
                         "final_completed_candle": final_snapshot,
                         "valuation_snapshot_sha256": snapshot_sha,
+                        "boundary_broker_offset_seconds": boundary_offset,
+                        "boundary_time_authority_event_sha256": (
+                            boundary_event_sha256
+                        ),
                         "global_time_authority": dict(time_authority),
                         "observed_at_utc": self.activation.exclusive_45_day_end_utc,
                     },

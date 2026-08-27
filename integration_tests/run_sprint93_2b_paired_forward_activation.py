@@ -480,13 +480,15 @@ def timebox_close(args: argparse.Namespace) -> None:
     pair_key = _pair_key(args)
     snapshot = _capture_for_collector(collector, args.canonical_symbol)
     authority = snapshot.time_authority()
-    offset = int(authority["observation"]["detected_broker_offset_seconds"])
+    boundary_offset, _boundary_event_sha256 = (
+        collector.timebox_boundary_evidence()
+    )
     end_epoch = int(
         datetime.fromisoformat(
             collector.activation.exclusive_45_day_end_utc.replace("Z", "+00:00")
         ).timestamp()
     )
-    final_broker_epoch = end_epoch + offset - 900
+    final_broker_epoch = end_epoch + boundary_offset - 900
     final_rows = [
         asdict(rate) for rate in snapshot.rates if rate.time == final_broker_epoch
     ]

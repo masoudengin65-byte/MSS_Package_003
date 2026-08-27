@@ -759,6 +759,30 @@ def test_late_live_observation_is_rejected_before_strategy_or_journal(tmp_path):
     assert not (tmp_path / "paired.jsonl").exists()
 
 
+def test_quiet_market_cannot_hide_late_acquisition_behind_early_tick(tmp_path):
+    global TEST_NOW_EPOCH
+    value, baseline, candidate = collector(tmp_path)
+    signal_epoch = utc_epoch(START_UTC)
+    current_bar_epoch = signal_epoch + A.TIMEFRAME_SECONDS
+    acquisition_midpoint = current_bar_epoch + 100.0
+    authority = A.GlobalTimeAuthority().build(
+        utc_epoch_before_tick=acquisition_midpoint - 0.05,
+        utc_epoch_after_tick=acquisition_midpoint + 0.05,
+        tick_epoch=current_bar_epoch + A.MAX_ENTRY_OBSERVATION_DELAY_SECONDS,
+        current_bar_epoch=current_bar_epoch,
+    )
+    TEST_NOW_EPOCH = acquisition_midpoint
+    with pytest.raises(RuntimeError, match="next-candle entry window"):
+        value.collect_decision(
+            snapshot=live_snapshot(
+                signal_epoch=signal_epoch,
+                authority=authority,
+            )
+        )
+    assert baseline.calls == candidate.calls == 0
+    assert not (tmp_path / "paired.jsonl").exists()
+
+
 def test_frozen_symbol_and_event_mappings_reject_runtime_mutation():
     with pytest.raises(TypeError):
         A.SYMBOL_MAP["BTCUSD"] = "FORGED"
@@ -808,6 +832,126 @@ def test_stale_matching_entry_authority_records_restart_no_trade(tmp_path):
     assert event["payload"]["branches"]["baseline"]["reason"] == (
         "RESTART_AFTER_ENTRY_WINDOW"
     )
+
+
+def test_stale_restart_completes_both_branches_from_frozen_entry_intent(
+    monkeypatch, tmp_path
+):
+    global TEST_NOW_EPOCH
+
+    class TradeEngine:
+        def evaluate(self, *, symbol, rates, current_bar_epoch):
+            signal = A.FrozenShadowSignal(
+                valid=True,
+                action="PENDING_NEXT_CANDLE_ENTRY",
+                reason="FROZEN_BOS_SIGNAL_ARMED",
+                symbol=symbol,
+                timeframe=A.TIMEFRAME,
+                direction="BUY",
+                signal_bar_epoch=current_bar_epoch - A.TIMEFRAME_SECONDS,
+                expected_entry_bar_epoch=current_bar_epoch,
+                stop_loss=90.0,
+            )
+            return SimpleNamespace(
+                valid=True,
+                reason="FROZEN_BOS_SIGNAL_ARMED",
+                signal_bar_epoch=current_bar_epoch - A.TIMEFRAME_SECONDS,
+                completed_candle_count=len(rates) - 1,
+                frozen_signal=signal,
+                pipeline_result=SimpleNamespace(
+                    valid=True,
+                    bos_detected=True,
+                    bos_direction="BULLISH",
+                    confluence_valid=True,
+                    confluence_signal="BUY",
+                    confluence_gate_rejected=False,
+                ),
+            )
+
+    value = A.PairedForwardEvidenceCollector(
+        activation=activation(),
+        journal_path=tmp_path / "paired.jsonl",
+        baseline_engine=TradeEngine(),
+        candidate_engine=TradeEngine(),
+    )
+    decision = collect_start(value)
+    frozen_authority = value._event_for(
+        decision.pair_key, "decision"
+    )["payload"]["global_time_authority"]
+
+    def append_open(**kwargs):
+        position = VirtualPositionEngine.open_position(
+            position_id=kwargs["position_id"],
+            symbol=kwargs["symbol"],
+            direction=kwargs["direction"],
+            volume=0.01,
+            entry_price=kwargs["entry_price"],
+            stop_loss=kwargs["stop_loss"],
+            take_profit=kwargs["take_profit"],
+            broker_epoch=kwargs["broker_epoch"],
+        )
+        A.ShadowTradeJournal.append_event(
+            path=kwargs["journal_path"],
+            event_type="POSITION_OPENED",
+            position_id=kwargs["position_id"],
+            broker_epoch=kwargs["broker_epoch"],
+            payload={
+                "symbol": position.symbol,
+                "direction": position.direction,
+                "volume": position.volume,
+                "entry_price": position.entry_price,
+                "stop_loss": position.stop_loss,
+                "take_profit": position.take_profit,
+                "initial_risk_price": position.initial_risk_price,
+            },
+        )
+        return SimpleNamespace(
+            valid=True,
+            reason="VIRTUAL_POSITION_OPENED",
+            position=position,
+            real_order_send_allowed=False,
+            order_send_called=False,
+            order_check_called=False,
+        )
+
+    def crash_after_baseline(**kwargs):
+        if "candidate" in kwargs["position_id"]:
+            raise RuntimeError("simulated crash after baseline open")
+        return append_open(**kwargs)
+
+    monkeypatch.setattr(A.ShadowTradeEngine, "open_trade", crash_after_baseline)
+    with pytest.raises(RuntimeError, match="simulated crash"):
+        value.open_virtual_entries(
+            pair_key=decision.pair_key,
+            balance=10_000.0,
+            point=0.01,
+            time_authority=frozen_authority,
+        )
+    assert value._phase_events().get((decision.pair_key, "entry_input"))
+    assert value._recover_position(decision.pair_key, "baseline") is not None
+    assert value._recover_position(decision.pair_key, "candidate") is None
+
+    TEST_NOW_EPOCH += A.GlobalTimeAuthority.MAX_TICK_RESIDUAL_SECONDS + 1
+    restarted = A.PairedForwardEvidenceCollector(
+        activation=activation(),
+        journal_path=tmp_path / "paired.jsonl",
+        baseline_engine=TradeEngine(),
+        candidate_engine=TradeEngine(),
+    )
+    monkeypatch.setattr(A.ShadowTradeEngine, "open_trade", append_open)
+    result = restarted.open_virtual_entries(
+        pair_key=decision.pair_key,
+        balance=1.0,
+        point=1.0,
+        time_authority=frozen_authority,
+    )
+    assert result.baseline_position is not None
+    assert result.candidate_position is not None
+    branches = restarted._event_for(decision.pair_key, "entry")["payload"][
+        "branches"
+    ]
+    assert branches["baseline"]["is_actual_trade"] is True
+    assert branches["candidate"]["is_actual_trade"] is True
 
 
 def test_timebox_accepts_first_tick_after_boundary(monkeypatch, tmp_path):
@@ -938,6 +1082,15 @@ def test_journaled_timebox_accepts_later_bar_but_closes_at_exact_boundary(
         ),
     )
     close_epoch = utc_epoch(END_UTC)
+    value.collect_decision(
+        snapshot=live_snapshot(
+            signal_epoch=close_epoch - 2 * A.TIMEFRAME_SECONDS,
+            authority=time_authority(
+                current_bar_epoch=close_epoch - A.TIMEFRAME_SECONDS,
+                tick_epoch=close_epoch - A.TIMEFRAME_SECONDS + 1,
+            ),
+        )
+    )
     result = value.timebox_close_virtual_trade(
         pair_key=decision.pair_key,
         branch="baseline",
@@ -962,6 +1115,11 @@ def test_journaled_timebox_accepts_later_bar_but_closes_at_exact_boundary(
         decision.pair_key, "terminal_input_baseline"
     )
     assert terminal_input["broker_epoch"] == close_epoch
+    assert terminal_input["payload"]["boundary_broker_offset_seconds"] == 0
+    A.Preregistration._require_sha256(
+        terminal_input["payload"]["boundary_time_authority_event_sha256"],
+        "timebox boundary authority event",
+    )
 
 
 def test_ordinary_virtual_update_is_blocked_at_exclusive_end(tmp_path):
@@ -1058,6 +1216,83 @@ def test_runner_resumes_frozen_pending_entry_before_live_recapture(
     assert output["entry_source"] == "FROZEN_DECISION_EVIDENCE"
     assert output["live_mt5_recaptured"] is False
     assert value.recover().pending_entry_pair_keys == ()
+
+
+def test_runner_selects_final_candle_with_boundary_not_delayed_dst_offset(
+    monkeypatch, capsys
+):
+    close_epoch = utc_epoch(END_UTC)
+    observed: dict[str, object] = {}
+
+    class FakeCollector:
+        activation = SimpleNamespace(exclusive_45_day_end_utc=END_UTC)
+
+        def timebox_boundary_evidence(self):
+            return 0, "d" * 64
+
+        def _event_for(self, _pair_key, phase):
+            assert phase == "entry"
+            return {
+                "payload": {
+                    "branches": {
+                        "baseline": {"is_actual_trade": True},
+                        "candidate": {"is_actual_trade": False},
+                    }
+                }
+            }
+
+        def timebox_close_virtual_trade(self, **kwargs):
+            observed["final_time"] = kwargs["final_completed_candle"]["time"]
+            return SimpleNamespace(
+                settlement=SimpleNamespace(net_r=0.0),
+                terminal_write=None,
+            )
+
+    delayed_offset = 3600
+    delayed_current_bar = close_epoch + delayed_offset + A.TIMEFRAME_SECONDS
+    authority = time_authority(
+        offset=delayed_offset,
+        current_bar_epoch=delayed_current_bar,
+        tick_epoch=delayed_current_bar + 1,
+    )
+    snapshot = SimpleNamespace(
+        time_authority=lambda: authority,
+        point=0.01,
+        rates=(
+            A._FrozenRate(
+                time=close_epoch - A.TIMEFRAME_SECONDS,
+                open=104.0,
+                high=106.0,
+                low=103.0,
+                close=105.0,
+                tick_volume=10,
+                spread=2,
+                real_volume=0,
+            ),
+            A._FrozenRate(
+                time=close_epoch + delayed_offset - A.TIMEFRAME_SECONDS,
+                open=204.0,
+                high=206.0,
+                low=203.0,
+                close=205.0,
+                tick_volume=10,
+                spread=2,
+                real_volume=0,
+            ),
+        ),
+    )
+    fake = FakeCollector()
+    monkeypatch.setattr(R, "_collector", lambda _args: fake)
+    monkeypatch.setattr(R, "_capture_for_collector", lambda *_args: snapshot)
+    R.timebox_close(
+        SimpleNamespace(
+            canonical_symbol="BTCUSD",
+            decision_candle_open_utc=START_UTC,
+        )
+    )
+    assert observed["final_time"] == close_epoch - A.TIMEFRAME_SECONDS
+    output = json.loads(capsys.readouterr().out)
+    assert output["result"] == "SPRINT93_2B_TIMEBOX_CLOSE_COMPLETE"
 
 
 def test_runner_normalizes_authoritative_github_pr_metadata(monkeypatch):
