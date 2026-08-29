@@ -32,6 +32,7 @@ START_UTC, END_UTC = C.activation_window(MERGED_AT)
 CREATED_AT = "2026-08-25T10:01:00Z"
 COMMITTED_AT = "2026-08-25T10:02:00Z"
 PUSHED_AT = "2026-08-25T10:03:00Z"
+PUBLICATION_PR_NUMBER = 8
 TEST_NOW_EPOCH = 0.0
 
 
@@ -55,6 +56,16 @@ def publication_metadata() -> dict[str, object]:
         "manifest_publicly_pushed_at_utc": PUSHED_AT,
         "manifest_commit_sha": MANIFEST_COMMIT_SHA,
     }
+
+
+def test_failed_v1_manifest_is_not_replaced_by_v2_attempt():
+    assert A.VERSION == "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V2"
+    assert A.DEFAULT_MANIFEST_RELATIVE_PATH == (
+        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V2.json"
+    )
+    assert A.DEFAULT_MANIFEST_RELATIVE_PATH != (
+        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest.json"
+    )
 
 
 def fake_identity() -> tuple[tuple[str, str], ...]:
@@ -1317,6 +1328,8 @@ def test_runner_has_no_file_or_backdated_forward_inputs():
             "collect-decision",
             "--manifest-commit-sha",
             MANIFEST_COMMIT_SHA,
+            "--manifest-publication-pr-number",
+            str(PUBLICATION_PR_NUMBER),
             "--no-forward-outcome-access-verified",
             "--canonical-symbol",
             "BTCUSD",
@@ -1499,6 +1512,7 @@ def test_runner_normalizes_authoritative_github_pr_metadata(monkeypatch):
             "url": "https://github.com/masoudengin65-byte/MSS_Package_003/pull/5",
             "number": 5,
             "state": "MERGED",
+            "createdAt": COMMITTED_AT,
             "mergedAt": MERGED_AT,
             "mergeCommit": {"oid": MERGE_SHA},
             "headRefOid": "d" * 40,
@@ -1513,31 +1527,82 @@ def test_runner_normalizes_authoritative_github_pr_metadata(monkeypatch):
     assert result["merge_commit_sha"] == MERGE_SHA
 
 
-def test_publication_time_comes_from_authoritative_github_push_event(monkeypatch):
+def test_publication_time_comes_from_exact_merged_manifest_pr(monkeypatch):
     monkeypatch.setattr(
         R,
-        "_github_api_array",
-        lambda _path, _label: [
+        "_repository_full_name",
+        lambda: "masoudengin65-byte/MSS_Package_003",
+    )
+    monkeypatch.setattr(
+        R,
+        "_authoritative_pr_metadata",
+        lambda _number: {
+            "number": PUBLICATION_PR_NUMBER,
+            "state": "MERGED",
+            "createdAt": COMMITTED_AT,
+            "mergedAt": PUSHED_AT,
+            "merge_commit_sha": MANIFEST_COMMIT_SHA,
+            "base_ref_name": "main",
+        },
+    )
+    monkeypatch.setattr(
+        R,
+        "_command_array",
+        lambda _arguments, _label: [
             {
-                "type": "PushEvent",
-                "created_at": PUSHED_AT,
-                "payload": {
-                    "head": MANIFEST_COMMIT_SHA,
-                    "commits": [{"sha": MANIFEST_COMMIT_SHA}],
-                },
+                "filename": A.DEFAULT_MANIFEST_RELATIVE_PATH,
+                "status": "added",
             }
         ],
     )
-    assert R._public_push_timestamp(
-        "masoudengin65-byte/MSS_Package_003", MANIFEST_COMMIT_SHA
-    ) == PUSHED_AT
+    monkeypatch.setattr(
+        R,
+        "_command_json",
+        lambda _arguments, _label: {
+            "status": "identical",
+            "merge_base_commit": {"sha": MANIFEST_COMMIT_SHA},
+        },
+    )
+    result = R._authoritative_publication_metadata(
+        MANIFEST_COMMIT_SHA, PUBLICATION_PR_NUMBER
+    )
+    assert result["manifest_committed_at_utc"] == COMMITTED_AT
+    assert result["manifest_publicly_pushed_at_utc"] == PUSHED_AT
+    assert result["publication_source"] == "GITHUB_MERGED_MANIFEST_PR"
 
 
-def test_missing_public_push_event_fails_closed(monkeypatch):
-    monkeypatch.setattr(R, "_github_api_array", lambda _path, _label: [])
-    with pytest.raises(RuntimeError, match="no authoritative GitHub PushEvent"):
-        R._public_push_timestamp(
-            "masoudengin65-byte/MSS_Package_003", MANIFEST_COMMIT_SHA
+def test_manifest_publication_pr_must_change_only_v2_manifest(monkeypatch):
+    monkeypatch.setattr(R, "_repository_full_name", lambda: "owner/repository")
+    monkeypatch.setattr(
+        R,
+        "_authoritative_pr_metadata",
+        lambda _number: {
+            "number": PUBLICATION_PR_NUMBER,
+            "state": "MERGED",
+            "createdAt": COMMITTED_AT,
+            "mergedAt": PUSHED_AT,
+            "merge_commit_sha": MANIFEST_COMMIT_SHA,
+            "base_ref_name": "main",
+        },
+    )
+    monkeypatch.setattr(
+        R,
+        "_command_array",
+        lambda _arguments, _label: [
+            {"filename": "unexpected.py", "status": "modified"}
+        ],
+    )
+    monkeypatch.setattr(
+        R,
+        "_command_json",
+        lambda _arguments, _label: {
+            "status": "identical",
+            "merge_base_commit": {"sha": MANIFEST_COMMIT_SHA},
+        },
+    )
+    with pytest.raises(RuntimeError, match="exact public main witness"):
+        R._authoritative_publication_metadata(
+            MANIFEST_COMMIT_SHA, PUBLICATION_PR_NUMBER
         )
 
 

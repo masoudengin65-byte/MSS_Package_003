@@ -50,6 +50,24 @@ def _command_json(arguments: list[str], label: str) -> dict[str, object]:
     return value
 
 
+def _command_array(arguments: list[str], label: str) -> list[object]:
+    try:
+        completed = subprocess.run(
+            arguments,
+            cwd=ROOT,
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        value = json.loads(completed.stdout)
+    except (OSError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"unable to obtain authoritative {label}") from exc
+    if not isinstance(value, list):
+        raise RuntimeError(f"authoritative {label} must be a JSON array")
+    return value
+
+
 def _github_api_json(path: str, label: str) -> dict[str, object]:
     headers = {
         "Accept": "application/vnd.github+json",
@@ -90,36 +108,6 @@ def _github_api_array(path: str, label: str) -> list[object]:
     return value
 
 
-def _public_push_timestamp(repository: str, commit_sha: str) -> str:
-    for page in range(1, 11):
-        events = _github_api_array(
-            f"repos/{repository}/events?per_page=100&page={page}",
-            "GitHub repository events",
-        )
-        for event in events:
-            if not isinstance(event, dict) or event.get("type") != "PushEvent":
-                continue
-            payload = event.get("payload")
-            if not isinstance(payload, dict):
-                continue
-            commits = payload.get("commits")
-            commit_shas = {
-                item.get("sha")
-                for item in commits
-                if isinstance(item, dict)
-            } if isinstance(commits, list) else set()
-            if payload.get("head") == commit_sha or commit_sha in commit_shas:
-                created_at = event.get("created_at")
-                if isinstance(created_at, str):
-                    return created_at
-                raise RuntimeError("GitHub push event timestamp is unavailable")
-        if not events:
-            break
-    raise RuntimeError(
-        "manifest commit has no authoritative GitHub PushEvent publication proof"
-    )
-
-
 def _repository_full_name() -> str:
     try:
         remote = subprocess.run(
@@ -155,7 +143,7 @@ def _authoritative_pr_metadata(pr_number: int) -> dict[str, object]:
                 "--repo",
                 repository,
                 "--json",
-                "url,number,state,mergedAt,mergeCommit,headRefOid,baseRefName",
+                "url,number,state,createdAt,mergedAt,mergeCommit,headRefOid,baseRefName",
             ],
             "GitHub PR metadata",
         )
@@ -165,6 +153,7 @@ def _authoritative_pr_metadata(pr_number: int) -> dict[str, object]:
         )
         url = payload.get("url")
         state = payload.get("state")
+        created_at = payload.get("createdAt")
         merged_at = payload.get("mergedAt")
         head_sha = payload.get("headRefOid")
         base_ref = payload.get("baseRefName")
@@ -175,6 +164,7 @@ def _authoritative_pr_metadata(pr_number: int) -> dict[str, object]:
         )
         merge_sha = payload.get("merge_commit_sha")
         url = payload.get("html_url")
+        created_at = payload.get("created_at")
         merged_at = payload.get("merged_at")
         state = "MERGED" if merged_at is not None else str(payload.get("state", "")).upper()
         head = payload.get("head")
@@ -185,6 +175,7 @@ def _authoritative_pr_metadata(pr_number: int) -> dict[str, object]:
         "url": url,
         "number": payload.get("number"),
         "state": state,
+        "createdAt": created_at,
         "mergedAt": merged_at,
         "merge_commit_sha": merge_sha,
         "repository_full_name": repository,
@@ -198,46 +189,78 @@ def _authoritative_pr_metadata(pr_number: int) -> dict[str, object]:
     return result
 
 
-def _authoritative_publication_metadata(commit_sha: str) -> dict[str, object]:
+def _authoritative_publication_metadata(
+    commit_sha: str, publication_pr_number: int
+) -> dict[str, object]:
     if re.fullmatch(r"[0-9a-f]{40}", str(commit_sha)) is None:
         raise RuntimeError("manifest commit must be a full lowercase Git SHA")
+    if (
+        isinstance(publication_pr_number, bool)
+        or not isinstance(publication_pr_number, int)
+        or publication_pr_number <= 0
+    ):
+        raise RuntimeError("manifest publication PR number must be positive")
     repository = _repository_full_name()
+    publication_pr = _authoritative_pr_metadata(publication_pr_number)
     try:
-        commit = _command_json(
-            ["gh", "api", f"repos/{repository}/commits/{commit_sha}"],
-            "GitHub manifest commit",
+        files = _command_array(
+            [
+                "gh",
+                "api",
+                f"repos/{repository}/pulls/{publication_pr_number}/files?per_page=100",
+            ],
+            "GitHub manifest publication PR files",
         )
         comparison = _command_json(
             ["gh", "api", f"repos/{repository}/compare/{commit_sha}...main"],
             "GitHub main ancestry",
         )
     except RuntimeError:
-        commit = _github_api_json(
-            f"repos/{repository}/commits/{commit_sha}",
-            "GitHub manifest commit",
+        files = _github_api_array(
+            f"repos/{repository}/pulls/{publication_pr_number}/files?per_page=100",
+            "GitHub manifest publication PR files",
         )
         comparison = _github_api_json(
             f"repos/{repository}/compare/{commit_sha}...main",
             "GitHub main ancestry",
         )
-    commit_record = commit.get("commit")
-    committer = commit_record.get("committer") if isinstance(commit_record, dict) else None
-    committed_at = committer.get("date") if isinstance(committer, dict) else None
     merge_base = comparison.get("merge_base_commit")
     merge_base_sha = merge_base.get("sha") if isinstance(merge_base, dict) else None
+    publication_created_at = publication_pr.get("createdAt")
+    publication_merged_at = publication_pr.get("mergedAt")
+    expected_files = [
+        {
+            "filename": DEFAULT_MANIFEST_RELATIVE_PATH,
+            "status": "added",
+        }
+    ]
+    observed_files = [
+        {
+            "filename": item.get("filename"),
+            "status": item.get("status"),
+        }
+        for item in files
+        if isinstance(item, dict)
+    ]
     if (
-        commit.get("sha") != commit_sha
+        publication_pr.get("state") != "MERGED"
+        or publication_pr.get("base_ref_name") != "main"
+        or publication_pr.get("merge_commit_sha") != commit_sha
+        or not isinstance(publication_created_at, str)
+        or not isinstance(publication_merged_at, str)
+        or observed_files != expected_files
         or merge_base_sha != commit_sha
         or comparison.get("status") not in {"ahead", "identical"}
-        or not isinstance(committed_at, str)
     ):
-        raise RuntimeError("manifest commit is not publicly reachable from GitHub main")
-    pushed_at = _public_push_timestamp(repository, commit_sha)
+        raise RuntimeError(
+            "manifest publication PR is not an exact public main witness"
+        )
     return {
-        "manifest_committed_at_utc": committed_at,
-        "manifest_publicly_pushed_at_utc": pushed_at,
+        "manifest_committed_at_utc": publication_created_at,
+        "manifest_publicly_pushed_at_utc": publication_merged_at,
         "manifest_commit_sha": commit_sha,
-        "publication_source": "GITHUB_AUTHORITATIVE",
+        "publication_source": "GITHUB_MERGED_MANIFEST_PR",
+        "publication_pr_number": publication_pr_number,
     }
 
 
@@ -292,7 +315,8 @@ def verified_context(args: argparse.Namespace):
         repository_root=ROOT,
         public_pr_metadata=_authoritative_pr_metadata(pr_number),
         publication_metadata=_authoritative_publication_metadata(
-            args.manifest_commit_sha
+            args.manifest_commit_sha,
+            args.manifest_publication_pr_number,
         ),
         no_forward_outcome_access_verified=(
             args.no_forward_outcome_access_verified
@@ -577,6 +601,9 @@ def _activation_arguments(parser: argparse.ArgumentParser) -> None:
 def _published_arguments(parser: argparse.ArgumentParser) -> None:
     _activation_arguments(parser)
     parser.add_argument("--manifest-commit-sha", required=True)
+    parser.add_argument(
+        "--manifest-publication-pr-number", type=int, required=True
+    )
 
 
 def _pair_arguments(parser: argparse.ArgumentParser) -> None:
