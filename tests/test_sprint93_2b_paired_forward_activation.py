@@ -58,14 +58,15 @@ def publication_metadata() -> dict[str, object]:
     }
 
 
-def test_failed_v1_manifest_is_not_replaced_by_v2_attempt():
-    assert A.VERSION == "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V2"
+def test_prior_manifests_are_not_replaced_by_v3_attempt():
+    assert A.VERSION == "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V3"
     assert A.DEFAULT_MANIFEST_RELATIVE_PATH == (
-        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V2.json"
+        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V3.json"
     )
-    assert A.DEFAULT_MANIFEST_RELATIVE_PATH != (
-        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest.json"
-    )
+    assert A.DEFAULT_MANIFEST_RELATIVE_PATH not in {
+        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest.json",
+        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V2.json",
+    }
 
 
 def fake_identity() -> tuple[tuple[str, str], ...]:
@@ -1571,7 +1572,7 @@ def test_publication_time_comes_from_exact_merged_manifest_pr(monkeypatch):
     assert result["publication_source"] == "GITHUB_MERGED_MANIFEST_PR"
 
 
-def test_manifest_publication_pr_must_change_only_v2_manifest(monkeypatch):
+def test_manifest_publication_pr_must_change_only_v3_manifest(monkeypatch):
     monkeypatch.setattr(R, "_repository_full_name", lambda: "owner/repository")
     monkeypatch.setattr(
         R,
