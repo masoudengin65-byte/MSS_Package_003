@@ -798,6 +798,9 @@ class TimeboxCloseResult:
 def _rate_value(rate: object, name: str) -> object:
     if isinstance(rate, Mapping):
         return rate[name]
+    dtype_names = getattr(getattr(rate, "dtype", None), "names", None)
+    if isinstance(dtype_names, tuple) and name in dtype_names:
+        return rate[name]
     return getattr(rate, name)
 
 
