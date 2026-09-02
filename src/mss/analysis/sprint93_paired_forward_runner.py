@@ -1,6 +1,6 @@
 """Preverified paired boundaries and recovery-only virtual lifecycle management.
 
-These are separate commands, not an integrated 45-day experiment scheduler.
+The continuous supervisor integrates both under one lease and MT5 session.
 The bounded collector refuses to wait with outstanding virtual lifecycles.
 The recovery manager never collects new decisions or certifies continuity.
 Public GitHub verification belongs to the caller and must finish before this
@@ -133,6 +133,29 @@ def _validate_pair(snapshots: tuple[LiveMt5Snapshot, ...], target: int) -> None:
         raise RuntimeError("paired acquisition exceeded the write preparation deadline")
 
 
+def _commit_pair_snapshots(collector, snapshots) -> list[dict[str, object]]:
+    """Keep the identical durable-entry path for bounded and continuous runs."""
+    results = []
+    for snapshot in snapshots:
+        decision = collector.collect_decision(snapshot=snapshot)
+        entry = collector.open_virtual_entries(
+            pair_key=decision.pair_key, balance=snapshot.balance,
+            point=snapshot.point, time_authority=snapshot.time_authority(),
+        )
+        payload = collector._event_for(decision.pair_key, "entry")["payload"]
+        if any(branch["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
+               for branch in payload["branches"].values()):
+            raise RuntimeError("durable entry missed deadline; partial evidence retained")
+        results.append({
+            "pair_key": list(decision.pair_key),
+            "decision_appended": decision.write.appended,
+            "entry_appended": entry.write.appended,
+            "baseline_virtual_position_open": entry.baseline_position is not None,
+            "candidate_virtual_position_open": entry.candidate_position is not None,
+        })
+    return results
+
+
 def collect_pair_at_boundary(
     *,
     activation: VerifiedActivation,
@@ -177,28 +200,7 @@ def collect_pair_at_boundary(
                 for symbol in SYMBOL_MAP
             )
             _validate_pair(snapshots, target)
-            results = []
-            for snapshot in snapshots:
-                decision = collector.collect_decision(snapshot=snapshot)
-                entry = collector.open_virtual_entries(
-                    pair_key=decision.pair_key,
-                    balance=snapshot.balance,
-                    point=snapshot.point,
-                    time_authority=snapshot.time_authority(),
-                )
-                payload = collector._event_for(decision.pair_key, "entry")["payload"]
-                if any(
-                    branch["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
-                    for branch in payload["branches"].values()
-                ):
-                    raise RuntimeError("durable entry missed deadline; partial evidence retained")
-                results.append({
-                    "pair_key": list(decision.pair_key),
-                    "decision_appended": decision.write.appended,
-                    "entry_appended": entry.write.appended,
-                    "baseline_virtual_position_open": entry.baseline_position is not None,
-                    "candidate_virtual_position_open": entry.candidate_position is not None,
-                })
+            results = _commit_pair_snapshots(collector, snapshots)
         return {
             "result": "SPRINT93_2B_BOUNDARY_PAIR_COLLECTED",
             "entry_bar_open_utc": entry_bar_open_utc,
@@ -450,6 +452,211 @@ def manage_existing_lifecycles(
             "result": "SPRINT93_2B_EXISTING_LIFECYCLES_COMPLETE",
             "experiment_continuity_verified": False,
             "new_decisions_collected": False,
+            "real_order_send_allowed": False,
+            "production_execution_enabled": False,
+        }
+
+
+class _SupervisorClock:
+    def __init__(self):
+        self.utc = _utc_now_epoch()
+        self.monotonic = time.monotonic()
+        self.check()
+
+    def check(self) -> float:
+        now = _utc_now_epoch()
+        elapsed = time.monotonic() - self.monotonic
+        if not math.isfinite(now) or abs(now - self.utc - elapsed) > MAX_CLOCK_STEP_SECONDS:
+            raise RuntimeError("UTC clock stepped during continuous supervision")
+        return now
+
+
+def run_forward_supervisor(
+    *, activation: VerifiedActivation, repository_root: Path, journal_path: Path,
+) -> dict[str, object]:
+    """One fresh, fixed-window run. Never resume, backfill or shift a boundary.
+
+    At a decision boundary, acquire both symbols, commit both entry outcomes,
+    then apply the same snapshots to outstanding lifecycles. Between boundaries,
+    poll only outstanding symbols. A synchronous poll that crosses a scheduled
+    boundary is an explicit failure, not an opportunity to relabel its snapshot.
+    Completion means collection finished and still requires evidence review.
+    """
+    verify_local_freeze(activation, repository_root)
+    start = _epoch_from_utc_z(activation.first_eligible_m15_open_utc, "activation start")
+    end = _epoch_from_utc_z(activation.exclusive_45_day_end_utc, "exclusive end")
+    if start % TIMEFRAME_SECONDS or end % TIMEFRAME_SECONDS or end <= start + TIMEFRAME_SECONDS:
+        raise RuntimeError("supervisor requires an aligned nonempty activation window")
+    clock = _SupervisorClock()
+    if clock.check() >= start:
+        raise RuntimeError("continuous supervision must start before activation")
+    journal_path = Path(journal_path)
+    operations = journal_path.with_name(journal_path.name + ".supervisor.jsonl")
+    recovery_log = journal_path.with_name(journal_path.name + ".lifecycle.jsonl")
+    next_boundary = start + TIMEFRAME_SECONDS
+    completed_boundaries = 0
+    previous_context = None
+    last_observations: dict[str, float] = {}
+    with runner_lease(journal_path):
+        # Even an empty/torn prior file is not a clean-start authorization. A
+        # crash leaves the start marker permanently; recovery is a separate mode.
+        if any(path.exists() for path in (journal_path, operations, recovery_log)):
+            raise RuntimeError("supervisor requires pristine journals; automatic resume is prohibited")
+        if any((journal_path.parent / "virtual_positions").rglob("*.jsonl")):
+            raise RuntimeError("orphan virtual journals require review before a fresh run")
+        collector = PairedForwardEvidenceCollector(activation=activation, journal_path=journal_path)
+        coordinator = LifecycleCoordinator(collector)
+        if collector._events():
+            raise RuntimeError("supervisor cannot inherit existing evidence")
+
+        def audit(event_type: str, **details) -> None:
+            ShadowTradeJournal.append_event(
+                path=operations, event_type=event_type,
+                position_id=activation.manifest_sha256, broker_epoch=0,
+                payload={
+                    "activation_manifest_sha256": activation.manifest_sha256,
+                    "observed_utc_epoch": _utc_now_epoch(),
+                    "first_eligible_m15_open_utc": activation.first_eligible_m15_open_utc,
+                    "exclusive_end_utc": activation.exclusive_45_day_end_utc,
+                    "next_entry_boundary_utc_epoch": next_boundary,
+                    "completed_boundaries": completed_boundaries,
+                    "last_observation_utc_epochs": dict(last_observations),
+                    "poll_target_seconds": LIFECYCLE_POLL_SECONDS,
+                    "maximum_cycle_seconds": MAX_LIFECYCLE_CYCLE_SECONDS,
+                    "automatic_resume_allowed": False,
+                    "research_validity_certified": False,
+                    "real_order_send_allowed": False,
+                    "production_execution_enabled": False, **details,
+                },
+            )
+
+        def symbols_outstanding() -> tuple[str, ...]:
+            outstanding = coordinator.outstanding()
+            return tuple(s for s in SYMBOL_MAP if any(pair[0] == s for pair, _ in outstanding))
+
+        def check_gaps(symbols, now: float) -> None:
+            for symbol in symbols:
+                previous = last_observations.get(symbol)
+                if previous is None or not 0 <= now - previous <= MAX_LIFECYCLE_CYCLE_SECONDS:
+                    raise RuntimeError("outstanding lifecycle observation gap exceeded its limit")
+
+        def capture(session, symbols, active_symbols):
+            nonlocal previous_context
+            check_gaps(active_symbols, clock.check())
+            offset = previous_context[0] if previous_context is not None else None
+            snapshots = tuple(
+                session.capture(symbol, previous_broker_offset_seconds=offset)
+                for symbol in symbols
+            )
+            now = clock.check()
+            check_gaps(active_symbols, now)
+            for snapshot in snapshots:
+                authority, provenance = _validate_live_mt5_snapshot(snapshot)
+                context = (
+                    _time_authority_offset(authority), provenance.get("account_server"),
+                    provenance.get("account_currency"), provenance.get("terminal_build"),
+                )
+                if not all(context[1:]) or (previous_context is not None and context != previous_context):
+                    raise RuntimeError("continuous supervisor broker context changed")
+                previous_context = context
+            return snapshots
+
+        def apply_lifecycles(snapshots) -> None:
+            active = symbols_outstanding()
+            coordinator.apply_snapshots(tuple(s for s in snapshots if s.canonical_symbol in active))
+            for snapshot in snapshots:
+                last_observations[snapshot.canonical_symbol] = float(
+                    snapshot.time_authority()["observation"]["utc_epoch_after_tick"]
+                )
+
+        def require_cycle(started: float) -> None:
+            clock.check()
+            if time.monotonic() - started > MAX_LIFECYCLE_CYCLE_SECONDS:
+                raise RuntimeError("supervisor cycle exceeded its limit; partial evidence retained")
+
+        audit("SUPERVISOR_STARTED")
+        try:
+            _wait_until_utc(start)
+            clock.check()
+            verify_local_freeze(activation, repository_root)
+            with LiveMt5ReadOnlySession() as session:
+                if clock.check() >= next_boundary - PREPARATION_LEAD_SECONDS:
+                    raise RuntimeError("MT5 setup missed supervisor preparation deadline")
+                next_poll = next_boundary
+                while True:
+                    active = symbols_outstanding()
+                    wake = min(next_boundary, end, next_poll if active else end)
+                    _wait_until_utc(wake)
+                    now = clock.check()
+                    started = time.monotonic()
+                    verify_local_freeze(activation, repository_root)
+                    now = clock.check()
+                    if now >= end:
+                        if next_boundary != end:
+                            raise RuntimeError("experiment end reached with missed decision boundaries")
+                        snapshots = capture(session, active, active)
+                        require_cycle(started)
+                        apply_lifecycles(snapshots)
+                        require_cycle(started)
+                        break
+                    if now >= next_boundary:
+                        if now - next_boundary > MAX_ENTRY_OBSERVATION_DELAY_SECONDS:
+                            raise RuntimeError("missed decision boundary; no backfill or automatic retry")
+                        snapshots = capture(session, tuple(SYMBOL_MAP), active)
+                        _validate_pair(snapshots, next_boundary)
+                        results = _commit_pair_snapshots(collector, snapshots)
+                        if any(not r["decision_appended"] or not r["entry_appended"] for r in results):
+                            raise RuntimeError("fresh supervisor encountered duplicate boundary evidence")
+                        # No terminal valuation or audit append precedes the
+                        # existing frozen durable-entry deadline checks above.
+                        apply_lifecycles(snapshots)
+                        require_cycle(started)
+                        completed_target = next_boundary
+                        next_boundary += TIMEFRAME_SECONDS
+                        completed_boundaries += 1
+                        evidence = ShadowTradeJournal.verify(journal_path)
+                        if not evidence["valid"]:
+                            raise RuntimeError("paired evidence integrity failure at boundary checkpoint")
+                        audit("SUPERVISOR_BOUNDARY_COMPLETED",
+                              entry_boundary_utc_epoch=completed_target,
+                              pair_keys=[r["pair_key"] for r in results],
+                              evidence_tip_sha256=evidence["last_event_sha256"],
+                              broker_context=list(previous_context))
+                        require_cycle(started)
+                    else:
+                        snapshots = capture(session, active, active)
+                        if clock.check() >= min(next_boundary, end):
+                            raise RuntimeError("lifecycle poll crossed a scheduled boundary; no relabeling")
+                        require_cycle(started)
+                        apply_lifecycles(snapshots)
+                        require_cycle(started)
+                    next_poll = now + LIFECYCLE_POLL_SECONDS
+
+                expected = {
+                    (symbol, datetime.fromtimestamp(target - TIMEFRAME_SECONDS, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+                    for target in range(start + TIMEFRAME_SECONDS, end, TIMEFRAME_SECONDS)
+                    for symbol in SYMBOL_MAP
+                }
+                recovered = collector.recover()
+                if (set(recovered.decision_pair_keys) != expected
+                        or recovered.pending_entry_pair_keys or coordinator.outstanding()
+                        or completed_boundaries != (end - start) // TIMEFRAME_SECONDS - 1):
+                    raise RuntimeError("supervisor final coverage/lifecycle audit failed")
+            final_evidence = ShadowTradeJournal.verify(journal_path)
+            if not final_evidence["valid"]:
+                raise RuntimeError("paired evidence integrity failure at final checkpoint")
+            audit("SUPERVISOR_FINISHED_PENDING_REVIEW",
+                  evidence_tip_sha256=final_evidence["last_event_sha256"],
+                  evidence_event_count=final_evidence["event_count"])
+        except BaseException as exc:
+            audit("SUPERVISOR_FAILED", error_type=type(exc).__name__,
+                  reason=str(exc), partial_evidence_must_be_preserved=True)
+            raise
+        return {
+            "result": "SPRINT93_2B_FORWARD_COLLECTION_FINISHED_PENDING_REVIEW",
+            "completed_boundaries": completed_boundaries,
+            "research_validity_certified": False,
+            "automatic_resume_allowed": False,
             "real_order_send_allowed": False,
             "production_execution_enabled": False,
         }

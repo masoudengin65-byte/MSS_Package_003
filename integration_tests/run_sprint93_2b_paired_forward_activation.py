@@ -29,6 +29,7 @@ from mss.analysis.sprint93_paired_forward_activation import (
 from mss.analysis.sprint93_paired_forward_runner import (
     collect_pair_at_boundary,
     manage_existing_lifecycles,
+    run_forward_supervisor,
     runner_lease,
 )
 
@@ -471,6 +472,25 @@ def manage_lifecycles(args: argparse.Namespace) -> None:
     print(json.dumps(result, sort_keys=True))
 
 
+def supervise_forward(args: argparse.Namespace) -> None:
+    context = verified_context(args)
+    try:
+        result = run_forward_supervisor(
+            activation=context, repository_root=ROOT,
+            journal_path=DEFAULT_EVIDENCE_JOURNAL,
+        )
+    except BaseException:
+        print(json.dumps({
+            "result": "SPRINT93_2B_FORWARD_SUPERVISOR_FAILED",
+            "partial_evidence_must_be_preserved": True,
+            "research_validity_certified": False,
+            "automatic_resume_allowed": False,
+            "production_execution_enabled": False,
+        }, sort_keys=True))
+        raise
+    print(json.dumps(result, sort_keys=True))
+
+
 def _pair_key(args: argparse.Namespace) -> tuple[str, str]:
     return (args.canonical_symbol, args.decision_candle_open_utc)
 
@@ -691,6 +711,10 @@ def parser() -> argparse.ArgumentParser:
     manage = subcommands.add_parser("manage-existing-lifecycles")
     _published_arguments(manage)
     manage.set_defaults(handler=manage_lifecycles)
+
+    supervise = subcommands.add_parser("supervise-forward")
+    _published_arguments(supervise)
+    supervise.set_defaults(handler=supervise_forward)
 
     update = subcommands.add_parser("update-virtual-trades")
     _published_arguments(update)
