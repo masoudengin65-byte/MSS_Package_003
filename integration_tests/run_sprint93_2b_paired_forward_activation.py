@@ -28,6 +28,7 @@ from mss.analysis.sprint93_paired_forward_activation import (
 )
 from mss.analysis.sprint93_paired_forward_runner import (
     collect_pair_at_boundary,
+    manage_existing_lifecycles,
     runner_lease,
 )
 
@@ -451,6 +452,25 @@ def _collector(args: argparse.Namespace) -> PairedForwardEvidenceCollector:
     )
 
 
+def manage_lifecycles(args: argparse.Namespace) -> None:
+    context = verified_context(args)
+    try:
+        result = manage_existing_lifecycles(
+            activation=context, repository_root=ROOT,
+            journal_path=DEFAULT_EVIDENCE_JOURNAL,
+        )
+    except BaseException:
+        print(json.dumps({
+            "result": "SPRINT93_2B_LIFECYCLE_RECOVERY_FAILED",
+            "partial_evidence_must_be_preserved": True,
+            "experiment_continuity_verified": False,
+            "automatic_retry_allowed": False,
+            "production_execution_enabled": False,
+        }, sort_keys=True))
+        raise
+    print(json.dumps(result, sort_keys=True))
+
+
 def _pair_key(args: argparse.Namespace) -> tuple[str, str]:
     return (args.canonical_symbol, args.decision_candle_open_utc)
 
@@ -667,6 +687,10 @@ def parser() -> argparse.ArgumentParser:
     _published_arguments(pair)
     pair.add_argument("--entry-bar-open-utc", required=True)
     pair.set_defaults(handler=collect_pair)
+
+    manage = subcommands.add_parser("manage-existing-lifecycles")
+    _published_arguments(manage)
+    manage.set_defaults(handler=manage_lifecycles)
 
     update = subcommands.add_parser("update-virtual-trades")
     _published_arguments(update)

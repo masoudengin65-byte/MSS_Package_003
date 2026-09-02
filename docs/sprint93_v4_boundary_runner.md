@@ -2,7 +2,8 @@
 
 ## Current status
 
-V4 is a bounded paired-acquisition change. There is **no V4 activation manifest**
+V4 includes bounded paired acquisition and a separate recovery-only lifecycle
+manager. There is **no V4 activation manifest**
 and no authorization to substitute a V1/V2/V3 manifest. Do not merge this change
 as a claim that the unattended 45-day experiment is operationally ready.
 No real market data was used to develop or test this change.
@@ -66,14 +67,62 @@ signals can invoke valuation/risk metadata work and durable writes. The original
 entry deadline remains checked inside the durable-entry path; passing acquisition
 alone must never be presented as a successful entry cycle.
 
+## Existing-lifecycle recovery command
+
+`manage-existing-lifecycles` uses the published-manifest arguments, performs public
+verification once, owns the same writer lease, and uses one read-only MT5 session.
+It refuses to start before activation. It does **not** run alongside the bounded
+collector and is **not** the missing continuous M15 decision scheduler.
+
+The coordinator:
+
+- resolves every pending entry using its frozen decision/intent, without taking
+  replacement prices; an existing durable entry intent can materialize its
+  virtual position under the unchanged core recovery rules;
+- replays frozen ordinary or timebox terminal inputs before acquiring new prices;
+- checks the current terminal/account identity using metadata only before frozen
+  recovery, because recovery itself can invoke read-only risk/valuation APIs;
+- finds fully terminal but not-yet-settled pairs, and finalizes each once;
+- excludes both-no-trade observations from the evaluation population;
+- acquires each outstanding symbol once per poll and validates all acquisitions
+  before updating any branch; the recorded decision's server/currency/build must
+  still match, and both current symbol contexts must agree;
+- polls existing positions with a one-second target cadence and fails on clock
+  steps, excessive gaps, or acquisition/write cycles exceeding five seconds;
+- records final-bar boundary authority before ordinary updates, and after the
+  exclusive end uses only the exact completed candle bound to that authority;
+- skips already-terminal branches, and fails if final-bar authority or the exact
+  final candle is unavailable. It never fabricates missing authority after end.
+
+The cadence and five-second failure threshold are operational review candidates,
+not a change to the **two-second entry deadline**, nor a guarantee that all market
+ticks are observed. Long broker calls cannot be preempted by this synchronous
+loop; an overrun is detected when the call returns. The command stops when all
+existing lifecycles are settled/excluded, or fails while preserving partial data.
+
+An adjacent append-only `paired_evidence.jsonl.lifecycle.jsonl` operational journal
+records start, failure/completion and at most one checkpoint per M15 interval.
+Every record labels experiment continuity **UNVERIFIED**. A crash can leave an
+unmatched start; neither a later successful recovery nor a checkpoint certifies
+uninterrupted forward evidence. These records are not evaluation observations.
+
+Synthetic tests cover poll/recovery failure paths and real virtual-position,
+terminal and settlement journals. They include a simulated crash after a durable
+position close but before the paired terminal event, for ordinary and timebox
+exits, followed by reconstruction and idempotent recovery. No live data is used.
+
 ## Remaining launch gates
 
-1. Complete and review unattended lifecycle orchestration: tick polling of open
-   virtual positions, restart recovery, settled-pair finalization, final-bar
-   boundary authority and deterministic timebox close. The one-cycle command
-   intentionally does not implement these as a hidden infinite loop.
+1. Integrate and review a **single continuous scheduler** combining paired M15
+   acquisition and lifecycle polling under one lease/session, with durable
+   missed-boundary/continuity handling. The recovery-only command cannot be chained
+   to the bounded collector as a substitute: positions may remain open for many
+   boundaries and recovery deliberately does not certify experiment continuity.
 2. Validate scheduler/clock behavior and both-symbol acquisition plus durable
-   entry performance. Do not access sealed forward outcomes as an ad hoc test.
+   entry performance, including realistic growing journals and simultaneous open
+   pairs. Current collector operations reread/verify their journals; short synthetic
+   runs are not evidence of 45-day capacity. Do not access sealed forward outcomes
+   as an ad hoc test.
 3. Review the complete execution closure and tests before merge. Any further
    execution change belongs in that same review cycle before activation.
 4. Only after approval/merge, create and publicly publish a fresh write-once V4

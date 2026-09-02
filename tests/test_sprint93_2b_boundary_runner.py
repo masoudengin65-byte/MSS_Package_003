@@ -98,6 +98,12 @@ def rig(monkeypatch, tmp_path):
             return self
         def __exit__(self, *_):
             state.calls.append(("shutdown", state.now))
+        def require_context(self, provenance):
+            state.calls.append(("context", state.now))
+            expected = snapshot("BTCUSD", TARGET + .1).provenance()
+            if any(provenance.get(f) != expected[f]
+                   for f in ("account_server", "account_currency", "terminal_build")):
+                raise RuntimeError("lifecycle broker context changed since the decision")
         def capture(self, symbol, **kwargs):
             state.calls.append(("capture", symbol, state.now))
             if symbol == state.failure_symbol:
@@ -424,7 +430,9 @@ def test_real_collector_retains_late_entry_evidence(rig, monkeypatch, tmp_path):
     assert entries[0]["payload"]["branches"]["baseline"]["reason"] == "RESTART_AFTER_ENTRY_WINDOW"
 
 
-def test_real_paired_entry_and_open_lifecycle_guard(rig, monkeypatch, tmp_path):
+@pytest.mark.parametrize("exit_mode", ["stop", "timebox"])
+@pytest.mark.parametrize("interrupt_terminal", [False, True])
+def test_real_paired_entry_and_open_lifecycle_guard(rig, monkeypatch, tmp_path, exit_mode, interrupt_terminal):
     class TradeSignalEngine:
         def evaluate(self, *, symbol, rates, current_bar_epoch):
             signal = A.FrozenShadowSignal(
@@ -486,3 +494,375 @@ def test_real_paired_entry_and_open_lifecycle_guard(rig, monkeypatch, tmp_path):
     with pytest.raises(RuntimeError, match="lifecycle"):
         rig.run(target=utc(TARGET + 900))
     assert sum(c[0] == "capture" for c in rig.calls) == captures_before
+
+    # The lifecycle coordinator uses real branch journals and settlement logic.
+    coordinator = B.LifecycleCoordinator(recovered)
+    coordinator.apply_snapshots(tuple(snapshot(s, rig.now) for s in A.SYMBOL_MAP))
+    assert len(coordinator.outstanding()) == 4
+    monkeypatch.setattr(A.ShadowTradeValuation, "calculate", lambda **_: SimpleNamespace(
+        valid=True, reason="SYNTHETIC_VALUATION", pnl_account_currency=-.15,
+        real_order_send_allowed=False, order_send_called=False, order_check_called=False,
+    ))
+    if exit_mode == "timebox":
+        rig.now = coordinator.end - 900 + .1
+        coordinator.apply_snapshots(tuple(lifecycle_end_snapshot(s, rig.now) for s in A.SYMBOL_MAP))
+        assert len(coordinator.outstanding()) == 4
+        rig.now = coordinator.end + .1
+    def closing_snapshots():
+        if exit_mode == "timebox":
+            return tuple(lifecycle_end_snapshot(s, rig.now) for s in A.SYMBOL_MAP)
+        return tuple(
+            replace(snapshot(s, rig.now), bid=85., ask=85.02) for s in A.SYMBOL_MAP
+        )
+    if interrupt_terminal:
+        original_terminal = recovered._append_terminal_unlocked
+        def crash_before_terminal(**_):
+            raise RuntimeError("synthetic crash after durable position close")
+        monkeypatch.setattr(recovered, "_append_terminal_unlocked", crash_before_terminal)
+        with pytest.raises(RuntimeError, match="synthetic crash"):
+            coordinator.apply_snapshots(closing_snapshots())
+        monkeypatch.setattr(recovered, "_append_terminal_unlocked", original_terminal)
+        rig.advance(10.)
+        recovered = collector(activation=activation(), journal_path=tmp_path / "paired.jsonl")
+        coordinator = B.LifecycleCoordinator(recovered)
+        coordinator.recover_frozen()
+        assert len(coordinator.outstanding()) == 3
+    coordinator.apply_snapshots(closing_snapshots())
+    assert not coordinator.outstanding()
+    assert len(recovered.recover().settled_pair_keys) == 2
+    counts = {(p, b): len(recovered._trade_events(p, b))
+              for p in recovered.recover().settled_pair_keys for b in ("baseline", "candidate")}
+    coordinator.recover_frozen()
+    coordinator.finalize_ready()
+    assert len(recovered.recover().settled_pair_keys) == 2
+    assert counts == {(p, b): len(recovered._trade_events(p, b))
+                      for p in recovered.recover().settled_pair_keys for b in ("baseline", "candidate")}
+
+
+class LifecycleFakeCollector:
+    def __init__(self, *, activation, journal_path):
+        self.activation = activation
+        self.journal_path = journal_path
+        self.events = {}
+        self.calls = []
+        self.hold = False
+        self.boundary_offset = 0
+        self.missing_boundary = False
+        for symbol in A.SYMBOL_MAP:
+            pair = (symbol, utc(START))
+            self.events[pair, "decision"] = {"payload": {
+                "live_mt5_acquisition": snapshot(symbol, TARGET + .1).provenance(),
+            }}
+            self.events[pair, "entry"] = {"payload": {"branches": {
+                "baseline": {"is_actual_trade": True},
+                "candidate": {"is_actual_trade": True},
+            }}}
+
+    def _events(self):
+        return list(self.events.values())
+
+    def _phase_events(self):
+        return self.events.copy()
+
+    def recover(self):
+        decisions = {p for p, phase in self.events if phase == "decision"}
+        entries = {p for p, phase in self.events if phase == "entry"}
+        return SimpleNamespace(pending_entry_pair_keys=tuple(sorted(decisions - entries)))
+
+    def resume_pending_entry(self, *, canonical_symbol):
+        pair = next(p for p in self.recover().pending_entry_pair_keys if p[0] == canonical_symbol)
+        self.calls.append(("resume", pair))
+        self.events[pair, "entry"] = {"payload": {"branches": {
+            b: {"is_actual_trade": False} for b in ("baseline", "candidate")
+        }}}
+        return SimpleNamespace(pair_key=pair)
+
+    def update_virtual_trade(self, **kwargs):
+        pair, branch = kwargs["pair_key"], kwargs["branch"]
+        self.calls.append(("update", pair, branch, kwargs))
+        if not self.hold:
+            self.events[pair, f"terminal_{branch}"] = {"payload": {}}
+
+    def record_timebox_boundary_authority_if_due(self, **kwargs):
+        self.calls.append(("boundary", kwargs["pair_key"]))
+
+    def timebox_boundary_evidence(self, **kwargs):
+        if self.missing_boundary:
+            raise RuntimeError("missing final-bar boundary authority")
+        return self.boundary_offset, "f" * 64
+
+    def timebox_close_virtual_trade(self, **kwargs):
+        pair, branch = kwargs["pair_key"], kwargs["branch"]
+        self.calls.append(("timebox", pair, branch, kwargs))
+        self.events[pair, f"terminal_{branch}"] = {"payload": {}}
+
+    def finalize_settlement(self, *, pair_key):
+        self.calls.append(("settle", pair_key))
+        self.events[pair_key, "settlement"] = {"payload": {}}
+
+
+@pytest.fixture
+def lifecycle(rig, monkeypatch, tmp_path):
+    collector = LifecycleFakeCollector(activation=activation(), journal_path=tmp_path / "paired.jsonl")
+    monkeypatch.setattr(B, "PairedForwardEvidenceCollector", lambda **_: collector)
+    rig.now = TARGET + .1
+    rig.collector = collector
+    rig.coordinator = B.LifecycleCoordinator(collector)
+    rig.manage = lambda: B.manage_existing_lifecycles(
+        activation=collector.activation, repository_root=tmp_path, journal_path=collector.journal_path,
+    )
+    rig.audit = lambda: A.ShadowTradeJournal._read_events(tmp_path / "paired.jsonl.lifecycle.jsonl")
+    return rig
+
+
+def test_lifecycle_shared_snapshot_once_per_symbol_and_settlement(lifecycle):
+    result = lifecycle.manage()
+    captures = [c[1] for c in lifecycle.calls if c[0] == "capture"]
+    assert captures == list(A.SYMBOL_MAP)
+    calls = lifecycle.collector.calls
+    assert sum(c[0] == "update" for c in calls) == 4
+    assert sum(c[0] == "boundary" for c in calls) == 2
+    assert sum(c[0] == "settle" for c in calls) == 2
+    assert not lifecycle.writes  # No new decisions.
+    assert result["experiment_continuity_verified"] is False
+    assert all(e["payload"]["experiment_continuity"] == "UNVERIFIED" for e in lifecycle.audit())
+    assert [e["event_type"] for e in lifecycle.audit()] == [
+        "LIFECYCLE_RECOVERY_STARTED", "LIFECYCLE_RECOVERY_COMPLETED",
+    ]
+
+
+def test_lifecycle_finalizes_already_terminal_pair_without_capture(lifecycle):
+    for pair, branch in lifecycle.coordinator.outstanding():
+        lifecycle.collector.events[pair, f"terminal_{branch}"] = {"payload": {}}
+    lifecycle.manage()
+    assert not any(c[0] == "capture" for c in lifecycle.calls)
+    assert sum(c[0] == "settle" for c in lifecycle.collector.calls) == 2
+    lifecycle.coordinator.finalize_ready()
+    assert sum(c[0] == "settle" for c in lifecycle.collector.calls) == 2
+
+
+def test_lifecycle_both_no_trade_excluded_from_settlement(lifecycle):
+    for (pair, phase), event in lifecycle.collector.events.items():
+        if phase == "entry":
+            for branch in event["payload"]["branches"].values():
+                branch["is_actual_trade"] = False
+    lifecycle.manage()
+    assert not lifecycle.collector.calls
+    assert not any(c[0] == "capture" for c in lifecycle.calls)
+
+
+def test_lifecycle_recovers_every_pending_entry_without_prices(lifecycle):
+    for symbol in A.SYMBOL_MAP:
+        del lifecycle.collector.events[(symbol, utc(START)), "entry"]
+        lifecycle.collector.events[(symbol, utc(START + 900)), "decision"] = {
+            "payload": {"live_mt5_acquisition": snapshot(symbol, TARGET + .1).provenance()},
+        }
+    lifecycle.manage()
+    assert [c[1] for c in lifecycle.collector.calls if c[0] == "resume"] == [
+        (s, utc(t)) for s in A.SYMBOL_MAP for t in (START, START + 900)
+    ]
+    assert not any(c[0] == "capture" for c in lifecycle.calls)
+
+
+def test_lifecycle_nonprogressing_recovery_fails(lifecycle, monkeypatch):
+    del lifecycle.collector.events[("BTCUSD", utc(START)), "entry"]
+    monkeypatch.setattr(lifecycle.collector, "resume_pending_entry", lambda **_: None)
+    with pytest.raises(RuntimeError, match="no progress"):
+        lifecycle.manage()
+    assert lifecycle.audit()[-1]["event_type"] == "LIFECYCLE_RECOVERY_FAILED"
+    assert not any(c[0] == "capture" for c in lifecycle.calls)
+
+
+@pytest.mark.parametrize("trigger", ["STOP_LOSS_HIT", "TIMEBOX_MTM_CLOSE"])
+def test_lifecycle_frozen_terminal_recovery_precedes_prices(lifecycle, trigger):
+    original_authority = snapshot("BTCUSD", TARGET + .1).time_authority()
+    frozen = dict(trigger=trigger, bid=88., ask=88.02, point=.01,
+                  final_completed_candle={"time": 123}, global_time_authority=original_authority)
+    for pair, branch in lifecycle.coordinator.outstanding():
+        lifecycle.collector.events[pair, f"terminal_input_{branch}"] = {
+            "payload": frozen, "broker_epoch": TARGET + 1,
+        }
+    lifecycle.manage()
+    assert not any(c[0] == "capture" for c in lifecycle.calls)
+    kind = "timebox" if trigger == "TIMEBOX_MTM_CLOSE" else "update"
+    recovered = [c for c in lifecycle.collector.calls if c[0] == kind]
+    assert len(recovered) == 4
+    assert all(c[3]["time_authority"] == original_authority for c in recovered)
+    assert not lifecycle.coordinator.outstanding()
+
+
+def test_lifecycle_second_capture_failure_writes_no_updates(lifecycle):
+    lifecycle.failure_symbol = "ETHUSD"
+    with pytest.raises(RuntimeError, match="acquisition failure"):
+        lifecycle.manage()
+    assert not lifecycle.collector.calls
+    assert lifecycle.audit()[-1]["event_type"] == "LIFECYCLE_RECOVERY_FAILED"
+    assert lifecycle.calls[-1][0] == "shutdown"
+
+
+def test_lifecycle_slow_capture_fails_before_updates(lifecycle):
+    lifecycle.capture_delay = 3.
+    with pytest.raises(RuntimeError, match="acquisition exceeded"):
+        lifecycle.manage()
+    assert not lifecycle.collector.calls
+
+
+def test_lifecycle_no_pre_activation_setup(lifecycle):
+    lifecycle.now = START - 1
+    with pytest.raises(RuntimeError, match="before activation"):
+        lifecycle.manage()
+    assert not any(c[0] == "initialize" for c in lifecycle.calls)
+    assert not lifecycle.audit()
+
+
+def test_lifecycle_owns_runner_lease(lifecycle):
+    with B.runner_lease(lifecycle.collector.journal_path):
+        with pytest.raises(ShadowTradeJournalBusyError):
+            lifecycle.manage()
+    assert not lifecycle.audit()
+
+
+def test_lifecycle_rejects_changed_original_broker(lifecycle):
+    pair = ("BTCUSD", utc(START))
+    lifecycle.collector.events[pair, "decision"]["payload"]["live_mt5_acquisition"]["account_server"] = "Other-Demo"
+    with pytest.raises(RuntimeError, match="changed since the decision"):
+        lifecycle.manage()
+    assert not lifecycle.collector.calls
+
+
+def test_lifecycle_clock_step_during_capture_fails_before_updates(lifecycle):
+    def step(value):
+        lifecycle.now += 1.
+        return value
+    lifecycle.mutate_snapshot = step
+    with pytest.raises(RuntimeError, match="clock stepped"):
+        lifecycle.manage()
+    assert not lifecycle.collector.calls
+
+
+def test_lifecycle_slow_write_retains_partial_evidence(lifecycle, monkeypatch):
+    original = lifecycle.collector.update_virtual_trade
+    def delayed(**kwargs):
+        original(**kwargs)
+        lifecycle.advance(1.5)
+    monkeypatch.setattr(lifecycle.collector, "update_virtual_trade", delayed)
+    with pytest.raises(RuntimeError, match="writes exceeded"):
+        lifecycle.manage()
+    assert any(c[0] == "update" for c in lifecycle.collector.calls)
+    assert lifecycle.audit()[-1]["event_type"] == "LIFECYCLE_RECOVERY_FAILED"
+
+
+def test_lifecycle_polls_held_positions_then_stops(lifecycle, monkeypatch):
+    original = lifecycle.collector.update_virtual_trade
+    lifecycle.collector.hold = True
+    def close_second_poll(**kwargs):
+        if lifecycle.now >= TARGET + 1.1:
+            lifecycle.collector.hold = False
+        original(**kwargs)
+    monkeypatch.setattr(lifecycle.collector, "update_virtual_trade", close_second_poll)
+    lifecycle.manage()
+    captures = [c for c in lifecycle.calls if c[0] == "capture"]
+    assert len(captures) == 4
+    assert captures[2][2] - captures[0][2] == pytest.approx(1.)
+    assert sum(c[0] == "initialize" for c in lifecycle.calls) == 1
+
+
+def lifecycle_end_snapshot(symbol, now):
+    # Shift the synthetic fixture to any M15 bar, including the exclusive end.
+    base = snapshot(symbol, TARGET + .1)
+    current = int(now // 900) * 900
+    shift = current - TARGET
+    frozen = tuple(replace(rate, time=rate.time + shift) for rate in base.rates)
+    authority = A.GlobalTimeAuthority().build(
+        utc_epoch_before_tick=now, utc_epoch_after_tick=now,
+        tick_epoch=int(now), current_bar_epoch=current,
+    )
+    from dataclasses import asdict
+    provenance = base.provenance()
+    provenance.update(tick_epoch=int(now), current_bar_epoch=current,
+                      rates_sha256=A._canonical_sha256([asdict(r) for r in frozen]),
+                      time_authority_sha256=A._canonical_sha256(authority))
+    return replace(base, rates=frozen, tick_epoch=int(now), current_bar_epoch=current,
+                   time_authority_json=A._canonical_json_bytes(authority).decode(),
+                   provenance_json=A._canonical_json_bytes(provenance).decode())
+
+
+def test_lifecycle_end_uses_final_candle_and_skips_ordinary_updates(lifecycle):
+    lifecycle.now = lifecycle.coordinator.end + .1
+    values = tuple(lifecycle_end_snapshot(s, lifecycle.now) for s in A.SYMBOL_MAP)
+    lifecycle.coordinator.apply_snapshots(values)
+    calls = lifecycle.collector.calls
+    assert not any(c[0] in {"update", "boundary"} for c in calls)
+    closed = [c for c in calls if c[0] == "timebox"]
+    assert len(closed) == 4
+    assert all(c[3]["final_completed_candle"]["time"] == lifecycle.coordinator.end - 900 for c in closed)
+    assert sum(c[0] == "settle" for c in calls) == 2
+
+
+def test_lifecycle_already_terminal_branch_is_not_timeboxed_again(lifecycle):
+    pair = ("BTCUSD", utc(START))
+    lifecycle.collector.events[pair, "terminal_baseline"] = {"payload": {}}
+    lifecycle.now = lifecycle.coordinator.end + .1
+    lifecycle.coordinator.apply_snapshots(tuple(lifecycle_end_snapshot(s, lifecycle.now) for s in A.SYMBOL_MAP))
+    closed = [c for c in lifecycle.collector.calls if c[0] == "timebox"]
+    assert len(closed) == 3
+    assert not any(c[1:3] == (pair, "baseline") for c in closed)
+
+
+@pytest.mark.parametrize("fault", ["missing_boundary", "missing_candle", "stale_tick"])
+def test_lifecycle_end_preflight_fails_without_terminal_writes(lifecycle, fault):
+    lifecycle.now = lifecycle.coordinator.end + .1
+    epoch = lifecycle.now
+    if fault == "missing_boundary":
+        lifecycle.collector.missing_boundary = True
+    elif fault == "missing_candle":
+        lifecycle.collector.boundary_offset = 90000
+    else:
+        epoch = lifecycle.coordinator.end - .1
+    with pytest.raises(RuntimeError):
+        lifecycle.coordinator.apply_snapshots(tuple(lifecycle_end_snapshot(s, epoch) for s in A.SYMBOL_MAP))
+    assert not lifecycle.collector.calls
+
+
+def test_lifecycle_command_requires_public_verification(monkeypatch, capsys):
+    args = R.parser().parse_args([
+        "manage-existing-lifecycles", "--no-forward-outcome-access-verified",
+        "--manifest-commit-sha", "b" * 40, "--manifest-publication-pr-number", "99",
+    ])
+    calls = []
+    monkeypatch.setattr(R, "verified_context", lambda _: calls.append("verify") or activation())
+    monkeypatch.setattr(R, "manage_existing_lifecycles", lambda **_: calls.append("manage") or {"ok": True})
+    args.handler(args)
+    assert calls == ["verify", "manage"]
+    assert '"ok": true' in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("fault", [None, "server", "currency", "build", "disconnected", "account_missing"])
+def test_session_recovery_context_check_never_reads_prices(monkeypatch, fault):
+    account = SimpleNamespace(server="Synthetic-Demo", currency="USD")
+    terminal = SimpleNamespace(connected=True, build=5000)
+    if fault in {"server", "currency"}:
+        setattr(account, fault, "CHANGED")
+    elif fault == "build":
+        terminal.build += 1
+    elif fault == "disconnected":
+        terminal.connected = False
+    elif fault == "account_missing":
+        account = None
+    calls = []
+    # Price functions are deliberately absent: context checking may not call them.
+    monkeypatch.setitem(sys.modules, "MetaTrader5", SimpleNamespace(
+        initialize=lambda **_: True, symbol_select=lambda *_: True,
+        shutdown=lambda: calls.append("shutdown"),
+        terminal_info=lambda: terminal, account_info=lambda: account,
+    ))
+    session = A.LiveMt5ReadOnlySession()
+    with session:
+        if fault is None:
+            session.require_context(snapshot("BTCUSD", TARGET + .1).provenance())
+        else:
+            with pytest.raises(RuntimeError):
+                session.require_context(snapshot("BTCUSD", TARGET + .1).provenance())
+    assert calls == ["shutdown"]
+    with pytest.raises(RuntimeError, match="not active"):
+        session.require_context({})

@@ -1,7 +1,8 @@
-"""One preverified, single-writer paired collection at an explicit M15 boundary.
+"""Preverified paired boundaries and recovery-only virtual lifecycle management.
 
-This is a bounded acquisition command, not a 45-day lifecycle supervisor. It
-refuses to wait while virtual positions or unresolved entry intents exist.
+These are separate commands, not an integrated 45-day experiment scheduler.
+The bounded collector refuses to wait with outstanding virtual lifecycles.
+The recovery manager never collects new decisions or certifies continuity.
 Public GitHub verification belongs to the caller and must finish before this
 module receives its in-memory VerifiedActivation. No verified context is cached
 to disk and no live snapshot can be supplied through the CLI.
@@ -10,6 +11,7 @@ to disk and no live snapshot can be supplied through the CLI.
 from __future__ import annotations
 
 from contextlib import contextmanager
+from dataclasses import asdict
 from datetime import datetime, timezone
 import hashlib
 import math
@@ -38,6 +40,8 @@ from mss.analysis.shadow_trade_journal import ShadowTradeJournal
 
 PREPARATION_LEAD_SECONDS = 10.0
 MAX_CLOCK_STEP_SECONDS = 0.5
+LIFECYCLE_POLL_SECONDS = 1.0
+MAX_LIFECYCLE_CYCLE_SECONDS = 5.0
 
 
 @contextmanager
@@ -201,6 +205,251 @@ def collect_pair_at_boundary(
             "symbols": results,
             "bounded_cycle_only": True,
             "lifecycle_supervisor_running": False,
+            "real_order_send_allowed": False,
+            "production_execution_enabled": False,
+        }
+
+
+class LifecycleCoordinator:
+    """Manage existing evidence only; never evaluate a new signal or fill a gap.
+
+    The caller owns the runner lease and the verified MT5 session. Frozen intents
+    take precedence over fresh prices, including across the exclusive end.
+    """
+
+    def __init__(self, collector: PairedForwardEvidenceCollector):
+        self.collector = collector
+        self.end = _epoch_from_utc_z(
+            collector.activation.exclusive_45_day_end_utc, "exclusive end"
+        )
+
+    def outstanding(self) -> tuple[tuple[tuple[str, str], str], ...]:
+        indexed = self.collector._phase_events()
+        return tuple(sorted(
+            (pair, branch)
+            for (pair, phase), event in indexed.items() if phase == "entry"
+            for branch in ("baseline", "candidate")
+            if event["payload"]["branches"][branch]["is_actual_trade"]
+            and (pair, f"terminal_{branch}") not in indexed
+        ))
+
+    def finalize_ready(self) -> None:
+        # recover().open_pair_keys deliberately excludes fully terminal pairs.
+        # Inspect entries as well so a crash before settlement cannot orphan one.
+        indexed = self.collector._phase_events()
+        for (pair, phase), event in sorted(indexed.items()):
+            if phase != "entry" or (pair, "settlement") in indexed:
+                continue
+            actual = [
+                branch for branch in ("baseline", "candidate")
+                if event["payload"]["branches"][branch]["is_actual_trade"]
+            ]
+            if actual and all((pair, f"terminal_{branch}") in indexed for branch in actual):
+                self.collector.finalize_settlement(pair_key=pair)
+
+    def recover_frozen(self) -> None:
+        """Resolve all pending entries/terminal intents without acquiring prices."""
+        for symbol in SYMBOL_MAP:
+            while True:
+                pending = tuple(
+                    pair for pair in self.collector.recover().pending_entry_pair_keys
+                    if pair[0] == symbol
+                )
+                if not pending:
+                    break
+                result = self.collector.resume_pending_entry(canonical_symbol=symbol)
+                if result is None or result.pair_key not in pending:
+                    raise RuntimeError("pending entry recovery made no progress")
+                if result.pair_key in self.collector.recover().pending_entry_pair_keys:
+                    raise RuntimeError("pending entry recovery did not commit its outcome")
+        indexed = self.collector._phase_events()
+        for pair, branch in self.outstanding():
+            event = indexed.get((pair, f"terminal_input_{branch}"))
+            if event is None:
+                continue
+            frozen = event["payload"]
+            if frozen["trigger"] == "TIMEBOX_MTM_CLOSE":
+                self.collector.timebox_close_virtual_trade(
+                    pair_key=pair, branch=branch,
+                    final_completed_candle=frozen["final_completed_candle"],
+                    point=frozen["point"], time_authority=frozen["global_time_authority"],
+                )
+            else:
+                self.collector.update_virtual_trade(
+                    pair_key=pair, branch=branch, bid=frozen["bid"], ask=frozen["ask"],
+                    broker_epoch=event["broker_epoch"],
+                    time_authority=frozen["global_time_authority"],
+                )
+        self.finalize_ready()
+
+    def apply_snapshots(self, snapshots: tuple[LiveMt5Snapshot, ...]) -> None:
+        """Validate the complete outstanding universe before any lifecycle write."""
+        outstanding = self.outstanding()
+        symbols = tuple(symbol for symbol in SYMBOL_MAP if any(p[0] == symbol for p, _ in outstanding))
+        if tuple(snapshot.canonical_symbol for snapshot in snapshots) != symbols:
+            raise RuntimeError("lifecycle acquisition must match the outstanding symbol universe")
+        by_symbol = {}
+        context = None
+        post_end = _utc_now_epoch() >= self.end
+        # Preflight final-candle availability for every pair before closing any.
+        final_rows = {}
+        indexed = self.collector._phase_events()
+        for snapshot in snapshots:
+            authority, provenance = _validate_live_mt5_snapshot(snapshot)
+            offset = _time_authority_offset(authority)
+            observed_context = (
+                offset, provenance.get("account_server"),
+                provenance.get("account_currency"), provenance.get("terminal_build"),
+            )
+            if context is not None and context != observed_context:
+                raise RuntimeError("lifecycle acquisitions disagree on broker context")
+            context = observed_context
+            for pair, _branch in outstanding:
+                if pair[0] != snapshot.canonical_symbol:
+                    continue
+                original = indexed[(pair, "decision")]["payload"]["live_mt5_acquisition"]
+                for field in ("account_server", "account_currency", "terminal_build"):
+                    if not original.get(field) or provenance.get(field) != original[field]:
+                        raise RuntimeError("lifecycle broker context changed since the decision")
+            normalized_tick = snapshot.tick_epoch - offset
+            if post_end:
+                if normalized_tick < self.end or snapshot.current_bar_epoch - offset < self.end:
+                    raise RuntimeError("timebox requires a post-end snapshot; no stale tick update")
+                for pair, _branch in outstanding:
+                    if pair[0] != snapshot.canonical_symbol or pair in final_rows:
+                        continue
+                    boundary_offset, _ = self.collector.timebox_boundary_evidence(pair_key=pair)
+                    final_epoch = self.end + boundary_offset - TIMEFRAME_SECONDS
+                    rows = [asdict(rate) for rate in snapshot.rates if rate.time == final_epoch]
+                    if len(rows) != 1:
+                        raise RuntimeError("live MT5 snapshot lacks the frozen final M15 candle")
+                    final_rows[pair] = rows[0]
+            elif normalized_tick >= self.end:
+                raise RuntimeError("post-end tick cannot be used for an ordinary update")
+            by_symbol[snapshot.canonical_symbol] = snapshot
+        if not post_end and _utc_now_epoch() >= self.end:
+            raise RuntimeError("lifecycle preflight crossed the exclusive end; preserve evidence")
+        boundary_recorded = set()
+        for pair, branch in outstanding:
+            snapshot = by_symbol[pair[0]]
+            authority = snapshot.time_authority()
+            if post_end:
+                self.collector.timebox_close_virtual_trade(
+                    pair_key=pair, branch=branch, final_completed_candle=final_rows[pair],
+                    point=snapshot.point, time_authority=authority,
+                )
+            else:
+                if _utc_now_epoch() >= self.end:
+                    raise RuntimeError("lifecycle update crossed the exclusive end; preserve evidence")
+                if pair not in boundary_recorded:
+                    self.collector.record_timebox_boundary_authority_if_due(
+                        pair_key=pair, time_authority=authority,
+                    )
+                    boundary_recorded.add(pair)
+                self.collector.update_virtual_trade(
+                    pair_key=pair, branch=branch, bid=snapshot.bid, ask=snapshot.ask,
+                    broker_epoch=snapshot.tick_epoch, time_authority=authority,
+                )
+        self.finalize_ready()
+
+
+def manage_existing_lifecycles(
+    *, activation: VerifiedActivation, repository_root: Path, journal_path: Path,
+) -> dict[str, object]:
+    """Recovery-only polling, not permission to resume the experiment schedule.
+
+    Every invocation records continuity as UNVERIFIED before recovering anything.
+    A process crash leaves its start record without a finish. No new decisions are
+    collected, no missed ticks are reconstructed, and no research-validity claim
+    follows from completing existing virtual trades.
+    """
+    verify_local_freeze(activation, repository_root)
+    start = _epoch_from_utc_z(activation.first_eligible_m15_open_utc, "activation start")
+    if _utc_now_epoch() < start:
+        raise RuntimeError("lifecycle recovery cannot run before activation")
+    with runner_lease(journal_path):
+        collector = PairedForwardEvidenceCollector(activation=activation, journal_path=journal_path)
+        coordinator = LifecycleCoordinator(collector)
+        operations = Path(journal_path).with_name(Path(journal_path).name + ".lifecycle.jsonl")
+
+        def audit(event_type: str, **details) -> None:
+            ShadowTradeJournal.append_event(
+                path=operations, event_type=event_type,
+                position_id=activation.manifest_sha256, broker_epoch=0,
+                payload={
+                    "activation_manifest_sha256": activation.manifest_sha256,
+                    "observed_utc_epoch": _utc_now_epoch(),
+                    "mode": "EXISTING_LIFECYCLES_ONLY",
+                    "experiment_continuity": "UNVERIFIED",
+                    "new_decisions_allowed": False,
+                    "production_execution_enabled": False, **details,
+                },
+            )
+
+        audit("LIFECYCLE_RECOVERY_STARTED")
+        try:
+            previous_offset = None
+            for event in reversed(collector._events()):
+                authority = event.get("payload", {}).get("global_time_authority")
+                if isinstance(authority, dict):
+                    previous_offset = _time_authority_offset(authority, require_current=False)
+                    break
+            # Setup also enables read-only valuation of previously frozen intents.
+            with LiveMt5ReadOnlySession() as session:
+                verify_local_freeze(activation, repository_root)
+                indexed = collector._phase_events()
+                recovery_pairs = set(collector.recover().pending_entry_pair_keys)
+                recovery_pairs.update(pair for pair, _ in coordinator.outstanding())
+                for pair in sorted(recovery_pairs):
+                    session.require_context(indexed[pair, "decision"]["payload"]["live_mt5_acquisition"])
+                coordinator.recover_frozen()
+                utc_anchor, monotonic_anchor = _utc_now_epoch(), time.monotonic()
+                next_poll = utc_anchor
+                next_checkpoint = utc_anchor + TIMEFRAME_SECONDS
+                while coordinator.outstanding():
+                    _wait_until_utc(next_poll)
+                    cycle_start = time.monotonic()
+                    now = _utc_now_epoch()
+                    if abs(now - utc_anchor - (cycle_start - monotonic_anchor)) > MAX_CLOCK_STEP_SECONDS:
+                        raise RuntimeError("UTC clock stepped during lifecycle management")
+                    if now - next_poll > MAX_LIFECYCLE_CYCLE_SECONDS:
+                        raise RuntimeError("lifecycle polling gap exceeded its limit")
+                    verify_local_freeze(activation, repository_root)
+                    outstanding = coordinator.outstanding()
+                    symbols = tuple(s for s in SYMBOL_MAP if any(p[0] == s for p, _ in outstanding))
+                    snapshots = tuple(
+                        session.capture(symbol, previous_broker_offset_seconds=previous_offset)
+                        for symbol in symbols
+                    )
+                    if time.monotonic() - cycle_start > MAX_LIFECYCLE_CYCLE_SECONDS:
+                        raise RuntimeError("lifecycle acquisition exceeded its cycle limit")
+                    if abs(_utc_now_epoch() - utc_anchor - (time.monotonic() - monotonic_anchor)) > MAX_CLOCK_STEP_SECONDS:
+                        raise RuntimeError("UTC clock stepped during lifecycle acquisition")
+                    coordinator.apply_snapshots(snapshots)
+                    previous_offset = _time_authority_offset(snapshots[-1].time_authority())
+                    elapsed = time.monotonic() - cycle_start
+                    if elapsed > MAX_LIFECYCLE_CYCLE_SECONDS:
+                        raise RuntimeError("lifecycle writes exceeded their cycle limit; partial evidence retained")
+                    if abs(_utc_now_epoch() - utc_anchor - (time.monotonic() - monotonic_anchor)) > MAX_CLOCK_STEP_SECONDS:
+                        raise RuntimeError("UTC clock stepped during lifecycle management")
+                    # No catch-up bursts or reconstructed historical ticks. The
+                    # periodic checkpoint is operational, not tick evidence.
+                    if _utc_now_epoch() >= next_checkpoint:
+                        audit("LIFECYCLE_POLL_CHECKPOINT", cycle_seconds=elapsed,
+                              observed_symbols=list(symbols))
+                        next_checkpoint = _utc_now_epoch() + TIMEFRAME_SECONDS
+                    next_poll = min(now + LIFECYCLE_POLL_SECONDS, coordinator.end)
+                    if now >= coordinator.end and coordinator.outstanding():
+                        raise RuntimeError("timebox pass left unresolved virtual positions")
+            audit("LIFECYCLE_RECOVERY_COMPLETED")
+        except BaseException as exc:
+            audit("LIFECYCLE_RECOVERY_FAILED", error_type=type(exc).__name__,
+                  partial_evidence_must_be_preserved=True)
+            raise
+        return {
+            "result": "SPRINT93_2B_EXISTING_LIFECYCLES_COMPLETE",
+            "experiment_continuity_verified": False,
+            "new_decisions_collected": False,
             "real_order_send_allowed": False,
             "production_execution_enabled": False,
         }

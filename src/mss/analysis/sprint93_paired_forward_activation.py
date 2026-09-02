@@ -1018,6 +1018,29 @@ class LiveMt5ReadOnlySession:
             _session=self,
         )
 
+    def require_context(self, provenance: Mapping[str, object]) -> None:
+        """Check broker identity before frozen recovery, without rates or ticks.
+
+        Replaying a frozen intent may invoke read-only risk/valuation metadata
+        APIs. That must not happen on a different server/currency/terminal build.
+        """
+        if not self._active:
+            raise RuntimeError("MT5 read-only session is not active")
+        import MetaTrader5 as mt5
+
+        terminal, account = mt5.terminal_info(), mt5.account_info()
+        if terminal is None or not bool(_mt5_attribute(terminal, "connected", False)):
+            raise RuntimeError("connected MT5 terminal evidence is required")
+        if account is None:
+            raise RuntimeError("MT5 account evidence is required")
+        observed = {
+            "account_server": _mt5_attribute(account, "server"),
+            "account_currency": _mt5_attribute(account, "currency"),
+            "terminal_build": _mt5_attribute(terminal, "build"),
+        }
+        if any(not provenance.get(key) or provenance[key] != value for key, value in observed.items()):
+            raise RuntimeError("lifecycle broker context changed since the decision")
+
 
 def capture_live_mt5_snapshot(
     canonical_symbol: str,
