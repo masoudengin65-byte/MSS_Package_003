@@ -17,6 +17,7 @@ from mss.analysis.sprint93_paired_forward_activation import (
     DEFAULT_EVIDENCE_RELATIVE_PATH,
     DEFAULT_MANIFEST_RELATIVE_PATH,
     ACTIVATION_RUNNER_PATH,
+    BOUNDARY_RUNNER_PATH,
     PAIRED_EXECUTOR_PATH,
     PairedForwardEvidenceCollector,
     build_activation_manifest_after_merge,
@@ -24,6 +25,10 @@ from mss.analysis.sprint93_paired_forward_activation import (
     create_activation_manifest_once,
     verify_package_safety,
     verify_published_activation_manifest,
+)
+from mss.analysis.sprint93_paired_forward_runner import (
+    collect_pair_at_boundary,
+    runner_lease,
 )
 
 
@@ -417,6 +422,28 @@ def collect_decision(args: argparse.Namespace) -> None:
     )
 
 
+def collect_pair(args: argparse.Namespace) -> None:
+    # All public/network verification finishes before MT5 setup and waiting.
+    context = verified_context(args)
+    try:
+        result = collect_pair_at_boundary(
+            activation=context,
+            repository_root=ROOT,
+            journal_path=DEFAULT_EVIDENCE_JOURNAL,
+            entry_bar_open_utc=args.entry_bar_open_utc,
+        )
+    except Exception:
+        print(json.dumps({
+            "result": "SPRINT93_2B_BOUNDARY_CYCLE_FAILED",
+            "entry_bar_open_utc": args.entry_bar_open_utc,
+            "partial_evidence_must_be_preserved": True,
+            "automatic_retry_allowed": False,
+            "production_execution_enabled": False,
+        }, sort_keys=True))
+        raise
+    print(json.dumps(result, sort_keys=True))
+
+
 def _collector(args: argparse.Namespace) -> PairedForwardEvidenceCollector:
     return PairedForwardEvidenceCollector(
         activation=verified_context(args),
@@ -584,7 +611,7 @@ def finalize_settlement(args: argparse.Namespace) -> None:
 
 
 def verify_package(_args: argparse.Namespace) -> None:
-    for path in (PAIRED_EXECUTOR_PATH, ACTIVATION_RUNNER_PATH):
+    for path in (PAIRED_EXECUTOR_PATH, ACTIVATION_RUNNER_PATH, BOUNDARY_RUNNER_PATH):
         verify_package_safety(ROOT / path)
     print("SPRINT93_2B_PACKAGE_VERIFY_PASS")
 
@@ -636,6 +663,11 @@ def parser() -> argparse.ArgumentParser:
     )
     collect.set_defaults(handler=collect_decision)
 
+    pair = subcommands.add_parser("collect-pair-at-boundary")
+    _published_arguments(pair)
+    pair.add_argument("--entry-bar-open-utc", required=True)
+    pair.set_defaults(handler=collect_pair)
+
     update = subcommands.add_parser("update-virtual-trades")
     _published_arguments(update)
     _pair_arguments(update)
@@ -655,7 +687,15 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = parser().parse_args()
-    args.handler(args)
+    if args.command in {
+        "collect-decision", "update-virtual-trades", "timebox-close",
+        "finalize-settlement",
+    }:
+        with runner_lease(DEFAULT_EVIDENCE_JOURNAL):
+            args.handler(args)
+    else:
+        # The paired command owns its lease through the bounded wait as well.
+        args.handler(args)
 
 
 if __name__ == "__main__":

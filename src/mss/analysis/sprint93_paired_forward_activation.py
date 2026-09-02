@@ -49,7 +49,7 @@ from mss.analysis.virtual_position_engine import (
 )
 
 
-VERSION = "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V3"
+VERSION = "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V4"
 LIVE_ACQUISITION_VERSION = "MSS_SPRINT93_2B_LIVE_MT5_ACQUISITION_V1"
 TIMEFRAME = "M15"
 TIMEFRAME_SECONDS = 15 * 60
@@ -58,7 +58,7 @@ MAX_ENTRY_OBSERVATION_DELAY_SECONDS = (
 )
 LIVE_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
 DEFAULT_MANIFEST_RELATIVE_PATH = (
-    "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V3.json"
+    "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V4.json"
 )
 DEFAULT_EVIDENCE_RELATIVE_PATH = (
     "shadow_data/live/sprint93_2b_paired_forward/paired_evidence.jsonl"
@@ -68,6 +68,7 @@ PAIRED_EXECUTOR_PATH = "src/mss/analysis/sprint93_paired_forward_activation.py"
 ACTIVATION_RUNNER_PATH = (
     "integration_tests/run_sprint93_2b_paired_forward_activation.py"
 )
+BOUNDARY_RUNNER_PATH = "src/mss/analysis/sprint93_paired_forward_runner.py"
 EVALUATION_PATH = (
     "src/mss/analysis/sprint93_confluence_gate_v2_preregistration.py"
 )
@@ -79,6 +80,7 @@ EXECUTION_ROOT_PATHS = tuple(
     sorted(
         {
             ACTIVATION_RUNNER_PATH,
+            BOUNDARY_RUNNER_PATH,
             EVALUATION_PATH,
             JOURNAL_PATH,
             PAIRED_EXECUTOR_PATH,
@@ -964,10 +966,64 @@ def _mt5_attribute(value: object, name: str, default: object = None) -> object:
     return getattr(value, name, default)
 
 
+class LiveMt5ReadOnlySession:
+    """Keep one real MT5 connection warm across a bounded paired acquisition.
+
+    No rates or ticks are read during setup. The caller owns activation timing;
+    capture still obtains fresh terminal, account, symbol and time authority.
+    """
+
+    def __init__(self) -> None:
+        self._active = False
+
+    def __enter__(self) -> LiveMt5ReadOnlySession:
+        if self._active:
+            raise RuntimeError("MT5 read-only session is already active")
+        import MetaTrader5 as mt5
+
+        if not mt5.initialize(timeout=120_000):
+            error = mt5.last_error()
+            mt5.shutdown()
+            raise RuntimeError(f"MT5 initialization failed: {error}")
+        self._active = True
+        try:
+            for symbol in SYMBOL_MAP.values():
+                if not mt5.symbol_select(symbol, True):
+                    raise RuntimeError(f"MT5 symbol selection failed: {symbol}")
+        except BaseException:
+            self.__exit__(None, None, None)
+            raise
+        return self
+
+    def __exit__(self, *_exc: object) -> None:
+        if self._active:
+            import MetaTrader5 as mt5
+
+            try:
+                mt5.shutdown()
+            finally:
+                self._active = False
+
+    def capture(
+        self,
+        canonical_symbol: str,
+        *,
+        previous_broker_offset_seconds: int | None = None,
+    ) -> LiveMt5Snapshot:
+        if not self._active:
+            raise RuntimeError("MT5 read-only session is not active")
+        return capture_live_mt5_snapshot(
+            canonical_symbol,
+            previous_broker_offset_seconds=previous_broker_offset_seconds,
+            _session=self,
+        )
+
+
 def capture_live_mt5_snapshot(
     canonical_symbol: str,
     *,
     previous_broker_offset_seconds: int | None = None,
+    _session: LiveMt5ReadOnlySession | None = None,
 ) -> LiveMt5Snapshot:
     """Acquire rates, tick, account context, and time authority from live MT5.
 
@@ -981,9 +1037,12 @@ def capture_live_mt5_snapshot(
 
     initialized = False
     try:
-        initialized = bool(mt5.initialize(timeout=120_000))
-        if not initialized:
-            raise RuntimeError(f"MT5 initialization failed: {mt5.last_error()}")
+        if _session is None:
+            initialized = bool(mt5.initialize(timeout=120_000))
+            if not initialized:
+                raise RuntimeError(f"MT5 initialization failed: {mt5.last_error()}")
+        elif type(_session) is not LiveMt5ReadOnlySession or not _session._active:
+            raise RuntimeError("MT5 read-only session is not active")
         terminal = mt5.terminal_info()
         account = mt5.account_info()
         if terminal is None or not bool(_mt5_attribute(terminal, "connected", False)):
@@ -995,7 +1054,7 @@ def capture_live_mt5_snapshot(
             raise RuntimeError("MT5 account server identity is required")
 
         broker_symbol = SYMBOL_MAP[canonical_symbol]
-        if not bool(mt5.symbol_select(broker_symbol, True)):
+        if _session is None and not bool(mt5.symbol_select(broker_symbol, True)):
             raise RuntimeError(f"MT5 symbol selection failed: {broker_symbol}")
         symbol_info = mt5.symbol_info(broker_symbol)
         if symbol_info is None:
