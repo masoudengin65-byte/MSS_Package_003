@@ -17,6 +17,8 @@ from mss.analysis.sprint93_paired_forward_activation import (
     DEFAULT_EVIDENCE_RELATIVE_PATH,
     DEFAULT_MANIFEST_RELATIVE_PATH,
     ACTIVATION_RUNNER_PATH,
+    BOUNDARY_RUNNER_PATH,
+    INDEXED_JOURNAL_PATH,
     PAIRED_EXECUTOR_PATH,
     PairedForwardEvidenceCollector,
     build_activation_manifest_after_merge,
@@ -25,6 +27,13 @@ from mss.analysis.sprint93_paired_forward_activation import (
     verify_package_safety,
     verify_published_activation_manifest,
 )
+from mss.analysis.sprint93_paired_forward_runner import (
+    collect_pair_at_boundary,
+    manage_existing_lifecycles,
+    run_forward_supervisor,
+    runner_lease,
+)
+from mss.analysis.indexed_shadow_trade_journal import IndexedShadowTradeJournal
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -417,11 +426,74 @@ def collect_decision(args: argparse.Namespace) -> None:
     )
 
 
+def collect_pair(args: argparse.Namespace) -> None:
+    # All public/network verification finishes before MT5 setup and waiting.
+    context = verified_context(args)
+    try:
+        result = collect_pair_at_boundary(
+            activation=context,
+            repository_root=ROOT,
+            journal_path=DEFAULT_EVIDENCE_JOURNAL,
+            entry_bar_open_utc=args.entry_bar_open_utc,
+        )
+    except Exception:
+        print(json.dumps({
+            "result": "SPRINT93_2B_BOUNDARY_CYCLE_FAILED",
+            "entry_bar_open_utc": args.entry_bar_open_utc,
+            "partial_evidence_must_be_preserved": True,
+            "automatic_retry_allowed": False,
+            "production_execution_enabled": False,
+        }, sort_keys=True))
+        raise
+    print(json.dumps(result, sort_keys=True))
+
+
 def _collector(args: argparse.Namespace) -> PairedForwardEvidenceCollector:
+    context = verified_context(args)
+    backend = IndexedShadowTradeJournal(DEFAULT_EVIDENCE_JOURNAL)
     return PairedForwardEvidenceCollector(
-        activation=verified_context(args),
+        activation=context,
         journal_path=DEFAULT_EVIDENCE_JOURNAL,
+        journal_backend=backend,
     )
+
+
+def manage_lifecycles(args: argparse.Namespace) -> None:
+    context = verified_context(args)
+    try:
+        result = manage_existing_lifecycles(
+            activation=context, repository_root=ROOT,
+            journal_path=DEFAULT_EVIDENCE_JOURNAL,
+        )
+    except BaseException:
+        print(json.dumps({
+            "result": "SPRINT93_2B_LIFECYCLE_RECOVERY_FAILED",
+            "partial_evidence_must_be_preserved": True,
+            "experiment_continuity_verified": False,
+            "automatic_retry_allowed": False,
+            "production_execution_enabled": False,
+        }, sort_keys=True))
+        raise
+    print(json.dumps(result, sort_keys=True))
+
+
+def supervise_forward(args: argparse.Namespace) -> None:
+    context = verified_context(args)
+    try:
+        result = run_forward_supervisor(
+            activation=context, repository_root=ROOT,
+            journal_path=DEFAULT_EVIDENCE_JOURNAL,
+        )
+    except BaseException:
+        print(json.dumps({
+            "result": "SPRINT93_2B_FORWARD_SUPERVISOR_FAILED",
+            "partial_evidence_must_be_preserved": True,
+            "research_validity_certified": False,
+            "automatic_resume_allowed": False,
+            "production_execution_enabled": False,
+        }, sort_keys=True))
+        raise
+    print(json.dumps(result, sort_keys=True))
 
 
 def _pair_key(args: argparse.Namespace) -> tuple[str, str]:
@@ -432,27 +504,13 @@ def _capture_for_collector(
     collector: PairedForwardEvidenceCollector,
     canonical_symbol: str,
 ):
-    previous_offset = None
-    for event in reversed(collector._events()):
-        payload = event.get("payload")
-        authority = (
-            payload.get("global_time_authority")
-            if isinstance(payload, dict)
-            else None
-        )
-        observation = (
-            authority.get("observation")
-            if isinstance(authority, dict)
-            else None
-        )
-        offset = (
-            observation.get("detected_broker_offset_seconds")
-            if isinstance(observation, dict)
-            else None
-        )
-        if isinstance(offset, int) and not isinstance(offset, bool):
-            previous_offset = offset
-            break
+    authority = collector.latest_time_authority()
+    observation = authority.get("observation") if isinstance(authority, dict) else None
+    offset = (
+        observation.get("detected_broker_offset_seconds")
+        if isinstance(observation, dict) else None
+    )
+    previous_offset = offset if isinstance(offset, int) and not isinstance(offset, bool) else None
     return capture_live_mt5_snapshot(
         canonical_symbol,
         previous_broker_offset_seconds=previous_offset,
@@ -584,7 +642,10 @@ def finalize_settlement(args: argparse.Namespace) -> None:
 
 
 def verify_package(_args: argparse.Namespace) -> None:
-    for path in (PAIRED_EXECUTOR_PATH, ACTIVATION_RUNNER_PATH):
+    for path in (
+        PAIRED_EXECUTOR_PATH, ACTIVATION_RUNNER_PATH,
+        BOUNDARY_RUNNER_PATH, INDEXED_JOURNAL_PATH,
+    ):
         verify_package_safety(ROOT / path)
     print("SPRINT93_2B_PACKAGE_VERIFY_PASS")
 
@@ -636,6 +697,19 @@ def parser() -> argparse.ArgumentParser:
     )
     collect.set_defaults(handler=collect_decision)
 
+    pair = subcommands.add_parser("collect-pair-at-boundary")
+    _published_arguments(pair)
+    pair.add_argument("--entry-bar-open-utc", required=True)
+    pair.set_defaults(handler=collect_pair)
+
+    manage = subcommands.add_parser("manage-existing-lifecycles")
+    _published_arguments(manage)
+    manage.set_defaults(handler=manage_lifecycles)
+
+    supervise = subcommands.add_parser("supervise-forward")
+    _published_arguments(supervise)
+    supervise.set_defaults(handler=supervise_forward)
+
     update = subcommands.add_parser("update-virtual-trades")
     _published_arguments(update)
     _pair_arguments(update)
@@ -655,7 +729,15 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = parser().parse_args()
-    args.handler(args)
+    if args.command in {
+        "collect-decision", "update-virtual-trades", "timebox-close",
+        "finalize-settlement",
+    }:
+        with runner_lease(DEFAULT_EVIDENCE_JOURNAL):
+            args.handler(args)
+    else:
+        # The paired command owns its lease through the bounded wait as well.
+        args.handler(args)
 
 
 if __name__ == "__main__":
