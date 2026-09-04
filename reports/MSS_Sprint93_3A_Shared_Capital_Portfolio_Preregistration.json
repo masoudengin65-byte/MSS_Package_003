@@ -1,0 +1,207 @@
+{
+  "account_model": {
+    "currency": "USD",
+    "independent_symbol_accounts": false,
+    "maximum_positions_per_asset_class": 1,
+    "maximum_risk_per_trade_percent": 1.0,
+    "maximum_simultaneous_positions": 2,
+    "maximum_total_open_risk_percent": 2.0,
+    "primary_risk_percent": 0.5,
+    "primary_starting_balance": 100.0,
+    "shared_equity_updates_chronologically": true
+  },
+  "audit": {
+    "active_sprint93_2b_forward_modified": false,
+    "deterministic_rebuild": true,
+    "extension_market_data_accessed": false,
+    "live_mt5_accessed": false,
+    "real_orders_sent": false,
+    "shared_capital_replay_run": false
+  },
+  "core_universe": {
+    "source_windows": [
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "EURUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "EURUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T08:00:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "a6447fe187feef28d09868f57ac3efc8b7901caece9e2b28156dd5e32b0717d7"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "GBPUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "GBPUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "f3ac38e0b13725a883f5947ed9a56b8a3917fc6b3007d8dc6e498a40eee5f988"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDJPY",
+        "candle_count": 10000,
+        "canonical_symbol": "USDJPY",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "ce3981d16e291ed8869ff226912a50729b1a6c5d06bf0e3146837630e475b5df"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "AUDUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "AUDUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "5674a45546522b0a515e1b684ed1bf69d7ac62c7fbfb6551217185f2c0cc0527"
+      },
+      {
+        "asset_class": "FOREX",
+        "broker_symbol": "USDCAD",
+        "candle_count": 10000,
+        "canonical_symbol": "USDCAD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-13T07:45:00",
+        "last_candle_close_time": "2026-08-07T17:00:00",
+        "last_candle_open_time": "2026-08-07T16:45:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "4a129d79b0c752e9fc693a525723023b3fdafe70a773fdb87a309d3291c253e5"
+      },
+      {
+        "asset_class": "METAL",
+        "broker_symbol": "XAUUSD",
+        "candle_count": 10000,
+        "canonical_symbol": "XAUUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-03-06T13:00:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "09ae96523177e39c736cc0a950c10c6e5369eabc11c8b95d638944b79b56c820"
+      },
+      {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "BITCOIN",
+        "candle_count": 10000,
+        "canonical_symbol": "BTCUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-04-23T01:15:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "29d4e9639b7cc9dcc483acf71343fc691a7f8a162acf6d283958860a3bcaf1ca"
+      },
+      {
+        "asset_class": "CRYPTO",
+        "broker_symbol": "ETHEREUM",
+        "candle_count": 10000,
+        "canonical_symbol": "ETHUSD",
+        "completed_candles_only": true,
+        "first_candle_open_time": "2026-04-23T01:15:00",
+        "last_candle_close_time": "2026-08-07T17:15:00",
+        "last_candle_open_time": "2026-08-07T17:00:00",
+        "source_authority": "SPRINT_91_V1_SAVED_WINDOW_METADATA",
+        "source_sha256": "0bf6cb205b1b08213bc4cc87d5d2247cff50cfbf82d4f9e5656c1f112c018db1"
+      }
+    ],
+    "symbol_priority": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "timeframe": "M15"
+  },
+  "execution_contract": {
+    "candidate_selection": "EARLIEST_UTC_THEN_FROZEN_SYMBOL_PRIORITY",
+    "entry": "NEXT_CANDLE_OPEN",
+    "minimum_volume_policy": "REJECT_IF_BROKER_MINIMUM_EXCEEDS_RISK_CAP",
+    "missing_or_invalid_contract_metadata": "FAIL_CLOSED",
+    "parameter_optimization": false,
+    "real_orders": false,
+    "reward_risk_ratio": 2.0,
+    "same_candle_exit_policy": "STOP_LOSS_FIRST",
+    "volume_step_policy": "ROUND_DOWN_AND_REJECT_IF_BELOW_MINIMUM",
+    "weekend_closed_symbols": "NO_SYNTHETIC_CANDLES_NO_BACKFILL"
+  },
+  "execution_policy": {
+    "authoritative_primary_runs": 1,
+    "failed_and_null_results_preserved": true,
+    "interim_peeking": false,
+    "parameter_tuning_after_results": false,
+    "rerun_after_outcome_access": false
+  },
+  "extension_universe": {
+    "candidates": [
+      "WTI",
+      "NAS100",
+      "SPX500",
+      "XAGUSD"
+    ],
+    "failure_policy": "EXCLUDE_FAILED_EXTENSION_WITH_REASON_CORE_REPLAY_UNCHANGED",
+    "required_before_inclusion": [
+      "exact broker symbol resolved",
+      "M15 historical depth and continuity pass",
+      "contract size tick size tick value minimum volume and volume step frozen",
+      "USD valuation path verified without current-value lookahead"
+    ],
+    "status": "CONDITIONAL_SECONDARY_REPLAY_NOT_YET_AUTHORIZED"
+  },
+  "mode": "PREREGISTRATION_ONLY_NO_SHARED_CAPITAL_REPLAY_RUN",
+  "objective": "Compare the frozen baseline and candidate under one chronological shared-capital account without post-outcome parameter selection.",
+  "reporting": {
+    "no_post_hoc_symbol_exclusion": true,
+    "primary": [
+      "ending_balance",
+      "return_percent",
+      "profit_factor",
+      "maximum_drawdown_percent",
+      "closed_trades",
+      "rejection_counts"
+    ],
+    "report_all_sensitivity_results": true,
+    "report_baseline_and_candidate": true
+  },
+  "schema_version": "MSS_SPRINT93_3A_SHARED_CAPITAL_PORTFOLIO_PREREGISTRATION_V1",
+  "sensitivity_scenarios": {
+    "decision_use": "ROBUSTNESS_DESCRIPTION_ONLY_NO_PARAMETER_SELECTION",
+    "risk_percent": [
+      0.25,
+      1.0
+    ],
+    "starting_balance_usd": [
+      500.0
+    ]
+  },
+  "source_hashes": {
+    "source_replay_file_sha256": "50e9919f749142ce3c8b7d7870eedbc4775055d2c4ea89cbcaa4348e4b1b0c36",
+    "source_replay_payload_sha256": "8113f5a21c612958d3b9eeb83e68d13a16b749bf32b75e8a310eeb8feb922b7a"
+  }
+}
