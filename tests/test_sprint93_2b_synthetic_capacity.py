@@ -7,6 +7,7 @@ uses the real collector/strategy/durable-entry paths. All files stay in tmp_path
 
 from copy import deepcopy
 import json
+import os
 import sys
 import time
 
@@ -14,10 +15,16 @@ import pytest
 
 from mss.analysis import sprint93_paired_forward_activation as A
 from mss.analysis import sprint93_paired_forward_runner as B
+from mss.analysis.indexed_shadow_trade_journal import IndexedShadowTradeJournal
 from test_sprint93_2b_boundary_runner import START, TARGET, activation, lifecycle_end_snapshot, utc
 
 
-@pytest.mark.parametrize("historical_boundaries", [0, 32, 256])
+CAPACITY_SIZES = [0, 32, 256]
+if os.environ.get("MSS_RUN_FULL_HORIZON_CAPACITY") == "1":
+    CAPACITY_SIZES.append(4318)
+
+
+@pytest.mark.parametrize("historical_boundaries", CAPACITY_SIZES)
 def test_synthetic_journal_capacity_is_fail_closed(monkeypatch, tmp_path, historical_boundaries):
     class NoBrokerAccess:
         def __getattr__(self, name):
@@ -51,6 +58,7 @@ def test_synthetic_journal_capacity_is_fail_closed(monkeypatch, tmp_path, histor
                 payload["sprint93_2b_event_id"] = A._event_id(
                     manifest_sha256=context.manifest_sha256, pair_key=pair, phase=payload["phase"],
                 )
+                event["position_id"] = payload["sprint93_2b_event_id"]
                 previous = A.ShadowTradeJournal._sha256_text(A.ShadowTradeJournal._canonical_json(event))
                 event["event_sha256"] = previous
                 handle.write(A.ShadowTradeJournal._canonical_json(event) + "\n")
@@ -58,13 +66,16 @@ def test_synthetic_journal_capacity_is_fail_closed(monkeypatch, tmp_path, histor
     initial_bytes = journal.stat().st_size
     target = TARGET + historical_boundaries * 900
     snapshots = tuple(lifecycle_end_snapshot(s, target + .05) for s in A.SYMBOL_MAP)
+    backend = IndexedShadowTradeJournal(journal)
     # Clock advances by actual wall duration during the measured collector work.
     # There is no fabricated fast clock concealing a missed durable-entry limit.
     started = time.perf_counter()
     monkeypatch.setattr(A, "_utc_now_epoch", lambda: target + .05 + time.perf_counter() - started)
     failure = None
     try:
-        collector = A.PairedForwardEvidenceCollector(activation=context, journal_path=journal)
+        collector = A.PairedForwardEvidenceCollector(
+            activation=context, journal_path=journal, journal_backend=backend,
+        )
         B._commit_pair_snapshots(collector, snapshots)
     except RuntimeError as exc:
         failure = str(exc)
@@ -83,6 +94,7 @@ def test_synthetic_journal_capacity_is_fail_closed(monkeypatch, tmp_path, histor
         "historical_boundaries": historical_boundaries,
         "historical_pairs": historical_boundaries * 2,
         "historical_bytes": initial_bytes,
+        "indexed_access": True,
         "timed_pair_seconds": round(elapsed, 6),
         "durable_pair_completed": failure is None,
         "failure": failure,

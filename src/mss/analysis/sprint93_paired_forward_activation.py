@@ -8,6 +8,7 @@ committed, publicly pushed, and verified against the frozen Sprint 93.2A rules.
 from __future__ import annotations
 
 import ast
+from collections.abc import Iterator
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
 import hashlib
@@ -69,6 +70,7 @@ ACTIVATION_RUNNER_PATH = (
     "integration_tests/run_sprint93_2b_paired_forward_activation.py"
 )
 BOUNDARY_RUNNER_PATH = "src/mss/analysis/sprint93_paired_forward_runner.py"
+INDEXED_JOURNAL_PATH = "src/mss/analysis/indexed_shadow_trade_journal.py"
 EVALUATION_PATH = (
     "src/mss/analysis/sprint93_confluence_gate_v2_preregistration.py"
 )
@@ -81,6 +83,7 @@ EXECUTION_ROOT_PATHS = tuple(
         {
             ACTIVATION_RUNNER_PATH,
             BOUNDARY_RUNNER_PATH,
+            INDEXED_JOURNAL_PATH,
             EVALUATION_PATH,
             JOURNAL_PATH,
             PAIRED_EXECUTOR_PATH,
@@ -1288,6 +1291,7 @@ def _append_evidence_once_unlocked(
     broker_epoch: int,
     payload: dict[str, object],
     pre_write_check: Callable[[], None] | None = None,
+    journal_backend: object = ShadowTradeJournal,
 ) -> EvidenceWriteResult:
     desired = {
         "event_type": event_type,
@@ -1295,19 +1299,24 @@ def _append_evidence_once_unlocked(
         "broker_epoch": int(broker_epoch),
         "payload": payload,
     }
-    verified = ShadowTradeJournal.verify(journal_path)
+    verified = journal_backend.verify(journal_path)
     if not verified["valid"]:
         raise RuntimeError(
             f"paired evidence journal integrity failure: {verified['reason']}"
         )
-    matches = []
-    for event in ShadowTradeJournal._read_events(Path(journal_path)):
-        event_payload = event.get("payload")
-        if (
-            isinstance(event_payload, dict)
-            and event_payload.get("sprint93_2b_event_id") == event_id
-        ):
-            matches.append(event)
+    finder = getattr(journal_backend, "find_event", None)
+    if callable(finder):
+        found = finder(event_id)
+        matches = [] if found is None else [found]
+    else:
+        matches = []
+        for event in journal_backend._read_events(Path(journal_path)):
+            event_payload = event.get("payload")
+            if (
+                isinstance(event_payload, dict)
+                and event_payload.get("sprint93_2b_event_id") == event_id
+            ):
+                matches.append(event)
     if len(matches) > 1:
         raise RuntimeError("duplicate evidence identity already exists in journal")
     if matches:
@@ -1323,7 +1332,7 @@ def _append_evidence_once_unlocked(
         ):
             raise RuntimeError("conflicting duplicate paired evidence identity")
         return _write_result(existing, appended=False)
-    event = ShadowTradeJournal._append_event_unlocked(
+    event = journal_backend._append_event_unlocked(
         path=journal_path,
         event_type=event_type,
         position_id=event_id,
@@ -1341,15 +1350,65 @@ def _append_evidence_once(
     event_id: str,
     broker_epoch: int,
     payload: dict[str, object],
+    journal_backend: object = ShadowTradeJournal,
 ) -> EvidenceWriteResult:
-    with ShadowTradeJournal.exclusive_transaction(journal_path):
+    with journal_backend.exclusive_transaction(journal_path):
         return _append_evidence_once_unlocked(
             journal_path=journal_path,
             event_type=event_type,
             event_id=event_id,
             broker_epoch=broker_epoch,
             payload=payload,
+            journal_backend=journal_backend,
         )
+
+
+class _LazyPhaseEvents(Mapping):
+    """Mapping facade that loads one indexed JSON event only when requested."""
+
+    def __init__(self, *, keys, loader):
+        self._keys = frozenset(keys)
+        self._loader = loader
+
+    def __getitem__(self, key):
+        if key not in self._keys:
+            raise KeyError(key)
+        value = self._loader(*key)
+        if not isinstance(value, dict):
+            raise RuntimeError("indexed phase event is missing")
+        return value
+
+    def __iter__(self) -> Iterator:
+        return iter(self._keys)
+
+    def __len__(self) -> int:
+        return len(self._keys)
+
+
+class _IndexedPhaseEvents(Mapping):
+    def __init__(self, *, backend, manifest_sha256: str):
+        self._backend = backend
+        self._manifest = manifest_sha256
+
+    def __getitem__(self, key):
+        pair, phase = key
+        value = self._backend.phase_event(self._manifest, pair, phase)
+        if value is None:
+            raise KeyError(key)
+        return value
+
+    def __contains__(self, key) -> bool:
+        pair, phase = key
+        return self._backend.has_phase(self._manifest, pair, phase)
+
+    def __iter__(self) -> Iterator:
+        for pair, phase in self._backend.iter_phase_keys(self._manifest):
+            if phase not in EVIDENCE_EVENT_TYPES:
+                raise RuntimeError("indexed journal contains an invalid evidence phase")
+            yield pair, phase
+
+    def __len__(self) -> int:
+        return self._backend.phase_count(self._manifest)
 
 
 class PairedForwardEvidenceCollector:
@@ -1369,6 +1428,7 @@ class PairedForwardEvidenceCollector:
         real_order_send_allowed: bool = False,
         order_check_allowed: bool = False,
         production_execution_enabled: bool = False,
+        journal_backend: object = ShadowTradeJournal,
     ) -> None:
         if not isinstance(activation, VerifiedActivation):
             raise TypeError("a verified activation context is required")
@@ -1388,6 +1448,7 @@ class PairedForwardEvidenceCollector:
             raise RuntimeError("activation context permits prohibited execution")
         self.activation = activation
         self.journal_path = Path(journal_path)
+        self.journal_backend = journal_backend
         self.baseline_engine = baseline_engine or LiveCompletedCandleSignalEngine(
             pipeline=SmartMoneyPipeline()
         )
@@ -1397,14 +1458,43 @@ class PairedForwardEvidenceCollector:
         self.recover()
 
     def _events(self) -> list[dict[str, Any]]:
-        verified = ShadowTradeJournal.verify(self.journal_path)
+        verified = self.journal_backend.verify(self.journal_path)
         if not verified["valid"]:
             raise RuntimeError(
                 f"paired evidence journal integrity failure: {verified['reason']}"
             )
-        return ShadowTradeJournal._read_events(self.journal_path)
+        return self.journal_backend._read_events(self.journal_path)
 
-    def _phase_events(self) -> dict[tuple[tuple[str, str], str], dict[str, Any]]:
+    def latest_time_authority(self) -> dict[str, object] | None:
+        reader = getattr(self.journal_backend, "latest_authority", None)
+        if callable(reader):
+            return reader(self.activation.manifest_sha256)
+        for event in reversed(self._events()):
+            authority = event.get("payload", {}).get("global_time_authority")
+            if isinstance(authority, dict):
+                return authority
+        return None
+
+    def _phase_events(self) -> Mapping[tuple[tuple[str, str], str], dict[str, Any]]:
+        if all(callable(getattr(self.journal_backend, name, None)) for name in (
+            "iter_phase_keys", "phase_event", "has_phase", "phase_count",
+        )):
+            return _IndexedPhaseEvents(
+                backend=self.journal_backend,
+                manifest_sha256=self.activation.manifest_sha256,
+            )
+        phase_keys = getattr(self.journal_backend, "phase_keys", None)
+        phase_event = getattr(self.journal_backend, "phase_event", None)
+        if callable(phase_keys) and callable(phase_event):
+            keys = phase_keys(self.activation.manifest_sha256)
+            if any(phase not in EVIDENCE_EVENT_TYPES for _pair, phase in keys):
+                raise RuntimeError("indexed journal contains an invalid evidence phase")
+            return _LazyPhaseEvents(
+                keys=keys,
+                loader=lambda pair, phase: phase_event(
+                    self.activation.manifest_sha256, pair, phase
+                ),
+            )
         indexed: dict[tuple[tuple[str, str], str], dict[str, Any]] = {}
         seen_ids: set[str] = set()
         for event in self._events():
@@ -1442,6 +1532,20 @@ class PairedForwardEvidenceCollector:
         return indexed
 
     def recover(self) -> EvidenceRecovery:
+        recovery = getattr(self.journal_backend, "recovery_sets", None)
+        if callable(recovery):
+            values = recovery(self.activation.manifest_sha256)
+            decisions = values["decisions"]
+            entries = values["entries"]
+            settlements = values["settlements"]
+            if not entries.issubset(decisions) or not settlements.issubset(entries):
+                raise RuntimeError("paired evidence lifecycle is not append-order consistent")
+            return EvidenceRecovery(
+                decision_pair_keys=tuple(sorted(decisions)),
+                pending_entry_pair_keys=tuple(sorted(decisions - entries)),
+                open_pair_keys=tuple(sorted(values["open_pairs"])),
+                settled_pair_keys=tuple(sorted(settlements)),
+            )
         indexed = self._phase_events()
         decisions = {pair for pair, phase in indexed if phase == "decision"}
         entries = {pair for pair, phase in indexed if phase == "entry"}
@@ -1449,14 +1553,20 @@ class PairedForwardEvidenceCollector:
         if not entries.issubset(decisions) or not settlements.issubset(entries):
             raise RuntimeError("paired evidence lifecycle is not append-order consistent")
         open_pairs = set()
+        flag_reader = getattr(self.journal_backend, "entry_actual_flags", None)
         for pair in entries - settlements:
-            payload = indexed[(pair, "entry")]["payload"]
-            branches = payload.get("branches", {})
-            if any(
-                bool(branches.get(name, {}).get("is_actual_trade"))
-                and (pair, f"terminal_{name}") not in indexed
-                for name in ("baseline", "candidate")
-            ):
+            if callable(flag_reader):
+                actual = dict(zip(
+                    ("baseline", "candidate"),
+                    flag_reader(self.activation.manifest_sha256, pair),
+                ))
+            else:
+                payload = indexed[(pair, "entry")]["payload"]
+                branches = payload.get("branches", {})
+                actual = {name: bool(branches.get(name, {}).get("is_actual_trade"))
+                          for name in ("baseline", "candidate")}
+            if any(actual[name] and (pair, f"terminal_{name}") not in indexed
+                   for name in ("baseline", "candidate")):
                 open_pairs.add(pair)
         return EvidenceRecovery(
             decision_pair_keys=tuple(sorted(decisions)),
@@ -1464,6 +1574,36 @@ class PairedForwardEvidenceCollector:
             open_pair_keys=tuple(sorted(open_pairs)),
             settled_pair_keys=tuple(sorted(settlements)),
         )
+
+    def outstanding_branches(self) -> tuple[tuple[tuple[str, str], str], ...]:
+        reader = getattr(self.journal_backend, "outstanding_branches", None)
+        if callable(reader):
+            return reader(self.activation.manifest_sha256)
+        indexed = self._phase_events()
+        return tuple(sorted(
+            (pair, branch)
+            for pair, phase in indexed if phase == "entry"
+            for event in (indexed[(pair, phase)],)
+            for branch in ("baseline", "candidate")
+            if event["payload"]["branches"][branch]["is_actual_trade"]
+            and (pair, f"terminal_{branch}") not in indexed
+        ))
+
+    def ready_settlement_pairs(self) -> tuple[tuple[str, str], ...]:
+        reader = getattr(self.journal_backend, "ready_settlement_pairs", None)
+        if callable(reader):
+            return reader(self.activation.manifest_sha256)
+        indexed = self._phase_events()
+        result = []
+        for pair, phase in indexed:
+            if phase != "entry" or (pair, "settlement") in indexed:
+                continue
+            branches = indexed[(pair, phase)]["payload"]["branches"]
+            actual = [name for name in ("baseline", "candidate")
+                      if branches[name]["is_actual_trade"]]
+            if actual and all((pair, f"terminal_{name}") in indexed for name in actual):
+                result.append(pair)
+        return tuple(sorted(result))
 
     def record_timebox_boundary_authority_if_due(
         self,
@@ -1496,7 +1636,7 @@ class PairedForwardEvidenceCollector:
             pair_key=pair_key,
             phase=phase,
         )
-        with ShadowTradeJournal.exclusive_transaction(self.journal_path):
+        with self.journal_backend.exclusive_transaction(self.journal_path):
             existing = self._phase_events().get((pair_key, phase))
             if existing is not None:
                 return _write_result(existing, appended=False)
@@ -1532,6 +1672,7 @@ class PairedForwardEvidenceCollector:
                 event_id=event_id,
                 broker_epoch=current_bar_epoch,
                 payload=payload,
+                journal_backend=self.journal_backend,
             )
 
     def timebox_boundary_evidence(
@@ -1938,6 +2079,7 @@ class PairedForwardEvidenceCollector:
             event_id=event_id,
             broker_epoch=expected_signal_epoch,
             payload=payload,
+            journal_backend=self.journal_backend,
         )
         return PairedDecisionResult(
             write=write,
@@ -1966,7 +2108,7 @@ class PairedForwardEvidenceCollector:
         if not math.isfinite(float(point)) or float(point) <= 0:
             raise RuntimeError("positive finite point is required")
 
-        with ShadowTradeJournal.exclusive_transaction(self.journal_path):
+        with self.journal_backend.exclusive_transaction(self.journal_path):
             existing_entry = self._phase_events().get((pair_key, "entry"))
             if existing_entry is not None:
                 branches = existing_entry["payload"]["branches"]
@@ -2155,6 +2297,7 @@ class PairedForwardEvidenceCollector:
                         broker_epoch=entry_broker_epoch,
                         payload=input_payload,
                         pre_write_check=require_entry_window_at_durable_write,
+                        journal_backend=self.journal_backend,
                     )
                 except _EntryWindowExpiredAtAppend:
                     baseline_outcome = BranchEntryOutcome(
@@ -2436,6 +2579,7 @@ class PairedForwardEvidenceCollector:
             event_id=event_id,
             broker_epoch=int(entry_broker_epoch),
             payload=payload,
+            journal_backend=self.journal_backend,
         )
 
     def _append_terminal_input_unlocked(
@@ -2474,6 +2618,7 @@ class PairedForwardEvidenceCollector:
             event_id=event_id,
             broker_epoch=int(broker_epoch),
             payload=payload,
+            journal_backend=self.journal_backend,
         )
         return self._event_for(pair_key, phase) if not write.appended else (
             self._phase_events()[(pair_key, phase)]
@@ -2579,6 +2724,7 @@ class PairedForwardEvidenceCollector:
             event_id=event_id,
             broker_epoch=broker_epoch,
             payload=payload,
+            journal_backend=self.journal_backend,
         )
 
     def update_virtual_trade(
@@ -2598,7 +2744,7 @@ class PairedForwardEvidenceCollector:
         if not all(math.isfinite(float(value)) and float(value) > 0 for value in (bid, ask)):
             raise RuntimeError("positive finite bid and ask are required")
 
-        with ShadowTradeJournal.exclusive_transaction(self.journal_path):
+        with self.journal_backend.exclusive_transaction(self.journal_path):
             entry_event = self._event_for(pair_key, "entry")
             if not entry_event["payload"]["branches"][branch]["is_actual_trade"]:
                 raise RuntimeError(f"{branch} has no actual virtual trade to update")
@@ -2846,6 +2992,7 @@ class PairedForwardEvidenceCollector:
             event_id=event_id,
             broker_epoch=int(settlement_broker_epoch),
             payload=payload,
+            journal_backend=self.journal_backend,
         )
 
     def finalize_settlement(
@@ -2853,7 +3000,7 @@ class PairedForwardEvidenceCollector:
     ) -> EvidenceWriteResult:
         """Derive the frozen evaluator pair only from journaled terminal evidence."""
 
-        with ShadowTradeJournal.exclusive_transaction(self.journal_path):
+        with self.journal_backend.exclusive_transaction(self.journal_path):
             existing = self._phase_events().get((pair_key, "settlement"))
             if existing is not None:
                 return _write_result(existing, appended=False)
@@ -3017,7 +3164,7 @@ class PairedForwardEvidenceCollector:
             raise RuntimeError("positive finite point is required")
         end = _parse_utc_z(self.activation.exclusive_45_day_end_utc, "exclusive end")
 
-        with ShadowTradeJournal.exclusive_transaction(self.journal_path):
+        with self.journal_backend.exclusive_transaction(self.journal_path):
             existing_terminal = self._phase_events().get(
                 (pair_key, f"terminal_{branch}")
             )

@@ -111,7 +111,7 @@ terminal and settlement journals. They include a simulated crash after a durable
 position close but before the paired terminal event, for ordinary and timebox
 exits, followed by reconstruction and idempotent recovery. No live data is used.
 
-## Continuous supervisor (review candidate, capacity blocked)
+## Continuous supervisor (review candidate)
 
 `supervise-forward` performs public verification once, holds one writer lease,
 and initializes one MT5 session only after activation. It must be launched before
@@ -145,53 +145,70 @@ Successful completion returns `FINISHED_PENDING_REVIEW`, not a research-validity
 certificate. Review must bind the final operational checkpoint to the final paired
 evidence tip before accepting the collection. No real run has been started.
 
-## Measured capacity blocker
+## Indexed journal capacity result
+
+The authoritative evidence remains the exact append-only, hash-chained JSONL
+journal. A new adjacent SQLite file is a disposable derived index only. Startup,
+an unexpected JSONL change, a missing index, or final supervisor verification
+rebuilds that index by streaming and verifying the authoritative JSONL. Each
+append fsyncs JSONL before updating SQLite, so a crash between the two writes is
+reconciled from JSONL. The frozen JSONL bytes, schema, canonical JSON and event
+hashes are unchanged.
 
 The synthetic capacity diagnostic uses real no-trade event shapes, replicated and
 rehash-chained in temporary files. The replicated history is a storage workload,
 **not** semantically audited research evidence. A new timed pair then uses the real
 strategy/collector/durable-entry paths with wall time advancing normally; all MT5
-access is explicitly blocked. Results from one local run:
+access is explicitly blocked. Before and after indexed access on the same local
+development machine:
 
-| Historical pairs | Historical JSONL bytes | Timed attempt (seconds) | Durable pair |
-| --- | ---: | ---: | --- |
-| 0 | 0 | 0.256404 | Completed |
-| 64 | 4,535,572 | 3.588793 | Rejected: deadline missed |
-| 512 | 36,285,869 | 12.864086 | Rejected: deadline missed |
+| Historical pairs | Historical JSONL bytes | Before index | After index | Result after index |
+| --- | ---: | ---: | ---: | --- |
+| 0 | 0 | 0.256404 s | 0.052857 s | Completed |
+| 64 | 4,535,572 | 3.588793 s | 0.056755 s | Completed |
+| 512 | 36,285,869 | 12.864086 s | 0.129931 s | Completed |
+| 8,636 (4,318 paired boundaries) | 612,074,030 | 4.002542 s | 0.140019 s | Completed |
 
-These are durations until completion/failure, not the time needed to successfully
-finish both entries. They exclude live transport, local-freeze and supervisor
-checkpoint overhead, so they are not an optimistic end-to-end launch guarantee.
-The capacity tests pass when overruns fail closed; a passing test suite therefore
-**does not mean the capacity gate passed**. Repeat with:
+The pre-index failed rows are durations until deadline rejection. The post-index
+rows complete both durable paired entries. They exclude live transport,
+local-freeze and supervisor checkpoint overhead, so they are not an end-to-end
+live latency guarantee. The 4,318-boundary run represents the full 45-day M15
+history shape for both symbols. Repeat the standard diagnostic with:
 
 `python -m pytest -q -s tests/test_sprint93_2b_synthetic_capacity.py`
 
-A separate profiled 64-pair test run (including fixture work and profiling overhead)
-made 60 journal `verify` and 98 `_read_events` calls. Journal verification accumulated
-3.246 seconds and journal reads 2.485 seconds; these nested timings overlap and
-must not be added. Repeated full-file parsing/verification is a demonstrated
-bottleneck, not just an untested concern. The frozen journal implementation has
-not been modified or bypassed. An integrity-preserving indexed/incremental access
-design, including crash/corruption tests and memory-growth limits, needs review
-before claiming sustainable capacity. A faster host alone does not remove this
-growth pattern.
+The full-horizon diagnostic is opt-in because it creates about 612 MB of temporary
+JSONL data:
+
+`$env:MSS_RUN_FULL_HORIZON_CAPACITY='1'; python -m pytest -q -s tests/test_sprint93_2b_synthetic_capacity.py -k 4318`
+
+A separate pre-index profiled 64-pair run made 60 full journal `verify` and 98
+`_read_events` calls. Journal verification accumulated 3.246 seconds and journal
+reads 2.485 seconds; these nested timings overlap and must not be added. Indexed
+phase/identity/lifecycle queries remove that repeated full-file parsing from the
+entry window.
+
+Tests cover byte-for-byte parity with the frozen writer, pre-write failure,
+external appends, deleted-index rebuild, two concurrent indexed views, authoritative
+JSONL corruption, derived-event corruption, semantic identity mismatch, and a
+streamed rebuild whose measured Python allocation stays bounded on an 8 MB-plus
+journal. The derived index approximately doubles journal storage, and startup/final
+full verification remain linear in history size. Deployment therefore still needs
+adequate disk capacity and a pre-activation startup allowance; neither operation
+is placed inside the two-second entry window.
 
 ## Remaining launch gates
 
-1. Resolve the measured journal-capacity blocker without weakening integrity,
-   durable-entry deadlines, crash recovery, or the frozen strategy/risk semantics.
-   Review the continuous scheduler and its exact priority/gap rules as a whole.
-2. Validate end-to-end paired acquisition plus durable entry performance at
-   representative 45-day storage and concurrent-open-pair loads, with explicit
-   memory limits. Synthetic cadence/clock tests pass, but the capacity diagnostic
-   currently fails its operational deadline. Do not access sealed forward outcomes
-   as an ad hoc test.
-3. Review the complete execution closure and tests before merge. Any further
+1. Review the indexed journal and continuous scheduler as a whole, including exact
+   priority/gap rules, crash recovery, storage allowance and final hash binding.
+2. Review the complete execution closure and tests before merge. Any further
    execution change belongs in that same review cycle before activation.
-4. Only after approval/merge, create and publicly publish a fresh write-once V4
+3. Only after approval/merge, create and publicly publish a fresh write-once V4
    manifest with a new activation boundary. Preserve all earlier manifests.
-5. Deploy exactly one active writer. A Windows VPS can improve uptime but cannot
+4. Deploy exactly one active writer and validate actual read-only paired transport
+   latency after the new activation boundary; do not reuse an earlier manifest or
+   access sealed forward outcomes as an ad hoc test.
+5. A Windows VPS can improve uptime but cannot
    by itself satisfy the lifecycle, identity, timing or evidence-integrity gates.
 
 The two preserved Sprint92H14_7 reports must remain untracked and must not be

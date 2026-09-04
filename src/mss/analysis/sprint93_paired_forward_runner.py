@@ -36,6 +36,7 @@ from mss.analysis.sprint93_paired_forward_activation import (
     observed_runtime_versions,
 )
 from mss.analysis.shadow_trade_journal import ShadowTradeJournal
+from mss.analysis.indexed_shadow_trade_journal import IndexedShadowTradeJournal
 
 
 PREPARATION_LEAD_SECONDS = 10.0
@@ -156,6 +157,17 @@ def _commit_pair_snapshots(collector, snapshots) -> list[dict[str, object]]:
     return results
 
 
+def _latest_authority(collector) -> dict[str, object] | None:
+    reader = getattr(collector, "latest_time_authority", None)
+    if callable(reader):
+        return reader()
+    for event in reversed(collector._events()):
+        authority = event.get("payload", {}).get("global_time_authority")
+        if isinstance(authority, dict):
+            return authority
+    return None
+
+
 def collect_pair_at_boundary(
     *,
     activation: VerifiedActivation,
@@ -172,8 +184,10 @@ def collect_pair_at_boundary(
     verify_local_freeze(activation, repository_root)
     target = _validate_target(activation, entry_bar_open_utc)
     with runner_lease(journal_path):
+        backend = IndexedShadowTradeJournal(journal_path)
         collector = PairedForwardEvidenceCollector(
-            activation=activation, journal_path=journal_path
+            activation=activation, journal_path=journal_path,
+            journal_backend=backend,
         )
         state = collector.recover()
         if state.pending_entry_pair_keys or state.open_pair_keys:
@@ -182,12 +196,11 @@ def collect_pair_at_boundary(
         # No MT5 initialization or market API access before the activation start.
         _wait_until_utc(start)
         verify_local_freeze(activation, repository_root)
-        previous_offset = None
-        for event in reversed(collector._events()):
-            authority = event.get("payload", {}).get("global_time_authority")
-            if isinstance(authority, dict):
-                previous_offset = _time_authority_offset(authority, require_current=False)
-                break
+        authority = _latest_authority(collector)
+        previous_offset = (
+            _time_authority_offset(authority, require_current=False)
+            if authority is not None else None
+        )
         with LiveMt5ReadOnlySession() as session:
             if _utc_now_epoch() >= target - PREPARATION_LEAD_SECONDS:
                 raise RuntimeError("MT5 setup missed preparation deadline; no acquisition")
@@ -226,10 +239,14 @@ class LifecycleCoordinator:
         )
 
     def outstanding(self) -> tuple[tuple[tuple[str, str], str], ...]:
+        reader = getattr(self.collector, "outstanding_branches", None)
+        if callable(reader):
+            return reader()
         indexed = self.collector._phase_events()
         return tuple(sorted(
             (pair, branch)
-            for (pair, phase), event in indexed.items() if phase == "entry"
+            for pair, phase in indexed if phase == "entry"
+            for event in (indexed[(pair, phase)],)
             for branch in ("baseline", "candidate")
             if event["payload"]["branches"][branch]["is_actual_trade"]
             and (pair, f"terminal_{branch}") not in indexed
@@ -238,16 +255,24 @@ class LifecycleCoordinator:
     def finalize_ready(self) -> None:
         # recover().open_pair_keys deliberately excludes fully terminal pairs.
         # Inspect entries as well so a crash before settlement cannot orphan one.
-        indexed = self.collector._phase_events()
-        for (pair, phase), event in sorted(indexed.items()):
-            if phase != "entry" or (pair, "settlement") in indexed:
-                continue
-            actual = [
-                branch for branch in ("baseline", "candidate")
-                if event["payload"]["branches"][branch]["is_actual_trade"]
-            ]
-            if actual and all((pair, f"terminal_{branch}") in indexed for branch in actual):
-                self.collector.finalize_settlement(pair_key=pair)
+        reader = getattr(self.collector, "ready_settlement_pairs", None)
+        if callable(reader):
+            ready = reader()
+        else:
+            indexed = self.collector._phase_events()
+            ready = []
+            for pair, phase in sorted(indexed):
+                if phase != "entry" or (pair, "settlement") in indexed:
+                    continue
+                event = indexed[(pair, phase)]
+                actual = [
+                    branch for branch in ("baseline", "candidate")
+                    if event["payload"]["branches"][branch]["is_actual_trade"]
+                ]
+                if actual and all((pair, f"terminal_{branch}") in indexed for branch in actual):
+                    ready.append(pair)
+        for pair in ready:
+            self.collector.finalize_settlement(pair_key=pair)
 
     def recover_frozen(self) -> None:
         """Resolve all pending entries/terminal intents without acquiring prices."""
@@ -370,7 +395,11 @@ def manage_existing_lifecycles(
     if _utc_now_epoch() < start:
         raise RuntimeError("lifecycle recovery cannot run before activation")
     with runner_lease(journal_path):
-        collector = PairedForwardEvidenceCollector(activation=activation, journal_path=journal_path)
+        backend = IndexedShadowTradeJournal(journal_path)
+        collector = PairedForwardEvidenceCollector(
+            activation=activation, journal_path=journal_path,
+            journal_backend=backend,
+        )
         coordinator = LifecycleCoordinator(collector)
         operations = Path(journal_path).with_name(Path(journal_path).name + ".lifecycle.jsonl")
 
@@ -390,12 +419,11 @@ def manage_existing_lifecycles(
 
         audit("LIFECYCLE_RECOVERY_STARTED")
         try:
-            previous_offset = None
-            for event in reversed(collector._events()):
-                authority = event.get("payload", {}).get("global_time_authority")
-                if isinstance(authority, dict):
-                    previous_offset = _time_authority_offset(authority, require_current=False)
-                    break
+            authority = _latest_authority(collector)
+            previous_offset = (
+                _time_authority_offset(authority, require_current=False)
+                if authority is not None else None
+            )
             # Setup also enables read-only valuation of previously frozen intents.
             with LiveMt5ReadOnlySession() as session:
                 verify_local_freeze(activation, repository_root)
@@ -500,13 +528,21 @@ def run_forward_supervisor(
     with runner_lease(journal_path):
         # Even an empty/torn prior file is not a clean-start authorization. A
         # crash leaves the start marker permanently; recovery is a separate mode.
-        if any(path.exists() for path in (journal_path, operations, recovery_log)):
+        index_path = IndexedShadowTradeJournal.index_path_for(journal_path)
+        index_artifacts = (index_path, Path(str(index_path) + "-wal"), Path(str(index_path) + "-shm"))
+        if any(path.exists() for path in (
+            journal_path, operations, recovery_log, *index_artifacts,
+        )):
             raise RuntimeError("supervisor requires pristine journals; automatic resume is prohibited")
         if any((journal_path.parent / "virtual_positions").rglob("*.jsonl")):
             raise RuntimeError("orphan virtual journals require review before a fresh run")
-        collector = PairedForwardEvidenceCollector(activation=activation, journal_path=journal_path)
+        backend = IndexedShadowTradeJournal(journal_path)
+        collector = PairedForwardEvidenceCollector(
+            activation=activation, journal_path=journal_path,
+            journal_backend=backend,
+        )
         coordinator = LifecycleCoordinator(collector)
-        if collector._events():
+        if backend.verify(journal_path)["event_count"]:
             raise RuntimeError("supervisor cannot inherit existing evidence")
 
         def audit(event_type: str, **details) -> None:
@@ -614,7 +650,7 @@ def run_forward_supervisor(
                         completed_target = next_boundary
                         next_boundary += TIMEFRAME_SECONDS
                         completed_boundaries += 1
-                        evidence = ShadowTradeJournal.verify(journal_path)
+                        evidence = backend.verify(journal_path)
                         if not evidence["valid"]:
                             raise RuntimeError("paired evidence integrity failure at boundary checkpoint")
                         audit("SUPERVISOR_BOUNDARY_COMPLETED",
@@ -642,7 +678,7 @@ def run_forward_supervisor(
                         or recovered.pending_entry_pair_keys or coordinator.outstanding()
                         or completed_boundaries != (end - start) // TIMEFRAME_SECONDS - 1):
                     raise RuntimeError("supervisor final coverage/lifecycle audit failed")
-            final_evidence = ShadowTradeJournal.verify(journal_path)
+            final_evidence = backend.full_verify()
             if not final_evidence["valid"]:
                 raise RuntimeError("paired evidence integrity failure at final checkpoint")
             audit("SUPERVISOR_FINISHED_PENDING_REVIEW",

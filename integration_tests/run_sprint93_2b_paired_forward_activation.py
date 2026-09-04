@@ -18,6 +18,7 @@ from mss.analysis.sprint93_paired_forward_activation import (
     DEFAULT_MANIFEST_RELATIVE_PATH,
     ACTIVATION_RUNNER_PATH,
     BOUNDARY_RUNNER_PATH,
+    INDEXED_JOURNAL_PATH,
     PAIRED_EXECUTOR_PATH,
     PairedForwardEvidenceCollector,
     build_activation_manifest_after_merge,
@@ -32,6 +33,7 @@ from mss.analysis.sprint93_paired_forward_runner import (
     run_forward_supervisor,
     runner_lease,
 )
+from mss.analysis.indexed_shadow_trade_journal import IndexedShadowTradeJournal
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -447,9 +449,12 @@ def collect_pair(args: argparse.Namespace) -> None:
 
 
 def _collector(args: argparse.Namespace) -> PairedForwardEvidenceCollector:
+    context = verified_context(args)
+    backend = IndexedShadowTradeJournal(DEFAULT_EVIDENCE_JOURNAL)
     return PairedForwardEvidenceCollector(
-        activation=verified_context(args),
+        activation=context,
         journal_path=DEFAULT_EVIDENCE_JOURNAL,
+        journal_backend=backend,
     )
 
 
@@ -499,27 +504,13 @@ def _capture_for_collector(
     collector: PairedForwardEvidenceCollector,
     canonical_symbol: str,
 ):
-    previous_offset = None
-    for event in reversed(collector._events()):
-        payload = event.get("payload")
-        authority = (
-            payload.get("global_time_authority")
-            if isinstance(payload, dict)
-            else None
-        )
-        observation = (
-            authority.get("observation")
-            if isinstance(authority, dict)
-            else None
-        )
-        offset = (
-            observation.get("detected_broker_offset_seconds")
-            if isinstance(observation, dict)
-            else None
-        )
-        if isinstance(offset, int) and not isinstance(offset, bool):
-            previous_offset = offset
-            break
+    authority = collector.latest_time_authority()
+    observation = authority.get("observation") if isinstance(authority, dict) else None
+    offset = (
+        observation.get("detected_broker_offset_seconds")
+        if isinstance(observation, dict) else None
+    )
+    previous_offset = offset if isinstance(offset, int) and not isinstance(offset, bool) else None
     return capture_live_mt5_snapshot(
         canonical_symbol,
         previous_broker_offset_seconds=previous_offset,
@@ -651,7 +642,10 @@ def finalize_settlement(args: argparse.Namespace) -> None:
 
 
 def verify_package(_args: argparse.Namespace) -> None:
-    for path in (PAIRED_EXECUTOR_PATH, ACTIVATION_RUNNER_PATH, BOUNDARY_RUNNER_PATH):
+    for path in (
+        PAIRED_EXECUTOR_PATH, ACTIVATION_RUNNER_PATH,
+        BOUNDARY_RUNNER_PATH, INDEXED_JOURNAL_PATH,
+    ):
         verify_package_safety(ROOT / path)
     print("SPRINT93_2B_PACKAGE_VERIFY_PASS")
 
