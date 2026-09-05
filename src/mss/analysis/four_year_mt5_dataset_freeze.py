@@ -15,7 +15,7 @@ class FourYearMT5DatasetFreeze:
     VERSION = "MSS_SPRINT93_3A_FOUR_YEAR_MT5_DATASET_FREEZE_V1"
     TIMEFRAME_SECONDS = 900
     WARMUP_CANDLES = 500
-    WINDOW_START_EPOCH = 1_630_454_400  # 2021-09-01T00:00:00Z
+    WINDOW_START_EPOCH = 1_631_836_800  # 2021-09-17T00:00:00Z
     WINDOW_END_EXCLUSIVE_EPOCH = 1_756_684_800  # 2025-09-01T00:00:00Z
     UNIVERSE = (
         ("EURUSD", "EURUSD", "FOREX"),
@@ -169,7 +169,7 @@ class FourYearMT5DatasetFreeze:
             "schema_version": cls.VERSION,
             "mode": "RAW_DATASET_FREEZE_ONLY_NO_STRATEGY_NO_REPLAY",
             "window": {
-                "start_utc_inclusive": "2021-09-01T00:00:00Z",
+                "start_utc_inclusive": "2021-09-17T00:00:00Z",
                 "end_utc_exclusive": "2025-09-01T00:00:00Z",
                 "timeframe": "M15",
                 "warmup_candles": cls.WARMUP_CANDLES,
