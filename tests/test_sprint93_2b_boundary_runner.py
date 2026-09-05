@@ -334,7 +334,7 @@ def test_pair_cli_requires_published_manifest_and_explicit_target():
         "--no-forward-outcome-access-verified", "--entry-bar-open-utc", utc(TARGET),
     ])
     assert args.handler is R.collect_pair
-    assert args.manifest.name.endswith("_V4.json")
+    assert args.manifest.name.endswith("_V5.json")
 
 
 def test_boundary_runner_is_frozen_and_has_no_order_api_calls():

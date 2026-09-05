@@ -1,9 +1,9 @@
-# Sprint 93.2B V4 boundary runner — review candidate, not activated
+# Sprint 93.2B V5 boundary runner — review candidate, not activated
 
 ## Current status
 
-V4 includes bounded paired acquisition, a separate recovery-only lifecycle
-manager, and a fresh-start continuous supervisor. There is **no V4 activation manifest**
+V5 includes bounded paired acquisition, a separate recovery-only lifecycle
+manager, and a fresh-start continuous supervisor. There is **no V5 activation manifest**
 and no authorization to substitute a V1/V2/V3 manifest. Do not merge this change
 as a claim that the unattended 45-day experiment is operationally ready.
 No real market data was used to develop or test this change.
@@ -45,7 +45,7 @@ manage it. The returned `lifecycle_supervisor_running` value is explicitly false
 
 The command needs the existing published-manifest arguments plus
 `--entry-bar-open-utc`. Do not construct a live command with guessed PR numbers,
-commit SHAs or times. These values must come from the eventual reviewed V4
+commit SHAs or times. These values must come from the eventual reviewed V5
 activation and manifest-publication PRs.
 
 ## Tests and acceptance limits
@@ -61,6 +61,12 @@ Tests use synthetic candles, a fake clock and fake MT5 transport. They cover:
 - retained partial evidence and explicit failure on a late durable entry;
 - one MT5 initialization/shutdown, including setup failures;
 - real strategy/journal integration on synthetic no-trade candles.
+
+At an exact boundary MT5 may briefly expose the preceding current bar until the
+first new tick publishes the new M15 bar. V5 polls only within the unchanged
+two-second entry window for that exact requested bar. Transient preceding-bar
+snapshots are discarded without evidence writes or relabelling. A future bar or
+an unpublished boundary at expiry still fails closed.
 
 Synthetic timing is not a live latency guarantee. In particular, real strategy
 signals can invoke valuation/risk metadata work and durable writes. The original
@@ -203,7 +209,7 @@ is placed inside the two-second entry window.
    priority/gap rules, crash recovery, storage allowance and final hash binding.
 2. Review the complete execution closure and tests before merge. Any further
    execution change belongs in that same review cycle before activation.
-3. Only after approval/merge, create and publicly publish a fresh write-once V4
+3. Only after approval/merge, create and publicly publish a fresh write-once V5
    manifest with a new activation boundary. Preserve all earlier manifests.
 4. Deploy exactly one active writer and validate actual read-only paired transport
    latency after the new activation boundary; do not reuse an earlier manifest or
@@ -212,4 +218,4 @@ is placed inside the two-second entry window.
    by itself satisfy the lifecycle, identity, timing or evidence-integrity gates.
 
 The two preserved Sprint92H14_7 reports must remain untracked and must not be
-included in any V4 commit. Production/order APIs remain disabled.
+included in any V5 commit. Production/order APIs remain disabled.

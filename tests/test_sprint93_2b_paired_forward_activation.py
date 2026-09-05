@@ -59,9 +59,9 @@ def publication_metadata() -> dict[str, object]:
 
 
 def test_prior_manifests_are_not_replaced_by_v4_attempt():
-    assert A.VERSION == "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V4"
+    assert A.VERSION == "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V5"
     assert A.DEFAULT_MANIFEST_RELATIVE_PATH == (
-        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V4.json"
+        "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V5.json"
     )
     assert A.DEFAULT_MANIFEST_RELATIVE_PATH not in {
         "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest.json",
