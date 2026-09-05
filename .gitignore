@@ -26,6 +26,7 @@ env/
 *.temp
 *.log
 *.mss.lock
+historical_data/
 Thumbs.db
 Desktop.ini
 .DS_Store
