@@ -91,3 +91,16 @@ def test_gaps_are_reported_without_imputation_and_manifest_is_write_once(monkeyp
     assert len(digest) == 64
     with pytest.raises(FileExistsError, match="refusing to overwrite"):
         Freeze.write_manifest(target, symbols)
+
+
+def test_acquisition_ranges_are_contiguous_utc_and_end_exclusive(monkeypatch):
+    monkeypatch.setattr(Freeze, "WINDOW_START_EPOCH", 1_630_454_400)
+    monkeypatch.setattr(Freeze, "WINDOW_END_EXCLUSIVE_EPOCH", 1_756_684_800)
+    ranges = Freeze.acquisition_ranges(lookback_days=45, chunk_days=180)
+    assert ranges[0][0].tzinfo is not None
+    assert int(ranges[0][0].timestamp()) == Freeze.WINDOW_START_EPOCH - 45 * 86_400
+    assert int(ranges[-1][1].timestamp()) == Freeze.WINDOW_END_EXCLUSIVE_EPOCH - 1
+    assert all(left[1].timestamp() + 1 == right[0].timestamp() for left, right in zip(ranges, ranges[1:]))
+    assert all((end - start).days < 180 for start, end in ranges)
+    with pytest.raises(ValueError, match="positive"):
+        Freeze.acquisition_ranges(chunk_days=0)

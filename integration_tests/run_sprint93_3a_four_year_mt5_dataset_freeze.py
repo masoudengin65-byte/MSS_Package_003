@@ -25,19 +25,23 @@ def main() -> None:
         raise RuntimeError(f"MT5 initialization failed: {mt5.last_error()}")
     symbols: list[dict[str, object]] = []
     try:
-        request_start = Freeze.utc(Freeze.WINDOW_START_EPOCH - 45 * 24 * 60 * 60)
-        request_end_inclusive = Freeze.utc(Freeze.WINDOW_END_EXCLUSIVE_EPOCH - 1)
         for canonical, broker, asset_class in Freeze.UNIVERSE:
             if not mt5.symbol_select(broker, True):
                 raise RuntimeError(f"broker symbol unavailable: {broker}: {mt5.last_error()}")
             info = mt5.symbol_info(broker)
             if info is None:
                 raise RuntimeError(f"contract metadata unavailable: {broker}: {mt5.last_error()}")
-            rates = mt5.copy_rates_range(
-                broker, mt5.TIMEFRAME_M15, request_start, request_end_inclusive,
-            )
-            if rates is None:
-                raise RuntimeError(f"M15 retrieval failed: {broker}: {mt5.last_error()}")
+            rates: list[object] = []
+            for request_start, request_end_inclusive in Freeze.acquisition_ranges():
+                chunk = mt5.copy_rates_range(
+                    broker, mt5.TIMEFRAME_M15, request_start, request_end_inclusive,
+                )
+                if chunk is None:
+                    raise RuntimeError(
+                        f"M15 retrieval failed: {broker}: {request_start.isoformat()}: "
+                        f"{mt5.last_error()}"
+                    )
+                rates.extend(chunk)
             frozen = Freeze.write_symbol(OUTPUT_ROOT / f"{canonical}_M15.jsonl", rates)
             symbols.append({
                 "canonical_symbol": canonical,

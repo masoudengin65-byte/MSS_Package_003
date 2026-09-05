@@ -6,7 +6,7 @@ import hashlib
 import json
 import math
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Iterable, Mapping
 
@@ -213,3 +213,17 @@ class FourYearMT5DatasetFreeze:
     @staticmethod
     def utc(epoch: int) -> datetime:
         return datetime.fromtimestamp(epoch, timezone.utc)
+
+    @classmethod
+    def acquisition_ranges(cls, lookback_days: int = 45, chunk_days: int = 180) -> list[tuple[datetime, datetime]]:
+        """Return non-overlapping inclusive MT5 ranges below terminal max-bars limits."""
+        if lookback_days <= 0 or chunk_days <= 0:
+            raise ValueError("acquisition range sizes must be positive")
+        cursor = cls.utc(cls.WINDOW_START_EPOCH) - timedelta(days=lookback_days)
+        exclusive_end = cls.utc(cls.WINDOW_END_EXCLUSIVE_EPOCH)
+        ranges: list[tuple[datetime, datetime]] = []
+        while cursor < exclusive_end:
+            next_cursor = min(cursor + timedelta(days=chunk_days), exclusive_end)
+            ranges.append((cursor, next_cursor - timedelta(seconds=1)))
+            cursor = next_cursor
+        return ranges
