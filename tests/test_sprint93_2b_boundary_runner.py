@@ -39,26 +39,27 @@ def activation():
     )
 
 
-def rates():
+def rates(current=TARGET):
     return [dict(
-        time=TARGET - (500 - index) * 900,
+        time=current - (500 - index) * 900,
         open=100., high=102., low=99., close=101.,
         tick_volume=10, spread=2, real_volume=0,
     ) for index in range(501)]
 
 
-def snapshot(symbol, now):
-    frozen = A._freeze_rates(rates(), current_bar_epoch=TARGET)
+def snapshot(symbol, now, current=TARGET):
+    tick = min(int(now), current + 899)
+    frozen = A._freeze_rates(rates(current), current_bar_epoch=current)
     authority = A.GlobalTimeAuthority().build(
         utc_epoch_before_tick=now, utc_epoch_after_tick=now,
-        tick_epoch=int(now), current_bar_epoch=TARGET,
+        tick_epoch=tick, current_bar_epoch=current,
     )
     from dataclasses import asdict
     provenance = dict(
         schema_version=A.LIVE_ACQUISITION_VERSION,
         source="DIRECT_LIVE_MT5_READ_ONLY",
         canonical_symbol=symbol, broker_symbol=A.SYMBOL_MAP[symbol],
-        timeframe="M15", tick_epoch=int(now), current_bar_epoch=TARGET,
+        timeframe="M15", tick_epoch=tick, current_bar_epoch=current,
         rate_record_count=501, rates_sha256=A._canonical_sha256([asdict(r) for r in frozen]),
         time_authority_sha256=A._canonical_sha256(authority),
         read_only=True, real_order_send_allowed=False,
@@ -67,7 +68,7 @@ def snapshot(symbol, now):
     )
     return A.LiveMt5Snapshot(
         canonical_symbol=symbol, broker_symbol=A.SYMBOL_MAP[symbol],
-        current_bar_epoch=TARGET, tick_epoch=int(now),
+        current_bar_epoch=current, tick_epoch=tick,
         bid=100., ask=100.02, balance=10000., point=.01, rates=frozen,
         time_authority_json=A._canonical_json_bytes(authority).decode(),
         provenance_json=A._canonical_json_bytes(provenance).decode(),
@@ -227,6 +228,23 @@ def test_stale_bar_is_not_relabelled_as_target(rig):
     with pytest.raises(RuntimeError):
         rig.run()
     assert not rig.writes
+
+
+def test_brief_boundary_publication_lag_is_polled_without_relabelling(rig):
+    calls = {"BTCUSD": 0}
+
+    def lag_once(value):
+        if value.canonical_symbol == "BTCUSD" and calls["BTCUSD"] == 0:
+            calls["BTCUSD"] += 1
+            return snapshot("BTCUSD", rig.now, current=TARGET - 900)
+        return value
+
+    rig.mutate_snapshot = lag_once
+    result = rig.run()
+    captures = [c for c in rig.calls if c[0] == "capture"]
+    assert [c[1] for c in captures] == ["BTCUSD", "BTCUSD", "ETHUSD"]
+    assert rig.writes == ["BTCUSD", "ETHUSD"]
+    assert result["entry_bar_open_utc"] == utc(TARGET)
 
 
 def test_mixed_broker_context_blocks_before_writes(rig):
