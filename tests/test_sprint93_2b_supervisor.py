@@ -9,7 +9,8 @@ from mss.analysis import sprint93_paired_forward_activation as A
 from mss.analysis import sprint93_paired_forward_runner as B
 from mss.analysis.shadow_trade_journal import ShadowTradeJournalBusyError
 from test_sprint93_2b_boundary_runner import (
-    START, TARGET, R, LifecycleFakeCollector, activation, lifecycle_end_snapshot, utc,
+    START, TARGET, R, LifecycleFakeCollector, activation, lifecycle_end_snapshot,
+    snapshot, utc,
 )
 
 
@@ -119,6 +120,23 @@ def test_supervisor_exact_boundaries_and_single_session(supervisor):
     ]
     assert supervisor.audit()[0]["payload"]["next_entry_boundary_utc_epoch"] == TARGET
     assert supervisor.audit()[1]["payload"]["next_entry_boundary_utc_epoch"] == TARGET + 900
+
+
+def test_supervisor_polls_brief_boundary_publication_lag(supervisor):
+    lagged = False
+
+    def lag_first_btc(value):
+        nonlocal lagged
+        if value.canonical_symbol == "BTCUSD" and not lagged:
+            lagged = True
+            return snapshot("BTCUSD", supervisor.now, current=TARGET - 900)
+        return value
+
+    supervisor.mutate_snapshot = lag_first_btc
+    result = supervisor.run()
+    assert result["completed_boundaries"] == 2
+    first = [c for c in supervisor.calls if c[0] == "capture"][:3]
+    assert [c[1] for c in first] == ["BTCUSD", "BTCUSD", "ETHUSD"]
 
 
 def test_supervisor_polls_open_positions_between_new_boundaries(supervisor):

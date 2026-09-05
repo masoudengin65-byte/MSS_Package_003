@@ -43,6 +43,7 @@ PREPARATION_LEAD_SECONDS = 10.0
 MAX_CLOCK_STEP_SECONDS = 0.5
 LIFECYCLE_POLL_SECONDS = 1.0
 MAX_LIFECYCLE_CYCLE_SECONDS = 5.0
+BOUNDARY_PUBLICATION_POLL_SECONDS = 0.02
 
 
 @contextmanager
@@ -134,6 +135,49 @@ def _validate_pair(snapshots: tuple[LiveMt5Snapshot, ...], target: int) -> None:
         raise RuntimeError("paired acquisition exceeded the write preparation deadline")
 
 
+def _capture_pair_at_boundary(
+    session: LiveMt5ReadOnlySession,
+    *,
+    target: int,
+    previous_broker_offset_seconds: int | None,
+) -> tuple[LiveMt5Snapshot, ...]:
+    """Wait only for publication of the already-requested boundary.
+
+    MT5 may briefly return the preceding bar immediately after an M15 boundary.
+    Those transient snapshots are never written or relabelled.  The original
+    two-second entry deadline remains authoritative.
+    """
+    snapshots = []
+    for symbol in SYMBOL_MAP:
+        while True:
+            now = _utc_now_epoch()
+            if not 0 <= now - target <= MAX_ENTRY_OBSERVATION_DELAY_SECONDS:
+                raise RuntimeError(
+                    "live MT5 boundary bar was not published inside the entry window"
+                )
+            snapshot = session.capture(
+                symbol,
+                previous_broker_offset_seconds=previous_broker_offset_seconds,
+            )
+            authority, _provenance = _validate_live_mt5_snapshot(snapshot)
+            offset = _time_authority_offset(authority)
+            normalized_bar = snapshot.current_bar_epoch - offset
+            if normalized_bar == target:
+                snapshots.append(snapshot)
+                break
+            if normalized_bar > target:
+                raise RuntimeError("live MT5 bar advanced beyond the requested boundary")
+            remaining = (
+                target + MAX_ENTRY_OBSERVATION_DELAY_SECONDS - _utc_now_epoch()
+            )
+            if remaining <= 0:
+                raise RuntimeError(
+                    "live MT5 boundary bar was not published inside the entry window"
+                )
+            time.sleep(min(BOUNDARY_PUBLICATION_POLL_SECONDS, remaining))
+    return tuple(snapshots)
+
+
 def _commit_pair_snapshots(collector, snapshots) -> list[dict[str, object]]:
     """Keep the identical durable-entry path for bounded and continuous runs."""
     results = []
@@ -208,9 +252,10 @@ def collect_pair_at_boundary(
             verify_local_freeze(activation, repository_root)
             if not 0 <= _utc_now_epoch() - target <= MAX_ENTRY_OBSERVATION_DELAY_SECONDS:
                 raise RuntimeError("boundary deadline expired before acquisition")
-            snapshots = tuple(
-                session.capture(symbol, previous_broker_offset_seconds=previous_offset)
-                for symbol in SYMBOL_MAP
+            snapshots = _capture_pair_at_boundary(
+                session,
+                target=target,
+                previous_broker_offset_seconds=previous_offset,
             )
             _validate_pair(snapshots, target)
             results = _commit_pair_snapshots(collector, snapshots)
@@ -576,14 +621,23 @@ def run_forward_supervisor(
                 if previous is None or not 0 <= now - previous <= MAX_LIFECYCLE_CYCLE_SECONDS:
                     raise RuntimeError("outstanding lifecycle observation gap exceeded its limit")
 
-        def capture(session, symbols, active_symbols):
+        def capture(session, symbols, active_symbols, *, boundary_target=None):
             nonlocal previous_context
             check_gaps(active_symbols, clock.check())
             offset = previous_context[0] if previous_context is not None else None
-            snapshots = tuple(
-                session.capture(symbol, previous_broker_offset_seconds=offset)
-                for symbol in symbols
-            )
+            if boundary_target is None:
+                snapshots = tuple(
+                    session.capture(symbol, previous_broker_offset_seconds=offset)
+                    for symbol in symbols
+                )
+            else:
+                if tuple(symbols) != tuple(SYMBOL_MAP):
+                    raise RuntimeError("boundary acquisition requires the frozen pair")
+                snapshots = _capture_pair_at_boundary(
+                    session,
+                    target=boundary_target,
+                    previous_broker_offset_seconds=offset,
+                )
             now = clock.check()
             check_gaps(active_symbols, now)
             for snapshot in snapshots:
@@ -638,7 +692,10 @@ def run_forward_supervisor(
                     if now >= next_boundary:
                         if now - next_boundary > MAX_ENTRY_OBSERVATION_DELAY_SECONDS:
                             raise RuntimeError("missed decision boundary; no backfill or automatic retry")
-                        snapshots = capture(session, tuple(SYMBOL_MAP), active)
+                        snapshots = capture(
+                            session, tuple(SYMBOL_MAP), active,
+                            boundary_target=next_boundary,
+                        )
                         _validate_pair(snapshots, next_boundary)
                         results = _commit_pair_snapshots(collector, snapshots)
                         if any(not r["decision_appended"] or not r["entry_appended"] for r in results):
