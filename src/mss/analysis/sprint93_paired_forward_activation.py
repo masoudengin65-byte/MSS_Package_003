@@ -50,7 +50,7 @@ from mss.analysis.virtual_position_engine import (
 )
 
 
-VERSION = "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V4"
+VERSION = "MSS_SPRINT93_2B_PAIRED_FORWARD_ACTIVATION_V5"
 LIVE_ACQUISITION_VERSION = "MSS_SPRINT93_2B_LIVE_MT5_ACQUISITION_V1"
 TIMEFRAME = "M15"
 TIMEFRAME_SECONDS = 15 * 60
@@ -59,7 +59,7 @@ MAX_ENTRY_OBSERVATION_DELAY_SECONDS = (
 )
 LIVE_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
 DEFAULT_MANIFEST_RELATIVE_PATH = (
-    "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V4.json"
+    "reports/MSS_Sprint93_2B_Paired_Forward_Activation_Manifest_V5.json"
 )
 DEFAULT_EVIDENCE_RELATIVE_PATH = (
     "shadow_data/live/sprint93_2b_paired_forward/paired_evidence.jsonl"
