@@ -1,0 +1,183 @@
+{
+  "account_model": {
+    "currency": "USD",
+    "independent_symbol_accounts": false,
+    "maximum_positions_per_asset_class": 1,
+    "maximum_risk_per_trade_percent": 1.0,
+    "maximum_simultaneous_positions": 2,
+    "maximum_total_open_risk_percent": 2.0,
+    "primary_risk_percent": 0.5,
+    "primary_starting_balance": 100.0,
+    "shared_equity_updates_chronologically": true
+  },
+  "audit": {
+    "active_sprint93_2b_forward_modified": false,
+    "deterministic_rebuild": true,
+    "extension_market_data_accessed": false,
+    "four_year_history_downloaded": false,
+    "four_year_prices_inspected": false,
+    "four_year_replay_run": false,
+    "live_mt5_accessed": false,
+    "manual_broker_offset_applied": false,
+    "real_orders_sent": false,
+    "shared_capital_replay_run": false,
+    "sprint93_2b_forward_accessed_or_modified": false,
+    "v2_history_downloaded": false
+  },
+  "core_universe": {
+    "historical_window": {
+      "annual_reporting_blocks": [
+        {
+          "end_utc_exclusive": "2022-09-01T00:00:00Z",
+          "start_utc_inclusive": "2021-09-01T00:00:00Z"
+        },
+        {
+          "end_utc_exclusive": "2023-09-01T00:00:00Z",
+          "start_utc_inclusive": "2022-09-01T00:00:00Z"
+        },
+        {
+          "end_utc_exclusive": "2024-09-01T00:00:00Z",
+          "start_utc_inclusive": "2023-09-01T00:00:00Z"
+        },
+        {
+          "end_utc_exclusive": "2025-09-01T00:00:00Z",
+          "start_utc_inclusive": "2024-09-01T00:00:00Z"
+        }
+      ],
+      "calendar_years": 4,
+      "common_window_required_for_all_core_symbols": true,
+      "completed_m15_candles_only": true,
+      "end_utc_exclusive": "2025-09-01T00:00:00Z",
+      "start_utc_inclusive": "2021-09-01T00:00:00Z",
+      "warmup_candles_before_window": 500,
+      "warmup_excluded_from_performance": true
+    },
+    "symbol_priority": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "timeframe": "M15"
+  },
+  "data_acquisition": {
+    "current_tick_values_as_historical_substitute": false,
+    "duplicate_or_non_monotonic_epoch_policy": "FAIL",
+    "exact_broker_symbol_and_contract_metadata_frozen_per_symbol": true,
+    "insufficient_common_window_policy": "FAIL_CORE_REPLAY_NO_SHORTENING",
+    "missing_candle_policy": "REPORT_MARKET_CLOSURE_ELSE_FAIL",
+    "per_symbol_raw_sha256_required": true,
+    "raw_rows_preserved_before_analysis": true,
+    "source": "DIRECT_MT5_READ_ONLY_HISTORICAL",
+    "status": "NOT_STARTED",
+    "timezone_contract": {
+      "end_exclusive_enforced_after_inclusive_API_response": true,
+      "local_timezone_conversion_applied": false,
+      "manual_broker_offset_applied": false,
+      "request_datetime_timezone": "UTC_AWARE",
+      "returned_bar_epoch_domain": "UTC_PER_OFFICIAL_METATRADER5_API",
+      "start_inclusive_epoch_required": true
+    }
+  },
+  "execution_contract": {
+    "candidate_selection": "EARLIEST_UTC_THEN_FROZEN_SYMBOL_PRIORITY",
+    "entry": "NEXT_CANDLE_OPEN",
+    "minimum_volume_policy": "REJECT_IF_BROKER_MINIMUM_EXCEEDS_RISK_CAP",
+    "missing_or_invalid_contract_metadata": "FAIL_CLOSED",
+    "parameter_optimization": false,
+    "real_orders": false,
+    "reward_risk_ratio": 2.0,
+    "same_candle_exit_policy": "STOP_LOSS_FIRST",
+    "volume_step_policy": "ROUND_DOWN_AND_REJECT_IF_BELOW_MINIMUM",
+    "weekend_closed_symbols": "NO_SYNTHETIC_CANDLES_NO_BACKFILL"
+  },
+  "execution_policy": {
+    "authoritative_primary_runs": 1,
+    "failed_and_null_results_preserved": true,
+    "interim_peeking": false,
+    "parameter_tuning_after_results": false,
+    "rerun_after_outcome_access": false,
+    "window_shortening_after_data_access": false
+  },
+  "extension_universe": {
+    "candidates": [
+      "WTI",
+      "NAS100",
+      "SPX500",
+      "XAGUSD"
+    ],
+    "failure_policy": "EXCLUDE_FAILED_EXTENSION_WITH_REASON_CORE_REPLAY_UNCHANGED",
+    "required_before_inclusion": [
+      "exact broker symbol resolved",
+      "M15 historical depth and continuity pass",
+      "contract size tick size tick value minimum volume and volume step frozen",
+      "USD valuation path verified without current-value lookahead"
+    ],
+    "status": "CONDITIONAL_SECONDARY_REPLAY_NOT_YET_AUTHORIZED"
+  },
+  "mode": "PREREGISTRATION_ONLY_NO_FOUR_YEAR_DATA_ACCESS_NO_REPLAY",
+  "objective": "Compare the frozen baseline and candidate under one chronological shared-capital account without post-outcome parameter selection.",
+  "reporting": {
+    "no_post_hoc_symbol_exclusion": true,
+    "primary": [
+      "ending_balance",
+      "return_percent",
+      "profit_factor",
+      "maximum_drawdown_percent",
+      "closed_trades",
+      "rejection_counts"
+    ],
+    "report_all_sensitivity_results": true,
+    "report_baseline_and_candidate": true
+  },
+  "schema_version": "MSS_SPRINT93_3A_SHARED_CAPITAL_PORTFOLIO_PREREGISTRATION_V3",
+  "sensitivity_scenarios": {
+    "decision_use": "ROBUSTNESS_DESCRIPTION_ONLY_NO_PARAMETER_SELECTION",
+    "risk_percent": [
+      0.25,
+      1.0
+    ],
+    "starting_balance_usd": [
+      500.0
+    ]
+  },
+  "source_hashes": {
+    "reference_replay_file_sha256": "50e9919f749142ce3c8b7d7870eedbc4775055d2c4ea89cbcaa4348e4b1b0c36",
+    "source_replay_payload_sha256": "8113f5a21c612958d3b9eeb83e68d13a16b749bf32b75e8a310eeb8feb922b7a"
+  },
+  "supersedes": {
+    "reason": "MetaTrader5 copy_rates_range returns UTC epochs; V2 broker-offset normalization was corrected before historical data access",
+    "schema_version": "MSS_SPRINT93_3A_SHARED_CAPITAL_PORTFOLIO_PREREGISTRATION_V2",
+    "v2_history_downloaded": false,
+    "v2_results_accessed": false
+  },
+  "validation_design": {
+    "annual_block_results": true,
+    "baseline_candidate_paired_comparison": true,
+    "catastrophic_vetoes": [
+      "balance_nonpositive",
+      "maximum_drawdown_percent_above_35",
+      "lookahead_or_timestamp_failure",
+      "risk_limit_or_valuation_failure"
+    ],
+    "classification": "HISTORICAL_ROBUSTNESS_NOT_TRUE_FUTURE_OOS",
+    "full_window_result": true,
+    "minimum_closed_trades_full_window": 200,
+    "minimum_closed_trades_per_annual_block": 30,
+    "true_future_oos_authority": "SEPARATE_SPRINT93_2B_FORWARD_ONLY"
+  }
+}
