@@ -1,0 +1,68 @@
+{
+  "evidence_status": {
+    "dated_commission_schedule": "UNAVAILABLE",
+    "dated_contract_size_and_volume_schedule": "UNAVAILABLE",
+    "dated_swap_and_rollover_schedule": "UNAVAILABLE",
+    "exact_server_and_account_type": "UNAVAILABLE",
+    "historical_margin_and_leverage_rules": "UNAVAILABLE",
+    "historical_trading_sessions_and_exceptions": "UNAVAILABLE",
+    "historical_zero_spread_semantics_or_bid_ask_history": "UNAVAILABLE",
+    "slippage_assumption_with_documented_authority": "UNAVAILABLE"
+  },
+  "independent_price_source": {
+    "allowed_purpose": "Cross-validate timestamp and OHLC patterns only",
+    "cannot_clear": [
+      "historical commission",
+      "historical swap",
+      "broker-specific sessions",
+      "broker-specific execution costs",
+      "net_profit_replay"
+    ],
+    "tradingview_role": "Manual visual comparison only; not an execution authority"
+  },
+  "net_profit_replay": {
+    "eligible": false,
+    "prohibited_claims": [
+      "broker-accurate net profit",
+      "broker-accurate drawdown after costs",
+      "historical execution quality",
+      "production readiness"
+    ],
+    "release_condition": "Every required evidence item is VERIFIED and retained with provenance"
+  },
+  "next_authorized_action": {
+    "action": "Obtain documentary broker evidence using the local unsent request draft",
+    "draft_path": "reports/MSS_Sprint93_3A_Broker_Evidence_Request_DRAFT.md",
+    "external_message_sent": false
+  },
+  "purpose": "Prevent unsupported historical net-profit or execution claims",
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3B_HISTORICAL_EXECUTION_EVIDENCE_GATE_V1",
+  "scope": {
+    "dataset_manifest_sha256": "7cc79589007ae2e397f44eb21c88da69c624e769b421005ff48dc300e605b43f",
+    "quality_report_sha256": "db87c8928de40990e69a0965958c9e6ab1249af60c2335300306e58d93f9f595",
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "window": {
+      "end_utc_exclusive": "2025-09-01T00:00:00Z",
+      "start_utc_inclusive": "2021-09-23T18:30:00Z",
+      "timeframe": "M15",
+      "warmup_candles": 500
+    }
+  }
+}
