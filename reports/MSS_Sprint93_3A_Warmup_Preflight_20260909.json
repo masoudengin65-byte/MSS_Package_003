@@ -1,0 +1,32 @@
+{
+  "schema_version": "MSS_SPRINT93_3A_WARMUP_PREFLIGHT_V1",
+  "observed_date": "2026-09-09",
+  "mode": "READ_ONLY_TIMESTAMP_AVAILABILITY_NO_REPLAY",
+  "terminal_connected": true,
+  "terminal_maxbars": 100000000,
+  "request_start_utc": "2021-08-01T00:00:00Z",
+  "request_end_utc_inclusive": "2021-10-01T00:00:00Z",
+  "draft_v5_start_utc": "2021-09-17T01:00:00Z",
+  "required_pre_start_candles": 500,
+  "observations": [
+    {"symbol": "EURUSD", "returned_rows_in_range": 4148, "pre_v5_start_rows": 3209},
+    {"symbol": "GBPUSD", "returned_rows_in_range": 4148, "pre_v5_start_rows": 3209},
+    {"symbol": "USDJPY", "returned_rows_in_range": 4148, "pre_v5_start_rows": 3209},
+    {"symbol": "AUDUSD", "returned_rows_in_range": 4148, "pre_v5_start_rows": 3209},
+    {"symbol": "USDCAD", "returned_rows_in_range": 4148, "pre_v5_start_rows": 3209},
+    {"symbol": "XAUUSD", "returned_rows_in_range": 3860, "pre_v5_start_rows": 2980},
+    {"symbol": "BTCUSD", "returned_rows_in_range": 1003, "pre_v5_start_rows": 46},
+    {"symbol": "ETHUSD", "returned_rows_in_range": 1003, "pre_v5_start_rows": 46}
+  ],
+  "draft_v5_warmup_gate": "FAIL",
+  "first_common_timestamp_after_500_available_rows_per_symbol_utc": "2021-09-23T18:30:00Z",
+  "proposed_end_utc_exclusive": "2025-09-01T00:00:00Z",
+  "proposal_status": "USER_APPROVED_FOR_V5_PUBLICATION",
+  "limitations": [
+    "Timestamp availability does not certify full-window continuity or historical valuation.",
+    "No strategy outcomes or performance metrics were calculated.",
+    "VPS runtime health was not checked in this diagnostic."
+  ],
+  "new_raw_dataset_written": false,
+  "replay_run": false
+}
