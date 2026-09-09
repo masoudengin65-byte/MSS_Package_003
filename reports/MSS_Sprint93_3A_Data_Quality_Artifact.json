@@ -1,0 +1,215 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "title": "MSS Historical Data Readiness",
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# MSS Historical Data Readiness"
+      },
+      {
+        "id": "summary",
+        "type": "markdown",
+        "body": "## Technical summary\n\nAll eight files pass hash, row-structure, timestamp, OHLC and warmup checks. The 840,865 stored rows include 4,000 warmup rows, leaving 836,865 performance-window observations. **Net-profit replay remains blocked:** historical closure evidence, cost assumptions and historical contract terms are unresolved. Data integrity is not evidence of profitability.",
+        "sourceId": "audit"
+      },
+      {
+        "id": "scope",
+        "type": "markdown",
+        "body": "## Scope and definitions\n\nOne row represents a broker-symbol M15 bar in UTC. The performance window starts 23 September 2021 at 18:30 UTC and ends before 1 September 2025. Each symbol has 500 earlier warmup bars excluded from all reported rates. Missing slots are gaps in a continuous 15-minute calendar; they are not automatically lost trading opportunities. A zero-spread rate is zero-valued spread rows divided by that symbol's performance rows.",
+        "sourceId": "audit"
+      },
+      {
+        "id": "spread",
+        "type": "markdown",
+        "body": "## Recorded zero spreads need a cost interpretation\n\nZero spreads occur in 33.6% of EURUSD observations, 22.2% of BTCUSD and 23.8% of ETHUSD. The chart compares those recorded rates, not execution costs. Zero may be a valid broker observation or a data convention; this audit cannot decide which. Treating every zero as free execution could overstate net performance.",
+        "sourceId": "audit"
+      },
+      {
+        "id": "chart",
+        "type": "chart",
+        "chartId": "spreads"
+      },
+      {
+        "id": "gaps",
+        "type": "markdown",
+        "body": "## Calendar gaps are preserved and unverified\n\nBTCUSD has 279 internal performance-window gaps containing 4,608 absent calendar slots; ETHUSD has 275 gaps and 4,598 slots. Their largest missing interval is 23 December 2022 at 21:00 through 26 December at 23:00 UTC (74 hours). Weekend concentration suggests a session-related pattern, but does not prove a closure on this account. Forex and gold have additional trailing weekend slots. No gap was filled or removed.",
+        "sourceId": "audit"
+      },
+      {
+        "id": "methods",
+        "type": "markdown",
+        "body": "## Methods and reproducibility\n\nThe companion audit re-reads the frozen JSONL files, verifies their published SHA-256 hashes, counts all rows, checks strict timestamp order and uniqueness, positive finite OHLC relationships, integer nonnegative volumes and spreads, exact window flags and 500 warmup rows. Monthly counts and the ten largest gaps per symbol are preserved in the JSON output. Synthetic tests cover duplicates, future bars, malformed values and uncovered trailing slots. The notebook reruns the same code against the frozen files."
+      },
+      {
+        "id": "costs",
+        "type": "markdown",
+        "body": "## Historical valuation and cost evidence\n\nThe captured contract metadata is a current snapshot, not a dated history. USD profit instruments have an identity USD conversion route; USDJPY and USDCAD require historical JPY/USD and CAD/USD conversion. The repository supports completed-bar conversion, but this audit has not certified every conversion timestamp in a portfolio replay. Current tick values were not used. Commission, swap and slippage schedules are absent from the reviewed freeze and protocol. M15 bars alone do not reconstruct exact intrabar execution."
+      },
+      {
+        "id": "next",
+        "type": "markdown",
+        "body": "## Next steps and unresolved questions\n\n1. Obtain account/server-specific historical sessions and holiday notices for the largest unexplained gaps.\n2. Document the meaning of zero spreads and historical contract/cost schedules, or preregister explicitly labeled conservative research assumptions before outcomes are calculated.\n3. Test completed-bar conversion timing and cost-aware risk rejection for the shared $100 account.\n4. Keep authoritative net-profit replay disabled until these gates pass.\n\nOpen question: which evidence establishes historical costs and sessions for the exact broker account type? Current website terms or another Alpari entity cannot establish that history."
+      }
+    ],
+    "sources": [
+      {
+        "id": "audit",
+        "label": "Frozen M15 quality audit",
+        "path": "reports/MSS_Sprint93_3A_Data_Quality_V1.json",
+        "query": {
+          "language": "sql",
+          "engine": "SQLite",
+          "description": "Profile the frozen M15 files; rates exclude 500 warmup rows per symbol.",
+          "sql": "SELECT json_extract(value, '$.symbol') AS symbol, json_extract(value, '$.performance_rows') AS rows, COALESCE(json_extract(value, '$.zero_counts_performance_only.spread'), 0) AS zeroSpreadRows, 1.0 * COALESCE(json_extract(value, '$.zero_counts_performance_only.spread'), 0) / json_extract(value, '$.performance_rows') AS zeroSpreadRate, json_extract(value, '$.internal_gap_count') AS gaps, json_extract(value, '$.internal_missing_slots') AS missingSlots, json_extract(value, '$.internal_weekend_slots') AS weekendSlots FROM json_each(:audit, '$.symbols') ORDER BY zeroSpreadRate DESC",
+          "tables_used": [
+            "reports/MSS_Sprint93_3A_Data_Quality_V1.json"
+          ],
+          "metric_definitions": {
+            "zeroSpreadRate": "Zero recorded spread performance bars / all performance bars per symbol; no warmup rows."
+          }
+        }
+      }
+    ],
+    "charts": [
+      {
+        "id": "spreads",
+        "title": "Recorded zero-spread rates by symbol",
+        "type": "bar",
+        "sourceId": "audit",
+        "encodings": {
+          "x": {
+            "field": "symbol",
+            "type": "nominal"
+          },
+          "y": {
+            "field": "zeroSpreadRate",
+            "type": "quantitative"
+          }
+        },
+        "options": {
+          "showLegend": false
+        },
+        "dataset": "profile",
+        "source": {
+          "id": "audit",
+          "label": "Frozen M15 quality audit",
+          "path": "reports/MSS_Sprint93_3A_Data_Quality_V1.json",
+          "query": {
+            "language": "sql",
+            "engine": "SQLite",
+            "description": "Profile the frozen M15 files; rates exclude 500 warmup rows per symbol.",
+            "sql": "SELECT json_extract(value, '$.symbol') AS symbol, json_extract(value, '$.performance_rows') AS rows, COALESCE(json_extract(value, '$.zero_counts_performance_only.spread'), 0) AS zeroSpreadRows, 1.0 * COALESCE(json_extract(value, '$.zero_counts_performance_only.spread'), 0) / json_extract(value, '$.performance_rows') AS zeroSpreadRate, json_extract(value, '$.internal_gap_count') AS gaps, json_extract(value, '$.internal_missing_slots') AS missingSlots, json_extract(value, '$.internal_weekend_slots') AS weekendSlots FROM json_each(:audit, '$.symbols') ORDER BY zeroSpreadRate DESC",
+            "tables_used": [
+              "reports/MSS_Sprint93_3A_Data_Quality_V1.json"
+            ],
+            "metric_definitions": {
+              "zeroSpreadRate": "Zero recorded spread performance bars / all performance bars per symbol; no warmup rows."
+            }
+          }
+        }
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "status": "ready",
+    "datasets": {
+      "profile": [
+        {
+          "symbol": "EURUSD",
+          "rows": 95964,
+          "zeroSpreadRows": 32216,
+          "zeroSpreadRate": 0.335709224292443,
+          "gaps": 1343,
+          "missingSlots": 41914,
+          "weekendSlots": 39360
+        },
+        {
+          "symbol": "ETHUSD",
+          "rows": 133472,
+          "zeroSpreadRows": 31707,
+          "zeroSpreadRate": 0.23755544233996642,
+          "gaps": 275,
+          "missingSlots": 4598,
+          "weekendSlots": 4239
+        },
+        {
+          "symbol": "BTCUSD",
+          "rows": 133462,
+          "zeroSpreadRows": 29568,
+          "zeroSpreadRate": 0.22154620790936747,
+          "gaps": 279,
+          "missingSlots": 4608,
+          "weekendSlots": 4245
+        },
+        {
+          "symbol": "GBPUSD",
+          "rows": 95964,
+          "zeroSpreadRows": 13252,
+          "zeroSpreadRate": 0.1380934517110583,
+          "gaps": 1343,
+          "missingSlots": 41914,
+          "weekendSlots": 39360
+        },
+        {
+          "symbol": "USDJPY",
+          "rows": 95964,
+          "zeroSpreadRows": 13059,
+          "zeroSpreadRate": 0.13608228085532076,
+          "gaps": 1343,
+          "missingSlots": 41914,
+          "weekendSlots": 39360
+        },
+        {
+          "symbol": "USDCAD",
+          "rows": 95964,
+          "zeroSpreadRows": 6836,
+          "zeroSpreadRate": 0.07123504647576175,
+          "gaps": 1343,
+          "missingSlots": 41914,
+          "weekendSlots": 39360
+        },
+        {
+          "symbol": "XAUUSD",
+          "rows": 90111,
+          "zeroSpreadRows": 5489,
+          "zeroSpreadRate": 0.06091376191585933,
+          "gaps": 1015,
+          "missingSlots": 47767,
+          "weekendSlots": 39360
+        },
+        {
+          "symbol": "AUDUSD",
+          "rows": 95964,
+          "zeroSpreadRows": 4229,
+          "zeroSpreadRate": 0.04406860906173148,
+          "gaps": 1343,
+          "missingSlots": 41914,
+          "weekendSlots": 39360
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "audit",
+      "label": "Frozen M15 quality audit",
+      "path": "reports/MSS_Sprint93_3A_Data_Quality_V1.json",
+      "query": {
+        "language": "sql",
+        "engine": "SQLite",
+        "description": "Profile the frozen M15 files; rates exclude 500 warmup rows per symbol.",
+        "sql": "SELECT json_extract(value, '$.symbol') AS symbol, json_extract(value, '$.performance_rows') AS rows, COALESCE(json_extract(value, '$.zero_counts_performance_only.spread'), 0) AS zeroSpreadRows, 1.0 * COALESCE(json_extract(value, '$.zero_counts_performance_only.spread'), 0) / json_extract(value, '$.performance_rows') AS zeroSpreadRate, json_extract(value, '$.internal_gap_count') AS gaps, json_extract(value, '$.internal_missing_slots') AS missingSlots, json_extract(value, '$.internal_weekend_slots') AS weekendSlots FROM json_each(:audit, '$.symbols') ORDER BY zeroSpreadRate DESC",
+        "tables_used": [
+          "reports/MSS_Sprint93_3A_Data_Quality_V1.json"
+        ],
+        "metric_definitions": {
+          "zeroSpreadRate": "Zero recorded spread performance bars / all performance bars per symbol; no warmup rows."
+        }
+      }
+    }
+  ]
+}
