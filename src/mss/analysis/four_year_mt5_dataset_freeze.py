@@ -10,12 +10,14 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Iterable, Mapping
 
+from mss.analysis.shared_capital_portfolio_preregistration_v5 import SharedCapitalPortfolioPreregistrationV5 as Protocol
+
 
 class FourYearMT5DatasetFreeze:
-    VERSION = "MSS_SPRINT93_3A_FOUR_YEAR_MT5_DATASET_FREEZE_V1"
+    VERSION = "MSS_SPRINT93_3A_FOUR_YEAR_MT5_DATASET_FREEZE_V2"
     TIMEFRAME_SECONDS = 900
     WARMUP_CANDLES = 500
-    WINDOW_START_EPOCH = 1_631_836_800  # 2021-09-17T00:00:00Z
+    WINDOW_START_EPOCH = int(datetime.fromisoformat(Protocol.WINDOW_START_UTC.replace("Z", "+00:00")).timestamp())
     WINDOW_END_EXCLUSIVE_EPOCH = 1_756_684_800  # 2025-09-01T00:00:00Z
     UNIVERSE = (
         ("EURUSD", "EURUSD", "FOREX"),
@@ -123,17 +125,21 @@ class FourYearMT5DatasetFreeze:
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_name(path.name + ".tmp")
         digest = hashlib.sha256()
+        owns_temporary = False
         try:
             with temporary.open("xb") as handle:
+                owns_temporary = True
                 for row in selected:
                     line = cls._canonical_line(row)
                     handle.write(line)
                     digest.update(line)
                 handle.flush()
                 os.fsync(handle.fileno())
-            temporary.replace(path)
+            os.link(temporary, path)
+            temporary.unlink()
         except BaseException:
-            temporary.unlink(missing_ok=True)
+            if owns_temporary:
+                temporary.unlink(missing_ok=True)
             raise
         performance_count = sum(bool(row["performance_eligible"]) for row in selected)
         gaps = [
@@ -169,7 +175,7 @@ class FourYearMT5DatasetFreeze:
             "schema_version": cls.VERSION,
             "mode": "RAW_DATASET_FREEZE_ONLY_NO_STRATEGY_NO_REPLAY",
             "window": {
-                "start_utc_inclusive": "2021-09-17T00:00:00Z",
+                "start_utc_inclusive": Protocol.WINDOW_START_UTC,
                 "end_utc_exclusive": "2025-09-01T00:00:00Z",
                 "timeframe": "M15",
                 "warmup_candles": cls.WARMUP_CANDLES,
@@ -181,6 +187,8 @@ class FourYearMT5DatasetFreeze:
                 "local_timezone_conversion_applied": False,
             },
             "symbols": symbols,
+            "replay_eligible": False,
+            "quality_review_status": "PENDING_GAP_AND_HISTORICAL_VALUATION_REVIEW",
             "audit": {
                 "strategy_or_replay_run": False,
                 "performance_metrics_computed": False,
@@ -190,23 +198,29 @@ class FourYearMT5DatasetFreeze:
         }
 
     @classmethod
-    def write_manifest(cls, path: Path, symbols: list[dict[str, object]]) -> str:
+    def write_manifest(cls, path: Path, symbols: list[dict[str, object]], provenance: dict | None = None) -> str:
         if path.exists():
             raise FileExistsError(f"refusing to overwrite frozen manifest: {path}")
         payload = cls.build_manifest(symbols)
+        if provenance is not None:
+            payload["provenance"] = provenance
         encoded = json.dumps(
             payload, indent=2, sort_keys=True, allow_nan=False,
         ).encode("utf-8") + b"\n"
         temporary = path.with_name(path.name + ".tmp")
         path.parent.mkdir(parents=True, exist_ok=True)
+        owns_temporary = False
         try:
             with temporary.open("xb") as handle:
+                owns_temporary = True
                 handle.write(encoded)
                 handle.flush()
                 os.fsync(handle.fileno())
-            temporary.replace(path)
+            os.link(temporary, path)
+            temporary.unlink()
         except BaseException:
-            temporary.unlink(missing_ok=True)
+            if owns_temporary:
+                temporary.unlink(missing_ok=True)
             raise
         return hashlib.sha256(encoded).hexdigest()
 

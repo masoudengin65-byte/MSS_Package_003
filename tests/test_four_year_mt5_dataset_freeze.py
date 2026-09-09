@@ -104,3 +104,67 @@ def test_acquisition_ranges_are_contiguous_utc_and_end_exclusive(monkeypatch):
     assert all((end - start).days < 180 for start, end in ranges)
     with pytest.raises(ValueError, match="positive"):
         Freeze.acquisition_ranges(chunk_days=0)
+
+
+def test_existing_temporary_evidence_is_preserved(monkeypatch, tmp_path):
+    source = rows(monkeypatch)
+    target = tmp_path / "EURUSD_M15.jsonl"
+    temporary = target.with_name(target.name + ".tmp")
+    temporary.write_bytes(b"previous interrupted evidence")
+    with pytest.raises(FileExistsError):
+        Freeze.write_symbol(target, source)
+    assert temporary.read_bytes() == b"previous interrupted evidence"
+    assert not target.exists()
+
+
+def test_concurrent_destination_is_never_overwritten(monkeypatch, tmp_path):
+    import os
+    source = rows(monkeypatch)
+    target = tmp_path / "EURUSD_M15.jsonl"
+    original_link = os.link
+    def race(source_path, destination_path):
+        destination_path.write_bytes(b"concurrent evidence")
+        original_link(source_path, destination_path)
+    monkeypatch.setattr(os, "link", race)
+    with pytest.raises(FileExistsError):
+        Freeze.write_symbol(target, source)
+    assert target.read_bytes() == b"concurrent evidence"
+
+
+def test_last_symbol_failure_prevents_all_dataset_writes(monkeypatch, tmp_path):
+    import importlib.util
+    import sys
+    from types import SimpleNamespace
+    script = Path(__file__).resolve().parents[1] / "integration_tests/run_sprint93_3a_four_year_mt5_dataset_freeze.py"
+    spec = importlib.util.spec_from_file_location("freezer_runner_test", script)
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+    terminal = tmp_path / "terminal.exe"
+    terminal.touch()
+    monkeypatch.setattr(runner, "TERMINAL_PATH", terminal)
+    monkeypatch.setattr(runner, "OUTPUT_ROOT", tmp_path / "data")
+    monkeypatch.setattr(runner, "MANIFEST", tmp_path / "manifest.json")
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner.subprocess, "check_output", lambda *a, **kw: "test-commit")
+    shutdowns = []
+    fake = SimpleNamespace(
+        initialize=lambda **kw: True, shutdown=lambda: shutdowns.append(True),
+        symbol_select=lambda *args: True, symbol_info=lambda *args: {},
+        copy_rates_range=lambda *args: [], TIMEFRAME_M15=15,
+    )
+    monkeypatch.setitem(sys.modules, "MetaTrader5", fake)
+    monkeypatch.setattr(Freeze, "normalize_contract", lambda info: {})
+    validated = []
+    def validate(source):
+        validated.append(True)
+        if len(validated) == 8:
+            raise ValueError("insufficient crypto warmup")
+        return []
+    monkeypatch.setattr(Freeze, "select_window", validate)
+    writes = []
+    monkeypatch.setattr(Freeze, "write_symbol", lambda *args: writes.append(args))
+    with pytest.raises(ValueError, match="crypto warmup"):
+        runner.main()
+    assert len(validated) == 8 and writes == []
+    assert shutdowns == [True, True]
+    assert not runner.OUTPUT_ROOT.exists() and not runner.MANIFEST.exists()
