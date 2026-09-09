@@ -8,7 +8,7 @@ OUTPUT = ROOT / 'reports/MSS_Sprint93_3A_Data_Quality_V1.json'
 
 if __name__ == '__main__':
     report = audit_dataset(ROOT)
-    OUTPUT.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False)+'\n', encoding='utf-8')
+    OUTPUT.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False)+'\n', encoding='utf-8', newline='\n')
     print('QUALITY_REPORT', OUTPUT)
     print('INTEGRITY_PASS', report['all_integrity_checks_pass'])
     for s in report['symbols']:
