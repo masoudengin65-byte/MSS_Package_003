@@ -1,0 +1,75 @@
+{
+  "candidate_source": {
+    "name": "WINDSOR_MT5_DEMO_CANDIDATE",
+    "selected": false,
+    "selection_requirements": [
+      "Exact Windsor MT5 server and demo account type recorded before acquisition",
+      "Symbol mapping is recorded without silently substituting instruments",
+      "Source terms permit the intended local research use",
+      "No order_check, order_send or live-account login is used"
+    ]
+  },
+  "comparison_contract": {
+    "bar_interval": "M15",
+    "fields": [
+      "time",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "metrics": [
+      "matched_timestamp_coverage",
+      "open_and_close_return_difference_quantiles",
+      "high_low_range_difference_quantiles",
+      "gap_start_and_gap_end_agreement",
+      "unmatched_timestamp_count"
+    ],
+    "no_interpolation": true,
+    "no_resampling_across_market_closures": true,
+    "timezone": "UTC"
+  },
+  "interpretation_boundary": {
+    "allowed_conclusion": "A stated price-pattern consistency or discrepancy finding",
+    "cannot_establish": [
+      "historical Alpari trading sessions",
+      "historical Alpari commission or swap",
+      "historical Alpari execution quality",
+      "broker-accurate net profit",
+      "production readiness"
+    ],
+    "expected_differences": [
+      "CFD versus spot or exchange price",
+      "broker session and timezone conventions",
+      "bid ask construction",
+      "instrument contract differences"
+    ]
+  },
+  "next_action": "Record the Windsor server and exact symbol mapping, then publish a source-specific acquisition manifest before collecting bars",
+  "purpose": "Cross-validate frozen MT5 price and timestamp patterns with a separate source",
+  "safety": {
+    "candidate_data_acquired": false,
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3D_INDEPENDENT_PRICE_COMPARISON_PREREGISTRATION_V1",
+  "source_provenance": {
+    "data_quality_report_sha256": "db87c8928de40990e69a0965958c9e6ab1249af60c2335300306e58d93f9f595",
+    "execution_evidence_gate_sha256": "b58316616704c674e12f0e2676e2e83e665a77dead2c7839ee9a20ac03024ddf",
+    "frozen_broker_symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "timeframe": "M15"
+  }
+}
