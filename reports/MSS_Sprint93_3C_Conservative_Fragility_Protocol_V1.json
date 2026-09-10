@@ -1,0 +1,62 @@
+{
+  "audit": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "next_actions": [
+    "Send the broker clarification follow-up draft",
+    "Preregister independent-price comparison and conservative scenario values",
+    "Run a future rejection-only fragility screen after prereplay requirements are met"
+  ],
+  "prereplay_requirements": [
+    "Independent price source comparison protocol is frozen before outcome access",
+    "Every zero-spread row receives a documented conservative substitution rule",
+    "Unadjudicated gaps receive a documented no-trade or exclusion rule",
+    "Each scenario states spread, commission, swap and slippage assumptions with source or hypothetical label",
+    "Scenario parameters and evaluation metrics are frozen before strategy outcome access"
+  ],
+  "purpose": "Reject strategy candidates that cannot survive preregistered conservative assumptions",
+  "research_boundary": {
+    "allowed_conclusion": "Candidate rejected as cost-fragile under declared hypothetical scenarios",
+    "broker_accurate_net_profit_claim_allowed": false,
+    "forbidden_conclusion": "Candidate approved for broker-accurate profitability or live execution",
+    "production_readiness_claim_allowed": false
+  },
+  "scenario_rules": {
+    "acceptance_rule": "No acceptance decision is permitted; only a documented rejection for fragility is permitted",
+    "cost_components": [
+      "spread",
+      "commission",
+      "swap",
+      "slippage"
+    ],
+    "minimum_scenarios": 3,
+    "ordering": "baseline_less_conservative_to_most_conservative",
+    "prohibition": "No scenario parameter may be described as historical Alpari fact without documentary evidence"
+  },
+  "schema_version": "MSS_SPRINT93_3C_CONSERVATIVE_FRAGILITY_PROTOCOL_V1",
+  "source_provenance": {
+    "data_quality_report_sha256": "db87c8928de40990e69a0965958c9e6ab1249af60c2335300306e58d93f9f595",
+    "execution_evidence_gate_sha256": "b58316616704c674e12f0e2676e2e83e665a77dead2c7839ee9a20ac03024ddf",
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "XAUUSD",
+      "BTCUSD",
+      "ETHUSD"
+    ],
+    "window": {
+      "end_utc_exclusive": "2025-09-01T00:00:00Z",
+      "start_utc_inclusive": "2021-09-23T18:30:00Z",
+      "timeframe": "M15",
+      "warmup_candles": 500
+    }
+  }
+}
