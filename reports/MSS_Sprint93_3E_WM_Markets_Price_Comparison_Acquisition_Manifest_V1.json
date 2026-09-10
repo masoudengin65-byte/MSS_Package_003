@@ -1,0 +1,97 @@
+{
+  "acquisition_contract": {
+    "comparison_window_rule": "Use the exact overlap with each frozen broker symbol; do not extend or fabricate unavailable history",
+    "fields": [
+      "time",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "forbidden_mt5_calls": [
+      "order_check",
+      "order_send"
+    ],
+    "no_interpolation": true,
+    "no_resampling_across_market_closures": true,
+    "read_only_mt5_calls": [
+      "initialize",
+      "symbol_select",
+      "copy_rates_range",
+      "shutdown"
+    ],
+    "timeframe": "M15",
+    "timezone": "UTC"
+  },
+  "interpretation_boundary": {
+    "allowed": "Price-pattern consistency or discrepancy finding only",
+    "cannot_establish": [
+      "historical Alpari trading sessions",
+      "historical Alpari commission or swap",
+      "historical Alpari execution quality",
+      "broker-accurate net profit",
+      "production readiness"
+    ]
+  },
+  "next_action": "Record WM Markets research-use terms, then run the separate read-only acquisition command only if every pre-acquisition gate passes",
+  "pre_acquisition_gates": {
+    "all_required_gates_pass": false,
+    "blocker": "Terms of use for local research collection have not yet been recorded",
+    "demo_server_verified": true,
+    "exact_symbol_mapping_verified": true,
+    "terms_of_use_verified": false
+  },
+  "provenance": {
+    "frozen_data_quality_sha256": "db87c8928de40990e69a0965958c9e6ab1249af60c2335300306e58d93f9f595",
+    "independent_price_preregistration_sha256": "5f095149fe4fcf1eb96b481f42bb6471df88fa76d24bc049d170f5e5ddaa8eb9",
+    "prior_candidate_source": "WINDSOR_MT5_DEMO_CANDIDATE",
+    "source_selection_change": "WM Markets replaces the unselected Windsor candidate; no Windsor data was acquired"
+  },
+  "purpose": "Read-only four-instrument WM Markets demo price comparison against frozen MT5 bars",
+  "safety": {
+    "candidate_data_acquired": false,
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_frozen_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3E_WM_MARKETS_PRICE_COMPARISON_ACQUISITION_MANIFEST_V1",
+  "source": {
+    "account_class": "demo",
+    "account_mode": "hedge",
+    "credentials_recorded": false,
+    "live_account_login_allowed": false,
+    "mt5_server": "WMMMarkets-Demo",
+    "provider": "WM Markets Ltd",
+    "terms_of_use_requirement": "Record permission for local research use before acquisition",
+    "terms_of_use_verified": false
+  },
+  "symbol_mappings": [
+    {
+      "frozen_broker_symbol": "EURUSD",
+      "observed_contract_size_text": null,
+      "observed_description": "Euro vs US Dollar",
+      "wm_markets_symbol": "EURUSD"
+    },
+    {
+      "frozen_broker_symbol": "XAUUSD",
+      "observed_contract_size_text": "1 lot = 100 oz",
+      "observed_description": "Spot Gold vs US Dollar",
+      "wm_markets_symbol": "XAUUSD"
+    },
+    {
+      "frozen_broker_symbol": "BTCUSD",
+      "observed_contract_size_text": "1 lot = 1 coin",
+      "observed_description": "CFD BITCOIN vs US Dollar",
+      "wm_markets_symbol": "BTCUSD"
+    },
+    {
+      "frozen_broker_symbol": "ETHUSD",
+      "observed_contract_size_text": "1 lot = 10 coins",
+      "observed_description": "CFD ETHEREUM vs US Dollar",
+      "wm_markets_symbol": "ETHUSD"
+    }
+  ]
+}
