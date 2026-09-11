@@ -1,0 +1,56 @@
+{
+  "current_public_commission_reference": [
+    {
+      "amount": 3.0,
+      "currency": "EUR",
+      "model": "PER_LOT",
+      "symbol": "EURUSD"
+    },
+    {
+      "model": "PERCENT_NOTIONAL",
+      "rate_percent": 0.003,
+      "symbol": "XAUUSD"
+    },
+    {
+      "minimum_amount": 1.0,
+      "minimum_currency": "USD",
+      "model": "PERCENT_NOTIONAL_MINIMUM",
+      "rate_percent": 0.15,
+      "symbol": "BTC"
+    },
+    {
+      "minimum_amount": 1.0,
+      "minimum_currency": "USD",
+      "model": "PERCENT_NOTIONAL_MINIMUM",
+      "rate_percent": 0.15,
+      "symbol": "ETH"
+    }
+  ],
+  "interpretation_boundary": {
+    "allowed": "Use as a labelled current-reference input for hypothetical conservative scenarios",
+    "cannot_establish": [
+      "historical FIBO fees",
+      "historical Alpari fees",
+      "broker-accurate historical net profit",
+      "production readiness"
+    ],
+    "current_public_terms_are_historical_terms": false
+  },
+  "purpose": "Current MT5 NDD commission reference for hypothetical research scenarios only",
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_CURRENT_PUBLIC_COMMISSION_EVIDENCE_V1",
+  "source": {
+    "account_type": "MT5 NDD",
+    "account_type_match_confirmed_by_user": true,
+    "current_snapshot_sha256": "c60a1ef9f1d8b92d6cc8bb50f85e704a6e95c614968cfc8cda11638a1db9febb",
+    "provider": "FIBO Group",
+    "url": "https://www.fibogroup.com/products/account-types/mt5/specifications/"
+  }
+}
