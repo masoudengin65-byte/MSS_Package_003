@@ -1,0 +1,29 @@
+{
+  "aggregate_counts": {
+    "not_rejected_by_this_screen_count": 1372,
+    "observation_count": 13308,
+    "rejected_count": 11936
+  },
+  "interpretation_boundary": {
+    "historical_profitability_claim_allowed": false,
+    "not_rejected_by_this_screen_is_strategy_acceptance": false,
+    "production_readiness_claim_allowed": false
+  },
+  "publication_boundary": {
+    "candidate_identifiers_included": false,
+    "candidate_rows_included": false,
+    "directions_included": false,
+    "source_hashes_included": false,
+    "spreads_included": false,
+    "timestamps_included": false
+  },
+  "purpose": "Publish aggregate rejection-screen evidence without strategy observation rows",
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "real_order_send_allowed": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_SIGNAL_SCREEN_PUBLICATION_SUMMARY_V1",
+  "scope": "IMMUTABLE_DEVELOPMENT_ONLY_NOT_TRUE_FUTURE_OOS"
+}
