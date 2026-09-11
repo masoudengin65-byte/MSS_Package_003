@@ -16,6 +16,7 @@
     "no_resampling_across_market_closures": true,
     "read_only_mt5_calls": [
       "initialize",
+      "account_info",
       "symbol_select",
       "copy_rates_range",
       "shutdown"

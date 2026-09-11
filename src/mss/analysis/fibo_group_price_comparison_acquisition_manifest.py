@@ -64,7 +64,7 @@ def build_manifest(root: Path) -> dict[str, object]:
             "comparison_window_rule": "Use only the exact overlap with each frozen broker symbol; do not extend or fabricate unavailable history",
             "no_interpolation": True,
             "no_resampling_across_market_closures": True,
-            "read_only_mt5_calls": ["initialize", "symbol_select", "copy_rates_range", "shutdown"],
+            "read_only_mt5_calls": ["initialize", "account_info", "symbol_select", "copy_rates_range", "shutdown"],
             "forbidden_mt5_calls": ["order_check", "order_send"],
         },
         "pre_acquisition_gates": {
