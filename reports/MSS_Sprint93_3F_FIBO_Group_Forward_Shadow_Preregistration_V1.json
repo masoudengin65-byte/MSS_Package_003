@@ -1,0 +1,67 @@
+{
+  "activation_contract": {
+    "all_pre_activation_data_permanently_ineligible": true,
+    "manifest_created_only_after_runtime_freeze_pr_is_publicly_merged": true,
+    "manifest_published_and_verified_before_first_eligible_boundary": true,
+    "new_fibo_specific_manifest_required": true,
+    "prior_alpari_manifest_reuse_allowed": false,
+    "python_and_numpy_versions_frozen": true,
+    "retroactive_activation_allowed": false,
+    "runtime_git_blob_identity_frozen": true
+  },
+  "broker_contract": {
+    "provider": "FIBO Group",
+    "required_account_class": "DEMO",
+    "required_server": "FIBOGroup-MT5 Server",
+    "terminal_preflight_passed_locally": true,
+    "terminal_preflight_report_publishable": false
+  },
+  "execution_id": "MSS_93_3F_FIBO_GROUP_PAIRED_FORWARD_SHADOW_V1",
+  "experiment": {
+    "baseline": "SmartMoneyPipeline",
+    "candidate": "ConfluenceGatedSmartMoneyPipeline",
+    "canonical_to_broker_symbol": {
+      "BTCUSD": "BTC",
+      "ETHUSD": "ETH"
+    },
+    "decision_pairing": "SAME_COMPLETED_CANDLE_SNAPSHOT",
+    "duration": "45_CALENDAR_DAYS",
+    "parameter_optimization_during_experiment": false,
+    "pre_activation_data_eligible": false,
+    "timeframe": "M15"
+  },
+  "journal_contract": {
+    "append_only": true,
+    "duplicate_boundary_rejected": true,
+    "partial_write_recovery_fail_closed": true,
+    "restart_may_not_create_duplicate_decisions_or_positions": true,
+    "restart_resumes_only_from_verified_durable_state": true,
+    "sha256_hash_chain": true,
+    "single_writer_lease": true
+  },
+  "market_data_contract": {
+    "broker_bar_open_must_match_requested_boundary": true,
+    "completed_m15_candles_only": true,
+    "gap_or_disconnection": "NO_SYNTHETIC_BAR_NO_BACKFILL_NO_RETROACTIVE_DECISION",
+    "missing_or_mismatched_boundary": "FAIL_CLOSED_AND_PRESERVE_PARTIAL_EVIDENCE",
+    "weekend_role": "BTC_AND_ETH_ALLOW_CONTINUOUS_CALENDAR_OBSERVATION_SUBJECT_TO_BROKER_AVAILABILITY"
+  },
+  "next_authorized_action": "Implement and test the dedicated FIBO runtime while activation remains blocked",
+  "outcome_governance": {
+    "broker_accurate_profitability_claim_allowed": false,
+    "final_evaluation_requires_complete_45_day_boundary_or_preserved_failure": true,
+    "interim_parameter_change_allowed": false,
+    "production_readiness_claim_allowed": false,
+    "rerun_after_outcome_access_allowed": false
+  },
+  "protocol_state": "BLOCKED_PENDING_DEDICATED_RUNTIME_AND_NEW_ACTIVATION_MANIFEST",
+  "purpose": "Freeze an independent paired forward-shadow experiment on FIBO demo data",
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "real_order_send_allowed": false,
+    "shadow_only": true
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_PAIRED_FORWARD_SHADOW_PREREGISTRATION_V1"
+}
