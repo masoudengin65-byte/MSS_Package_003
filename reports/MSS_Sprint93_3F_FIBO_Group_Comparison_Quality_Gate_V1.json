@@ -1,0 +1,77 @@
+{
+  "acceptance_contract": {
+    "gap_boundary_agreement_is_not_an_acceptance_threshold": true,
+    "minimum_matched_timestamp_coverage": 0.995,
+    "minimum_return_comparison_timestamp_count": 1,
+    "reason": "Different broker session conventions cannot establish historical execution quality"
+  },
+  "blockers_retained": [
+    "broker-accurate net profit",
+    "broker-accurate drawdown after costs",
+    "historical execution quality",
+    "production readiness"
+  ],
+  "historical_net_profit_replay_eligible": false,
+  "next_authorized_action": "Obtain documented historical broker execution evidence; do not run a net-profit replay",
+  "price_pattern_analysis_eligible": true,
+  "provenance": {
+    "historical_execution_evidence_gate_sha256": "b58316616704c674e12f0e2676e2e83e665a77dead2c7839ee9a20ac03024ddf",
+    "price_pattern_comparison_sha256": "cd66fe41dfd68f044e96fe592f4ef55f4914370f495d1acd24d89d8d6064a84a"
+  },
+  "purpose": "Classify cross-source price-pattern evidence without inferring trading execution or profit",
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_COMPARISON_QUALITY_GATE_V1",
+  "symbols": [
+    {
+      "fibo_group_symbol": "EURUSD",
+      "frozen_broker_symbol": "EURUSD",
+      "gap_boundary_agreement_coverage": 0.0,
+      "gap_interpretation": "SOURCE_SESSION_DIFFERENCES_NOT_EXECUTION_EVIDENCE",
+      "matched_timestamp_coverage": 0.9963319578175149,
+      "price_pattern_analysis_usable": true,
+      "return_comparison_timestamp_count": 94266,
+      "unmatched_fibo_timestamp_count": 1950,
+      "unmatched_frozen_timestamp_count": 352
+    },
+    {
+      "fibo_group_symbol": "XAUUSD",
+      "frozen_broker_symbol": "XAUUSD",
+      "gap_boundary_agreement_coverage": 0.24532019704433497,
+      "gap_interpretation": "SOURCE_SESSION_DIFFERENCES_NOT_EXECUTION_EVIDENCE",
+      "matched_timestamp_coverage": 0.9950061590704797,
+      "price_pattern_analysis_usable": true,
+      "return_comparison_timestamp_count": 88645,
+      "unmatched_fibo_timestamp_count": 2930,
+      "unmatched_frozen_timestamp_count": 450
+    },
+    {
+      "fibo_group_symbol": "BTC",
+      "frozen_broker_symbol": "BTCUSD",
+      "gap_boundary_agreement_coverage": 0.0,
+      "gap_interpretation": "SOURCE_SESSION_DIFFERENCES_NOT_EXECUTION_EVIDENCE",
+      "matched_timestamp_coverage": 0.9995592260938152,
+      "price_pattern_analysis_usable": true,
+      "return_comparison_timestamp_count": 82208,
+      "unmatched_fibo_timestamp_count": 38,
+      "unmatched_frozen_timestamp_count": 47288
+    },
+    {
+      "fibo_group_symbol": "ETH",
+      "frozen_broker_symbol": "ETHUSD",
+      "gap_boundary_agreement_coverage": 0.0,
+      "gap_interpretation": "SOURCE_SESSION_DIFFERENCES_NOT_EXECUTION_EVIDENCE",
+      "matched_timestamp_coverage": 0.9997083119428758,
+      "price_pattern_analysis_usable": true,
+      "return_comparison_timestamp_count": 81555,
+      "unmatched_fibo_timestamp_count": 25,
+      "unmatched_frozen_timestamp_count": 47789
+    }
+  ]
+}
