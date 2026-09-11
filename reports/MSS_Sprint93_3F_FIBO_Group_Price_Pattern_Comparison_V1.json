@@ -1,0 +1,154 @@
+{
+  "interpretation_boundary": {
+    "allowed": "State price-pattern consistency or discrepancy only",
+    "cannot_establish": [
+      "historical Alpari trading sessions",
+      "historical Alpari commission or swap",
+      "historical Alpari execution quality",
+      "broker-accurate net profit",
+      "production readiness"
+    ]
+  },
+  "method": {
+    "gap_definition": "adjacent observed timestamps separated by more than one M15 interval",
+    "no_interpolation": true,
+    "no_resampling_across_market_closures": true,
+    "range_definition": "log(high / low) within each source, then frozen minus FIBO at exact common timestamps",
+    "return_definition": "log(current price / immediately previous M15 price) within each source, then frozen minus FIBO",
+    "timeframe": "M15",
+    "timestamp_matching": "exact UTC epoch equality only"
+  },
+  "purpose": "Timestamp and OHLC pattern comparison only; no strategy, replay, order, or performance result",
+  "safety": {
+    "comparison_run": true,
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_PRICE_PATTERN_COMPARISON_V1",
+  "symbols": [
+    {
+      "close_return_difference_quantiles": {
+        "0.05": -4.7184407811852024e-05,
+        "0.5": 0.0,
+        "0.95": 4.884076446547272e-05
+      },
+      "fibo_gap_boundary_count": 210,
+      "fibo_group_symbol": "EURUSD",
+      "fibo_timestamp_count": 97562,
+      "frozen_broker_symbol": "EURUSD",
+      "frozen_gap_boundary_count": 1343,
+      "frozen_timestamp_count": 95964,
+      "gap_boundary_agreement_coverage": 0.0,
+      "high_low_range_difference_quantiles": {
+        "0.05": -2.962154340663205e-05,
+        "0.5": 8.729648129961556e-06,
+        "0.95": 5.3851025595350976e-05
+      },
+      "matched_timestamp_count": 95612,
+      "matched_timestamp_coverage": 0.9963319578175149,
+      "open_return_difference_quantiles": {
+        "0.05": -5.350311656925998e-05,
+        "0.5": 0.0,
+        "0.95": 5.3140453196963216e-05
+      },
+      "return_comparison_timestamp_count": 94266,
+      "shared_gap_boundary_count": 0,
+      "unmatched_fibo_timestamp_count": 1950,
+      "unmatched_frozen_timestamp_count": 352
+    },
+    {
+      "close_return_difference_quantiles": {
+        "0.05": -8.770894038606127e-05,
+        "0.5": 0.0,
+        "0.95": 8.718387209566934e-05
+      },
+      "fibo_gap_boundary_count": 1015,
+      "fibo_group_symbol": "XAUUSD",
+      "fibo_timestamp_count": 92591,
+      "frozen_broker_symbol": "XAUUSD",
+      "frozen_gap_boundary_count": 1015,
+      "frozen_timestamp_count": 90111,
+      "gap_boundary_agreement_coverage": 0.24532019704433497,
+      "high_low_range_difference_quantiles": {
+        "0.05": -6.631585256346249e-05,
+        "0.5": 5.5683931651008024e-06,
+        "0.95": 9.932499710216497e-05
+      },
+      "matched_timestamp_count": 89661,
+      "matched_timestamp_coverage": 0.9950061590704797,
+      "open_return_difference_quantiles": {
+        "0.05": -9.517090425768503e-05,
+        "0.5": -2.4443585216083353e-10,
+        "0.95": 9.200134917707438e-05
+      },
+      "return_comparison_timestamp_count": 88645,
+      "shared_gap_boundary_count": 249,
+      "unmatched_fibo_timestamp_count": 2930,
+      "unmatched_frozen_timestamp_count": 450
+    },
+    {
+      "close_return_difference_quantiles": {
+        "0.05": -0.0005588291980649977,
+        "0.5": -1.202764447783564e-07,
+        "0.95": 0.0005574369586293128
+      },
+      "fibo_gap_boundary_count": 3958,
+      "fibo_group_symbol": "BTC",
+      "fibo_timestamp_count": 86212,
+      "frozen_broker_symbol": "BTCUSD",
+      "frozen_gap_boundary_count": 279,
+      "frozen_timestamp_count": 133462,
+      "gap_boundary_agreement_coverage": 0.0,
+      "high_low_range_difference_quantiles": {
+        "0.05": -0.0016374125999476363,
+        "0.5": -6.503390500408853e-05,
+        "0.95": 0.0003904146000668137
+      },
+      "matched_timestamp_count": 86174,
+      "matched_timestamp_coverage": 0.9995592260938152,
+      "open_return_difference_quantiles": {
+        "0.05": -0.0005706691051620486,
+        "0.5": -3.270658467668941e-07,
+        "0.95": 0.0005677308061041981
+      },
+      "return_comparison_timestamp_count": 82208,
+      "shared_gap_boundary_count": 0,
+      "unmatched_fibo_timestamp_count": 38,
+      "unmatched_frozen_timestamp_count": 47288
+    },
+    {
+      "close_return_difference_quantiles": {
+        "0.05": -0.0005331673867071257,
+        "0.5": -7.83294791049809e-10,
+        "0.95": 0.0005340652128560322
+      },
+      "fibo_gap_boundary_count": 4124,
+      "fibo_group_symbol": "ETH",
+      "fibo_timestamp_count": 85708,
+      "frozen_broker_symbol": "ETHUSD",
+      "frozen_gap_boundary_count": 275,
+      "frozen_timestamp_count": 133472,
+      "gap_boundary_agreement_coverage": 0.0,
+      "high_low_range_difference_quantiles": {
+        "0.05": -0.0017479236838261892,
+        "0.5": -5.553802699432035e-05,
+        "0.95": 0.00040308740362503
+      },
+      "matched_timestamp_count": 85683,
+      "matched_timestamp_coverage": 0.9997083119428758,
+      "open_return_difference_quantiles": {
+        "0.05": -0.0005638426115226972,
+        "0.5": -6.227831446113164e-08,
+        "0.95": 0.000561923310194321
+      },
+      "return_comparison_timestamp_count": 81555,
+      "shared_gap_boundary_count": 0,
+      "unmatched_fibo_timestamp_count": 25,
+      "unmatched_frozen_timestamp_count": 47789
+    }
+  ]
+}
