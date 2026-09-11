@@ -1,0 +1,73 @@
+{
+  "interpretation_boundary": {
+    "allowed": "Verify the immutable candidate evidence inventory and later evaluate price-pattern consistency only",
+    "cannot_establish": [
+      "historical Alpari trading sessions",
+      "historical Alpari commission or swap",
+      "historical Alpari execution quality",
+      "broker-accurate net profit",
+      "production readiness"
+    ]
+  },
+  "next_action": "Run a separately preregistered price-pattern comparison; do not infer execution quality or profitability",
+  "provenance": {
+    "acquisition_manifest_sha256": "a8b8534aa3f7cb68f86ce0fac47b6ccf447946b519e14085fcc559322e22dc0f",
+    "raw_evidence_committed": false,
+    "raw_evidence_root": "historical_data/sprint93_3f_fibo_candidate"
+  },
+  "purpose": "Evidence inventory only; no cross-source comparison, strategy, replay, or performance result",
+  "safety": {
+    "candidate_data_acquired": true,
+    "comparison_run": false,
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_frozen_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_ACQUISITION_EVIDENCE_V1",
+  "source": {
+    "account_class": "demo",
+    "mt5_server": "FIBOGroup-MT5 Server",
+    "provider": "FIBO Group"
+  },
+  "symbols": [
+    {
+      "fibo_group_symbol": "EURUSD",
+      "filename": "EURUSD_M15.jsonl",
+      "first_utc_epoch": 1632421800,
+      "frozen_broker_symbol": "EURUSD",
+      "last_utc_epoch": 1756511100,
+      "row_count": 97562,
+      "sha256": "50763d7707cd1a1e6ec7267d5dbfa771eae937cfa93ca2e3b190ab7e53e3bd99"
+    },
+    {
+      "fibo_group_symbol": "XAUUSD",
+      "filename": "XAUUSD_M15.jsonl",
+      "first_utc_epoch": 1632421800,
+      "frozen_broker_symbol": "XAUUSD",
+      "last_utc_epoch": 1756511100,
+      "row_count": 92591,
+      "sha256": "7bc8a24bbec779ff95aa7efe9dcba88a5524442e1d9cb84599645e2cbdbe76b0"
+    },
+    {
+      "fibo_group_symbol": "BTC",
+      "filename": "BTC_M15.jsonl",
+      "first_utc_epoch": 1632423600,
+      "frozen_broker_symbol": "BTCUSD",
+      "last_utc_epoch": 1756511100,
+      "row_count": 86212,
+      "sha256": "93b0b965f0def21e92cd5ed4c912256ab46a0b5cb89f27c9ad365434cb026015"
+    },
+    {
+      "fibo_group_symbol": "ETH",
+      "filename": "ETH_M15.jsonl",
+      "first_utc_epoch": 1632423600,
+      "frozen_broker_symbol": "ETHUSD",
+      "last_utc_epoch": 1756511100,
+      "row_count": 85708,
+      "sha256": "ce31316ca020df76dbc8af386b9abef019cfe4ab712527843d6561cbbdd4df53"
+    }
+  ]
+}
