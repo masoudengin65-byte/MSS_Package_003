@@ -1,0 +1,59 @@
+{
+  "outcome_boundary": {
+    "allowed": "Only reject a candidate shown fragile under declared hypothetical costs",
+    "forbidden": [
+      "acceptance",
+      "broker-accurate profitability",
+      "production readiness"
+    ],
+    "historical_net_profit_replay_eligible": false,
+    "strategy_or_replay_run": false
+  },
+  "provenance": {
+    "cost_scenario_v2_sha256": "f04c72d9ea8c44b5c1b961eadfb1861c12caee0b3da7d945553d52ac3e78c8d4",
+    "frozen_quality_sha256": "db87c8928de40990e69a0965958c9e6ab1249af60c2335300306e58d93f9f595"
+  },
+  "purpose": "Freeze gap and zero-spread treatment before a rejection-only hypothetical cost screen",
+  "rules": [
+    {
+      "baseline_replacement_spread_points": 1.0,
+      "fibo_group_symbol": "EURUSD",
+      "frozen_broker_symbol": "EURUSD",
+      "gap_rule": "NO_ENTRY_IF_LOOKBACK_CROSSES_GAP; NO_POSITION_MAY_BE_CARRIED_ACROSS_A_GAP",
+      "known_internal_gap_count": 1343,
+      "zero_spread_rule": "REPLACE_ZERO_WITH_DECLARED_BASELINE_CURRENT_REFERENCE_SPREAD_POINTS"
+    },
+    {
+      "baseline_replacement_spread_points": 43.0,
+      "fibo_group_symbol": "XAUUSD",
+      "frozen_broker_symbol": "XAUUSD",
+      "gap_rule": "NO_ENTRY_IF_LOOKBACK_CROSSES_GAP; NO_POSITION_MAY_BE_CARRIED_ACROSS_A_GAP",
+      "known_internal_gap_count": 1015,
+      "zero_spread_rule": "REPLACE_ZERO_WITH_DECLARED_BASELINE_CURRENT_REFERENCE_SPREAD_POINTS"
+    },
+    {
+      "baseline_replacement_spread_points": 15000.0,
+      "fibo_group_symbol": "BTC",
+      "frozen_broker_symbol": "BTCUSD",
+      "gap_rule": "NO_ENTRY_IF_LOOKBACK_CROSSES_GAP; NO_POSITION_MAY_BE_CARRIED_ACROSS_A_GAP",
+      "known_internal_gap_count": 279,
+      "zero_spread_rule": "REPLACE_ZERO_WITH_DECLARED_BASELINE_CURRENT_REFERENCE_SPREAD_POINTS"
+    },
+    {
+      "baseline_replacement_spread_points": 1500.0,
+      "fibo_group_symbol": "ETH",
+      "frozen_broker_symbol": "ETHUSD",
+      "gap_rule": "NO_ENTRY_IF_LOOKBACK_CROSSES_GAP; NO_POSITION_MAY_BE_CARRIED_ACROSS_A_GAP",
+      "known_internal_gap_count": 275,
+      "zero_spread_rule": "REPLACE_ZERO_WITH_DECLARED_BASELINE_CURRENT_REFERENCE_SPREAD_POINTS"
+    }
+  ],
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_FRAGILITY_SCREEN_PREREGISTRATION_V1"
+}
