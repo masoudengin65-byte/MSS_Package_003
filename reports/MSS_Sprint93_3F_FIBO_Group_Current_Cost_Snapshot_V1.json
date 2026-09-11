@@ -1,0 +1,99 @@
+{
+  "collected_at_utc": "2026-09-11T13:07:18.913605+00:00",
+  "commission": {
+    "rule": "No commission value is inferred or substituted from a different account type or date",
+    "status": "UNAVAILABLE_FROM_MT5_SYMBOL_INFO"
+  },
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "read_only_mt5_calls": [
+      "initialize",
+      "account_info",
+      "symbol_info",
+      "shutdown"
+    ],
+    "real_order_send_allowed": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_CURRENT_COST_SNAPSHOT_V1",
+  "source": {
+    "account_class": "demo",
+    "mt5_server": "FIBOGroup-MT5 Server",
+    "provider": "FIBO Group"
+  },
+  "symbols": [
+    {
+      "currency_margin": "EUR",
+      "currency_profit": "USD",
+      "digits": 5,
+      "point": 1e-05,
+      "spread": 1,
+      "swap_long": -6.3,
+      "swap_mode": 1,
+      "swap_rollover3days": 3,
+      "swap_short": 2.1,
+      "symbol": "EURUSD",
+      "trade_contract_size": 100000.0,
+      "trade_mode": 4,
+      "trade_tick_size": 1e-05,
+      "trade_tick_value": 1.0,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    {
+      "currency_margin": "USD",
+      "currency_profit": "USD",
+      "digits": 2,
+      "point": 0.01,
+      "spread": 43,
+      "swap_long": -58.0,
+      "swap_mode": 1,
+      "swap_rollover3days": 3,
+      "swap_short": 38.0,
+      "symbol": "XAUUSD",
+      "trade_contract_size": 100.0,
+      "trade_mode": 4,
+      "trade_tick_size": 0.01,
+      "trade_tick_value": 0.1,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    {
+      "currency_margin": "USD",
+      "currency_profit": "USD",
+      "digits": 2,
+      "point": 0.01,
+      "spread": 15000,
+      "swap_long": -1.69,
+      "swap_mode": 5,
+      "swap_rollover3days": 5,
+      "swap_short": -1.69,
+      "symbol": "BTC",
+      "trade_contract_size": 1.0,
+      "trade_mode": 4,
+      "trade_tick_size": 0.01,
+      "trade_tick_value": 0.01,
+      "volume_min": 0.01,
+      "volume_step": 0.01
+    },
+    {
+      "currency_margin": "USD",
+      "currency_profit": "USD",
+      "digits": 2,
+      "point": 0.01,
+      "spread": 1500,
+      "swap_long": -1.69,
+      "swap_mode": 5,
+      "swap_rollover3days": 5,
+      "swap_short": -1.69,
+      "symbol": "ETH",
+      "trade_contract_size": 1.0,
+      "trade_mode": 4,
+      "trade_tick_size": 0.01,
+      "trade_tick_value": 0.01,
+      "volume_min": 1.0,
+      "volume_step": 1.0
+    }
+  ]
+}
