@@ -1,0 +1,28 @@
+{
+  "outcome_boundary": {
+    "acceptance_decision_emitted": false,
+    "drawdown_metric_emitted": false,
+    "net_profit_metric_emitted": false,
+    "production_readiness_claim_allowed": false,
+    "return_metric_emitted": false
+  },
+  "provenance": {
+    "preregistration_sha256": "c6a746ced79046040fa1672ee05283116c5f25783a2703e0c37376e797564b0c"
+  },
+  "purpose": "Reject observations violating frozen gap treatment without calculating strategy outcomes",
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_REJECTION_ONLY_FRAGILITY_SCREEN_V1",
+  "screen_results": [],
+  "summary": {
+    "not_rejected_is_not_accepted": true,
+    "observation_count": 0,
+    "rejected_count": 0
+  }
+}
