@@ -33,13 +33,13 @@
       "production readiness"
     ]
   },
-  "next_action": "Record FIBO Group research-use terms, then run a separate read-only acquisition command only if every pre-acquisition gate passes",
+  "next_action": "Run a separate read-only acquisition command that uses only the listed terminal calls and preserves its raw output separately",
   "pre_acquisition_gates": {
-    "all_required_gates_pass": false,
-    "blocker": "Applicable FIBO Group research or automation terms have not yet been recorded",
+    "all_required_gates_pass": true,
+    "blocker": null,
     "demo_server_verified": true,
     "exact_symbol_mapping_verified": true,
-    "terms_of_use_verified": false
+    "terms_of_use_verified": true
   },
   "provenance": {
     "candidate_data_acquired_before_manifest": false,
@@ -64,8 +64,14 @@
     "live_account_login_allowed": false,
     "mt5_server": "FIBOGroup-MT5 Server",
     "provider": "FIBO Group",
-    "terms_of_use_requirement": "Record applicable research or automation terms before acquisition",
-    "terms_of_use_verified": false
+    "terms_evidence": {
+      "automation_policy_url": "https://www.fibogroup.com/products/default/",
+      "finding": "FIBO Group publicly states that it has no restrictions on trading strategies and permits expert advisors; its MT5 NDD page describes EA automated trading.",
+      "mt5_automation_url": "https://www.fibogroup.com/products/account-types/mt5/",
+      "reviewed_utc_date": "2026-09-11",
+      "scope_limit": "The public pages do not specifically name the MetaTrader5 Python package. This manifest permits only the enumerated read-only terminal calls and does not permit order placement or strategy execution."
+    },
+    "terms_of_use_verified": true
   },
   "symbol_mappings": [
     {

@@ -47,8 +47,14 @@ def build_manifest(root: Path) -> dict[str, object]:
             "account_class": "demo",
             "credentials_recorded": False,
             "live_account_login_allowed": False,
-            "terms_of_use_verified": False,
-            "terms_of_use_requirement": "Record applicable research or automation terms before acquisition",
+            "terms_of_use_verified": True,
+            "terms_evidence": {
+                "automation_policy_url": "https://www.fibogroup.com/products/default/",
+                "mt5_automation_url": "https://www.fibogroup.com/products/account-types/mt5/",
+                "reviewed_utc_date": "2026-09-11",
+                "finding": "FIBO Group publicly states that it has no restrictions on trading strategies and permits expert advisors; its MT5 NDD page describes EA automated trading.",
+                "scope_limit": "The public pages do not specifically name the MetaTrader5 Python package. This manifest permits only the enumerated read-only terminal calls and does not permit order placement or strategy execution.",
+            },
         },
         "symbol_mappings": mappings,
         "acquisition_contract": {
@@ -62,11 +68,11 @@ def build_manifest(root: Path) -> dict[str, object]:
             "forbidden_mt5_calls": ["order_check", "order_send"],
         },
         "pre_acquisition_gates": {
-            "terms_of_use_verified": False,
+            "terms_of_use_verified": True,
             "exact_symbol_mapping_verified": True,
             "demo_server_verified": True,
-            "all_required_gates_pass": False,
-            "blocker": "Applicable FIBO Group research or automation terms have not yet been recorded",
+            "all_required_gates_pass": True,
+            "blocker": None,
         },
         "interpretation_boundary": {
             "allowed": "Price-pattern consistency or discrepancy finding only",
@@ -87,5 +93,5 @@ def build_manifest(root: Path) -> dict[str, object]:
             "real_order_send_allowed": False,
             "production_execution_enabled": False,
         },
-        "next_action": "Record FIBO Group research-use terms, then run a separate read-only acquisition command only if every pre-acquisition gate passes",
+        "next_action": "Run a separate read-only acquisition command that uses only the listed terminal calls and preserves its raw output separately",
     }

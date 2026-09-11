@@ -18,9 +18,11 @@ def test_manifest_is_deterministic_and_maps_fibo_crypto_symbols():
     ]
 
 
-def test_published_manifest_blocks_acquisition_and_order_paths():
+def test_published_manifest_allows_only_read_only_acquisition_and_blocks_order_paths():
     result = json.loads(REPORT.read_text(encoding="utf-8"))
-    assert result["pre_acquisition_gates"]["all_required_gates_pass"] is False
+    assert result["pre_acquisition_gates"]["all_required_gates_pass"] is True
+    assert result["source"]["terms_of_use_verified"] is True
+    assert "MetaTrader5 Python package" in result["source"]["terms_evidence"]["scope_limit"]
     assert result["safety"]["candidate_data_acquired"] is False
     assert result["safety"]["order_check_called"] is False
     assert result["safety"]["order_send_called"] is False
