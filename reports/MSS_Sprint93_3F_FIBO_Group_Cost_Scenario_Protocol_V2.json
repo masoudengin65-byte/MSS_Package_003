@@ -1,0 +1,204 @@
+{
+  "next_authorized_action": "Implement a rejection-only fragility screen that reports no net-profit metric",
+  "provenance": {
+    "current_public_commission_sha256": "026610f93a3783357e1b425543033c534a7c4ac447e30034d649a311190a0cf9",
+    "v1_protocol_sha256": "688dab5652e5e756974a066949fc971a3a40f36348f2170f53e565b132f913ae"
+  },
+  "purpose": "Current-reference cost scenarios with labelled commission inputs for rejection-only research",
+  "research_boundary": {
+    "allowed_conclusion": "A candidate may be rejected under declared hypothetical costs only",
+    "current_terms_are_historical_terms": false,
+    "forbidden_conclusions": [
+      "broker-accurate historical net profit",
+      "historical execution quality",
+      "production readiness"
+    ],
+    "historical_net_profit_replay_eligible": false,
+    "unit_conversion_or_aggregation_performed": false
+  },
+  "safety": {
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "scenarios": [
+    {
+      "inputs": [
+        {
+          "commission_amount_per_lot": 3.0,
+          "commission_currency": "EUR",
+          "commission_per_lot": null,
+          "commission_reference_model": "PER_LOT",
+          "commission_stress_multiplier": 1.0,
+          "slippage_points_per_side": 1.0,
+          "spread_points": 1.0,
+          "swap_long_current_reference": -6.3,
+          "swap_mode": 1,
+          "swap_short_current_reference": 2.1,
+          "symbol": "EURUSD"
+        },
+        {
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.003,
+          "commission_reference_model": "PERCENT_NOTIONAL",
+          "commission_stress_multiplier": 1.0,
+          "slippage_points_per_side": 10.75,
+          "spread_points": 43.0,
+          "swap_long_current_reference": -58.0,
+          "swap_mode": 1,
+          "swap_short_current_reference": 38.0,
+          "symbol": "XAUUSD"
+        },
+        {
+          "commission_minimum_amount": 1.0,
+          "commission_minimum_currency": "USD",
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.15,
+          "commission_reference_model": "PERCENT_NOTIONAL_MINIMUM",
+          "commission_stress_multiplier": 1.0,
+          "slippage_points_per_side": 3750.0,
+          "spread_points": 15000.0,
+          "swap_long_current_reference": -1.69,
+          "swap_mode": 5,
+          "swap_short_current_reference": -1.69,
+          "symbol": "BTC"
+        },
+        {
+          "commission_minimum_amount": 1.0,
+          "commission_minimum_currency": "USD",
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.15,
+          "commission_reference_model": "PERCENT_NOTIONAL_MINIMUM",
+          "commission_stress_multiplier": 1.0,
+          "slippage_points_per_side": 375.0,
+          "spread_points": 1500.0,
+          "swap_long_current_reference": -1.69,
+          "swap_mode": 5,
+          "swap_short_current_reference": -1.69,
+          "symbol": "ETH"
+        }
+      ],
+      "name": "BASELINE_CURRENT_REFERENCE"
+    },
+    {
+      "inputs": [
+        {
+          "commission_amount_per_lot": 4.5,
+          "commission_currency": "EUR",
+          "commission_per_lot": null,
+          "commission_reference_model": "PER_LOT",
+          "commission_stress_multiplier": 1.5,
+          "slippage_points_per_side": 1.0,
+          "spread_points": 1.5,
+          "swap_long_current_reference": -9.45,
+          "swap_mode": 1,
+          "swap_short_current_reference": 3.1500000000000004,
+          "symbol": "EURUSD"
+        },
+        {
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.0045000000000000005,
+          "commission_reference_model": "PERCENT_NOTIONAL",
+          "commission_stress_multiplier": 1.5,
+          "slippage_points_per_side": 21.5,
+          "spread_points": 64.5,
+          "swap_long_current_reference": -87.0,
+          "swap_mode": 1,
+          "swap_short_current_reference": 57.0,
+          "symbol": "XAUUSD"
+        },
+        {
+          "commission_minimum_amount": 1.5,
+          "commission_minimum_currency": "USD",
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.22499999999999998,
+          "commission_reference_model": "PERCENT_NOTIONAL_MINIMUM",
+          "commission_stress_multiplier": 1.5,
+          "slippage_points_per_side": 7500.0,
+          "spread_points": 22500.0,
+          "swap_long_current_reference": -2.535,
+          "swap_mode": 5,
+          "swap_short_current_reference": -2.535,
+          "symbol": "BTC"
+        },
+        {
+          "commission_minimum_amount": 1.5,
+          "commission_minimum_currency": "USD",
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.22499999999999998,
+          "commission_reference_model": "PERCENT_NOTIONAL_MINIMUM",
+          "commission_stress_multiplier": 1.5,
+          "slippage_points_per_side": 750.0,
+          "spread_points": 2250.0,
+          "swap_long_current_reference": -2.535,
+          "swap_mode": 5,
+          "swap_short_current_reference": -2.535,
+          "symbol": "ETH"
+        }
+      ],
+      "name": "CONSERVATIVE"
+    },
+    {
+      "inputs": [
+        {
+          "commission_amount_per_lot": 6.0,
+          "commission_currency": "EUR",
+          "commission_per_lot": null,
+          "commission_reference_model": "PER_LOT",
+          "commission_stress_multiplier": 2.0,
+          "slippage_points_per_side": 1.0,
+          "spread_points": 2.0,
+          "swap_long_current_reference": -12.6,
+          "swap_mode": 1,
+          "swap_short_current_reference": 4.2,
+          "symbol": "EURUSD"
+        },
+        {
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.006,
+          "commission_reference_model": "PERCENT_NOTIONAL",
+          "commission_stress_multiplier": 2.0,
+          "slippage_points_per_side": 43.0,
+          "spread_points": 86.0,
+          "swap_long_current_reference": -116.0,
+          "swap_mode": 1,
+          "swap_short_current_reference": 76.0,
+          "symbol": "XAUUSD"
+        },
+        {
+          "commission_minimum_amount": 2.0,
+          "commission_minimum_currency": "USD",
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.3,
+          "commission_reference_model": "PERCENT_NOTIONAL_MINIMUM",
+          "commission_stress_multiplier": 2.0,
+          "slippage_points_per_side": 15000.0,
+          "spread_points": 30000.0,
+          "swap_long_current_reference": -3.38,
+          "swap_mode": 5,
+          "swap_short_current_reference": -3.38,
+          "symbol": "BTC"
+        },
+        {
+          "commission_minimum_amount": 2.0,
+          "commission_minimum_currency": "USD",
+          "commission_per_lot": null,
+          "commission_rate_percent_notional": 0.3,
+          "commission_reference_model": "PERCENT_NOTIONAL_MINIMUM",
+          "commission_stress_multiplier": 2.0,
+          "slippage_points_per_side": 1500.0,
+          "spread_points": 3000.0,
+          "swap_long_current_reference": -3.38,
+          "swap_mode": 5,
+          "swap_short_current_reference": -3.38,
+          "symbol": "ETH"
+        }
+      ],
+      "name": "STRESSED"
+    }
+  ],
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_COST_SCENARIO_PROTOCOL_V2"
+}
