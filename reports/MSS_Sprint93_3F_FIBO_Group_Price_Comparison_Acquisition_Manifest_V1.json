@@ -1,0 +1,88 @@
+{
+  "acquisition_contract": {
+    "comparison_window_rule": "Use only the exact overlap with each frozen broker symbol; do not extend or fabricate unavailable history",
+    "fields": [
+      "time",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "forbidden_mt5_calls": [
+      "order_check",
+      "order_send"
+    ],
+    "no_interpolation": true,
+    "no_resampling_across_market_closures": true,
+    "read_only_mt5_calls": [
+      "initialize",
+      "symbol_select",
+      "copy_rates_range",
+      "shutdown"
+    ],
+    "timeframe": "M15",
+    "timezone": "UTC"
+  },
+  "interpretation_boundary": {
+    "allowed": "Price-pattern consistency or discrepancy finding only",
+    "cannot_establish": [
+      "historical Alpari trading sessions",
+      "historical Alpari commission or swap",
+      "historical Alpari execution quality",
+      "broker-accurate net profit",
+      "production readiness"
+    ]
+  },
+  "next_action": "Record FIBO Group research-use terms, then run a separate read-only acquisition command only if every pre-acquisition gate passes",
+  "pre_acquisition_gates": {
+    "all_required_gates_pass": false,
+    "blocker": "Applicable FIBO Group research or automation terms have not yet been recorded",
+    "demo_server_verified": true,
+    "exact_symbol_mapping_verified": true,
+    "terms_of_use_verified": false
+  },
+  "provenance": {
+    "candidate_data_acquired_before_manifest": false,
+    "frozen_data_quality_sha256": "db87c8928de40990e69a0965958c9e6ab1249af60c2335300306e58d93f9f595",
+    "independent_price_preregistration_sha256": "5f095149fe4fcf1eb96b481f42bb6471df88fa76d24bc049d170f5e5ddaa8eb9",
+    "symbol_mapping_evidence": "User-supplied MT5 Market Watch screenshots"
+  },
+  "purpose": "Read-only four-instrument FIBO Group demo price comparison against frozen MT5 bars",
+  "safety": {
+    "candidate_data_acquired": false,
+    "order_check_called": false,
+    "order_send_called": false,
+    "production_execution_enabled": false,
+    "raw_frozen_data_modified": false,
+    "real_order_send_allowed": false,
+    "strategy_or_replay_run": false
+  },
+  "schema_version": "MSS_SPRINT93_3F_FIBO_GROUP_PRICE_COMPARISON_ACQUISITION_MANIFEST_V1",
+  "source": {
+    "account_class": "demo",
+    "credentials_recorded": false,
+    "live_account_login_allowed": false,
+    "mt5_server": "FIBOGroup-MT5 Server",
+    "provider": "FIBO Group",
+    "terms_of_use_requirement": "Record applicable research or automation terms before acquisition",
+    "terms_of_use_verified": false
+  },
+  "symbol_mappings": [
+    {
+      "fibo_group_symbol": "EURUSD",
+      "frozen_broker_symbol": "EURUSD"
+    },
+    {
+      "fibo_group_symbol": "XAUUSD",
+      "frozen_broker_symbol": "XAUUSD"
+    },
+    {
+      "fibo_group_symbol": "BTC",
+      "frozen_broker_symbol": "BTCUSD"
+    },
+    {
+      "fibo_group_symbol": "ETH",
+      "frozen_broker_symbol": "ETHUSD"
+    }
+  ]
+}
