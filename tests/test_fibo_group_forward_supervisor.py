@@ -10,6 +10,7 @@ from mss.analysis.fibo_group_forward_activation import (
 from mss.analysis.fibo_group_forward_supervisor import (
     EXPECTED_SERVER,
     FiboMt5ReadOnlySession,
+    RELEASE_CYCLE,
     run_fibo_forward_supervisor,
 )
 from mss.analysis.shadow_trade_journal import ShadowTradeJournal
@@ -113,6 +114,7 @@ class _FakeSession:
 
 
 def test_supervisor_writes_one_shadow_boundary_and_never_resumes(tmp_path: Path):
+    assert RELEASE_CYCLE == "S93.3F-FIBO-FORWARD-REFREEZE-20260915"
     start = 501 * 900
     clock = {"value": float(start - 1)}
 

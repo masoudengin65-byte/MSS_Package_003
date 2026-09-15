@@ -31,6 +31,7 @@ from mss.analysis.shadow_trade_journal import ShadowTradeJournal
 
 
 EXPECTED_SERVER = "FIBOGroup-MT5 Server"
+RELEASE_CYCLE = "S93.3F-FIBO-FORWARD-REFREEZE-20260915"
 TIMEFRAME_SECONDS = 15 * 60
 REQUIRED_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
 MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS = 2.0
@@ -275,6 +276,7 @@ def run_fibo_forward_supervisor(
             completed_boundaries=completed,
             maximum_cycle_seconds=5.0,
             poll_target_seconds=POLL_SECONDS,
+            release_cycle=RELEASE_CYCLE,
         )
         try:
             with factory() as session:
