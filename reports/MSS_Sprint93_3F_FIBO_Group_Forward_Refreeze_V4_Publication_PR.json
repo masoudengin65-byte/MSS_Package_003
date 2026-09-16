@@ -1,0 +1,9 @@
+{
+  "base_branch": "main",
+  "manifest_blob_sha256": "c4ac8674e95bb4476aab16fee638bc08d313f15d5ba83ee7e921c828fd6c92d1",
+  "merge_commit_sha": "7ca78cc0c83778fd03419d21af51be3910d98ed7",
+  "merged_at_utc": "2026-09-16T14:19:21Z",
+  "number": 60,
+  "state": "MERGED",
+  "url": "https://github.com/masoudengin65-byte/MSS_Package_003/pull/60"
+}
