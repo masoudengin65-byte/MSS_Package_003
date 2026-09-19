@@ -240,7 +240,12 @@ def run_fibo_forward_supervisor(
     sleep: Callable[[float], None] = time.sleep,
     max_boundary_delay_seconds: float = MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS,
 ) -> dict[str, object]:
-    """Run one fresh FIBO shadow window; never resume or backfill evidence."""
+    """Run one fresh FIBO shadow window; never resume or backfill evidence.
+
+    Launching before the first eligible boundary is intentional: the process
+    waits for that live boundary. A late launch remains a hard failure rather
+    than silently backfilling a boundary that has already passed.
+    """
 
     if not isinstance(activation, FiboVerifiedActivation):
         raise RuntimeError("a verified FIBO activation context is required")
