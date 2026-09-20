@@ -244,7 +244,8 @@ def run_fibo_forward_supervisor(
 
     Launching before the first eligible boundary is intentional: the process
     waits for that live boundary. A late launch remains a hard failure rather
-    than silently backfilling a boundary that has already passed.
+    than silently backfilling a boundary that has already passed. The V8
+    refreeze preserves this pre-arming behavior without changing evidence.
     """
 
     if not isinstance(activation, FiboVerifiedActivation):
