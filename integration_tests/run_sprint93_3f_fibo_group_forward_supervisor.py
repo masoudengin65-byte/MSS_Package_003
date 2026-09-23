@@ -51,6 +51,11 @@ def main() -> None:
     parser.add_argument("--publication-pr-json", type=Path, required=True)
     parser.add_argument("--terminal-path", type=Path, required=True)
     parser.add_argument("--journal", type=Path, required=True)
+    parser.add_argument(
+        "--strict-preactivation",
+        action="store_true",
+        help="reject a launch after the first eligible boundary (legacy mode)",
+    )
     args = parser.parse_args()
 
     manifest_bytes = args.manifest.read_bytes()
@@ -74,6 +79,7 @@ def main() -> None:
         activation=activation,
         journal_path=args.journal,
         terminal_path=args.terminal_path,
+        allow_late_arm=not args.strict_preactivation,
     )
     print("FIBO_FORWARD_SUPERVISOR_STARTED_AND_FINISHED")
     print(json.dumps(result, sort_keys=True))

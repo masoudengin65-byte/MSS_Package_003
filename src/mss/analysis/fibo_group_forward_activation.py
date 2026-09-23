@@ -234,8 +234,11 @@ def verify_manifest(
     created = _parse_utc(manifest.get("manifest_created_at_utc"), "manifest creation")
     freeze_merged = _parse_utc(freeze_metadata["merged_at_utc"], "freeze mergedAt")
     start = _parse_utc(expected_start, "activation start")
-    if not freeze_merged < created <= published_at < start:
-        raise RuntimeError("manifest was not created and published before activation")
+    end = _parse_utc(expected_end, "activation end")
+    if not freeze_merged < created <= published_at < end:
+        raise RuntimeError(
+            "manifest was not created after freeze and published before window end"
+        )
     manifest_sha256 = hashlib.sha256(manifest_bytes).hexdigest()
     if publication_metadata.get("manifest_blob_sha256") != manifest_sha256:
         raise RuntimeError("published manifest blob mismatch")
@@ -249,6 +252,6 @@ def verify_manifest(
     return FiboVerifiedActivation(
         manifest_sha256=manifest_sha256,
         first_eligible_epoch=int(start.timestamp()),
-        exclusive_end_epoch=int(_parse_utc(expected_end, "activation end").timestamp()),
+        exclusive_end_epoch=int(end.timestamp()),
         _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
     )

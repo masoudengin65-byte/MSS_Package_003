@@ -151,3 +151,40 @@ def test_supervisor_writes_one_shadow_boundary_and_never_resumes(tmp_path: Path)
             utc_now=now,
             sleep=sleep,
         )
+
+
+def test_supervisor_late_arm_skips_past_boundaries_without_backfill(tmp_path: Path):
+    start = 501 * 900
+    clock = {"value": float(start + 1)}
+
+    def now():
+        return clock["value"]
+
+    def sleep(seconds):
+        clock["value"] += seconds
+
+    activation = FiboVerifiedActivation(
+        manifest_sha256="b" * 64,
+        first_eligible_epoch=start,
+        exclusive_end_epoch=start + 2 * 900,
+        _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
+    )
+    journal = tmp_path / "late-fibo.jsonl"
+    result = run_fibo_forward_supervisor(
+        activation=activation,
+        journal_path=journal,
+        session_factory=_FakeSession,
+        utc_now=now,
+        sleep=sleep,
+    )
+
+    assert result["completed_boundaries"] == 1
+    events = [
+        event
+        for event in ShadowTradeJournal._read_events(
+            journal.with_name(journal.name + ".supervisor.jsonl")
+        )
+        if event["event_type"] == "FIBO_SUPERVISOR_STARTED"
+    ]
+    assert events[0]["payload"]["late_arm"] is True
+    assert events[0]["payload"]["effective_first_eligible_m15_open_epoch"] == start + 900
