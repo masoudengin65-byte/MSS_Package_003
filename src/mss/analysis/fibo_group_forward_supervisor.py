@@ -239,6 +239,7 @@ def run_fibo_forward_supervisor(
     utc_now: Callable[[], float] = _utc_now_epoch,
     sleep: Callable[[float], None] = time.sleep,
     max_boundary_delay_seconds: float = MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS,
+    allow_late_arm: bool = True,
 ) -> dict[str, object]:
     """Run one fresh FIBO shadow window; never resume or backfill evidence.
 
@@ -266,14 +267,28 @@ def run_fibo_forward_supervisor(
         lambda: FiboMt5ReadOnlySession(terminal_path=terminal_path)
     )
     now = float(utc_now())
-    if not math.isfinite(now) or now >= start:
+    if not math.isfinite(now):
+        raise RuntimeError("UTC clock returned a non-finite value")
+    late_arm = now >= start
+    if late_arm and not allow_late_arm:
         raise RuntimeError("FIBO supervisor must start before activation")
+    if now >= end:
+        raise RuntimeError("FIBO activation window has already ended")
 
     with runner_lease(journal_path):
         if any(path.exists() for path in (journal_path, operations_path)):
             raise RuntimeError("FIBO supervisor requires pristine journals")
         completed = 0
-        next_boundary = start
+        if late_arm:
+            next_boundary = (
+                int(now) + TIMEFRAME_SECONDS - 1
+            ) // TIMEFRAME_SECONDS * TIMEFRAME_SECONDS
+            if next_boundary < start:
+                next_boundary = start
+        else:
+            next_boundary = start
+        if next_boundary >= end:
+            raise RuntimeError("FIBO activation window has no live boundary remaining")
         _audit(
             path=operations_path,
             activation=activation,
@@ -283,6 +298,8 @@ def run_fibo_forward_supervisor(
             maximum_cycle_seconds=5.0,
             poll_target_seconds=POLL_SECONDS,
             release_cycle=RELEASE_CYCLE,
+            late_arm=late_arm,
+            effective_first_eligible_m15_open_epoch=next_boundary,
         )
         try:
             with factory() as session:

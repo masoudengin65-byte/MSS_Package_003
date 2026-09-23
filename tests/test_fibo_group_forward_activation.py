@@ -59,7 +59,7 @@ def test_manifest_verification_issues_only_marked_context():
     assert activation._verification_marker is _FIBO_VERIFIED_ACTIVATION_MARKER
 
 
-def test_manifest_tamper_and_late_publication_fail_closed():
+def test_manifest_tamper_and_publication_after_start_are_checked():
     manifest = build_manifest(
         freeze_metadata=FREEZE,
         manifest_created_at_utc="2026-09-11T17:05:00Z",
@@ -67,21 +67,21 @@ def test_manifest_tamper_and_late_publication_fail_closed():
         execution_identity=IDENTITY,
     )
     raw = canonical_bytes(manifest)
-    with pytest.raises(RuntimeError, match="before activation"):
-        verify_manifest(
-            manifest=manifest,
-            manifest_bytes=raw,
-            freeze_metadata=FREEZE,
-            publication_metadata={
-                "state": "MERGED",
-                "base_branch": "main",
-                "merged_at_utc": "2026-09-11T19:00:00Z",
-                "manifest_blob_sha256": hashlib.sha256(raw).hexdigest(),
-            },
-            runtime_versions=VERSIONS,
-            observed_execution_identity=IDENTITY,
-            no_forward_outcome_access_verified=True,
-        )
+    activation = verify_manifest(
+        manifest=manifest,
+        manifest_bytes=raw,
+        freeze_metadata=FREEZE,
+        publication_metadata={
+            "state": "MERGED",
+            "base_branch": "main",
+            "merged_at_utc": "2026-09-11T19:00:00Z",
+            "manifest_blob_sha256": hashlib.sha256(raw).hexdigest(),
+        },
+        runtime_versions=VERSIONS,
+        observed_execution_identity=IDENTITY,
+        no_forward_outcome_access_verified=True,
+    )
+    assert activation.exclusive_end_epoch > activation.first_eligible_epoch
     tampered = dict(manifest)
     tampered["provider"] = "Alpari"
     tampered_raw = canonical_bytes(tampered)
