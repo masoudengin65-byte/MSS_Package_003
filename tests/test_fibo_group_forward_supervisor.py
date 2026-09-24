@@ -188,3 +188,41 @@ def test_supervisor_late_arm_skips_past_boundaries_without_backfill(tmp_path: Pa
     ]
     assert events[0]["payload"]["late_arm"] is True
     assert events[0]["payload"]["effective_first_eligible_m15_open_epoch"] == start + 900
+
+
+def test_supervisor_polls_until_fibo_publishes_the_boundary(tmp_path: Path):
+    start = 501 * 900
+    clock = {"value": float(start)}
+
+    def now():
+        return clock["value"]
+
+    def sleep(seconds):
+        clock["value"] += seconds
+
+    class DelayedSession(_FakeSession):
+        attempts = 0
+
+        def capture_pair(self, boundary):
+            self.attempts += 1
+            if self.attempts == 1:
+                raise RuntimeError("FIBO requested boundary has not been published")
+            return super().capture_pair(boundary)
+
+    activation = FiboVerifiedActivation(
+        manifest_sha256="c" * 64,
+        first_eligible_epoch=start,
+        exclusive_end_epoch=start + 900,
+        _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
+    )
+    session = DelayedSession()
+    result = run_fibo_forward_supervisor(
+        activation=activation,
+        journal_path=tmp_path / "delayed-fibo.jsonl",
+        session_factory=lambda: session,
+        utc_now=now,
+        sleep=sleep,
+    )
+
+    assert session.attempts == 2
+    assert result["completed_boundaries"] == 1
