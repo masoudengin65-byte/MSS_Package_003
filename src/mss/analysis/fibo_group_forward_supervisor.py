@@ -35,6 +35,7 @@ RELEASE_CYCLE = "S93.3F-FIBO-FORWARD-REFREEZE-20260918F"
 TIMEFRAME_SECONDS = 15 * 60
 REQUIRED_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
 MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS = 2.0
+MAX_BOUNDARY_PUBLICATION_LAG_SECONDS = 60.0
 POLL_SECONDS = 0.25
 
 
@@ -239,6 +240,7 @@ def run_fibo_forward_supervisor(
     utc_now: Callable[[], float] = _utc_now_epoch,
     sleep: Callable[[float], None] = time.sleep,
     max_boundary_delay_seconds: float = MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS,
+    max_boundary_publication_lag_seconds: float = MAX_BOUNDARY_PUBLICATION_LAG_SECONDS,
     allow_late_arm: bool = True,
 ) -> dict[str, object]:
     """Run one fresh FIBO shadow window; never resume or backfill evidence.
@@ -259,6 +261,11 @@ def run_fibo_forward_supervisor(
         raise RuntimeError("FIBO activation window must be aligned and nonempty")
     if not math.isfinite(float(max_boundary_delay_seconds)) or max_boundary_delay_seconds < 0:
         raise RuntimeError("FIBO boundary delay limit is invalid")
+    if (
+        not math.isfinite(float(max_boundary_publication_lag_seconds))
+        or max_boundary_publication_lag_seconds < 0
+    ):
+        raise RuntimeError("FIBO boundary publication lag limit is invalid")
 
     journal_path = Path(journal_path)
     operations_path = journal_path.with_name(journal_path.name + ".supervisor.jsonl")
@@ -297,6 +304,9 @@ def run_fibo_forward_supervisor(
             completed_boundaries=completed,
             maximum_cycle_seconds=5.0,
             poll_target_seconds=POLL_SECONDS,
+            maximum_boundary_publication_lag_seconds=(
+                max_boundary_publication_lag_seconds
+            ),
             release_cycle=RELEASE_CYCLE,
             late_arm=late_arm,
             effective_first_eligible_m15_open_epoch=next_boundary,
@@ -307,14 +317,37 @@ def run_fibo_forward_supervisor(
                     observed = _wait_until(next_boundary, utc_now=utc_now, sleep=sleep)
                     if observed - next_boundary > max_boundary_delay_seconds:
                         raise RuntimeError("FIBO boundary observation window expired")
+                    while True:
+                        try:
+                            snapshots = session.capture_pair(next_boundary)
+                            break
+                        except RuntimeError as exc:
+                            if str(exc) != "FIBO requested boundary has not been published":
+                                raise
+                            observed = float(utc_now())
+                            if (
+                                not math.isfinite(observed)
+                                or observed - next_boundary
+                                > max_boundary_publication_lag_seconds
+                            ):
+                                raise RuntimeError(
+                                    "FIBO boundary publication window expired"
+                                ) from exc
+                            sleep(
+                                min(
+                                    POLL_SECONDS,
+                                    max_boundary_publication_lag_seconds
+                                    - (observed - next_boundary),
+                                )
+                            )
                     started = time.monotonic()
-                    snapshots = session.capture_pair(next_boundary)
                     captured_at = float(utc_now())
                     if (
                         not math.isfinite(captured_at)
-                        or captured_at - next_boundary > max_boundary_delay_seconds
+                        or captured_at - next_boundary
+                        > max_boundary_publication_lag_seconds
                     ):
-                        raise RuntimeError("FIBO boundary observation window expired")
+                        raise RuntimeError("FIBO boundary publication window expired")
                     evaluated = active_runtime.evaluate_pair(snapshots)
                     event = active_runtime.commit_pair(
                         activation=activation,
