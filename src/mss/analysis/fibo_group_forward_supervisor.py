@@ -137,7 +137,7 @@ class FiboMt5ReadOnlySession:
             broker_symbol,
             self.mt5.TIMEFRAME_M15,
             0,
-            REQUIRED_RATE_COUNT,
+            REQUIRED_RATE_COUNT + 1,
         )
         if rates is None or len(rates) < REQUIRED_RATE_COUNT:
             raise RuntimeError(
@@ -168,20 +168,48 @@ class FiboMt5ReadOnlySession:
     def capture_pair(
         self, boundary_epoch: int | None = None
     ) -> tuple[FiboBoundarySnapshot, ...]:
-        return tuple(
-            self.capture(symbol, boundary_epoch=boundary_epoch)
-            for symbol in SYMBOL_MAP
-        )
+        """Capture one pair without allowing the faster feed to leak ahead.
+
+        A quiet crypto symbol can expose its latest M15 bar one interval later
+        than the other.  The slower symbol's live bar is the only safe common
+        boundary; faster-symbol rates after that boundary are discarded.
+        """
+
+        snapshots = tuple(self.capture(symbol) for symbol in SYMBOL_MAP)
+        current_boundary = min(item.current_bar_epoch for item in snapshots)
+        if boundary_epoch is None:
+            return snapshots
+        target = int(boundary_epoch)
+        if current_boundary < target:
+            raise RuntimeError("FIBO requested boundary has not been published")
+        if current_boundary > target:
+            raise RuntimeError("FIBO requested boundary was missed; no backfill allowed")
+        normalized: list[FiboBoundarySnapshot] = []
+        for snapshot in snapshots:
+            visible_rates = tuple(
+                rate for rate in snapshot.rates if _rate_epoch(rate) <= target
+            )
+            if len(visible_rates) < REQUIRED_RATE_COUNT:
+                raise RuntimeError(
+                    "FIBO lacks sufficient common M15 rates at requested boundary"
+                )
+            normalized.append(
+                FiboBoundarySnapshot(
+                    canonical_symbol=snapshot.canonical_symbol,
+                    broker_symbol=snapshot.broker_symbol,
+                    account_server=snapshot.account_server,
+                    current_bar_epoch=target,
+                    rates=visible_rates[-REQUIRED_RATE_COUNT:],
+                )
+            )
+        return tuple(normalized)
 
 
 def _live_pair_boundary_epoch(session: FiboMt5ReadOnlySession) -> int:
     """Read the broker's current M15 boundary without treating it as evidence."""
 
     snapshots = session.capture_pair()
-    boundaries = {snapshot.current_bar_epoch for snapshot in snapshots}
-    if len(boundaries) != 1:
-        raise RuntimeError("FIBO symbols are not on one live M15 boundary")
-    return boundaries.pop()
+    return min(snapshot.current_bar_epoch for snapshot in snapshots)
 
 
 @contextmanager
