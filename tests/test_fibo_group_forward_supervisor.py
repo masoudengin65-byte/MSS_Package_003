@@ -90,6 +90,22 @@ def test_fibo_session_requires_connected_demo_server():
     assert fake.shutdown_called
 
 
+def test_fibo_session_normalizes_ahead_symbol_to_live_common_boundary():
+    class OffsetFakeMt5(_FakeMt5):
+        def copy_rates_from_pos(self, symbol, _timeframe, _start, _count):
+            if symbol == "BTC":
+                rates = _rates(502 * 900)
+                return [dict(rates[0], time=900), *rates]
+            return _rates(501 * 900)
+
+    with FiboMt5ReadOnlySession(mt5_module=OffsetFakeMt5()) as session:
+        snapshots = session.capture_pair(501 * 900)
+
+    assert {snapshot.current_bar_epoch for snapshot in snapshots} == {501 * 900}
+    assert all(len(snapshot.rates) == 501 for snapshot in snapshots)
+    assert all(max(rate["time"] for rate in snapshot.rates) == 501 * 900 for snapshot in snapshots)
+
+
 class _FakeSession:
     def __enter__(self):
         return self
