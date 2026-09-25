@@ -165,11 +165,23 @@ class FiboMt5ReadOnlySession:
             rates=rates,
         )
 
-    def capture_pair(self, boundary_epoch: int) -> tuple[FiboBoundarySnapshot, ...]:
+    def capture_pair(
+        self, boundary_epoch: int | None = None
+    ) -> tuple[FiboBoundarySnapshot, ...]:
         return tuple(
             self.capture(symbol, boundary_epoch=boundary_epoch)
             for symbol in SYMBOL_MAP
         )
+
+
+def _live_pair_boundary_epoch(session: FiboMt5ReadOnlySession) -> int:
+    """Read the broker's current M15 boundary without treating it as evidence."""
+
+    snapshots = session.capture_pair()
+    boundaries = {snapshot.current_bar_epoch for snapshot in snapshots}
+    if len(boundaries) != 1:
+        raise RuntimeError("FIBO symbols are not on one live M15 boundary")
+    return boundaries.pop()
 
 
 @contextmanager
@@ -313,15 +325,48 @@ def run_fibo_forward_supervisor(
         )
         try:
             with factory() as session:
+                # Wall-clock scheduling is only a hint.  The broker's current
+                # M15 boundary is authoritative: if it has already advanced,
+                # skip that past bar and arm the following one.  This never
+                # treats a missed bar as freshly observed evidence.
+                live_boundary = _live_pair_boundary_epoch(session)
+                if live_boundary > next_boundary:
+                    next_boundary = live_boundary + TIMEFRAME_SECONDS
+                    _audit(
+                        path=operations_path,
+                        activation=activation,
+                        event_type="FIBO_SUPERVISOR_REARMED_FROM_LIVE_MT5_BOUNDARY",
+                        next_boundary=next_boundary,
+                        completed_boundaries=completed,
+                        observed_live_boundary_epoch=live_boundary,
+                        reason="broker_boundary_ahead_of_wall_clock_target",
+                    )
                 while next_boundary < end:
                     observed = _wait_until(next_boundary, utc_now=utc_now, sleep=sleep)
                     if observed - next_boundary > max_boundary_delay_seconds:
                         raise RuntimeError("FIBO boundary observation window expired")
+                    rearmed = False
                     while True:
                         try:
                             snapshots = session.capture_pair(next_boundary)
                             break
                         except RuntimeError as exc:
+                            if str(exc) == "FIBO requested boundary was missed; no backfill allowed":
+                                live_boundary = _live_pair_boundary_epoch(session)
+                                if live_boundary <= next_boundary:
+                                    raise
+                                next_boundary = live_boundary + TIMEFRAME_SECONDS
+                                _audit(
+                                    path=operations_path,
+                                    activation=activation,
+                                    event_type="FIBO_SUPERVISOR_REARMED_FROM_LIVE_MT5_BOUNDARY",
+                                    next_boundary=next_boundary,
+                                    completed_boundaries=completed,
+                                    observed_live_boundary_epoch=live_boundary,
+                                    reason="broker_boundary_advanced_during_wait",
+                                )
+                                rearmed = True
+                                break
                             if str(exc) != "FIBO requested boundary has not been published":
                                 raise
                             observed = float(utc_now())
@@ -340,6 +385,8 @@ def run_fibo_forward_supervisor(
                                     - (observed - next_boundary),
                                 )
                             )
+                    if rearmed:
+                        continue
                     started = time.monotonic()
                     captured_at = float(utc_now())
                     if (
