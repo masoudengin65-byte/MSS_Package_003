@@ -97,9 +97,11 @@ class _FakeSession:
     def __exit__(self, *_exc):
         return None
 
-    def capture_pair(self, boundary):
+    def capture_pair(self, boundary=None):
         from mss.analysis.fibo_group_paired_forward_runtime import FiboBoundarySnapshot
 
+        if boundary is None:
+            boundary = 501 * 900
         rates = _rates(boundary)
         return tuple(
             FiboBoundarySnapshot(
@@ -203,7 +205,9 @@ def test_supervisor_polls_until_fibo_publishes_the_boundary(tmp_path: Path):
     class DelayedSession(_FakeSession):
         attempts = 0
 
-        def capture_pair(self, boundary):
+        def capture_pair(self, boundary=None):
+            if boundary is None:
+                return super().capture_pair()
             self.attempts += 1
             if self.attempts == 1:
                 raise RuntimeError("FIBO requested boundary has not been published")
@@ -226,3 +230,45 @@ def test_supervisor_polls_until_fibo_publishes_the_boundary(tmp_path: Path):
 
     assert session.attempts == 2
     assert result["completed_boundaries"] == 1
+
+
+def test_supervisor_rearms_from_ahead_live_mt5_boundary(tmp_path: Path):
+    start = 501 * 900
+    clock = {"value": float(start + 1)}
+
+    def now():
+        return clock["value"]
+
+    def sleep(seconds):
+        clock["value"] += seconds
+
+    class AheadSession(_FakeSession):
+        def capture_pair(self, boundary=None):
+            if boundary is None:
+                return super().capture_pair(start + 2 * 900)
+            return super().capture_pair(boundary)
+
+    activation = FiboVerifiedActivation(
+        manifest_sha256="d" * 64,
+        first_eligible_epoch=start,
+        exclusive_end_epoch=start + 4 * 900,
+        _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
+    )
+    journal = tmp_path / "ahead-fibo.jsonl"
+    result = run_fibo_forward_supervisor(
+        activation=activation,
+        journal_path=journal,
+        session_factory=AheadSession,
+        utc_now=now,
+        sleep=sleep,
+    )
+
+    assert result["completed_boundaries"] == 1
+    events = ShadowTradeJournal._read_events(
+        journal.with_name(journal.name + ".supervisor.jsonl")
+    )
+    rearm = next(
+        event for event in events
+        if event["event_type"] == "FIBO_SUPERVISOR_REARMED_FROM_LIVE_MT5_BOUNDARY"
+    )
+    assert rearm["payload"]["next_boundary_epoch"] == start + 3 * 900
