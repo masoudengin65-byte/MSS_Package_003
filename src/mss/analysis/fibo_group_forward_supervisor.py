@@ -31,12 +31,13 @@ from mss.analysis.shadow_trade_journal import ShadowTradeJournal
 
 
 EXPECTED_SERVER = "FIBOGroup-MT5 Server"
-RELEASE_CYCLE = "S93.3F-FIBO-FORWARD-REFREEZE-20260918F"
+RELEASE_CYCLE = "S93.3F-FIBO-FORWARD-REFREEZE-20260926-V16"
 TIMEFRAME_SECONDS = 15 * 60
 REQUIRED_RATE_COUNT = LiveCompletedCandleSignalEngine.REQUIRED_COMPLETED_CANDLES + 1
-MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS = 2.0
+MAX_BOUNDARY_OBSERVATION_DELAY_SECONDS = 60.0
 MAX_BOUNDARY_PUBLICATION_LAG_SECONDS = 60.0
 POLL_SECONDS = 0.25
+FEED_PAUSE_POLL_SECONDS = 60.0
 
 
 def _utc_now_epoch() -> float:
@@ -212,6 +213,16 @@ def _live_pair_boundary_epoch(session: FiboMt5ReadOnlySession) -> int:
     return min(snapshot.current_bar_epoch for snapshot in snapshots)
 
 
+def _next_future_boundary(now: float, live_boundary: int, start: int) -> int:
+    """Only arm a boundary still in the future for both wall time and MT5."""
+
+    return max(
+        start,
+        (int(now) // TIMEFRAME_SECONDS + 1) * TIMEFRAME_SECONDS,
+        live_boundary + TIMEFRAME_SECONDS,
+    )
+
+
 @contextmanager
 def runner_lease(journal_path: Path):
     """Prevent two FIBO supervisors from owning the same run."""
@@ -285,10 +296,9 @@ def run_fibo_forward_supervisor(
 ) -> dict[str, object]:
     """Run one fresh FIBO shadow window; never resume or backfill evidence.
 
-    Launching before the first eligible boundary is intentional: the process
-    waits for that live boundary. A late launch remains a hard failure rather
-    than silently backfilling a boundary that has already passed. The V9
-    refreeze preserves this pre-arming behavior without changing evidence.
+    A late launch arms the next future boundary. If the broker stops publishing
+    either symbol, the supervisor audits the gap and waits for both feeds to
+    resume. Past boundaries are never evaluated or backfilled.
     """
 
     if not isinstance(activation, FiboVerifiedActivation):
@@ -326,6 +336,7 @@ def run_fibo_forward_supervisor(
         if any(path.exists() for path in (journal_path, operations_path)):
             raise RuntimeError("FIBO supervisor requires pristine journals")
         completed = 0
+        skipped = 0
         if late_arm:
             next_boundary = (
                 int(now) + TIMEFRAME_SECONDS - 1
@@ -351,15 +362,110 @@ def run_fibo_forward_supervisor(
             late_arm=late_arm,
             effective_first_eligible_m15_open_epoch=next_boundary,
         )
+        print(
+            "FIBO_SUPERVISOR_STARTING: first UTC M15 target "
+            f"{datetime.fromtimestamp(next_boundary, timezone.utc).isoformat()}",
+            flush=True,
+        )
         try:
             with factory() as session:
+                def pause_until_feed_resumes(reason: str) -> None:
+                    nonlocal next_boundary, skipped
+                    pause_target = next_boundary
+                    pause_started = float(utc_now())
+                    live_snapshots = session.capture_pair()
+                    previous_common = min(
+                        item.current_bar_epoch for item in live_snapshots
+                    )
+                    _audit(
+                        path=operations_path,
+                        activation=activation,
+                        event_type="FIBO_SUPERVISOR_FEED_PAUSED",
+                        next_boundary=pause_target,
+                        completed_boundaries=completed,
+                        reason=reason,
+                        observed_utc_epoch=pause_started,
+                        latest_bar_epochs={
+                            item.canonical_symbol: item.current_bar_epoch
+                            for item in live_snapshots
+                        },
+                    )
+                    print(
+                        "FIBO_FEED_PAUSED: waiting for fresh BTC and ETH M15 bars; "
+                        "no shadow decision is being recorded",
+                        flush=True,
+                    )
+                    previous_now = pause_started
+                    while previous_now < end:
+                        sleep(min(FEED_PAUSE_POLL_SECONDS, end - previous_now))
+                        current_now = float(utc_now())
+                        if not math.isfinite(current_now) or current_now < previous_now:
+                            raise RuntimeError(
+                                "UTC clock moved backwards while feed was paused"
+                            )
+                        previous_now = current_now
+                        if current_now >= end:
+                            break
+                        live_snapshots = session.capture_pair()
+                        common = min(
+                            item.current_bar_epoch for item in live_snapshots
+                        )
+                        # A broker can fill old history after reconnecting.
+                        # That does not turn a past candle into live evidence.
+                        if (
+                            common <= previous_common
+                            or not 0 <= current_now - common < TIMEFRAME_SECONDS
+                        ):
+                            continue
+                        next_boundary = _next_future_boundary(
+                            current_now, common, start
+                        )
+                        skipped_in_pause = max(
+                            0, (next_boundary - pause_target) // TIMEFRAME_SECONDS
+                        )
+                        skipped += skipped_in_pause
+                        _audit(
+                            path=operations_path,
+                            activation=activation,
+                            event_type="FIBO_SUPERVISOR_FEED_RESUMED",
+                            next_boundary=next_boundary,
+                            completed_boundaries=completed,
+                            paused_from_utc_epoch=pause_started,
+                            resumed_at_utc_epoch=current_now,
+                            skipped_boundaries_in_pause=skipped_in_pause,
+                            total_skipped_boundaries=skipped,
+                            latest_bar_epochs={
+                                item.canonical_symbol: item.current_bar_epoch
+                                for item in live_snapshots
+                            },
+                        )
+                        print(
+                            "FIBO_FEED_RESUMED: next future paired M15 boundary "
+                            f"{next_boundary}; skipped {skipped_in_pause} boundaries",
+                            flush=True,
+                        )
+                        return
+                    next_boundary = end
+
                 # Wall-clock scheduling is only a hint.  The broker's current
                 # M15 boundary is authoritative: if it has already advanced,
                 # skip that past bar and arm the following one.  This never
                 # treats a missed bar as freshly observed evidence.
                 live_boundary = _live_pair_boundary_epoch(session)
-                if live_boundary > next_boundary:
-                    next_boundary = live_boundary + TIMEFRAME_SECONDS
+                observed_now = float(utc_now())
+                if (
+                    observed_now - live_boundary
+                    > TIMEFRAME_SECONDS + max_boundary_publication_lag_seconds
+                ):
+                    pause_until_feed_resumes("both_symbols_need_fresh_live_bars")
+                elif live_boundary > next_boundary:
+                    previous_boundary = next_boundary
+                    next_boundary = _next_future_boundary(
+                        observed_now, live_boundary, start
+                    )
+                    skipped += max(
+                        0, (next_boundary - previous_boundary) // TIMEFRAME_SECONDS
+                    )
                     _audit(
                         path=operations_path,
                         activation=activation,
@@ -368,11 +474,28 @@ def run_fibo_forward_supervisor(
                         completed_boundaries=completed,
                         observed_live_boundary_epoch=live_boundary,
                         reason="broker_boundary_ahead_of_wall_clock_target",
+                        total_skipped_boundaries=skipped,
                     )
                 while next_boundary < end:
                     observed = _wait_until(next_boundary, utc_now=utc_now, sleep=sleep)
                     if observed - next_boundary > max_boundary_delay_seconds:
-                        raise RuntimeError("FIBO boundary observation window expired")
+                        live_boundary = _live_pair_boundary_epoch(session)
+                        previous_boundary = next_boundary
+                        next_boundary = _next_future_boundary(observed, live_boundary, start)
+                        skipped += max(
+                            0, (next_boundary - previous_boundary) // TIMEFRAME_SECONDS
+                        )
+                        _audit(
+                            path=operations_path,
+                            activation=activation,
+                            event_type="FIBO_SUPERVISOR_BOUNDARY_SKIPPED",
+                            next_boundary=next_boundary,
+                            completed_boundaries=completed,
+                            reason="observation_window_expired",
+                            skipped_boundary_epoch=previous_boundary,
+                            total_skipped_boundaries=skipped,
+                        )
+                        continue
                     rearmed = False
                     while True:
                         try:
@@ -383,7 +506,15 @@ def run_fibo_forward_supervisor(
                                 live_boundary = _live_pair_boundary_epoch(session)
                                 if live_boundary <= next_boundary:
                                     raise
-                                next_boundary = live_boundary + TIMEFRAME_SECONDS
+                                previous_boundary = next_boundary
+                                next_boundary = _next_future_boundary(
+                                    float(utc_now()), live_boundary, start
+                                )
+                                skipped += max(
+                                    0,
+                                    (next_boundary - previous_boundary)
+                                    // TIMEFRAME_SECONDS,
+                                )
                                 _audit(
                                     path=operations_path,
                                     activation=activation,
@@ -392,20 +523,21 @@ def run_fibo_forward_supervisor(
                                     completed_boundaries=completed,
                                     observed_live_boundary_epoch=live_boundary,
                                     reason="broker_boundary_advanced_during_wait",
+                                    total_skipped_boundaries=skipped,
                                 )
                                 rearmed = True
                                 break
                             if str(exc) != "FIBO requested boundary has not been published":
                                 raise
                             observed = float(utc_now())
-                            if (
-                                not math.isfinite(observed)
-                                or observed - next_boundary
-                                > max_boundary_publication_lag_seconds
-                            ):
+                            if not math.isfinite(observed):
                                 raise RuntimeError(
-                                    "FIBO boundary publication window expired"
+                                    "UTC clock returned a non-finite value"
                                 ) from exc
+                            if observed - next_boundary >= max_boundary_publication_lag_seconds:
+                                pause_until_feed_resumes("boundary_not_published")
+                                rearmed = True
+                                break
                             sleep(
                                 min(
                                     POLL_SECONDS,
@@ -417,12 +549,29 @@ def run_fibo_forward_supervisor(
                         continue
                     started = time.monotonic()
                     captured_at = float(utc_now())
-                    if (
-                        not math.isfinite(captured_at)
-                        or captured_at - next_boundary
-                        > max_boundary_publication_lag_seconds
-                    ):
-                        raise RuntimeError("FIBO boundary publication window expired")
+                    if not math.isfinite(captured_at):
+                        raise RuntimeError("UTC clock returned a non-finite value")
+                    if captured_at - next_boundary > max_boundary_publication_lag_seconds:
+                        previous_boundary = next_boundary
+                        next_boundary = _next_future_boundary(
+                            captured_at,
+                            min(item.current_bar_epoch for item in snapshots),
+                            start,
+                        )
+                        skipped += max(
+                            0, (next_boundary - previous_boundary) // TIMEFRAME_SECONDS
+                        )
+                        _audit(
+                            path=operations_path,
+                            activation=activation,
+                            event_type="FIBO_SUPERVISOR_BOUNDARY_SKIPPED",
+                            next_boundary=next_boundary,
+                            completed_boundaries=completed,
+                            reason="late_capture",
+                            skipped_boundary_epoch=previous_boundary,
+                            total_skipped_boundaries=skipped,
+                        )
+                        continue
                     evaluated = active_runtime.evaluate_pair(snapshots)
                     event = active_runtime.commit_pair(
                         activation=activation,
@@ -433,6 +582,12 @@ def run_fibo_forward_supervisor(
                     if elapsed > 5.0:
                         raise RuntimeError("FIBO supervisor cycle exceeded its limit")
                     completed += 1
+                    print(
+                        "FIBO_BOUNDARY_RECORDED: UTC M15 boundary "
+                        f"{datetime.fromtimestamp(next_boundary, timezone.utc).isoformat()}; "
+                        f"completed {completed}; skipped {skipped}",
+                        flush=True,
+                    )
                     _audit(
                         path=operations_path,
                         activation=activation,
@@ -454,6 +609,7 @@ def run_fibo_forward_supervisor(
                 completed_boundaries=completed,
                 evidence_event_count=evidence["event_count"],
                 evidence_tip_sha256=evidence["last_event_sha256"],
+                total_skipped_boundaries=skipped,
             )
         except BaseException as exc:
             _audit(
@@ -471,6 +627,7 @@ def run_fibo_forward_supervisor(
     return {
         "result": "FIBO_FORWARD_COLLECTION_FINISHED_PENDING_REVIEW",
         "completed_boundaries": completed,
+        "skipped_boundaries": skipped,
         "research_validity_certified": False,
         "automatic_resume_allowed": False,
         "real_order_send_allowed": False,
