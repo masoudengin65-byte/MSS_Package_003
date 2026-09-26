@@ -132,7 +132,7 @@ class _FakeSession:
 
 
 def test_supervisor_writes_one_shadow_boundary_and_never_resumes(tmp_path: Path):
-    assert RELEASE_CYCLE == "S93.3F-FIBO-FORWARD-REFREEZE-20260918F"
+    assert RELEASE_CYCLE == "S93.3F-FIBO-FORWARD-REFREEZE-20260926-V16"
     start = 501 * 900
     clock = {"value": float(start - 1)}
 
@@ -288,3 +288,141 @@ def test_supervisor_rearms_from_ahead_live_mt5_boundary(tmp_path: Path):
         if event["event_type"] == "FIBO_SUPERVISOR_REARMED_FROM_LIVE_MT5_BOUNDARY"
     )
     assert rearm["payload"]["next_boundary_epoch"] == start + 3 * 900
+
+
+def test_supervisor_waits_through_closed_feed_then_arms_future_pair(tmp_path: Path):
+    start = 501 * 900
+    clock = {"value": float(start + 1)}
+
+    def now():
+        return clock["value"]
+
+    def sleep(seconds):
+        clock["value"] += seconds
+
+    class WeekendSession(_FakeSession):
+        def capture_pair(self, boundary=None):
+            if boundary is None:
+                live = start - 4 * 900
+                if clock["value"] >= start + 2 * 900 + 300:
+                    live = start + 2 * 900
+                return super().capture_pair(live)
+            return super().capture_pair(boundary)
+
+    activation = FiboVerifiedActivation(
+        manifest_sha256="e" * 64,
+        first_eligible_epoch=start,
+        exclusive_end_epoch=start + 4 * 900,
+        _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
+    )
+    journal = tmp_path / "weekend-fibo.jsonl"
+    result = run_fibo_forward_supervisor(
+        activation=activation,
+        journal_path=journal,
+        session_factory=WeekendSession,
+        utc_now=now,
+        sleep=sleep,
+    )
+
+    assert result["completed_boundaries"] == 1
+    assert result["skipped_boundaries"] == 2
+    evidence = ShadowTradeJournal._read_events(journal)
+    assert evidence[0]["payload"]["boundary_epoch"] == start + 3 * 900
+    audit = ShadowTradeJournal._read_events(
+        journal.with_name(journal.name + ".supervisor.jsonl")
+    )
+    assert [event["event_type"] for event in audit if "FEED_" in event["event_type"]] == [
+        "FIBO_SUPERVISOR_FEED_PAUSED",
+        "FIBO_SUPERVISOR_FEED_RESUMED",
+    ]
+
+
+def test_supervisor_finishes_without_fabricating_bars_if_feed_never_resumes(
+    tmp_path: Path,
+):
+    start = 501 * 900
+    clock = {"value": float(start - 1)}
+
+    def now():
+        return clock["value"]
+
+    def sleep(seconds):
+        clock["value"] += seconds
+
+    class StoppedSession(_FakeSession):
+        def capture_pair(self, boundary=None):
+            if boundary is None:
+                return super().capture_pair(start - 900)
+            raise RuntimeError("FIBO requested boundary has not been published")
+
+    activation = FiboVerifiedActivation(
+        manifest_sha256="f" * 64,
+        first_eligible_epoch=start,
+        exclusive_end_epoch=start + 2 * 900,
+        _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
+    )
+    journal = tmp_path / "closed-fibo.jsonl"
+    result = run_fibo_forward_supervisor(
+        activation=activation,
+        journal_path=journal,
+        session_factory=StoppedSession,
+        utc_now=now,
+        sleep=sleep,
+    )
+
+    assert result["completed_boundaries"] == 0
+    assert not journal.exists()
+    audit = ShadowTradeJournal._read_events(
+        journal.with_name(journal.name + ".supervisor.jsonl")
+    )
+    assert any(event["event_type"] == "FIBO_SUPERVISOR_FEED_PAUSED" for event in audit)
+
+
+def test_supervisor_continues_after_feed_stops_between_live_boundaries(
+    tmp_path: Path,
+):
+    start = 501 * 900
+    clock = {"value": float(start - 1)}
+
+    def now():
+        return clock["value"]
+
+    def sleep(seconds):
+        clock["value"] += seconds
+
+    class InterruptedSession(_FakeSession):
+        def capture_pair(self, boundary=None):
+            if boundary is None:
+                live = start - 900
+                if clock["value"] >= start:
+                    live = start
+                if clock["value"] >= start + 2 * 900 + 300:
+                    live = start + 2 * 900
+                return super().capture_pair(live)
+            if boundary == start + 900:
+                raise RuntimeError("FIBO requested boundary has not been published")
+            return super().capture_pair(boundary)
+
+    activation = FiboVerifiedActivation(
+        manifest_sha256="1" * 64,
+        first_eligible_epoch=start,
+        exclusive_end_epoch=start + 4 * 900,
+        _verification_marker=_FIBO_VERIFIED_ACTIVATION_MARKER,
+    )
+    journal = tmp_path / "interrupted-fibo.jsonl"
+    result = run_fibo_forward_supervisor(
+        activation=activation,
+        journal_path=journal,
+        session_factory=InterruptedSession,
+        utc_now=now,
+        sleep=sleep,
+        max_boundary_publication_lag_seconds=2,
+    )
+
+    assert result["completed_boundaries"] == 2
+    assert result["skipped_boundaries"] == 2
+    events = ShadowTradeJournal._read_events(journal)
+    assert [event["payload"]["boundary_epoch"] for event in events] == [
+        start,
+        start + 3 * 900,
+    ]

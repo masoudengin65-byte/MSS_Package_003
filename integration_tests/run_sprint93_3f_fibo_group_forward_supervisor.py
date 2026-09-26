@@ -64,7 +64,6 @@ def main() -> None:
         raise RuntimeError("manifest must be a JSON object")
     freeze = _load(args.freeze_pr_json, "freeze metadata")
     publication = _load(args.publication_pr_json, "publication metadata")
-    publication["manifest_blob_sha256"] = hashlib.sha256(manifest_bytes).hexdigest()
     versions = {"python_version": platform.python_version(), "numpy_version": str(numpy.__version__)}
     activation = verify_manifest(
         manifest=manifest,
